@@ -192,23 +192,56 @@ def _guess_manufacturer(mac: str) -> str:
     oui = mac.replace("-", ":").upper()[:8]
     # A tiny subset of common OUIs — enough for a prototype
     OUI_MAP = {
+        # Virtualization
         "00:50:56": "VMware",
         "08:00:27": "VirtualBox",
+        "00:15:5D": "Microsoft Hyper-V",
+        # SBCs
         "B8:27:EB": "Raspberry Pi",
         "DC:A6:32": "Raspberry Pi",
         "E4:5F:01": "Raspberry Pi",
+        # Smart Home
         "00:17:88": "Philips Hue",
-        "18:B4:30": "Nest",
+        "18:B4:30": "Nest/Google",
+        "68:A4:0E": "Amazon (Echo/Ring)",
+        "40:B4:CD": "Amazon (Echo/Ring)",
+        "F0:F0:A4": "Amazon (Echo/Ring)",
+        "30:FD:38": "Google (Nest/Chromecast)",
+        "54:60:09": "Google (Nest/Chromecast)",
+        # Routers / Networking
+        "98:25:4A": "ASUS",
+        "04:D9:F5": "ASUS",
+        "1C:87:2C": "ASUS",
         "50:C7:BF": "TP-Link",
-        "74:DA:38": "EnGenius",
-        "F4:F2:6D": "Apple",
-        "A4:C3:F0": "Apple",
+        "60:32:B1": "TP-Link",
+        "C0:25:E9": "TP-Link",
         "00:1A:2B": "Cisco",
         "00:14:BF": "Linksys",
-        "00:26:B9": "Dell",
+        "74:DA:38": "EnGenius",
+        "B0:BE:76": "Netgear",
+        "A4:2B:B0": "Netgear",
+        # Apple
+        "F4:F2:6D": "Apple",
+        "A4:C3:F0": "Apple",
         "AC:BC:32": "Apple",
         "3C:22:FB": "Apple",
         "18:65:90": "Apple",
+        "88:66:5A": "Apple",
+        "14:98:77": "Apple",
+        # Samsung
+        "8C:F5:A3": "Samsung",
+        "FC:A1:83": "Samsung",
+        # Dell / HP / Lenovo
+        "00:26:B9": "Dell",
+        "3C:D9:2B": "HP",
+        "98:E7:43": "HP",
+        "A4:34:D9": "Intel",
+        "8C:8C:AA": "Lenovo",
+        # Sonos / Media
+        "B8:E9:37": "Sonos",
+        "34:7E:5C": "Sonos",
+        "78:28:CA": "Sonos",
+        "48:A6:B8": "Roku",
     }
     return OUI_MAP.get(oui, "Network Device")
 
@@ -224,7 +257,8 @@ def _guess_device_type(ip: str, mac: str) -> str:
         return "apple-device"
     if "B8:27:EB" in mac_up or "DC:A6:32" in mac_up:
         return "raspberry-pi"
-    if "VMware" in _guess_manufacturer(mac) or "VirtualBox" in _guess_manufacturer(mac):
+    mfg = _guess_manufacturer(mac)
+    if mfg in ("VMware", "VirtualBox", "Microsoft Hyper-V"):
         return "vm"
     if last_octet in range(2, 10):
         return "server"
