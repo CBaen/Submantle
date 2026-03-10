@@ -81,7 +81,7 @@ class MockDB:
     def list_agents(self) -> list[dict]:
         return [dict(r) for r in self._agents.values()]
 
-    def delete_agent(self, agent_id: int) -> bool:
+    def deregister_agent(self, agent_id: int) -> bool:
         if agent_id in self._agents:
             del self._agents[agent_id]
             return True

@@ -644,6 +644,13 @@
         var data = await res.json();
         failCount = 0;
         document.getElementById('offlineBanner').classList.remove('visible');
+
+        if (data.privacy_mode) {
+          // Server confirmed privacy mode — sync the UI
+          applyPrivacyUI(true);
+          return;
+        }
+
         setAlive(true);
         renderStatus(data);
         firstLoad = false;

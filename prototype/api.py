@@ -11,9 +11,7 @@ Module initialization order (critical — do not reorder):
   4. AgentRegistry    — loads HMAC secret from DB, emits events on bus
 """
 
-import json
 import socket
-import struct
 import subprocess
 import time
 from pathlib import Path
@@ -23,7 +21,6 @@ import psutil
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from substrate import (
