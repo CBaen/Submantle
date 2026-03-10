@@ -131,6 +131,58 @@
     .theme-toggle:hover { background: var(--bg-elevated); }
     .theme-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
+    /* ── Privacy Toggle ──────────────────────────────────────────────────── */
+    .privacy-toggle-wrap {
+      display: flex; align-items: center; gap: var(--sp-2);
+      cursor: pointer; user-select: none;
+    }
+    /* The visible pill switch */
+    .privacy-switch {
+      position: relative; width: 36px; height: 20px; flex-shrink: 0;
+    }
+    .privacy-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .privacy-track {
+      position: absolute; inset: 0; border-radius: 10px;
+      background: var(--slate-700);
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .privacy-track::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--slate-400);
+      transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) ease;
+    }
+    .privacy-switch input:checked + .privacy-track {
+      background: rgba(234, 179, 8, 0.25); /* amber-ish, distinct from clay */
+      border: 1px solid rgba(234, 179, 8, 0.4);
+    }
+    .privacy-switch input:checked + .privacy-track::after {
+      transform: translateX(16px);
+      background: #eab308; /* amber — warning colour, not clay */
+    }
+    .privacy-switch input:focus-visible + .privacy-track {
+      outline: 2px solid var(--focus); outline-offset: 2px;
+    }
+    /* Label next to the switch */
+    .privacy-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--text-2);
+      transition: color var(--dur-fast) ease;
+    }
+    .privacy-label.private { color: #eab308; }
+
+    /* ── Privacy Overlay — shown in place of process data when PRIVATE ────── */
+    .privacy-overlay {
+      display: none;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); padding: var(--sp-12) var(--sp-6);
+      text-align: center; box-shadow: var(--shadow-card);
+    }
+    .privacy-overlay.visible { display: block; }
+    .privacy-overlay-icon { font-size: 32px; margin-bottom: var(--sp-4); }
+    .privacy-overlay-title { font-size: 16px; font-weight: 600; color: var(--text-1); margin-bottom: var(--sp-2); }
+    .privacy-overlay-desc { font-size: 13px; color: var(--text-2); }
+
     /* ── Layout ─────────────────────────────────────────────────────────────── */
     .container { max-width: 1400px; margin: 0 auto; padding: var(--sp-8) clamp(20px, 3.9vw, 48px); }
     .grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--sp-6); }
@@ -304,6 +356,13 @@
     </div>
     <div class="topbar-right">
       <span class="scan-age" id="scanAge">connecting...</span>
+      <label class="privacy-toggle-wrap" title="Stops all monitoring. No data collected." aria-label="Toggle privacy mode">
+        <span class="privacy-switch">
+          <input type="checkbox" id="privacyCheckbox" autocomplete="off">
+          <span class="privacy-track"></span>
+        </span>
+        <span class="privacy-label" id="privacyLabel">Aware</span>
+      </label>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">
         <svg id="themeIcon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
       </button>
@@ -340,13 +399,20 @@
 
     <div class="grid">
       <div class="main">
-        <div>
+        <!-- Privacy overlay — shown instead of process data when PRIVATE -->
+        <div class="privacy-overlay" id="privacyOverlay">
+          <div class="privacy-overlay-icon">&#128274;</div>
+          <div class="privacy-overlay-title">Substrate is not watching</div>
+          <div class="privacy-overlay-desc">Privacy mode is active. No process data is being collected or stored.</div>
+        </div>
+
+        <div id="processSection">
           <div class="section-header">Process Categories</div>
           <div class="category-grid" id="categoryGrid">
             <div class="empty">Scanning...</div>
           </div>
         </div>
-        <div class="query-card">
+        <div class="query-card" id="querySection">
           <div class="query-title">Ask Substrate</div>
           <div class="query-subtitle">The ground knows what's happening. Ask it anything.</div>
           <div class="query-input-wrap">
@@ -723,7 +789,93 @@
       }
     }
 
+    // ── Privacy Mode ──────────────────────────────────────────────────────────
+    var privacyCheckbox = document.getElementById('privacyCheckbox');
+    var privacyLabel = document.getElementById('privacyLabel');
+    var privacyOverlay = document.getElementById('privacyOverlay');
+    var processSection = document.getElementById('processSection');
+    var querySection = document.getElementById('querySection');
+    var statStrip = document.getElementById('statStrip');
+    var privacyToggling = false; // prevent double-clicks
+
+    function applyPrivacyUI(isPrivate) {
+      privacyCheckbox.checked = isPrivate;
+
+      if (isPrivate) {
+        privacyLabel.textContent = 'Privacy Mode';
+        privacyLabel.className = 'privacy-label private';
+
+        // Hide process data sections
+        privacyOverlay.classList.add('visible');
+        processSection.style.display = 'none';
+        querySection.style.display = 'none';
+        statStrip.style.opacity = '0.35';
+        statStrip.style.pointerEvents = 'none';
+
+        // Update pulse to show paused state
+        setAlive(false);
+        document.getElementById('pulseLabel').textContent = 'Private';
+        document.getElementById('pulseLabel').className = 'pulse-label offline';
+        document.getElementById('pulseDetail').textContent = 'Not watching';
+        document.getElementById('pulseTime').textContent = '';
+
+        // Disable query input
+        document.getElementById('queryInput').disabled = true;
+      } else {
+        privacyLabel.textContent = 'Aware';
+        privacyLabel.className = 'privacy-label';
+
+        // Show process data sections
+        privacyOverlay.classList.remove('visible');
+        processSection.style.display = '';
+        querySection.style.display = '';
+        statStrip.style.opacity = '';
+        statStrip.style.pointerEvents = '';
+
+        // Re-enable query input
+        document.getElementById('queryInput').disabled = false;
+      }
+    }
+
+    async function loadPrivacyStatus() {
+      try {
+        var res = await fetch('/api/privacy/status');
+        if (!res.ok) return;
+        var data = await res.json();
+        applyPrivacyUI(data.is_private);
+      } catch (e) {
+        // Can't reach server yet — default to aware UI (non-private)
+      }
+    }
+
+    privacyCheckbox.addEventListener('change', async function() {
+      if (privacyToggling) {
+        // Revert checkbox to current server state while in flight
+        privacyCheckbox.checked = !privacyCheckbox.checked;
+        return;
+      }
+      privacyToggling = true;
+
+      // Immediate visual feedback before the round-trip completes
+      var intendedPrivate = privacyCheckbox.checked;
+      applyPrivacyUI(intendedPrivate);
+
+      try {
+        var res = await fetch('/api/privacy/toggle', { method: 'POST' });
+        if (!res.ok) throw new Error(res.statusText);
+        var data = await res.json();
+        // Confirm server state (may differ if server refused)
+        applyPrivacyUI(data.is_private);
+      } catch (e) {
+        // Toggle failed — revert to previous state
+        applyPrivacyUI(!intendedPrivate);
+      } finally {
+        privacyToggling = false;
+      }
+    });
+
     // ── Init ──────────────────────────────────────────────────────────────────
+    loadPrivacyStatus();
     pollStatus();
     pollDevices();
     setInterval(pollStatus, 5000);
