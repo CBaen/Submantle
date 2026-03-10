@@ -131,11 +131,13 @@ The "agent mesh" is an emerging architectural pattern (named by Solo.io, Gartner
 
 ### The Path
 
-**Phase 1 (Now → June 2026):** Ship MCP server publicly. Get in front of AAIF standards process. Prove the broker interaction works. Get first users.
+**Phase 1 (Now → June 2026):** Ship MCP server publicly. Get in front of AAIF standards process. Prove the broker interaction works. Get first users. **Before shipping, define concrete success metrics:** (1) What user adoption number justifies continuing? (2) What willingness-to-pay signal is sufficient? (3) What is the minimum evidence required to justify seeking a technical co-founder or pre-seed capital? Without these criteria, there is no way to evaluate whether the experiment succeeded.
 
-**Phase 2 (June 2026 → evidence):** Validate willingness to pay. Get subscription revenue. Build the signature community. Generate evidence that this is worth building at scale.
+**Phase 2 (June 2026 → evidence):** Validate willingness to pay. Get subscription revenue. Build the signature community. Generate evidence that this is worth building at scale. Evaluate against the success metrics defined in Phase 1.
 
 **Phase 3 (Evidence in hand):** Either raise capital to hire engineering, or find the technical co-founder who builds the Go daemon and platform-specific implementations. Guiding Light owns vision, community, store, and business model. The co-founder/team owns the production infrastructure.
+
+**Critical timeline reality:** The gap between the current Python prototype and a publicly deployable MCP server with billing is not trivial — even with AI assistance. No team estimated this build time. The competitive window (12-24 months), the build timeline, and the founder constraint are all competing for the same scarce resource: Guiding Light's time. These are parallel problems, not sequential ones.
 
 ---
 
@@ -192,7 +194,7 @@ The Brief explicitly asked for this. No team investigated it. MCP alignment is n
 No team sourced developer interviews, enterprise buyer conversations, or willingness-to-pay evidence. The entire business case rests on market analogy. Validator 1 flags this as "the single largest gap across all five reports." Before investing months of build time, Substrate needs evidence that real developers and enterprises want what it provides.
 
 ### 3. Windows-First Strategy
-The prototype runs on Windows. Microsoft's Recall failure creates a market opening. Windows ETW is better documented and less credential-gated than macOS ESF. No team examined whether Windows-first narrows the founding capability problem enough to make V1 buildable by a solo founder. This could substantially change the calculus on Kill Shot 3.
+The prototype runs on Windows. Microsoft's Recall failure is not just context — it is an active market opening. Enterprise IT teams that blocked Recall on privacy grounds are precisely the buyer segment for a privacy-first, user-controlled alternative. They are warm RIGHT NOW. Windows ETW is better documented and less credential-gated than macOS ESF. No team examined whether Windows-first narrows the founding capability problem enough to make V1 buildable by a solo founder, or developed the Recall-gap go-to-market angle. This could substantially change the calculus on Kill Shot 3 and should be the center of go-to-market planning.
 
 ### 4. Helixar.ai
 Team 5 flags Helixar.ai as building "a detection layer with a lightweight endpoint agent combined with an inbound API security layer" — potentially the exact product Substrate describes. Pre-GA, VC-backed. No team investigated their architecture, funding, or timeline. If Helixar ships before Substrate, it materially changes the competitive picture.
@@ -216,7 +218,7 @@ No team researched what specifically makes developer-facing daemon tools achieve
 
 ### High
 - **No customer validation exists.** The business case is built on analogy, not demand. First real user conversations could invalidate assumptions. Mitigate by validating before building beyond prototype.
-- **AAIF standards crystallize without Substrate at the table.** Runlayer already has a gold-member governance seat. Mitigate by shipping publicly before standards are written.
+- **AAIF standards crystallize without Substrate at the table.** Runlayer — Substrate's closest competitor as an MCP proxy — holds a gold member governance seat in the AAIF, the standards body governing MCP. A direct competitor has standards influence over the protocol Substrate depends on. Substrate does not. Mitigate by shipping a public reference implementation before standards are written.
 - **EU AI Act classification triggers compliance costs.** If Substrate markets as an "AI safety" product, it may trigger high-risk AI system classification. 145 days to August 2026 deadline. Legal review is not optional.
 
 ### Medium
@@ -253,8 +255,10 @@ No team researched what specifically makes developer-facing daemon tools achieve
 
 ## Final Word
 
-The team assigned to kill Substrate couldn't. Their strongest finding — Kill Shot 3, the solo non-technical founder constraint — is about WHO builds it, not WHETHER it should be built. Their own conclusion: "The idea is strong. The configuration that executes it needs to change."
+Team 5 found that the kill shot is about who builds Substrate, not whether Substrate should be built. Three of its nine kill shots survive as serious threats: the solo non-technical founder ceiling, platform incumbents, and market timing. The finding that matters — that the idea is sound — is meaningful precisely because it comes from the team whose job was to find fatal flaws. Their own conclusion: "The idea is strong. The configuration that executes it needs to change."
 
-Five teams. Three validators. Independent research. The convergence is clear: the idea is sound, the timing is urgent, the differentiation is real. The path is narrow but walkable: ship the MCP server, prove the value, then earn the resources the full vision requires.
+Five teams. Three validators. One independent auditor. The convergence is clear: the idea is sound, the timing is urgent, the differentiation is real. The path is narrow but walkable: ship the MCP server, prove the value, then earn the resources the full vision requires.
 
-Put your energy into this. Start with what you can build. Prove it matters. Then build what you can't build alone.
+The idea is worth 90 days of focused energy. Define what you're building, define what success looks like, and ship it. If the evidence comes back positive, the full vision earns its investment. If it doesn't, you'll know before you've spent years in the wrong direction.
+
+Start with what you can build. Prove it matters. Then build what you can't build alone.
