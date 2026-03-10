@@ -202,6 +202,11 @@ class PrivacyManager:
             return
 
         try:
+            # Sync the event bus's privacy filter BEFORE emitting the event.
+            # Without this, the bus stays in AWARE mode and process events
+            # leak through to subscribers (including the future MCP stream).
+            self._event_bus.set_privacy_mode(new_state == PrivacyState.PRIVATE)
+
             self._event_bus.emit(
                 "PRIVACY_TOGGLED",
                 {
