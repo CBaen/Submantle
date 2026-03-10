@@ -3,6 +3,12 @@ Substrate API — FastAPI server wrapping the process awareness daemon.
 Serves the dashboard and exposes JSON endpoints.
 
 Run: uvicorn api:app --reload --port 8421
+
+Module initialization order (critical — do not reorder):
+  1. SubstrateDB      — SQLite layer must exist before anything else
+  2. EventBus(db=db)  — persists events; needs DB
+  3. PrivacyManager   — loads persisted state from DB, syncs bus on toggle
+  4. AgentRegistry    — loads HMAC secret from DB, emits events on bus
 """
 
 import json
@@ -11,12 +17,14 @@ import struct
 import subprocess
 import time
 from pathlib import Path
+from typing import Optional
 
 import psutil
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 
 from substrate import (
     awareness_report,
@@ -24,41 +32,91 @@ from substrate import (
     load_signatures,
     query_what_would_break,
     scan_processes,
+    scan_with_events,
 )
+from database import SubstrateDB
+from events import EventBus, EventType
+from privacy import PrivacyManager
+from agent_registry import AgentRegistry
 
 VERSION = "0.1.0"
+
+# ── Module initialization ───────────────────────────────────────────────────
+# Order matters: DB first, then bus (needs DB), then privacy and registry (need both).
+
+_db = SubstrateDB()
+_bus = EventBus(db=_db)
+_privacy = PrivacyManager(db=_db, event_bus=_bus)
+_registry = AgentRegistry(db=_db, event_bus=_bus)
+
+# ── FastAPI setup ────────────────────────────────────────────────────────────
 
 app = FastAPI(title="Substrate", version=VERSION, docs_url=None, redoc_url=None)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
 )
 
 # ── Cache ──────────────────────────────────────────────────────────────────────
 # Re-scan at most every 5 seconds to avoid hammering psutil on every poll.
+# Previous process list is tracked for event diffing.
 
 _cache: dict = {}
 _cache_ts: float = 0.0
 _CACHE_TTL = 5.0
+_previous_processes: Optional[list] = None
 
 
 def _get_state() -> dict:
-    global _cache, _cache_ts
+    """
+    Return current process state. Respects privacy mode.
+
+    When PRIVATE: returns a lightweight sentinel dict signalling privacy mode.
+    When AWARE:   scans (or serves from 5-second cache) and persists to SQLite.
+    """
+    global _cache, _cache_ts, _previous_processes
+
+    # Privacy gate — return a minimal stub so callers know not to show process data.
+    if _privacy.check_privacy():
+        return {"privacy_mode": True}
+
     now = time.time()
     if now - _cache_ts < _CACHE_TTL:
         return _cache
 
     signatures = load_signatures()
-    processes = scan_processes(signatures)
-    tree = build_process_tree(processes)
-    report = awareness_report(processes, tree)
+
+    # Scan and emit lifecycle events, comparing against last known state.
+    current_processes = scan_with_events(
+        signatures=signatures,
+        bus=_bus,
+        privacy_manager=_privacy,
+        previous_processes=_previous_processes,
+    )
+    _previous_processes = current_processes
+
+    tree = build_process_tree(current_processes)
+    report = awareness_report(current_processes, tree)
+
+    # Persist snapshot to SQLite so restarts can serve the last known state.
+    identified_count = report["identified_processes"]
+    process_count = report["total_processes"]
+    try:
+        _db.save_scan_snapshot(
+            data={"report": report},
+            process_count=process_count,
+            identified_count=identified_count,
+        )
+    except Exception:
+        pass  # Non-fatal — the system must not break because a DB write failed.
 
     _cache = {
+        "privacy_mode": False,
         "report": report,
-        "processes": processes,
+        "processes": current_processes,
         "tree": tree,
         "scanned_at": now,
     }
@@ -265,6 +323,15 @@ def _guess_device_type(ip: str, mac: str) -> str:
     return "unknown"
 
 
+# ── Request / Response Models ───────────────────────────────────────────────
+
+class AgentRegisterRequest(BaseModel):
+    agent_name: str
+    version: str
+    author: str
+    capabilities: list[str] = []
+
+
 # ── Routes ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/health")
@@ -275,10 +342,19 @@ def health():
 @app.get("/api/status")
 def status():
     state = _get_state()
+
+    # Privacy mode — return minimal health-only response.
+    if state.get("privacy_mode"):
+        return {
+            "privacy_mode": True,
+            "status": "Substrate is running in privacy mode. No process data is being collected.",
+        }
+
     report = state["report"]
     scanned_at = state["scanned_at"]
 
     return {
+        "privacy_mode": False,
         "timestamp": report["timestamp"],
         "scan_age_seconds": round(time.time() - scanned_at, 1),
         "total_processes": report["total_processes"],
@@ -297,6 +373,17 @@ def query(process: str = ""):
             status_code=400,
             content={"error": "process parameter is required"},
         )
+
+    # Privacy mode — no queries allowed.
+    if _privacy.check_privacy():
+        return JSONResponse(
+            status_code=403,
+            content={
+                "error": "Privacy mode is active. Substrate is not watching.",
+                "privacy_mode": True,
+            },
+        )
+
     state = _get_state()
     result = query_what_would_break(
         process.strip(), state["processes"], state["tree"]
@@ -311,6 +398,113 @@ def devices():
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "devices": discovered,
     }
+
+
+# ── Privacy endpoints ───────────────────────────────────────────────────────
+
+@app.post("/api/privacy/toggle")
+def privacy_toggle():
+    """
+    Toggle privacy mode on/off.
+
+    Returns the new state. Safe to call multiple times — idempotent
+    transitions return changed=False and emit no extra events.
+    """
+    result = _privacy.toggle()
+
+    # Invalidate the scan cache so the next /api/status call reflects the
+    # mode change immediately rather than serving stale process data.
+    global _cache, _cache_ts
+    _cache = {}
+    _cache_ts = 0.0
+
+    return {
+        "previous_state": result["previous_state"],
+        "new_state": result["new_state"],
+        "changed": result["changed"],
+        "is_private": _privacy.is_private(),
+    }
+
+
+@app.get("/api/privacy/status")
+def privacy_status():
+    """Return current privacy mode state."""
+    return {
+        "state": _privacy.state.value,
+        "is_private": _privacy.is_private(),
+    }
+
+
+# ── Agent endpoints ─────────────────────────────────────────────────────────
+
+@app.post("/api/agents/register")
+def agents_register(body: AgentRegisterRequest):
+    """
+    Register a new agent. Returns a bearer token.
+
+    The token is the agent's credential for all subsequent calls.
+    Substrate does not store the raw token — the agent must preserve it.
+    """
+    try:
+        token = _registry.register(
+            agent_name=body.agent_name,
+            version=body.version,
+            author=body.author,
+            capabilities=body.capabilities,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    except RuntimeError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+    return {
+        "token": token,
+        "agent_name": body.agent_name,
+    }
+
+
+@app.get("/api/agents")
+def agents_list():
+    """
+    List all registered agents.
+    Token hashes are excluded from the response.
+    """
+    agents = _registry.list_agents()
+    return {"agents": agents}
+
+
+@app.delete("/api/agents/{agent_id}")
+def agents_deregister(agent_id: int, authorization: Optional[str] = Header(None)):
+    """
+    Deregister an agent. Requires Authorization: Bearer <token> header.
+
+    The token must belong to the agent being deregistered — agents can only
+    remove themselves. This prevents unauthenticated deletion.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Authorization: Bearer <token> header is required",
+        )
+
+    token = authorization.removeprefix("Bearer ").strip()
+
+    # Verify the token belongs to the agent_id being deregistered.
+    agent_info = _registry.verify(token)
+    if agent_info is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    if agent_info["id"] != agent_id:
+        raise HTTPException(
+            status_code=403,
+            detail="Token does not belong to this agent",
+        )
+
+    success = _registry.deregister(token)
+    if not success:
+        raise HTTPException(status_code=404, detail="Agent not found")
+
+    return {"deregistered": True, "agent_id": agent_id}
 
 
 # ── Dashboard ──────────────────────────────────────────────────────────────────

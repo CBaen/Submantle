@@ -7,10 +7,10 @@ builds a relationship graph, and answers queries about system state.
 """
 
 import json
-import os
 import time
 from collections import defaultdict
 from pathlib import Path
+from typing import Optional
 
 import psutil
 
@@ -183,6 +183,92 @@ def awareness_report(processes, tree):
     return report
 
 
+def scan_with_events(
+    signatures: list,
+    bus,
+    privacy_manager,
+    previous_processes: Optional[list] = None,
+) -> list:
+    """
+    Scan processes and emit lifecycle events on the event bus.
+
+    Privacy gate: if privacy_manager reports PRIVATE mode, no scanning is
+    performed and an empty list is returned immediately. The caller is
+    responsible for keeping the previous state so that on resumption from
+    PRIVATE to AWARE mode the first scan correctly re-baselines the process set
+    rather than emitting spurious PROCESS_STARTED events.
+
+    Args:
+        signatures:          Loaded signature list from load_signatures().
+        bus:                 EventBus instance (from events.py).
+        privacy_manager:     PrivacyManager instance (from privacy.py).
+        previous_processes:  The process list returned by the previous
+                             scan_with_events() call. Pass None (or []) on
+                             first run — every process will look "new" but no
+                             PROCESS_STARTED events will be emitted without a
+                             baseline (events require knowing what changed).
+                             To emit events on the very first scan, pass an
+                             empty list explicitly.
+
+    Returns:
+        The current process list (use as ``previous_processes`` on next call).
+        Returns an empty list when PRIVATE mode is active.
+    """
+    # Privacy gate — check before touching any process data.
+    # check_privacy() returns True when PRIVATE (skip the work).
+    if privacy_manager.check_privacy():
+        return []
+
+    current_processes = scan_processes(signatures)
+
+    # Diff against previous scan to emit lifecycle events.
+    if previous_processes is not None:
+        prev_pids = {p["pid"] for p in previous_processes}
+        curr_pids = {p["pid"] for p in current_processes}
+
+        # New processes — present now, absent before.
+        new_pids = curr_pids - prev_pids
+        for proc in current_processes:
+            if proc["pid"] in new_pids:
+                bus.emit(
+                    "PROCESS_STARTED",
+                    {
+                        "pid": proc["pid"],
+                        "name": proc["name"],
+                        "identity": proc["identity"],
+                    },
+                    source="substrate",
+                )
+
+        # Dead processes — present before, absent now.
+        dead_pids = prev_pids - curr_pids
+        prev_by_pid = {p["pid"]: p for p in previous_processes}
+        for pid in dead_pids:
+            proc = prev_by_pid[pid]
+            bus.emit(
+                "PROCESS_DIED",
+                {
+                    "pid": proc["pid"],
+                    "name": proc["name"],
+                    "identity": proc["identity"],
+                },
+                source="substrate",
+            )
+
+    # Emit SCAN_COMPLETE with summary statistics.
+    identified = [p for p in current_processes if p["identity"]]
+    bus.emit(
+        "SCAN_COMPLETE",
+        {
+            "process_count": len(current_processes),
+            "identified_count": len(identified),
+        },
+        source="substrate",
+    )
+
+    return current_processes
+
+
 def main():
     print("=" * 60)
     print("  SUBSTRATE PROTOTYPE — Process Awareness Daemon")
@@ -223,14 +309,8 @@ def main():
     result = query_what_would_break("node", processes, tree)
     print(json.dumps(result, indent=2))
 
-    # Save full state
-    state_path = Path(__file__).parent / "substrate_state.json"
-    with open(state_path, "w") as f:
-        json.dump({
-            "awareness": report,
-            "processes": [{k: v for k, v in p.items() if k != "cmdline"} for p in processes if p["identity"]],
-        }, f, indent=2)
-    print(f"\nState saved to {state_path}")
+    # State is now persisted to SQLite (substrate.db) by api.py on each
+    # scan cycle. The JSON file is no longer written. See database.py.
 
 
 if __name__ == "__main__":
