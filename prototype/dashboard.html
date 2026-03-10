@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Substrate — The Ground Beneath Everything</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ──────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    /* ── Design Tokens — Dark Mode ─────────────────────────────────────────── */
+    :root {
+      --bg:          #0A0B0D;
+      --surface:     #111318;
+      --elevated:    #171B23;
+      --border:      #1E2330;
+      --border-sub:  #161A22;
+      --text-1:      #E8EAF0;
+      --text-2:      #8B90A0;
+      --text-3:      #4A4F62;
+      --green:       #2ECC8A;
+      --green-bg:    rgba(46,204,138,0.08);
+      --amber:       #F5A623;
+      --amber-bg:    rgba(245,166,35,0.08);
+      --red:         #E8504A;
+      --red-bg:      rgba(232,80,74,0.08);
+      --blue:        #4F8EF7;
+      --blue-bg:     rgba(79,142,247,0.08);
+      --purple:      #B07EFF;
+      --inert:       #4A4F62;
+
+      --topbar-bg:   rgba(10,11,13,0.85);
+      --shadow:      0 1px 3px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+      --shadow-lg:   0 4px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      --radius:      12px;
+      --radius-sm:   8px;
+      --radius-xs:   6px;
+    }
+
+    /* ── Light Mode Overrides ──────────────────────────────────────────────── */
+    [data-theme="light"] {
+      --bg:          #F5F6F8;
+      --surface:     #FFFFFF;
+      --elevated:    #F0F1F4;
+      --border:      #E2E4EB;
+      --border-sub:  #EAECF2;
+      --text-1:      #0D0F14;
+      --text-2:      #5A5F72;
+      --text-3:      #A0A5B8;
+      --topbar-bg:   rgba(245,246,248,0.85);
+      --shadow:      0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+      --shadow-lg:   0 4px 24px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.06);
+    }
+
+    /* ── Base Styles ───────────────────────────────────────────────────────── */
+    body {
+      font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      transition: background 300ms ease, color 300ms ease;
+    }
+
+    /* ── Reduced Motion ────────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+
+    /* ── Topbar ────────────────────────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      background: var(--topbar-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      gap: 12px;
+      transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+      animation: dot-breathe 3s ease-in-out infinite;
+    }
+
+    .brand-pulse-dot.offline {
+      background: var(--inert);
+      animation: none;
+    }
+
+    @keyframes dot-breathe {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .brand-wordmark {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--text-1);
+      text-transform: uppercase;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-3);
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-spacer { flex: 1; }
+
+    .topbar-scan-age {
+      font-size: 12px;
+      color: var(--text-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--text-2);
+      cursor: pointer;
+      border-radius: var(--radius-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 150ms ease, color 150ms ease;
+    }
+
+    .icon-btn:hover { background: var(--elevated); color: var(--text-1); }
+    .icon-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    /* ── Layout ────────────────────────────────────────────────────────────── */
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 40px 64px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar { padding: 0 20px; }
+      .page { padding: 24px 20px 48px; }
+    }
+
+    .col-left { display: flex; flex-direction: column; gap: 24px; }
+    .col-right { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Card ──────────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    .card-pad { padding: 24px; }
+
+    /* ── Section Label ─────────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 16px;
+    }
+
+    /* ── Stat Strip ────────────────────────────────────────────────────────── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 20px 18px;
+      transition: background 150ms ease, border-color 300ms ease;
+      cursor: default;
+    }
+
+    .stat-card:hover { background: var(--elevated); }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-1);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .stat-sub.green { color: var(--green); }
+    .stat-sub.amber { color: var(--amber); }
+    .stat-sub.red   { color: var(--red); }
+
+    @keyframes stat-flash {
+      0%   { color: var(--text-1); }
+      25%  { color: var(--blue); }
+      100% { color: var(--text-1); }
+    }
+    .stat-value.flash { animation: stat-flash 600ms ease; }
+
+    /* ── Awareness Pulse ───────────────────────────────────────────────────── */
+    .pulse-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pulse-ring-wrap {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pulse-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--green);
+      animation: ring-pulse 3s ease-in-out infinite;
+    }
+
+    .pulse-ring-1 { width: 100%; height: 100%; --opacity: 0.25; animation-delay: 0s; }
+    .pulse-ring-2 { width: 73%; height: 73%; --opacity: 0.4; animation-delay: -1s; }
+    .pulse-ring-3 { width: 48%; height: 48%; --opacity: 0.6; animation-delay: -2s; }
+
+    @keyframes ring-pulse {
+      0%, 100% { opacity: var(--opacity); transform: scale(1); }
+      50%       { opacity: calc(var(--opacity) * 0.3); transform: scale(1.06); }
+    }
+
+    .pulse-ring.offline { border-color: var(--inert); animation: none; opacity: 0.2; }
+
+    .pulse-center {
+      position: relative;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pulse-mark {
+      color: var(--green);
+      transition: color 300ms ease;
+    }
+    .pulse-mark.offline { color: var(--inert); }
+
+    .pulse-info { text-align: center; }
+
+    .pulse-status {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 4px;
+    }
+    .pulse-status.offline { color: var(--inert); }
+
+    .pulse-count {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 2px;
+    }
+
+    .pulse-age {
+      font-size: 11px;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Critical Processes ────────────────────────────────────────────────── */
+    .critical-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 20px 16px;
+      transition: border-color 300ms ease;
+    }
+
+    .critical-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+
+    .critical-row {
+      padding: 10px 0;
+      border-top: 1px solid var(--border-sub);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .critical-row:first-of-type { border-top: none; }
+
+    .crit-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+      margin-top: 4px;
+      animation: dot-breathe 2s ease-in-out infinite;
+    }
+
+    .crit-body { flex: 1; min-width: 0; }
+
+    .crit-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crit-desc {
+      font-size: 11px;
+      color: var(--text-2);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .crit-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .crit-pid {
+      font-family: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .crit-uptime {
+      font-size: 11px;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .all-clear {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--green);
+    }
+
+    /* ── Devices Panel ─────────────────────────────────────────────────────── */
+    .devices-card { padding: 20px; }
+
+    .device-row {
+      padding: 9px 8px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+      transition: background 150ms ease;
+    }
+
+    .device-row:hover { background: var(--elevated); }
+
+    .device-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-2);
+    }
+
+    .device-body { flex: 1; min-width: 0; }
+
+    .device-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .device-type {
+      font-size: 11px;
+      color: var(--text-2);
+    }
+
+    .device-right {
+      text-align: right;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .device-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .device-status-dot.slow { background: var(--amber); }
+    .device-status-dot.offline { background: var(--inert); }
+
+    .device-ip {
+      font-family: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+      font-size: 10px;
+      color: var(--text-3);
+    }
+
+    /* ── Process Categories ────────────────────────────────────────────────── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .cat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      transition: background 150ms ease, border-color 300ms ease;
+    }
+
+    .cat-card:hover { background: var(--elevated); }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cat-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cat-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-1);
+      flex: 1;
+      text-transform: capitalize;
+    }
+
+    .cat-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: var(--elevated);
+      color: var(--text-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .proc-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      border-top: 1px solid var(--border-sub);
+    }
+
+    .proc-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .proc-dot.critical, .proc-dot.high { background: var(--red); }
+    .proc-dot.critical { animation: dot-breathe 2s ease-in-out infinite; }
+    .proc-dot.medium { background: var(--blue); }
+    .proc-dot.low { background: var(--green); }
+
+    .proc-name {
+      font-size: 12px;
+      color: var(--text-1);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .proc-name.critical, .proc-name.high { font-weight: 700; }
+    .proc-name.medium { font-weight: 500; }
+
+    .proc-mem {
+      font-size: 11px;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+      font-family: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+      flex-shrink: 0;
+    }
+
+    .cat-card[data-cat-group="creative"] .cat-icon { color: var(--purple); }
+    .cat-card[data-cat-group="development"] .cat-icon { color: var(--blue); }
+    .cat-card[data-cat-group="infrastructure"] .cat-icon { color: var(--amber); }
+    .cat-card[data-cat-group="ai"] .cat-icon { color: var(--green); }
+    .cat-card[data-cat-group="browser"] .cat-icon { color: var(--text-2); }
+    .cat-card[data-cat-group="unknown"] .cat-icon { color: var(--inert); }
+
+    /* ── What Would Break ──────────────────────────────────────────────────── */
+    .query-card { padding: 24px; }
+
+    .query-header { margin-bottom: 16px; }
+
+    .query-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-1);
+      margin-bottom: 3px;
+      letter-spacing: -0.01em;
+    }
+
+    .query-subtitle {
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .query-input-wrap { position: relative; }
+
+    .query-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      pointer-events: none;
+    }
+
+    .query-shortcut {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--text-3);
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      pointer-events: none;
+    }
+
+    .query-input {
+      width: 100%;
+      height: 48px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-1);
+      font-family: inherit;
+      font-size: 14px;
+      padding: 0 80px 0 44px;
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .query-input::placeholder { color: var(--text-3); }
+
+    .query-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.15);
+    }
+
+    .query-results {
+      margin-top: 12px;
+    }
+
+    .query-results.hidden { display: none; }
+
+    @keyframes results-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .results-inner { animation: results-in 250ms ease-out; }
+
+    .result-verdict {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .result-verdict.block   { background: var(--red-bg);   border: 1px solid rgba(232,80,74,0.25); }
+    .result-verdict.caution { background: var(--amber-bg); border: 1px solid rgba(245,166,35,0.25); }
+    .result-verdict.safe    { background: var(--green-bg); border: 1px solid rgba(46,204,138,0.25); }
+    .result-verdict.notfound{ background: var(--elevated); border: 1px solid var(--border); }
+
+    .verdict-text-wrap { flex: 1; }
+
+    .verdict-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .result-verdict.block   .verdict-label { color: var(--red); }
+    .result-verdict.caution .verdict-label { color: var(--amber); }
+    .result-verdict.safe    .verdict-label { color: var(--green); }
+    .result-verdict.notfound .verdict-label { color: var(--text-2); }
+
+    .verdict-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+
+    .result-section { margin-top: 10px; }
+
+    .result-section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 6px;
+    }
+
+    .result-proc-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 0;
+      border-top: 1px solid var(--border-sub);
+    }
+
+    .result-proc-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .dot-red   { background: var(--red); }
+    .dot-amber { background: var(--amber); }
+    .dot-green { background: var(--green); }
+    .dot-inert { background: var(--inert); }
+
+    .result-proc-name { font-size: 13px; font-weight: 500; color: var(--text-1); }
+    .result-proc-desc { font-size: 11px; color: var(--text-2); font-style: italic; }
+    .result-proc-pid  {
+      font-family: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: var(--text-3);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* Shimmer */
+    .shimmer {
+      background: linear-gradient(90deg, var(--elevated) 25%, var(--border) 50%, var(--elevated) 75%);
+      background-size: 200% 100%;
+      animation: shimmer-slide 1.2s ease-in-out infinite;
+      border-radius: var(--radius-xs);
+      height: 48px;
+    }
+    @keyframes shimmer-slide {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── Offline Banner ────────────────────────────────────────────────────── */
+    .offline-banner {
+      display: none;
+      background: var(--amber-bg);
+      border-bottom: 1px solid rgba(245,166,35,0.3);
+      padding: 10px 40px;
+      font-size: 13px;
+      color: var(--amber);
+      align-items: center;
+      gap: 8px;
+    }
+    .offline-banner.visible { display: flex; }
+
+    /* ── Empty States ──────────────────────────────────────────────────────── */
+    .empty-state {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-3);
+      font-size: 13px;
+    }
+
+    /* ── Scrollbar ─────────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+  </style>
+</head>
+<body>
+
+<!-- Offline Banner -->
+<div class="offline-banner" id="offline-banner">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M8 2L14 14H2L8 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <path d="M8 7V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="8" cy="12" r="0.5" fill="currentColor"/>
+  </svg>
+  <span>Lost connection to Substrate daemon — retrying…</span>
+</div>
+
+<!-- Topbar -->
+<header class="topbar" role="banner">
+  <div class="topbar-brand">
+    <div class="brand-pulse-dot" id="brand-dot" aria-hidden="true"></div>
+    <span class="brand-wordmark">Substrate</span>
+    <span class="brand-tagline">the ground beneath everything</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <span class="topbar-scan-age" id="scan-age" aria-live="polite">scanning…</span>
+  <div class="topbar-actions">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+      <svg id="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M13.5 10a6 6 0 01-8-8 6 6 0 108 8z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      </svg>
+      <svg id="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="display:none">
+        <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="page" role="main">
+  <div class="grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-left">
+
+      <!-- Stat Strip -->
+      <div class="stat-strip" role="region" aria-label="System overview">
+        <div class="stat-card">
+          <div class="stat-label">Total Processes</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub" id="stat-total-sub">on this machine</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Identified</div>
+          <div class="stat-value" id="stat-identified">—</div>
+          <div class="stat-sub" id="stat-id-sub">recognized</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value" id="stat-critical">—</div>
+          <div class="stat-sub" id="stat-crit-sub">must not be killed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Devices</div>
+          <div class="stat-value" id="stat-devices">—</div>
+          <div class="stat-sub" id="stat-dev-sub">on local network</div>
+        </div>
+      </div>
+
+      <!-- Process Categories -->
+      <div role="region" aria-label="Process categories">
+        <div class="section-label">Process Categories</div>
+        <div class="categories-grid" id="categories-grid">
+          <div class="empty-state">Scanning processes…</div>
+        </div>
+      </div>
+
+      <!-- What Would Break -->
+      <div class="card query-card" role="region" aria-label="Impact analysis">
+        <div class="query-header">
+          <div class="query-title">What Would Break?</div>
+          <div class="query-subtitle">Ask Substrate about the impact of stopping any process</div>
+        </div>
+        <div class="query-input-wrap">
+          <svg class="query-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input
+            class="query-input"
+            id="query-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Type a process name — e.g., node, python, docker"
+            aria-label="Process name to analyze"
+            aria-controls="query-results"
+          >
+          <span class="query-shortcut" aria-hidden="true">Esc to clear</span>
+        </div>
+        <div class="query-results hidden" id="query-results" role="region" aria-live="polite" aria-label="Impact analysis results">
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-right">
+
+      <!-- Awareness Pulse -->
+      <div class="card pulse-card" role="region" aria-label="Substrate awareness status">
+        <div class="pulse-ring-wrap" aria-hidden="true">
+          <div class="pulse-ring pulse-ring-1" id="pr1"></div>
+          <div class="pulse-ring pulse-ring-2" id="pr2"></div>
+          <div class="pulse-ring pulse-ring-3" id="pr3"></div>
+          <div class="pulse-center">
+            <!-- Substrate mark: center dot + radiating lines -->
+            <svg class="pulse-mark" id="pulse-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="3" fill="currentColor"/>
+              <line x1="16" y1="4" x2="16" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="16" y1="23" x2="16" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="16" x2="9" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="23" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="8.34" y1="8.34" x2="11.88" y2="11.88" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+              <line x1="20.12" y1="20.12" x2="23.66" y2="23.66" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+              <line x1="23.66" y1="8.34" x2="20.12" y2="11.88" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+              <line x1="11.88" y1="20.12" x2="8.34" y2="23.66" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="pulse-info">
+          <div class="pulse-status" id="pulse-status">AWARE</div>
+          <div class="pulse-count" id="pulse-count">Monitoring…</div>
+          <div class="pulse-age" id="pulse-age">initializing</div>
+        </div>
+      </div>
+
+      <!-- Critical Processes -->
+      <div class="critical-card" role="region" aria-label="Critical processes">
+        <div class="critical-label">Critical — Do Not Kill</div>
+        <div id="critical-list">
+          <div class="empty-state" style="padding:8px 0">Scanning…</div>
+        </div>
+      </div>
+
+      <!-- Connected Devices -->
+      <div class="card devices-card" role="region" aria-label="Connected devices">
+        <div class="section-label">Connected Devices</div>
+        <div id="devices-list">
+          <div class="empty-state">Discovering devices…</div>
+        </div>
+      </div>
+
+    </div><!-- /col-right -->
+
+  </div><!-- /grid -->
+</main>
+
+<script>
+/* ── Config ──────────────────────────────────────────────────────────────── */
+const API = 'http://127.0.0.1:8421';
+const POLL_MS = 5000;
+const DEBOUNCE_MS = 400;
+
+/* ── DOM Builder ─────────────────────────────────────────────────────────── */
+// All DOM creation goes through these helpers — no raw innerHTML with external data.
+function el(tag, props, ...children) {
+  const node = document.createElement(tag);
+  if (props) {
+    for (const [k, v] of Object.entries(props)) {
+      if (k === 'class') node.className = v;
+      else if (k === 'style') Object.assign(node.style, v);
+      else if (k === 'data') Object.assign(node.dataset, v);
+      else node.setAttribute(k, v);
+    }
+  }
+  for (const child of children.flat()) {
+    if (child == null) continue;
+    if (typeof child === 'string' || typeof child === 'number') {
+      node.appendChild(document.createTextNode(String(child)));
+    } else {
+      node.appendChild(child);
+    }
+  }
+  return node;
+}
+
+function txt(str) { return document.createTextNode(String(str)); }
+
+function clearEl(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+function appendChildren(parent, nodes) {
+  const frag = document.createDocumentFragment();
+  for (const n of nodes) { if (n) frag.appendChild(n); }
+  parent.appendChild(frag);
+}
+
+/* ── SVG Builder ─────────────────────────────────────────────────────────── */
+// Inline SVGs are static markup — safe to use with insertAdjacentHTML on trusted strings,
+// but we just create them as template strings and attach via a dedicated safe path below.
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function svgEl(d) {
+  const div = document.createElement('div');
+  div.style.display = 'contents';
+  // Trusted static SVG strings (no external data injected)
+  div.setHTMLUnsafe ? div.setHTMLUnsafe(d) : (() => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(d, 'image/svg+xml');
+    if (!doc.querySelector('parsererror')) div.appendChild(doc.documentElement);
+  })();
+  return div;
+}
+
+// Prebuilt static SVG nodes for icons (no user data inside these)
+const ICONS = {
+  check: () => {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width','14'); s.setAttribute('height','14');
+    s.setAttribute('viewBox','0 0 14 14'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+    const c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx','7'); c.setAttribute('cy','7'); c.setAttribute('r','5.5');
+    c.setAttribute('stroke','currentColor'); c.setAttribute('stroke-width','1.3');
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d','M4.5 7l2 2 3-3');
+    p.setAttribute('stroke','currentColor'); p.setAttribute('stroke-width','1.3');
+    p.setAttribute('stroke-linecap','round'); p.setAttribute('stroke-linejoin','round');
+    s.appendChild(c); s.appendChild(p);
+    return s;
+  },
+  blockIcon: () => {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width','18'); s.setAttribute('height','18');
+    s.setAttribute('viewBox','0 0 18 18'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+    const c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx','9'); c.setAttribute('cy','9'); c.setAttribute('r','7');
+    c.setAttribute('stroke','#E8504A'); c.setAttribute('stroke-width','1.5');
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d','M9 5.5V10'); p.setAttribute('stroke','#E8504A');
+    p.setAttribute('stroke-width','1.5'); p.setAttribute('stroke-linecap','round');
+    const ci = document.createElementNS(SVG_NS, 'circle');
+    ci.setAttribute('cx','9'); ci.setAttribute('cy','12.5'); ci.setAttribute('r','0.75');
+    ci.setAttribute('fill','#E8504A');
+    s.appendChild(c); s.appendChild(p); s.appendChild(ci);
+    return s;
+  },
+  cautionIcon: () => {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width','18'); s.setAttribute('height','18');
+    s.setAttribute('viewBox','0 0 18 18'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+    const tri = document.createElementNS(SVG_NS, 'path');
+    tri.setAttribute('d','M9 2L16.5 15H1.5L9 2Z');
+    tri.setAttribute('stroke','#F5A623'); tri.setAttribute('stroke-width','1.5');
+    tri.setAttribute('stroke-linejoin','round'); tri.setAttribute('fill','none');
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d','M9 7.5V11'); p.setAttribute('stroke','#F5A623');
+    p.setAttribute('stroke-width','1.5'); p.setAttribute('stroke-linecap','round');
+    const ci = document.createElementNS(SVG_NS, 'circle');
+    ci.setAttribute('cx','9'); ci.setAttribute('cy','13'); ci.setAttribute('r','0.75');
+    ci.setAttribute('fill','#F5A623');
+    s.appendChild(tri); s.appendChild(p); s.appendChild(ci);
+    return s;
+  },
+  safeIcon: () => {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width','18'); s.setAttribute('height','18');
+    s.setAttribute('viewBox','0 0 18 18'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+    const c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx','9'); c.setAttribute('cy','9'); c.setAttribute('r','7');
+    c.setAttribute('stroke','#2ECC8A'); c.setAttribute('stroke-width','1.5');
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d','M6 9.5l2 2 4-4'); p.setAttribute('stroke','#2ECC8A');
+    p.setAttribute('stroke-width','1.5'); p.setAttribute('stroke-linecap','round');
+    p.setAttribute('stroke-linejoin','round');
+    s.appendChild(c); s.appendChild(p);
+    return s;
+  },
+  notFoundIcon: () => {
+    const s = document.createElementNS(SVG_NS, 'svg');
+    s.setAttribute('width','18'); s.setAttribute('height','18');
+    s.setAttribute('viewBox','0 0 18 18'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+    const c = document.createElementNS(SVG_NS, 'circle');
+    c.setAttribute('cx','9'); c.setAttribute('cy','9'); c.setAttribute('r','7');
+    c.setAttribute('stroke','#4A4F62'); c.setAttribute('stroke-width','1.5');
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d','M9 5.5V10'); p.setAttribute('stroke','#4A4F62');
+    p.setAttribute('stroke-width','1.5'); p.setAttribute('stroke-linecap','round');
+    const ci = document.createElementNS(SVG_NS, 'circle');
+    ci.setAttribute('cx','9'); ci.setAttribute('cy','12.5'); ci.setAttribute('r','0.75');
+    ci.setAttribute('fill','#4A4F62');
+    s.appendChild(c); s.appendChild(p); s.appendChild(ci);
+    return s;
+  },
+};
+
+// Category icon SVG paths (static, no user data)
+function makeCatSvg(group) {
+  const s = document.createElementNS(SVG_NS, 'svg');
+  s.setAttribute('width','16'); s.setAttribute('height','16');
+  s.setAttribute('viewBox','0 0 16 16'); s.setAttribute('fill','none'); s.setAttribute('aria-hidden','true');
+
+  const paths = {
+    creative:       [['path','d','M2 14l4-4 7-7-3-3-7 7-1 7z',1.3],['path','d','M9 3l4 4',1.3],['circle','cx','13.5','cy','2.5','r','1']],
+    development:    [['path','d','M5 5L2 8l3 3M11 5l3 3-3 3M9 3l-2 10',1.5]],
+    infrastructure: [['rect','x','2','y','3','width','12','height','4','rx','1',1.3],['rect','x','2','y','9','width','12','height','4','rx','1',1.3]],
+    ai:             [['circle','cx','8','cy','8','r','2',1.3],['circle','cx','3','cy','5','r','1',1],['circle','cx','13','cy','5','r','1',1],['circle','cx','3','cy','11','r','1',1],['circle','cx','13','cy','11','r','1',1]],
+    browser:        [['circle','cx','8','cy','8','r','5.5',1.3]],
+    unknown:        [['circle','cx','8','cy','8','r','5.5',1.3]],
+  };
+
+  const defs = {
+    creative: () => {
+      addPath(s,'M2 14l4-4 7-7-3-3-7 7-1 7z',1.3,'round','round');
+      addPath(s,'M9 3l4 4',1.3,'round');
+      const ci = document.createElementNS(SVG_NS,'circle');
+      ci.setAttribute('cx','13.5');ci.setAttribute('cy','2.5');ci.setAttribute('r','1');ci.setAttribute('fill','currentColor');
+      s.appendChild(ci);
+    },
+    development: () => {
+      addPath(s,'M5 5L2 8l3 3M11 5l3 3-3 3M9 3l-2 10',1.5,'round','round');
+    },
+    infrastructure: () => {
+      addRect(s,2,3,12,4,1,1.3);addRect(s,2,9,12,4,1,1.3);
+      addDot(s,12.5,5,0.8);addDot(s,12.5,11,0.8);
+    },
+    ai: () => {
+      addCircleStroke(s,8,8,2,1.3);
+      [3,13].forEach(x=>[5,11].forEach(y=>addCircleStroke(s,x,y,1,1)));
+      addPath(s,'M4 5.5L6.5 7M9.5 7L12 5.5M4 10.5L6.5 9M9.5 9L12 10.5',1,'round');
+    },
+    browser: () => {
+      addCircleStroke(s,8,8,5.5,1.3);
+      addPath(s,'M8 2.5c-1.5 1.5-2 3.5-2 5.5s.5 4 2 5.5',1.3);
+      addPath(s,'M8 2.5c1.5 1.5 2 3.5 2 5.5s-.5 4-2 5.5',1.3);
+      addPath(s,'M2.5 8h11',1.3);
+    },
+    unknown: () => {
+      addCircleStroke(s,8,8,5.5,1.3);
+      addPath(s,'M6.5 6.5C6.5 5.67 7.17 5 8 5s1.5.67 1.5 1.5c0 .83-.67 1.5-1.5 1.5v1.5',1.3,'round');
+      addDot(s,8,11,0.6);
+    },
+  };
+
+  function addPath(parent,d,sw,linecap='',linejoin='') {
+    const p = document.createElementNS(SVG_NS,'path');
+    p.setAttribute('d',d); p.setAttribute('stroke','currentColor'); p.setAttribute('stroke-width',sw);
+    if(linecap) p.setAttribute('stroke-linecap',linecap);
+    if(linejoin) p.setAttribute('stroke-linejoin',linejoin);
+    parent.appendChild(p);
+  }
+  function addRect(parent,x,y,w,h,rx,sw) {
+    const r = document.createElementNS(SVG_NS,'rect');
+    r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',w);r.setAttribute('height',h);
+    r.setAttribute('rx',rx);r.setAttribute('stroke','currentColor');r.setAttribute('stroke-width',sw);
+    parent.appendChild(r);
+  }
+  function addCircleStroke(parent,cx,cy,r,sw) {
+    const c = document.createElementNS(SVG_NS,'circle');
+    c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',r);
+    c.setAttribute('stroke','currentColor');c.setAttribute('stroke-width',sw);
+    parent.appendChild(c);
+  }
+  function addDot(parent,cx,cy,r) {
+    const c = document.createElementNS(SVG_NS,'circle');
+    c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',r);c.setAttribute('fill','currentColor');
+    parent.appendChild(c);
+  }
+
+  const fn = defs[group] || defs.unknown;
+  fn();
+  return s;
+}
+
+function makeDeviceSvg(type) {
+  const s = document.createElementNS(SVG_NS,'svg');
+  s.setAttribute('width','14');s.setAttribute('height','14');
+  s.setAttribute('viewBox','0 0 14 14');s.setAttribute('fill','none');s.setAttribute('aria-hidden','true');
+
+  function addP(d,sw) {
+    const p=document.createElementNS(SVG_NS,'path');
+    p.setAttribute('d',d);p.setAttribute('stroke','currentColor');p.setAttribute('stroke-width',sw||1.2);p.setAttribute('stroke-linecap','round');
+    s.appendChild(p);
+  }
+  function addR(x,y,w,h,rx,sw) {
+    const r=document.createElementNS(SVG_NS,'rect');
+    r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',w);r.setAttribute('height',h);
+    r.setAttribute('rx',rx||0);r.setAttribute('stroke','currentColor');r.setAttribute('stroke-width',sw||1.2);
+    s.appendChild(r);
+  }
+  function addC(cx,cy,r,fill) {
+    const c=document.createElementNS(SVG_NS,'circle');
+    c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',r);
+    if(fill) c.setAttribute('fill','currentColor'); else { c.setAttribute('stroke','currentColor');c.setAttribute('stroke-width','1.2'); }
+    s.appendChild(c);
+  }
+
+  switch(type) {
+    case 'router':
+      addR(1,5,12,5,1);addP('M7 5V3.5M4.5 3.5a3.5 3.5 0 015 0');
+      addC(3.5,7.5,0.7,true);addC(10.5,7.5,0.7,true);
+      break;
+    case 'workstation':
+      addR(2,2,10,8,1);addP('M5 12h4M7 10v2');
+      break;
+    case 'apple-device':
+      addP('M9.5 3c-.5 0-1 .4-1.5 1C7.5 3.4 7 3 6.5 3 5 3 4 4.5 4 6.5 4 9 6 12 7 12s3-3 3-5.5C10 4.5 9 3 9.5 3z');
+      break;
+    case 'server':
+      addR(2,2,10,3,0.8);addR(2,7,10,3,0.8);
+      addC(10.5,3.5,0.6,true);addC(10.5,8.5,0.6,true);
+      break;
+    case 'raspberry-pi':
+      addR(3,3,8,8,1);addC(7,7,2,false);
+      break;
+    default:
+      addC(7,7,5,false);
+      addP('M5.5 5.5C5.5 4.67 6.17 4 7 4s1.5.67 1.5 1.5c0 .83-.67 1.5-1.5 1.5v1.2');
+      addC(7,10,0.5,true);
+  }
+  return s;
+}
+
+/* ── State ───────────────────────────────────────────────────────────────── */
+let failCount = 0;
+let lastScanAt = null;
+let deviceCount = 0;
+let prevTotal = null, prevIdentified = null, prevCritical = null;
+
+/* ── Theme ───────────────────────────────────────────────────────────────── */
+(function initTheme() {
+  const saved = localStorage.getItem('substrate-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcons(saved);
+})();
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('substrate-theme', next);
+  updateThemeIcons(next);
+});
+
+function updateThemeIcons(theme) {
+  document.getElementById('icon-moon').style.display = theme === 'dark'  ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display  = theme === 'light' ? 'block' : 'none';
+}
+
+/* ── Scan Age Ticker ─────────────────────────────────────────────────────── */
+setInterval(() => {
+  if (lastScanAt === null) return;
+  const ago = Math.round((Date.now() / 1000) - lastScanAt);
+  const txt = ago < 5 ? 'scanned just now' : `scanned ${ago}s ago`;
+  document.getElementById('scan-age').textContent = txt;
+  document.getElementById('pulse-age').textContent = ago < 5 ? 'just now' : `${ago}s ago`;
+}, 1000);
+
+/* ── Count-up ────────────────────────────────────────────────────────────── */
+function countUp(node, from, to, ms) {
+  if (from === to) return;
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / ms, 1);
+    const eased = 1 - Math.pow(1 - t, 4);
+    node.textContent = Math.round(from + (to - from) * eased);
+    if (t < 1) requestAnimationFrame(step);
+    else node.textContent = to;
+  }
+  requestAnimationFrame(step);
+}
+
+function setStat(id, prev, next) {
+  const node = document.getElementById(id);
+  if (prev !== null && prev !== next) {
+    node.classList.remove('flash');
+    void node.offsetWidth;
+    node.classList.add('flash');
+    node.addEventListener('animationend', () => node.classList.remove('flash'), { once: true });
+  }
+  if (prev === null) countUp(node, 0, next, 600);
+  else node.textContent = next;
+}
+
+/* ── Category Helpers ────────────────────────────────────────────────────── */
+function getCatGroup(cat) {
+  if (!cat) return 'unknown';
+  return cat.split('.')[0];
+}
+
+function getCatLabel(cat) {
+  if (!cat) return 'Unknown';
+  return cat.split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' › ');
+}
+
+/* ── Render: Status ──────────────────────────────────────────────────────── */
+function renderStatus(data) {
+  setStat('stat-total', prevTotal, data.total_processes);
+  prevTotal = data.total_processes;
+
+  setStat('stat-identified', prevIdentified, data.identified_processes);
+  prevIdentified = data.identified_processes;
+
+  const pct = parseFloat(data.identification_rate).toFixed(1);
+  const idSub = document.getElementById('stat-id-sub');
+  idSub.textContent = `${pct}% recognized`;
+  idSub.className = 'stat-sub ' + (pct >= 50 ? 'green' : pct < 30 ? 'amber' : '');
+
+  setStat('stat-critical', prevCritical, data.critical_count);
+  prevCritical = data.critical_count;
+  const critSub = document.getElementById('stat-crit-sub');
+  critSub.textContent = 'must not be killed';
+  critSub.className = 'stat-sub ' + (data.critical_count > 0 ? 'red' : 'green');
+
+  document.getElementById('stat-devices').textContent = deviceCount || '—';
+
+  document.getElementById('pulse-count').textContent = `Monitoring ${data.total_processes} processes`;
+  lastScanAt = Date.now() / 1000 - (data.scan_age_seconds || 0);
+
+  renderCategories(data.categories);
+  renderCritical(data.critical_processes);
+}
+
+/* ── Render: Categories ──────────────────────────────────────────────────── */
+function renderCategories(categories) {
+  const grid = document.getElementById('categories-grid');
+  clearEl(grid);
+
+  if (!categories || Object.keys(categories).length === 0) {
+    grid.appendChild(el('div', { class: 'empty-state' }, 'No identified processes yet.'));
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  const sorted = Object.entries(categories).sort(([a], [b]) => a.localeCompare(b));
+
+  for (const [cat, procs] of sorted) {
+    const group = getCatGroup(cat);
+    const label = getCatLabel(cat);
+
+    const iconWrap = el('div', { class: 'cat-icon' });
+    iconWrap.appendChild(makeCatSvg(group));
+
+    const header = el('div', { class: 'cat-header' },
+      iconWrap,
+      el('div', { class: 'cat-name' }, label),
+      el('div', { class: 'cat-badge' }, String(procs.length))
+    );
+
+    const card = el('div', { class: 'cat-card', role: 'listitem', data: { catGroup: group } }, header);
+
+    const showing = procs.slice(0, 6);
+    for (const p of showing) {
+      const imp = p.importance || 'low';
+      const row = el('div', { class: 'proc-row' },
+        el('div', { class: `proc-dot ${imp}` }),
+        el('div', { class: `proc-name ${imp}` }, p.name || ''),
+        el('div', { class: 'proc-mem' }, p.memory_mb ? `${p.memory_mb}MB` : '')
+      );
+      card.appendChild(row);
+    }
+
+    if (procs.length > 6) {
+      const more = el('div', {
+        style: { fontSize: '11px', color: 'var(--text-3)', paddingTop: '6px' }
+      }, `+${procs.length - 6} more`);
+      card.appendChild(more);
+    }
+
+    frag.appendChild(card);
+  }
+
+  grid.appendChild(frag);
+}
+
+/* ── Render: Critical ────────────────────────────────────────────────────── */
+function renderCritical(crits) {
+  const listEl = document.getElementById('critical-list');
+  clearEl(listEl);
+
+  if (!crits || crits.length === 0) {
+    const row = el('div', { class: 'all-clear' });
+    row.appendChild(ICONS.check());
+    row.appendChild(txt('All clear'));
+    listEl.appendChild(row);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for (const p of crits) {
+    const meta = el('div', { class: 'crit-meta' },
+      el('span', { class: 'crit-pid' }, p.pid ? `PID ${p.pid}` : ''),
+      el('span', { class: 'crit-uptime' }, p.uptime || '')
+    );
+    const row = el('div', { class: 'critical-row' },
+      el('div', { class: 'crit-dot' }),
+      el('div', { class: 'crit-body' },
+        el('div', { class: 'crit-name' }, p.name || ''),
+        el('div', { class: 'crit-desc' }, p.description || '')
+      ),
+      meta
+    );
+    frag.appendChild(row);
+  }
+  listEl.appendChild(frag);
+}
+
+/* ── Render: Devices ─────────────────────────────────────────────────────── */
+function renderDevices(data) {
+  deviceCount = (data.devices || []).length;
+  document.getElementById('stat-devices').textContent = deviceCount;
+
+  const listEl = document.getElementById('devices-list');
+  clearEl(listEl);
+
+  if (!data.devices || data.devices.length === 0) {
+    listEl.appendChild(el('div', { class: 'empty-state' }, 'No devices discovered'));
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for (const d of data.devices) {
+    const statusClass = d.response_ms > 50 ? 'slow' : (d.status === 'offline' ? 'offline' : '');
+    const iconBox = el('div', { class: 'device-icon' });
+    iconBox.appendChild(makeDeviceSvg(d.type || 'unknown'));
+
+    const row = el('div', { class: 'device-row', role: 'listitem' },
+      iconBox,
+      el('div', { class: 'device-body' },
+        el('div', { class: 'device-name' }, d.hostname || d.ip || ''),
+        el('div', { class: 'device-type' }, d.manufacturer || d.type || 'Unknown')
+      ),
+      el('div', { class: 'device-right' },
+        el('div', { class: `device-status-dot ${statusClass}`, 'aria-label': statusClass || 'online' }),
+        el('div', { class: 'device-ip' }, d.ip || '')
+      )
+    );
+    frag.appendChild(row);
+  }
+  listEl.appendChild(frag);
+}
+
+/* ── Render: Query Results ───────────────────────────────────────────────── */
+function renderQueryResults(data) {
+  const resultsEl = document.getElementById('query-results');
+  resultsEl.classList.remove('hidden');
+  clearEl(resultsEl);
+
+  const inner = el('div', { class: 'results-inner' });
+
+  if (!data || data.error) {
+    inner.appendChild(el('div', { class: 'empty-state' }, data?.error || 'Something went wrong.'));
+    resultsEl.appendChild(inner);
+    return;
+  }
+
+  const rec = (data.recommendation || '').toUpperCase();
+  let verdictClass, verdictLabel, verdictSub, verdictIconFn;
+
+  if (rec === 'BLOCK') {
+    verdictClass='block'; verdictLabel='Block — High Risk'; verdictIconFn=ICONS.blockIcon;
+    verdictSub = `${data.total_matching} matching process${data.total_matching!==1?'es':''} — includes critical software`;
+  } else if (rec === 'CAUTION') {
+    verdictClass='caution'; verdictLabel='Caution — Review First'; verdictIconFn=ICONS.cautionIcon;
+    verdictSub = `${data.total_matching} matching process${data.total_matching!==1?'es':''} — some unidentified`;
+  } else if (rec === 'SAFE') {
+    verdictClass='safe'; verdictLabel='Safe — Low Impact'; verdictIconFn=ICONS.safeIcon;
+    verdictSub = `${data.total_matching} matching process${data.total_matching!==1?'es':''}`;
+  } else {
+    verdictClass='notfound'; verdictLabel='Not Found'; verdictIconFn=ICONS.notFoundIcon;
+    verdictSub = data.message || `No processes matching "${data.query||''}" are currently running.`;
+  }
+
+  const verdictTextWrap = el('div', { class: 'verdict-text-wrap' },
+    el('div', { class: 'verdict-label' }, verdictLabel),
+    verdictSub ? el('div', { class: 'verdict-sub' }, verdictSub) : null
+  );
+
+  const verdict = el('div', { class: `result-verdict ${verdictClass}` });
+  verdict.appendChild(verdictIconFn());
+  verdict.appendChild(verdictTextWrap);
+  inner.appendChild(verdict);
+
+  function addSection(label, items, dotClass, nameKey, descKey) {
+    if (!items || items.length === 0) return;
+    const section = el('div', { class: 'result-section' },
+      el('div', { class: 'result-section-label' }, label)
+    );
+    for (const item of items) {
+      const nameEl = el('div', {});
+      nameEl.appendChild(el('div', { class: 'result-proc-name' }, String(item[nameKey] || '')));
+      if (descKey && item[descKey]) {
+        nameEl.appendChild(el('div', { class: 'result-proc-desc' }, String(item[descKey])));
+      }
+      const row = el('div', { class: 'result-proc-row' },
+        el('div', { class: `result-proc-dot ${dotClass}` }),
+        nameEl,
+        el('div', { class: 'result-proc-pid' }, item.pid ? `PID ${item.pid}` : '')
+      );
+      section.appendChild(row);
+    }
+    inner.appendChild(section);
+  }
+
+  addSection('Critical — would break immediately',   data.critical_processes, 'dot-red',   'identity',  'description');
+  addSection('Collateral — child processes that would also stop', data.collateral_damage, 'dot-amber', 'identity', null);
+  addSection('Safe to stop',                         data.safe_to_kill,        'dot-green', 'identity',  null);
+  addSection('Unidentified — unknown impact',        data.unidentified,        'dot-inert', 'name',      'cmdline');
+
+  resultsEl.appendChild(inner);
+}
+
+/* ── Online/Offline State ────────────────────────────────────────────────── */
+function setOnline() {
+  failCount = 0;
+  document.getElementById('offline-banner').classList.remove('visible');
+  document.getElementById('brand-dot').classList.remove('offline');
+  document.getElementById('pulse-mark').classList.remove('offline');
+  const ps = document.getElementById('pulse-status');
+  ps.className = 'pulse-status';
+  ps.textContent = 'AWARE';
+  ['pr1','pr2','pr3'].forEach(id => document.getElementById(id).classList.remove('offline'));
+}
+
+function setOffline() {
+  document.getElementById('offline-banner').classList.add('visible');
+  document.getElementById('brand-dot').classList.add('offline');
+  document.getElementById('pulse-mark').classList.add('offline');
+  const ps = document.getElementById('pulse-status');
+  ps.className = 'pulse-status offline';
+  ps.textContent = 'OFFLINE';
+  ['pr1','pr2','pr3'].forEach(id => document.getElementById(id).classList.add('offline'));
+  document.getElementById('scan-age').textContent = 'connection lost';
+}
+
+/* ── Data Fetching ───────────────────────────────────────────────────────── */
+async function fetchStatus() {
+  try {
+    const r = await fetch(`${API}/api/status`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    setOnline();
+    renderStatus(data);
+  } catch {
+    failCount++;
+    if (failCount >= 3) setOffline();
+  }
+}
+
+async function fetchDevices() {
+  try {
+    const r = await fetch(`${API}/api/devices`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    renderDevices(data);
+  } catch {
+    const el2 = document.getElementById('devices-list');
+    clearEl(el2);
+    el2.appendChild(el('div', { class: 'empty-state' }, 'Device discovery unavailable'));
+  }
+}
+
+async function fetchQuery(term) {
+  const resultsEl = document.getElementById('query-results');
+  resultsEl.classList.remove('hidden');
+  clearEl(resultsEl);
+  resultsEl.appendChild(el('div', { class: 'shimmer' }));
+
+  try {
+    const r = await fetch(`${API}/api/query?process=${encodeURIComponent(term)}`);
+    const data = await r.json();
+    renderQueryResults(data);
+  } catch {
+    renderQueryResults({ error: 'Could not reach Substrate daemon.' });
+  }
+}
+
+/* ── Query Input ─────────────────────────────────────────────────────────── */
+let debounceTimer = null;
+
+document.getElementById('query-input').addEventListener('input', e => {
+  const val = e.target.value.trim();
+  clearTimeout(debounceTimer);
+  if (!val) {
+    const res = document.getElementById('query-results');
+    res.classList.add('hidden');
+    clearEl(res);
+    return;
+  }
+  debounceTimer = setTimeout(() => fetchQuery(val), DEBOUNCE_MS);
+});
+
+document.getElementById('query-input').addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    e.target.value = '';
+    const res = document.getElementById('query-results');
+    res.classList.add('hidden');
+    clearEl(res);
+  }
+});
+
+/* ── Boot ────────────────────────────────────────────────────────────────── */
+fetchStatus();
+fetchDevices();
+setInterval(fetchStatus, POLL_MS);
+setInterval(fetchDevices, 30000);
+</script>
+</body>
+</html>
