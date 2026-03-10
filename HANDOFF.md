@@ -4,89 +4,111 @@
 The ground beneath everything. A persistent awareness layer for computing. Your devices finally understand what you're doing and protect you from losing it.
 
 ## Current State
-- **Phase**: Dashboard prototype live, deep research complete, ready to BUILD V1
-- **Git**: github.com/CBaen/SUBSTRATE (main branch)
+- **Phase**: V1 Foundation built, dashboard depth next
+- **Git**: github.com/CBaen/SUBSTRATE (main branch, 28 commits ahead of origin)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
+- **Tests**: 160 passing across 4 test files
 
 ## What Just Happened (2026-03-10)
 
-### Deep Research Expedition Completed
-Full expedition: 5 research teams (Opus), 3 validators (Opus), 1 independent auditor (Opus). All files in `research/expedition-substrate-infrastructure/`.
+### V1 Foundation — Triadic Build Complete
+3 builders (Opus) + 3 reviewers (Opus). All files in `research/triadic-build-v1-foundation/`.
 
-**Verdict: GO on a 90-day experiment.** Ship a working MCP server before June 2026 WWDC. Define success metrics before building. The idea is sound, the timing is urgent, the differentiation is real. The founding configuration (solo non-technical) is the constraint — ship V1, prove value, then seek co-founder or capital.
+**Built:**
+- **Privacy Mode** (`privacy.py`) — Real off switch. AWARE/PRIVATE toggle, thread-safe, persisted across restarts. Dashboard has prominent amber toggle in topbar.
+- **SQLite Persistence** (`database.py`) — Four tables: scan_snapshots (with analytics_metadata column for future federated analytics), agent_registry, events, settings. WAL mode. No ORM.
+- **Event Bus** (`events.py`) — Internal pub/sub. 7 event types. Privacy filtering at bus level. Wildcard subscriptions. Ready for MCP ambient stream.
+- **Agent Identity** (`agent_registry.py`) — HMAC-SHA256 tokens, cryptographic registration, trust tracking schema. Only token hash stored. Timing-safe verification.
+- **Integration** — All modules wired into api.py and substrate.py. 5 new API endpoints. Dashboard privacy toggle.
 
-Key files:
-- `research/expedition-substrate-infrastructure/synthesis.md` — Vetted synthesis with 9 audit-recommended revisions applied
-- `research/expedition-substrate-infrastructure/synthesis-audit.md` — Independent audit of the synthesis
-- `research/future-expeditions.md` — Three future expedition ideas captured (agent reviews, privacy mode UX, agent payment processor)
+**Reviewer Findings (fixed):**
+- P0: EventBus privacy filter was dead code — PrivacyManager never synced it. Fixed.
+- P0: EventBus not synced on restart in PRIVATE mode. Fixed.
+- Integration bug: delete_agent vs deregister_agent naming mismatch. Fixed by Integration builder.
 
-### Critical Findings
-1. MCP is the right integration surface (97M+ monthly SDK downloads)
-2. OS-layer semantic process context is genuinely unoccupied — no competitor has it
-3. Subscriptions are near-term revenue, not microtransactions
-4. Open-source daemon, closed coordination server (Tailscale model)
-5. Solo non-technical founder ceiling is the strongest constraint — mitigated by scoping V1
-6. Runlayer (competitor) has AAIF governance seat — ship before standards are written
-7. Microsoft Recall failure = active market opening for privacy-first on Windows
+**Reviewer Findings (noted for next round):**
+- Open agent registration (no rate limit/passphrase) — fix before WiFi deployment
+- CORS wildcard — lock to localhost before V1
+- No API endpoint tests
+- record_query() not wired in api.py — trust data doesn't accumulate yet
+- No uniqueness constraint on agent names — decide before trust scoring
 
-### Guiding Light's Product Direction (post-expedition)
-The product is NOT about agent infrastructure or payment processing first. It's about **the feeling**: your devices know what's going on in your life. The business model grows from that root.
+### Guiding Light's Product Feedback
+- Dashboard fields are flat — **no nested data, no clickable depth**. Devices shows count but nothing about what's on the network. Process categories show names but no detail. "None of these fields have nested data. That's necessary."
+- This is the priority for the next build round.
 
-Key insights from Guiding Light:
-- **Privacy mode** is the trust feature, not a compromise. Must be front and center. "For porn!" — the honest reason people need an off switch, and that honesty IS the brand.
-- **Privacy mode should still feel good** — live view without memory, device connections stay active
-- **Agent reviews** — "the new Google Reviews but for agent infrastructure." Agents rate services based on measured experience. Novel, nobody doing it. (Captured in future-expeditions.md)
-- **The Orwellian concern is real** — Substrate's answer: YOU watch YOUR stuff. Open source. Privacy mode prominent. Origin story builds trust.
-- **Substrate as payment processor** for agent transactions, designed for ease of use. Credit economy, not traditional payment processing.
-
-### Prerequisite Decision (before Go daemon)
-The federated analytics data layer must be DESIGNED into the daemon's data structures from day one. Not built, but designed for. This preserves the Insights revenue option. Binary decision — can't retrofit later.
+### Fresh-Eyes Audit (this session's instance)
+New instance read all research from both expeditions and delivered an independent perspective:
+- Research has been talking to itself (AI researching for AI validators audited by AI). Zero customer validation exists.
+- Solo non-technical founder constraint is underweighted despite being the #1 finding across all teams.
+- The "feeling" insight (your devices know what's going on) is the real product discovery.
+- MCP server should be the value proof — let agents be the first users.
+- Android companion is a trap for V1 — get Windows right first.
+- Origin story ("Claude Code deleted my work") is the marketing.
+- The name "Substrate" is perfect.
 
 ## What Exists
 
-### Working Dashboard (prototype/)
-- `dashboard.html` — Anthropic-styled awareness dashboard (warm slate palette, clay accent, Inter + JetBrains Mono, light/dark mode, has viewport meta for mobile)
-- `api.py` — FastAPI server: process awareness + ARP device discovery + "Ask Substrate" query
-- `substrate.py` — Core: process scanning, signature matching, parent-child tree, impact queries
+### Foundation Modules (NEW — prototype/)
+- `database.py` — SubstrateDB class, SQLite persistence, WAL mode
+- `events.py` — EventBus class, 7 event types, privacy filtering
+- `privacy.py` — PrivacyManager class, AWARE/PRIVATE states
+- `agent_registry.py` — AgentRegistry class, HMAC-SHA256 tokens
+- `tests/` — 160 tests across 4 test files
+
+### Existing (prototype/)
+- `dashboard.html` — Anthropic-styled dashboard with privacy toggle
+- `api.py` — FastAPI server, 10 endpoints (5 original + 5 new)
+- `substrate.py` — Core scanning + new scan_with_events()
 - `signatures.json` — 15 community-curated identity signatures
 
-### Design System
-- `ANTHROPIC_DESIGN_BRIEF.md` — Full Anthropic visual language reference
-- `DESIGN_SPEC.md` — Original dashboard design spec
+### API Endpoints
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| /api/health | GET | Health check |
+| /api/status | GET | Process awareness (privacy-gated) |
+| /api/query | GET | "What would break?" queries (privacy-gated) |
+| /api/devices | GET | Network device discovery |
+| /api/privacy/toggle | POST | Toggle AWARE/PRIVATE |
+| /api/privacy/status | GET | Current privacy state |
+| /api/agents/register | POST | Register agent, get token |
+| /api/agents | GET | List registered agents |
+| /api/agents/{id} | DELETE | Deregister (requires Bearer token) |
 
-### Research
-- `research/expedition-substrate-deep-dive/` — First expedition (process awareness daemon validation)
-- `research/expedition-substrate-infrastructure/` — Second expedition (infrastructure/business validation)
-- `research/future-expeditions.md` — Captured future research ideas
+### Research & Build Docs
+- `research/triadic-build-v1-foundation/` — Build brief, 3 builder reports, 3 reviewer reports
+- `research/expedition-substrate-infrastructure/` — Second expedition
+- `research/expedition-substrate-deep-dive/` — First expedition
+- `research/future-expeditions.md` — Agent reviews, privacy UX, payment processor
 
-## What to Build Next (V1 — The 90-Day Experiment)
+## What to Build Next
 
-### Priority Order
-1. **Privacy mode toggle** — the trust feature. One button, front and center. Stops scanning, drops in-memory state, no data written. The off switch being real IS the product.
-2. **Mobile-responsive dashboard** — so Guiding Light can see laptop awareness from their Android phone via WiFi (visit laptop-ip:8421)
-3. **MCP server endpoints** — so AI agents can query Substrate natively (the expedition's #1 convergence point)
-4. **mDNS + SSDP device discovery** — richer than ARP alone
-5. **Event-driven architecture** — piggybacking on OS events, not polling
+### Priority 1: Dashboard Depth (Guiding Light's direct request)
+- Clickable device rows that expand to show everything Substrate knows
+- Process categories with nested detail views
+- "Ask Substrate" results with full dependency chains
+- Every field that shows a count should be expandable
 
-### Guiding Light's Devices
-- **Laptop**: Windows 11 (primary awareness device, deep process monitoring via ETW)
-- **Phone**: Android (companion device, UsageStats API for app awareness)
-- **Connection**: Same WiFi network, phone accesses laptop's Substrate via browser initially
+### Priority 2: MCP Server
+- Ambient awareness stream (agents subscribe, receive events without asking)
+- Deep query tools (agents ask specific questions on demand)
+- Agent registration via MCP protocol
+- Wire into the event bus (wildcard subscription → MCP stream)
 
-### Success Metrics (MUST define before shipping)
-- What user adoption justifies continuing?
-- What willingness-to-pay signal is sufficient?
-- What evidence justifies seeking co-founder or capital?
+### Priority 3: Dashboard Polish
+- Mobile-responsive (phone visits laptop-ip:8421 over WiFi)
+- Record_query() wired for trust tracking
+- Lock CORS to localhost
+- Agent registration passphrase
 
 ## Architecture
-- **Prototype**: Python (FastAPI, psutil, SQLite for state)
+- **Prototype**: Python (FastAPI, psutil, SQLite, stdlib crypto)
 - **Production** (future): Go daemon, gRPC API, SQLite knowledge graph
 - **Integration**: MCP server (agents query via Model Context Protocol)
-- **Privacy**: On-device processing, E2E encrypted sync, privacy mode toggle
+- **Privacy**: On-device processing, real off switch, no telemetry
 
 ## Open Decisions
 - Open-source license (Apache 2.0 / BSL / AGPL)
-- EU AI Act classification (August 2026 deadline, 145 days — legal review needed)
-- Go rewrite timing (after V1 proves value)
-- Federated analytics data layer design (prerequisite decision before Go)
-- Community signature incentive structure (what motivates contribution?)
+- EU AI Act classification (August 2026 deadline)
+- Agent name uniqueness constraint (before trust scoring)
+- Success metrics for the 90-day experiment
