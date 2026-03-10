@@ -489,7 +489,9 @@ CREATE TABLE IF NOT EXISTS agent_registry (
     author              TEXT    NOT NULL,
     capabilities        TEXT    NOT NULL DEFAULT '[]',  -- JSON array of strings
     token_hash          TEXT    NOT NULL UNIQUE,        -- HMAC-SHA256 hex, NOT the raw token
-    registration_time   REAL    NOT NULL,
+    registration_time   TEXT    NOT NULL,               -- ISO 8601 string (owned by agent_registry.py
+                                                        --   for HMAC token derivation — must round-trip
+                                                        --   exactly as stored)
     last_seen           REAL    NOT NULL,
     total_queries       INTEGER NOT NULL DEFAULT 0,
     incidents           INTEGER NOT NULL DEFAULT 0,
