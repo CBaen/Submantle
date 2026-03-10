@@ -2,18 +2,21 @@
 ## Date: 2026-03-10
 ## Vetted by: Orchestrator
 ## Alignment: Checked against Research Brief
+## Disclosure: This synthesis is generated from AI-conducted research. At least one team produced a fabricated timeline claim (Team 1: June 2026 MCP spec release date). Validators caught additional factual errors. The synthesis attempts to correct all identified errors. Readers should verify any individual claim against the cited source before treating it as established fact.
 
 ---
 
 ## The Verdict
 
-**GO.** But not on the full vision — on a specific, buildable first version that proves the idea and earns the right to grow.
+**GO — on a 90-day experiment with defined success criteria.** Not on the full infrastructure vision. Not an open-ended commitment.
 
-The category is real. The technical differentiation is genuine. The market timing is urgent in Substrate's favor. The founding configuration is the constraint, not the vision. Every team independently confirmed that the layer Substrate targets — semantic OS-level process context for AI agents — is unoccupied. No product, funded or otherwise, knows what processes *mean*. That gap is real and defensible.
+The category is real. The technical differentiation is genuine. The market timing is urgent in Substrate's favor. The founding configuration is the constraint, not the vision. Three of five teams independently confirmed that the layer Substrate targets — semantic OS-level process context for AI agents — is unoccupied (Teams 1, 3, 5 confirmed; Teams 2 and 4 assumed it). No product, funded or otherwise, knows what processes *mean*. That gap is real and defensible. However: the governance features (audit logs, compliance, authorization) ARE replicable by incumbents like Datadog and Palo Alto — the moat is narrower than the full product description implies.
 
-But the Brief asked: "Does this expedition prove or disprove I should put my energy into this?" The honest answer is: **yes, put your energy into this — but into a scoped first version, not the full infrastructure vision.** The full vision (transport layer, awareness mesh, federated analytics, hundreds of millions of devices) requires engineering resources a solo non-technical founder does not currently have. The scoped first version (MCP server with process awareness, community signatures, subscription billing) is buildable, valuable, and generates the evidence needed to attract the resources for everything else.
+The Brief asked: "Does this expedition prove or disprove I should put my energy into this?" The honest answer is: **yes, put your energy into this — but frame it as a 90-day experiment.** Define what V1 means concretely (working MCP server, queryable by at least one major agent framework, open-source daemon on GitHub). Define what success looks like in user and revenue terms. Ship it. Evaluate whether the evidence warrants the larger investment.
 
-This is not hedging. This is the one path where every team's evidence converges.
+The full vision (transport layer, awareness mesh, federated analytics, hundreds of millions of devices) requires engineering resources a solo non-technical founder does not currently have. The scoped first version (MCP server with process awareness, community signatures, subscription billing) is buildable, valuable, and generates the evidence needed to attract the resources for everything else.
+
+Five teams gave conditional verdicts. No team delivered an unconditional go or no-go — and the validators noted this hedging is intellectually honest, not a failure. The convergence is on the scoped V1 path, not on the full vision.
 
 ---
 
