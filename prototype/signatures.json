@@ -1,0 +1,129 @@
+{
+  "_meta": {
+    "version": "0.1.0",
+    "description": "Substrate identity signatures — community-curated process recognition",
+    "format": "Each signature matches processes by executable name, parent hints, file patterns, and command-line patterns"
+  },
+  "signatures": [
+    {
+      "id": "comfyui",
+      "name": "ComfyUI (Image Generation)",
+      "category": "creative.image-generation",
+      "match": {"exe_contains": ["python"], "cmdline_contains": ["comfyui", "main.py"], "cwd_contains": ["comfyui"]},
+      "importance": "high",
+      "description": "AI image generation pipeline — likely has unsaved generations in progress"
+    },
+    {
+      "id": "stable-diffusion-webui",
+      "name": "Stable Diffusion WebUI",
+      "category": "creative.image-generation",
+      "match": {"exe_contains": ["python"], "cmdline_contains": ["launch.py", "webui"], "cwd_contains": ["stable-diffusion"]},
+      "importance": "high",
+      "description": "AI image generation pipeline with web interface"
+    },
+    {
+      "id": "ollama-server",
+      "name": "Ollama (Local LLM Server)",
+      "category": "ai.inference",
+      "match": {"exe_contains": ["ollama"]},
+      "importance": "medium",
+      "description": "Local large language model server — may be serving active requests"
+    },
+    {
+      "id": "vscode",
+      "name": "Visual Studio Code",
+      "category": "development.editor",
+      "match": {"exe_contains": ["code"]},
+      "importance": "medium",
+      "description": "Code editor — may have unsaved files"
+    },
+    {
+      "id": "node-dev-server",
+      "name": "Node.js Development Server",
+      "category": "development.server",
+      "match": {"exe_contains": ["node"], "cmdline_contains": ["dev", "serve", "start", "next", "vite", "webpack"]},
+      "importance": "medium",
+      "description": "Development server — killing disrupts active development workflow"
+    },
+    {
+      "id": "node-generic",
+      "name": "Node.js Process",
+      "category": "development.runtime",
+      "match": {"exe_contains": ["node"]},
+      "importance": "low",
+      "description": "Generic Node.js process — check before terminating"
+    },
+    {
+      "id": "docker",
+      "name": "Docker Engine",
+      "category": "infrastructure.containers",
+      "match": {"exe_contains": ["docker", "containerd"]},
+      "importance": "high",
+      "description": "Container engine — stopping affects all running containers"
+    },
+    {
+      "id": "python-jupyter",
+      "name": "Jupyter Notebook",
+      "category": "development.notebook",
+      "match": {"exe_contains": ["python"], "cmdline_contains": ["jupyter", "notebook", "lab"]},
+      "importance": "high",
+      "description": "Interactive notebook — likely has unsaved cell outputs and state"
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg (Media Processing)",
+      "category": "creative.media",
+      "match": {"exe_contains": ["ffmpeg"]},
+      "importance": "high",
+      "description": "Media encoding/processing — interrupting loses progress on long renders"
+    },
+    {
+      "id": "blender",
+      "name": "Blender (3D Creation)",
+      "category": "creative.3d",
+      "match": {"exe_contains": ["blender"]},
+      "importance": "high",
+      "description": "3D creation suite — may have unsaved work or active render"
+    },
+    {
+      "id": "obs",
+      "name": "OBS Studio (Streaming/Recording)",
+      "category": "creative.streaming",
+      "match": {"exe_contains": ["obs", "obs64"]},
+      "importance": "critical",
+      "description": "Live streaming or recording — killing causes immediate content loss"
+    },
+    {
+      "id": "chrome",
+      "name": "Google Chrome",
+      "category": "browser",
+      "match": {"exe_contains": ["chrome"]},
+      "importance": "medium",
+      "description": "Web browser — may have unsaved form data or active sessions"
+    },
+    {
+      "id": "qdrant",
+      "name": "Qdrant Vector Database",
+      "category": "infrastructure.database",
+      "match": {"exe_contains": ["qdrant"]},
+      "importance": "high",
+      "description": "Vector database — unclean shutdown may corrupt data"
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL Database",
+      "category": "infrastructure.database",
+      "match": {"exe_contains": ["postgres", "pg_"]},
+      "importance": "critical",
+      "description": "Production database — unclean shutdown risks data loss"
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code (AI Agent)",
+      "category": "ai.agent",
+      "match": {"exe_contains": ["claude"], "cmdline_contains": ["claude"]},
+      "importance": "medium",
+      "description": "AI coding agent — may be mid-task with pending changes"
+    }
+  ]
+}
