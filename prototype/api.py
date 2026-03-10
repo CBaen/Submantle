@@ -119,7 +119,9 @@ def _discover_devices() -> list[dict]:
                 if len(parts) >= 2 and parts[0].count(".") == 3:
                     ip = parts[0].strip()
                     mac = parts[1].strip() if len(parts) > 1 else "unknown"
-                    if mac not in ("---", "ff-ff-ff-ff-ff-ff"):
+                    # Filter multicast (224.x-239.x), broadcast, and link-local
+                    first_octet = int(ip.split(".")[0])
+                    if mac not in ("---", "ff-ff-ff-ff-ff-ff") and not (224 <= first_octet <= 239) and first_octet != 255:
                         devices.append({
                             "ip": ip,
                             "mac": mac.upper(),
