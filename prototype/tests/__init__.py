@@ -1,1 +1,1 @@
-# Substrate prototype tests
+# Substrate prototype test package

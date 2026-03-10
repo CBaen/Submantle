@@ -62,6 +62,11 @@ class PrivacyManager:
         self._event_bus = event_bus
         self._state = self._load_persisted_state()
 
+        # Sync event bus privacy filter on startup — if we restart in PRIVATE mode,
+        # the bus must start filtering immediately, not wait for the first toggle.
+        if self._event_bus is not None and self._state == PrivacyState.PRIVATE:
+            self._event_bus.set_privacy_mode(True)
+
         logger.info("PrivacyManager initialized in %s mode", self._state.value)
 
     # ── State access ───────────────────────────────────────────────────────────
