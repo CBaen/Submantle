@@ -22,6 +22,16 @@ Design decisions:
 The token is the agent's bearer credential. Substrate does not store the raw
 token — only the SHA-256 hash of it. This means a compromised DB leaks nothing
 usable. Agents must keep their own token.
+
+Interface note for Builder A (database.py):
+  register_agent() must accept a registration_time parameter so the registry
+  controls the canonical timestamp used in token derivation. Without this,
+  HMAC re-derivation at verify time would use a DB-generated timestamp that
+  differs from the one used to build the token.
+
+  Expected signature:
+      register_agent(agent_name, version, author, capabilities, token_hash,
+                     registration_time: str) -> int
 """
 
 import hashlib
