@@ -28,8 +28,9 @@ class EventType(str, Enum):
     """
     All event types the bus understands.
 
-    Using str+Enum means values work as plain strings in JSON, SQLite, and
-    log messages without needing .value everywhere.
+    Using str+Enum means values compare equal to plain strings (e.g., for SQLite
+    queries and JSON). str() behavior changed in Python 3.11+ — __str__ is
+    overridden to always return the value string, not "EventType.X".
     """
 
     # Process lifecycle — suppressed in PRIVATE mode
@@ -50,6 +51,12 @@ class EventType(str, Enum):
 
     # System health — passes through in PRIVATE mode
     RESOURCE_WARNING = "RESOURCE_WARNING"
+
+    def __str__(self) -> str:
+        # Python 3.11+ changed str(StrEnum) to return "ClassName.MEMBER".
+        # Override to always return the value string so JSON/SQLite/logging
+        # sees "SCAN_COMPLETE" not "EventType.SCAN_COMPLETE".
+        return self.value
 
 
 # Events that carry process data — suppressed when privacy mode is active.

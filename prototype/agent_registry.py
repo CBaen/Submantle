@@ -185,6 +185,9 @@ class AgentRegistry:
         version = version.strip()
         author = author.strip()
 
+        # The registry owns the registration_time because the HMAC token is
+        # derived from it. The DB stores what it's given — it does not generate
+        # its own timestamp for this field. (See module docstring for rationale.)
         timestamp = _now_iso()
         token = self._make_token(agent_name, timestamp)
         t_hash = _token_hash(token)
@@ -197,6 +200,7 @@ class AgentRegistry:
                     author=author,
                     capabilities=capabilities,
                     token_hash=t_hash,
+                    registration_time=timestamp,
                 )
             except Exception as exc:
                 logger.error("Failed to persist agent registration: %s", exc)

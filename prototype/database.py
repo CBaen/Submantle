@@ -12,7 +12,8 @@ Design principles:
   - No ORM. Raw sqlite3 — lightweight, zero dependencies.
   - WAL mode for concurrent reads (multiple readers, one writer).
   - JSON columns for structured data that doesn't need filtering.
-  - Thread-safe via sqlite3's check_same_thread=False + connection-per-operation pattern.
+  - File-backed DB: per-operation connections (WAL handles concurrent access).
+  - In-memory DB: single persistent connection (SQLite :memory: is per-connection).
   - analytics_metadata column on scan_snapshots is intentionally nullable —
     reserved for future federated analytics. Cannot be retrofitted later without
     a schema migration, so it lives here from day one.
@@ -41,46 +42,79 @@ class SubstrateDB:
         db = SubstrateDB('/path/to/db')     # explicit path
 
     Thread safety:
-        Each call acquires its own connection from the pool. SQLite's WAL mode
-        allows concurrent reads. Writes serialize naturally through SQLite's
-        locking. Do not share Connection objects across threads.
+        File-backed: Each call acquires a short-lived connection. WAL mode allows
+        concurrent reads. Writes serialize through SQLite's locking. Do not share
+        Connection objects across threads.
+
+        In-memory (':memory:'): A single persistent connection is held for the
+        lifetime of the SubstrateDB instance. SQLite :memory: databases are
+        per-connection — a new connection sees an empty database. The persistent
+        connection is protected with check_same_thread=False and is safe for
+        single-threaded test use. For multi-threaded production use, always use
+        a file-backed database.
     """
 
     def __init__(self, path: str | Path | None = None) -> None:
         if path is None:
             self._path = str(DEFAULT_DB_PATH)
+            self._memory_conn: sqlite3.Connection | None = None
         elif path == ":memory:":
             self._path = ":memory:"
+            # Pre-open and hold the persistent connection for in-memory use.
+            # This must happen before _initialize() so the schema is created
+            # on the same connection that subsequent operations will use.
+            self._memory_conn = sqlite3.connect(":memory:", check_same_thread=False)
+            self._memory_conn.row_factory = sqlite3.Row
         else:
             self._path = str(path)
+            self._memory_conn = None
 
         self._initialize()
+
+    def close(self) -> None:
+        """Release the persistent in-memory connection, if held. No-op for file DBs."""
+        if self._memory_conn is not None:
+            self._memory_conn.close()
+            self._memory_conn = None
 
     # ── Connection management ──────────────────────────────────────────────────
 
     @contextmanager
     def _conn(self):
         """
-        Yield a short-lived connection. Commits on exit, rolls back on error.
-        Using check_same_thread=False is safe here — we never share a connection
-        across threads, we create a new one per logical operation.
+        Yield a connection. Commits on exit, rolls back on error.
+
+        In-memory: yields the persistent connection. Does NOT close it on exit.
+        File-backed: opens a new connection, commits/rolls back, closes on exit.
         """
-        conn = sqlite3.connect(self._path, check_same_thread=False)
-        conn.row_factory = sqlite3.Row  # dict-like rows
-        try:
-            yield conn
-            conn.commit()
-        except Exception:
-            conn.rollback()
-            raise
-        finally:
-            conn.close()
+        if self._memory_conn is not None:
+            # In-memory: reuse the persistent connection.
+            try:
+                yield self._memory_conn
+                self._memory_conn.commit()
+            except Exception:
+                self._memory_conn.rollback()
+                raise
+        else:
+            # File-backed: short-lived connection per operation.
+            conn = sqlite3.connect(self._path, check_same_thread=False)
+            conn.row_factory = sqlite3.Row
+            try:
+                yield conn
+                conn.commit()
+            except Exception:
+                conn.rollback()
+                raise
+            finally:
+                conn.close()
 
     def _initialize(self) -> None:
         """Create schema and configure WAL mode. Idempotent."""
         with self._conn() as conn:
             # WAL mode: readers never block writers, writers never block readers.
             # Critical for the 5-second scan cycle running alongside API requests.
+            # Note: PRAGMA journal_mode=WAL is a no-op on :memory: (returns 'memory'),
+            # which is acceptable — in-memory DBs don't need WAL.
             conn.execute("PRAGMA journal_mode=WAL")
             conn.execute("PRAGMA foreign_keys=ON")
             conn.executescript(_SCHEMA)

@@ -50,7 +50,8 @@ class MockDB:
 
     # Agent operations
     def register_agent(
-        self, agent_name, version, author, capabilities, token_hash
+        self, agent_name, version, author, capabilities, token_hash,
+        registration_time: str | None = None
     ) -> int:
         agent_id = self._next_id
         self._next_id += 1
@@ -61,7 +62,9 @@ class MockDB:
             "author": author,
             "capabilities": capabilities,
             "token_hash": token_hash,
-            "registration_time": _now_iso(),
+            # Use the registry-supplied timestamp so HMAC re-derivation at
+            # verify time uses the same value that was used to build the token.
+            "registration_time": registration_time if registration_time is not None else _now_iso(),
             "last_seen": None,
             "total_queries": 0,
             "incidents": 0,

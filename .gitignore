@@ -1,5 +1,8 @@
 # Runtime output
 prototype/substrate_state.json
+prototype/substrate.db
+prototype/substrate.db-wal
+prototype/substrate.db-shm
 
 # Python
 __pycache__/
