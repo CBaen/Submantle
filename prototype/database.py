@@ -218,6 +218,7 @@ class SubstrateDB:
         author: str,
         capabilities: list[str],
         token_hash: str,
+        registration_time: str | None = None,
         trust_metadata: dict | None = None,
     ) -> int:
         """
@@ -229,12 +230,18 @@ class SubstrateDB:
             author: Publisher/author name.
             capabilities: List of capability strings the agent declares.
             token_hash: HMAC-SHA256 hex digest — NOT the raw token. Store only the hash.
+            registration_time: ISO 8601 timestamp string owned by agent_registry.py.
+                               Must round-trip exactly — the HMAC token is derived from it.
+                               If None, uses current UTC time as ISO string.
             trust_metadata: Optional structured trust data (schema TBD by agent_registry.py).
 
         Returns:
             Row ID of the new agent registration.
         """
         now = time.time()
+        if registration_time is None:
+            from datetime import datetime, timezone
+            registration_time = datetime.now(timezone.utc).isoformat()
         with self._conn() as conn:
             cursor = conn.execute(
                 """
@@ -250,7 +257,7 @@ class SubstrateDB:
                     author,
                     json.dumps(capabilities),
                     token_hash,
-                    now,
+                    registration_time,
                     now,
                     json.dumps(trust_metadata) if trust_metadata is not None else None,
                 ),

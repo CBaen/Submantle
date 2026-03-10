@@ -303,7 +303,7 @@ class AgentRegistry:
 
         if self._db is not None:
             try:
-                removed = self._db.delete_agent(agent_id)
+                removed = self._db.deregister_agent(agent_id)
             except Exception as exc:
                 logger.error(
                     "Failed to remove agent '%s' from DB: %s", agent_name, exc
