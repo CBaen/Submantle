@@ -29,13 +29,13 @@ Five teams gave conditional verdicts. No team delivered an unconditional go or n
 **Evidence strength: High.** Teams 1, 3, 5 confirm. Runlayer, Kong Context Mesh, agentgateway — none enriches agent requests with OS-level process awareness. Kong sees enterprise API data. Runlayer sees MCP traffic. Substrate would see what the machine is actually doing. This is real differentiation that composable alternatives cannot replicate without building Substrate. Team 5's strongest concession: "the semantic process identity and workflow graph are genuinely novel."
 
 ### 3. Subscriptions Are the Near-Term Revenue Path
-**Evidence strength: High.** Teams 2, 5 converge. Microtransaction revenue at $0.001/query requires 1 billion queries/year for $1M ARR — a volume that took Stripe and Cloudflare years to reach. The subscription tiers ($15/month pro, $12/user team, $50-500K enterprise) are validated by comparable products (Tailscale, 1Password, Datadog). Agent transaction fees are a long-term aspiration, not launch revenue.
+**Evidence strength: High.** Teams 2, 5 converge. Microtransaction revenue at $0.001/query requires 1 billion queries/year for $1M ARR — a volume that took Stripe and Cloudflare years to reach. The subscription tiers ($15/month pro, $12/user team, $50-500K enterprise) are benchmarked against comparable products (Tailscale, 1Password, Datadog) — but no customer interviews were conducted, so these price points are benchmarked, not validated with real buyers. Agent transaction fees are a long-term aspiration, not launch revenue.
 
 ### 4. Open-Source the Daemon, Close the Coordination Server
 **Evidence strength: High.** Teams 1, 4, 5 converge. The Tailscale model (open-source client, closed coordination server). Trust requires transparency for a product that monitors processes. No team argued against this. The commercial moat is the coordination layer, the store, and the knowledge graph — not the daemon code.
 
 ### 5. Ship Before June 2026 WWDC
-**Evidence strength: High.** Teams 1, 5 converge, Validator 1 confirms. AAIF is forming standards now. Apple's WWDC 2026 may reveal process awareness capabilities (rumored Core AI framework). If Substrate has a public, working MCP server before those standards are written, it has influence. If not, it implements someone else's spec.
+**Evidence strength: High.** The urgency comes from two independent sources: (1) Apple's WWDC 2026 may reveal process awareness capabilities (rumored Core AI framework — Team 5), and (2) the AAIF is forming standards now that will govern MCP's evolution (Teams 1, 5). Note: Team 1 cited a "June 2026 MCP spec release" but this date was fabricated — the actual roadmap contains no release date. The WWDC and AAIF drivers are real; the MCP spec date is not. If Substrate has a public, working MCP server before those standards are written, it has influence. If not, it implements someone else's spec.
 
 ### 6. Privacy-by-Architecture Is Defensible and Differentiated
 **Evidence strength: High.** All teams treat this as settled. On-device processing reduces GDPR exposure. Microsoft's Recall failure (opaque, continuous, cloud-connected monitoring) validates the opposite approach. Substrate's design — local, opt-in, query-driven, no cloud telemetry — avoids every property that made Recall fail.
@@ -51,6 +51,8 @@ This is not an attack on capability. It is a structural observation about what t
 
 ### The Nginx Path (Team 1 — Strongest Analogy)
 Start as the authoritative process awareness source. Deploy as an MCP server. Evolve into the proxy that enriches all MCP traffic. Become the entry point that everything passes through because context lives there. Nginx became infrastructure not by claiming to be infrastructure, but by being the thing operators put in their config once. Substrate follows the same path: solve one problem well (what is running on this machine and what does it mean?), then accumulate into the routing layer because that's where the knowledge lives.
+
+*Note: This analogy comes from Team 1, which also produced the fabricated June 2026 MCP date. All three validators independently recognized the Nginx analogy as the strongest framing regardless. Weight Team 1's specific technical claims with additional caution; the Nginx strategic insight holds.*
 
 ### Prepaid Credits for Agent Billing (Team 2)
 The billing mechanism that solves three problems at once: eliminates per-microtransaction payment overhead, prevents unpaid usage (credits must exist before queries), and creates a natural fraud ceiling. This is what Clay.ai, OpenAI, and emerging agent billing platforms converge on. Stripe metered billing handles enterprise monthly invoicing. Together, they cover the billing architecture without requiring crypto or novel payment rails.
@@ -72,9 +74,11 @@ The key insight from the first expedition stands: signatures, not LLMs, identify
 ### Substrate Insights — Usage Intelligence (Team 3)
 "Google knows what people search for. Substrate knows what people actually use." The technographics market is $1.17B (26% CAGR). Alternative data market $14-18B (50%+ CAGR). Desktop software co-occurrence data does not exist commercially. Substrate would own the category.
 
-**The requirement:** Federated analytics architecture (Google Parfait model). Queries run on-device, only differentially private aggregates transmitted, raw data never leaves the device. This is the ONLY way Insights is compatible with privacy-first brand. A September 2025 CJEU ruling (C-413/23 P) suggests differentially private data may fall outside GDPR scope — favorable but untested.
+**The requirement:** Federated analytics architecture (Google Parfait model). Queries run on-device, only differentially private aggregates transmitted, raw data never leaves the device. This is the ONLY way Insights is compatible with privacy-first brand. A September 2025 CJEU ruling (C-413/23 P) suggests differentially private data may fall outside GDPR scope — favorable but untested. Important caveat from Validator 3: the ruling favors a *recipient* of already-anonymized data, but Substrate would also be the *controller generating* that data — a meaningfully different legal position that legal review must address specifically.
 
-**The verdict on Insights:** Not for V1. The federated analytics infrastructure is a 6-18 month engineering investment on top of the core daemon. But the architectural decision must be made NOW — design the daemon's data layer to support federated queries from the start, or the data that accumulates will not be usable for this product later. This is an upfront design choice, not a future feature.
+**The verdict on Insights:** Not for V1. The federated analytics infrastructure is a 6-18 month engineering investment on top of the core daemon. However, this is functionally a V1 no-go, not merely a deferral — Team 3's "conditional go" means "not buildable with current resources."
+
+**PREREQUISITE DECISION (must be made before Go daemon development begins):** The federated analytics architecture must be designed into the daemon's data layer from the start. There is no "build it later" option — if the data structures are not designed for federated queries, the data that accumulates will not be usable for this product later. This is a binary architectural choice, not a design recommendation. It does not require building Insights. It requires deciding NOW whether to preserve the option.
 
 ### "Substrate Safe" Certification (Team 2)
 A SOC 2-style certification for AI agents: "this agent correctly uses the Substrate broker API and respects its signals." Revenue: $2,500-$5,000/year per agent framework. 83% of enterprise buyers require SOC 2 — if "Substrate Safe" reaches similar purchasing-requirement status, it becomes a recurring revenue engine.
@@ -91,7 +95,7 @@ Substrate publishes a `/.well-known/substrate-card.json` describing its capabili
 ### x402 Stablecoin Micropayments (Team 2, Heavily Corrected)
 The HTTP 402 "Payment Required" revival as an agent payment rail. Zero protocol fees. Sub-second settlement.
 
-**Evidence correction:** Team 2 cited 75.41M transactions and $24.24M volume in 30 days. Validators found: x402 weekly transactions dropped 90%+ from a December 2025 peak of ~6.8M/week to ~510K/week by February 2026. Between 78-98% of prior activity was classified as non-organic. The average transaction size ($0.32) is not microtransaction-level, contradicting the $0.001 use case.
+**Evidence correction:** Team 2 cited 75.41M transactions and $24.24M volume in 30 days. Validators found: x402 weekly transactions dropped 90%+ from a December 2025 peak of ~6.8M/week to ~510K/week by February 2026. Between 78-98% of prior activity was classified as non-organic. Validator 3 calculated the implied average transaction size at $0.32 ($24.24M / 75.41M) — 320x larger than the $0.001 microfee use case requires. The microfee use case is not demonstrated in any available x402 transaction data.
 
 **The corrected verdict:** x402 exists and functions, but is in a developer-experimentation phase, not enterprise infrastructure. Keep it as an experimental developer track. Do not build billing architecture around it. Enterprise-ready timeline: 2028 at earliest.
 
