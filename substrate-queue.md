@@ -4,9 +4,9 @@
 
 ## URGENT — Business Foundation (before more code)
 
-- [ ] **Form legal entity (LLC)** (added: 2026-03-11)
-      What: Register LLC. Enables payments, partnerships, IP protection, and the Anthropic conversation.
-      Context: Cannot accept payments, sign partnerships, or protect IP without one. Blocking everything external.
+- [x] **Legal entity exists** (completed: 2026-03-11)
+      What: Built by Cameron LLC — Wyoming, EIN 41-4309920, Mercury banking. Business purpose broad enough for Substrate.
+      Context: Located at C:\Users\baenb\projects\builtbycameron\business documents\
 
 - [ ] **Check "Substrate" name availability** (added: 2026-03-11)
       What: Trademark search (USPTO + EU), domain availability, conflict check against Parity Technologies' "Substrate" blockchain framework.
