@@ -14,14 +14,17 @@ Read VISION.md for the full picture. Read HANDOFF.md for current state.
 1. **Lightweight first.** Substrate must be invisible in resource usage. No heavy models.
 2. **Community knowledge over AI inference.** Signatures, not LLMs, identify processes.
 3. **Privacy by architecture.** On-device processing. E2E encrypted sync. No telemetry.
-4. **Always aware, never acting.** Substrate provides knowledge. Agents and apps act on it.
+4. **Always aware, never acting.** Substrate provides knowledge and trust scores. It never blocks, gates, or throttles agents. Brands and platforms enforce their own thresholds using Substrate's data. This applies to BOTH the awareness layer AND the trust layer.
 5. **Inner ring first.** Software awareness before hardware before environment.
+6. **Deterministic scoring only.** Trust formulas must be pure math (Beta Reputation), not ML. This keeps Substrate outside EU AI Act scope permanently. No ML-based anomaly detection, no pattern inference.
 
 ## What NOT to Do
 - Don't add LLM-based process classification — signatures handle this
 - Don't send process data off-device
 - Don't add features that make Substrate an agent (it's the ground, not the organism)
 - Don't over-engineer the prototype — it's for proving concepts
+- Don't add ML-based trust scoring or anomaly detection — deterministic formulas keep us outside EU AI Act scope
+- Don't build enforcement into Substrate — no blocking, no gating, no throttling. Substrate exposes scores; third parties decide what to do with them
 
 ## Document Parity
 

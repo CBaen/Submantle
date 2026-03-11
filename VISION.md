@@ -227,6 +227,8 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 
 ## What Exists Today (and Why It's Not This)
 
+### Awareness & Agent Infrastructure
+
 | Product | What it does | What it lacks |
 |---------|-------------|---------------|
 | Sage (Avast, March 2026) | Checks agent commands against threat lists | No process awareness, no workflow graph |
@@ -235,7 +237,21 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 | Microsoft Recall | Screenshots everything, searchable | Passive recording, no broker |
 | Apple Intelligence | On-device semantic index | Closed ecosystem, no agent API |
 
-**The gap**: Nobody has built the ground. They've all built things that stand on it.
+### Trust & Identity (validated March 2026 expedition)
+
+| Product | What it does | What it lacks |
+|---------|-------------|---------------|
+| HUMAN Security AgenticTrust | Behavioral trust for web apps | Web-layer only, not portable, not OS-level |
+| Zenity ($55M, Gartner Cool Vendor) | Enterprise agent governance | Defensive monitoring, no portable trust scores |
+| Mastercard Verifiable Intent (March 2026) | Cryptographic purchase authorization for agents | Explicitly excludes behavioral trust, reputation, dynamic models |
+| cheqd MCP Toolkit | W3C VC issuance for AI agents | No behavioral component — credential management only |
+| Google UCP (January 2026) | Commerce authorization protocol | "Does not solve which agents should be trusted" — their own spec |
+| Composio, LangChain, CrewAI | Agent frameworks and tooling | Build agents, don't score them |
+| Decagon ($4.5B, Jan 2026) | Customer service agents | Action-taking agents, no trust infrastructure |
+
+**The gap**: Mastercard built the receipt system. Google built the commerce protocol. Nobody built the layer that says whether the agent holding the receipt should be trusted. That's Substrate.
+
+**Confirmed by:** 5 research teams, 3 independent validators, 6 targeted follow-up investigations. The behavioral trust gap is real, documented, and unoccupied as of March 2026.
 
 ---
 
@@ -245,13 +261,20 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 
 ---
 
-## Legal Reality (from expedition research, March 2026)
+## Legal Reality (validated March 2026)
 
+### Privacy & Data
 - **On-device processing** is the primary legal shield across all jurisdictions
 - **WiFi sensing** limited to user's own device, SSID-only (Joffe v. Google precedent)
 - **Neighbor's devices** require explicit consent — the outer ring is a consented marketplace
-- **EU AI Act** August 2026 deadline — legal classification review needed within 90 days
 - **Ring/Citizen/Nextdoor** are walled gardens with no public API — user connects their own account
+
+### Regulatory (researched March 2026)
+- **EU AI Act**: Substrate's Beta trust formula is deterministic arithmetic, not machine learning. EU Commission guidance (April 2025) explicitly excludes "systems based on rules defined solely by natural persons to execute operations automatically." Substrate likely falls **outside the Act entirely**. Social scoring prohibition covers natural persons only — scoring software agents is categorically outside scope.
+- **GDPR**: On-device processing eliminates highest-risk scenarios. Minimal documentation (privacy policy, lawful basis) sufficient pre-EU-launch.
+- **US FCRA**: Does not apply to scoring software agents. FCRA covers human consumers for credit/employment/housing.
+- **Compliance before August 2026**: Three steps — (1) document "not an AI system" self-assessment, (2) privacy policy, (3) data flow documentation.
+- **Critical design principle**: Keep scoring as pure math (deterministic formulas). The moment Substrate adds ML-based anomaly detection, it potentially enters EU AI Act scope. Stay deterministic, stay exempt.
 
 ---
 
