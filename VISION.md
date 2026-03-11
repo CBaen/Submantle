@@ -118,6 +118,73 @@ The intelligence and business engine:
 
 ---
 
+## What Is "An Agent"?
+
+An agent is the **registered software entity**. Not the model. Not the context window. Not the user.
+
+| Concept | What It Is | Analogy |
+|---------|-----------|---------|
+| **The Agent** | The software application that registers with Substrate | A company |
+| **The Model** | The AI engine underneath (Claude, GPT, Gemini) | An employee — interchangeable |
+| **The Context Window** | A single conversation/session (e.g., 200K tokens) | A phone call — temporary |
+| **The User** | The human who uses the agent | A customer |
+
+**You give a credit score to the company. Not the employee. Not the phone call. Not the customer.**
+
+### Why This Definition
+
+- **Trust survives model changes.** An agent that upgrades from Claude 4 to Claude 5 keeps its trust score. The engine changed, not the identity.
+- **Trust accumulates across sessions.** 100 context windows = 100 data points for one score. Each window is a conversation, not an identity.
+- **Trust is portable.** The agent carries its token to any platform. Its history travels with it.
+- **Trust belongs to the builder.** The developer/company who registered the agent owns the reputation.
+
+### Edge Cases
+
+- **Same function, different builders:** "EmailBot by Acme" and "EmailBot by Zeta" are two different agents with separate scores. Same cuisine, different restaurants.
+- **Multi-model agents:** An agent using Claude for reasoning and GPT for coding is ONE agent. One registration. One score. The models are employees — the company's reputation doesn't split.
+- **Version upgrades:** The builder decides. Keep the same token (trust carries forward) or register a new version (fresh start). Most will keep the token — accumulated trust is valuable.
+- **Forks:** Forking an open-source agent and registering your own version starts at 0.5 (unknown). You don't inherit someone else's credit score by copying their business plan.
+- **One agent, multiple devices:** Same token on both devices. Trust accumulates from everywhere the agent operates.
+
+---
+
+## Trust Security
+
+### How Trust Is Protected
+
+| Attack | What It Is | Defense | Type |
+|--------|-----------|---------|------|
+| **Score inflation** | Gaming your own score with meaningless queries | Deterministic velocity caps + query diversity rules | Rules |
+| **Identity theft** | Stealing another agent's token | Device locality + hashed storage + HTTPS + token rotation | Architectural + Cryptographic |
+| **Impersonation** | Registering a copycat agent name | Name uniqueness + publisher identity + unique tokens | Registration rules |
+| **Sybil attacks** | Creating armies of fake agents | Local-only trust computation — fake agents only affect your own device | Architectural |
+| **Database breach** | Accessing stored credentials | Only token hashes stored, never plaintext | Cryptographic |
+
+### The Locality Advantage
+
+Substrate runs on YOUR device. Tokens are local. Trust is computed locally. This makes remote attacks structurally irrelevant:
+
+- Can't steal tokens from across the internet (they're on your hardware)
+- Can't create fake agents on someone else's device (you only control your own)
+- Can't influence someone else's trust computations (each device computes independently)
+
+### "Always Aware, Never Acting" as Security Design
+
+Substrate doesn't need to catch every cheat. It provides the score AND the raw behavioral data. Brands build their own fraud detection on top — query diversity filters, minimum history requirements, velocity checks. Substrate provides honest, complete data. The market decides what to trust.
+
+This is how credit bureaus work: the bureau provides the score and the report. The lender decides what threshold to accept and runs their own fraud checks. Substrate is the bureau, not the lender.
+
+### Anti-Gaming Rules (Deterministic, Not ML)
+
+These are transparent mathematical rules, not AI inference. Keeps Substrate outside EU AI Act scope.
+
+- **Velocity caps:** More than X queries per minute? Queries beyond the cap don't count toward trust.
+- **Query diversity:** If 90%+ of queries are identical, they don't accumulate trust.
+- **Registration age visibility:** Brands see when an agent registered alongside its score. "Perfect score, registered yesterday" is a red flag any brand can spot.
+- **Raw data transparency:** Brands can query the behavioral data behind the score, not just the number.
+
+---
+
 ## The Behavioral Trust Layer
 
 Substrate isn't just awareness — it's the **behavioral trust infrastructure** for the agent economy.

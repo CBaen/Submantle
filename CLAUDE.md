@@ -30,7 +30,10 @@ Read VISION.md for the full picture. Read HANDOFF.md for current state.
 
 | Document | Location | Tracks |
 |----------|----------|--------|
-| VISION.md | Project root | Product vision, business model, architecture |
-| HANDOFF.md | Project root | Current state, what's next |
-| CLAUDE.md | Project root | Rules and conventions |
+| VISION.md | Project root | Product vision, business model, architecture, competitive landscape |
+| HANDOFF.md | Project root | Current state, what's next, open decisions |
+| CLAUDE.md | Project root | Rules, conventions, design principles |
+| substrate-queue.md | Project root | Active tasks only. Git preserves completed. |
+| substrate-index.md | Project root | Pointers to research and reference material |
+| substrate-decisions.md | Project root | Append-only decision log. Use decision-search.py, never read full file. |
 | signatures.json | prototype/ | 15 identity signatures |
