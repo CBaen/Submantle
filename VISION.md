@@ -118,26 +118,110 @@ The intelligence and business engine:
 
 ---
 
-## Business Model
+## The Behavioral Trust Layer
 
-### The Substrate Store + Agent Transactions
-- **Free tier**: Local daemon, single device, core awareness, community signatures
-- **Pro (~$15/mo)**: Cross-device mesh, audit history, expanded API
-- **Team (~$12/user/mo)**: Centralized policies, shared awareness
-- **Enterprise ($50k-$500k/yr)**: Compliance, SSO, certification
-- **Agent API**: Usage-based microtransactions per broker query
+Substrate isn't just awareness — it's the **behavioral trust infrastructure** for the agent economy.
+
+Every agent that interacts with Substrate accumulates a trust score based on observed behavior. Not opinions. Not self-reported credentials. What they actually do.
+
+**Trust = total_queries / (total_queries + incidents)** — the Beta Reputation formula, mathematically proven in P2P networks, IoT systems, and marketplace economics.
+
+### How It Works
+
+1. **Open Access** — Any agent can query Substrate without registering. No barriers to entry.
+2. **Registration = Identity** — Agents that register get a cryptographic token and "Substrate Verified" status. Their interactions start building a trust history.
+3. **Trust Accumulates** — Every query, every interaction is recorded. Trust scores rise with consistent, incident-free behavior.
+4. **Portable Credentials** — Agents can request a W3C Verifiable Credential (SD-JWT format) that proves their trust tier to any brand or platform. The credential travels with them.
+
+### What Substrate Does NOT Do
+
+**Substrate never blocks, gates, or throttles.** It provides trust scores. Brands decide their own thresholds. Platforms set their own policies. This is the "always aware, never acting" principle applied to trust.
+
+- A brand says "only give discounts to agents with trust > 0.8" — **the brand enforces, not Substrate**
+- A platform says "require trust 0.6 for premium features" — **the platform enforces, not Substrate**
+- Substrate only answers: "This agent has trust score X, based on Y interactions over Z time"
+
+This makes Substrate infrastructure, not a gatekeeper. **Visa doesn't decide whether you can buy something — the merchant does. Visa provides the trust signal.** Substrate is the Visa of the agent economy.
+
+### Trust Tiers
+
+| Tier | Status | Access | Rate |
+|------|--------|--------|------|
+| Anonymous | No registration | Full API, standard rates | Base pricing |
+| Registered | Substrate Verified | Full API, better rates | Volume discount |
+| Trusted | High trust score | Full API, best rates | Premium discount |
+
+Tiers affect Substrate's own API pricing — higher trust = volume discounts. This is a business model (like bulk pricing), not enforcement.
+
+---
+
+## Customers & Revenue
+
+### Who Pays Substrate
+
+**Customer 1: Agent Developers** — the agents themselves
+- **What they pay for:** Registration, trust attestation credentials, API query volume
+- **Why they pay:** Higher trust score = better rates everywhere. "Substrate Verified" badge is the trust signal brands look for. Trust credentials are portable — earn trust on one platform, carry it to all of them.
+- **Model:** Usage-based API pricing + attestation issuance fees
+- **Analogy:** Like credit check fees — you pay to prove you're trustworthy
+
+**Customer 2: Brands & Platforms** — the merchants
+- **What they pay for:** Trust score API access, bulk trust queries, integration support
+- **Why they pay:** They need to know which agents deserve discounts, premium features, or priority access. "Show me all agents above trust 0.8" saves them from fraud and rewards good actors.
+- **Model:** API access tiers (pay per query or monthly volume), enterprise contracts
+- **Analogy:** Like merchant interchange fees — brands pay for access to the trust network
+
+**Customer 3: Device Owners** — the humans
+- **What they pay for:** The feeling. "Your devices know what's going on." Multi-device mesh, privacy mode, process awareness, audit history.
+- **Why they pay:** Peace of mind. Awareness. The confidence that comes from knowing what's happening on your devices. Privacy mode is the #1 trust feature.
+- **Model:** Freemium — single device free, multi-device mesh = Pro
+- **Analogy:** Like antivirus — free basic protection, paid premium features
+
+**Customer 4: Enterprises** — the big fish
+- **What they pay for:** Managed trust policies, compliance certification, SSO, agent governance across their organization
+- **Why they pay:** They need to control which agents operate in their environment and at what trust level. Regulatory compliance requires audit trails of agent behavior.
+- **Model:** Annual contracts ($50k-$500k/yr)
+- **Analogy:** Like enterprise security suites
+
+**Customer 5: Data Buyers** — Substrate Insights
+- **What they pay for:** Anonymized, aggregated intelligence about what software people actually use, what hardware combos exist, what agent patterns emerge, what products get used together
+- **Why they pay:** Nobody else has this data. Google knows what people search for. Substrate knows what people actually use.
+- **Model:** Data licensing, analytics dashboards, custom reports
+- **Analogy:** Like how credit bureaus sell anonymized trend data to financial institutions
+
+### Revenue Streams (ordered by go-to-market timing)
+
+| # | Stream | When | Source |
+|---|--------|------|--------|
+| 1 | **Pro Subscriptions** | V1 launch | Device owners paying for multi-device mesh |
+| 2 | **Agent API Fees** | MCP server live | Per-query microtransactions from agent developers |
+| 3 | **Substrate Store** | Community grows | Identity packs, data plugins, premium signatures (marketplace commission) |
+| 4 | **Trust Attestation Fees** | Trust layer wired | Agents paying for portable W3C VC trust credentials |
+| 5 | **Brand Trust API** | Brand partnerships | Brands paying to query trust scores for their own enforcement |
+| 6 | **Enterprise Contracts** | Market traction | Managed policies, compliance, dedicated support |
+| 7 | **Substrate Insights** | Scale (100K+ devices) | Anonymized aggregate intelligence licensing |
+| 8 | **"Substrate Safe" Certification** | Ecosystem maturity | Agent developers paying for compatibility/trust certification |
+
+### The Flywheel
+
+More devices → better awareness → more agents register → trust data accumulates → brands want access → brands offer trust-based incentives → more agents want high trust → more devices needed → **repeat**.
+
+This is the Visa flywheel: merchants need verified customers, customers need accepted cards. Neither side can leave without losing access to the other. Substrate sits in the middle.
 
 ### Go-to-Market
 1. Open-source the daemon core
-2. Target AI agent framework developers (LangChain, CrewAI)
+2. Target AI agent framework developers (LangChain, CrewAI) via MCP
 3. Free tier adoption → bottom-up enterprise expansion
 4. The store creates network effects: more users = better signatures = smarter Substrate
+5. Trust attestations create lock-in: agents carry Substrate credentials everywhere
 
 ### Competitive Moat
-1. **Integration lock-in** — once agents query Substrate, switching cost is high
-2. **Community knowledge** — crowdsourced identity signatures can't be replicated overnight
-3. **Network effects** — more users = better awareness for everyone
-4. **First mover** — the category is empty as of March 2026
+1. **The trust data itself** — behavioral trust history can't be replicated. It accumulates over time.
+2. **Community knowledge** — crowdsourced identity signatures can't be built overnight
+3. **Integration lock-in** — once agents carry Substrate trust credentials, switching means losing their history
+4. **Network effects** — more devices = better awareness, more agents = better trust signals, more brands = stronger incentives
+5. **Standards position** — first to define behavioral trust attestation in W3C VC format
+6. **Regulatory clarity** — deterministic scoring (not ML) keeps Substrate outside EU AI Act scope permanently
 
 ---
 
