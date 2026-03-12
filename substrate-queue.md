@@ -52,9 +52,9 @@
       What: Token-based auth on /api/query, wired to agent registry.
       Context: Expedition synthesis "MVTL step 1". Blocking gap identified by 3 independent research passes.
 
-- [ ] **Trust layer wiring — incident taxonomy** (added: 2026-03-11)
-      What: Define what specific agent behaviors constitute an incident. Product decision from Guiding Light.
-      Context: Expedition synthesis "MVTL step 2". Every team flagged this as the #1 blocking design decision. Iterative, not one-shot.
+- [ ] **Trust layer wiring — incident reporting format** (updated: 2026-03-11)
+      What: Design the reporting format for third-party incident reports. Credit bureau model — Substrate records, doesn't detect.
+      Context: RESOLVED by protocol architecture expedition. Not a product decision. Third parties report incidents; Substrate stores and scores.
 
 - [ ] **Trust layer wiring — record_query()** (added: 2026-03-11)
       What: Wire record_query() to API endpoints so every agent interaction becomes trust data.

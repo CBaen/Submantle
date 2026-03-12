@@ -12,6 +12,22 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 
 ## What Just Happened (2026-03-11)
 
+### Protocol Architecture Expedition — Complete (LATEST)
+5 research teams (Opus) + 9 validators (Opus). All files in `research/expedition-protocol-architecture/`.
+
+**Key Findings (validated):**
+- MCP confirmed as V1 integration surface (Go SDK v1.4.0, maintained by Google under Anthropic org)
+- RATS RFC 9334 "Passport Model" maps precisely to Substrate's architecture — IETF standard vocabulary
+- Behavioral trust gap confirmed with sharper boundaries: no one combines OS-level observation + deterministic scoring + on-device computation + portable VC attestation
+- trustbloc/vc-go v1.3.6 — stable Go VC + SD-JWT stack (missed by researchers, caught by validators)
+- Incident taxonomy RESOLVED: credit bureau model — Substrate records reports from third parties, doesn't detect incidents itself
+- Android OS sandboxing blocks process awareness — desktop/laptop first, mobile later
+- Solo non-technical founder protocol precedent: NONE documented. Product first, protocol later.
+- Gen Digital (Norton, 500M devices) identified as sleeping giant — one pivot from competing
+- IETF RATS working group is better first standards venue than AAIF
+
+**Investor pitch validated:** "We're building the credit bureau for AI agents — every agent earns a trust score through behavior, carries it everywhere, and brands decide their own thresholds."
+
 ### Trust Layer Expedition — Complete
 5 research teams (Opus) + 3 validators (Opus) + 6 targeted follow-ups. All files in `research/expedition-trust-layer/`.
 
@@ -77,6 +93,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 ### Research & Build Docs
 - `research/expedition-trust-layer/` — Trust layer expedition (17 files: 5 teams, 3 validators, 1 synthesis, 6 follow-ups, 1 brief)
 - `research/triadic-build-v1-foundation/` — V1 build (brief, 3 builder reports, 3 reviewer reports)
+- `research/expedition-protocol-architecture/` — Fourth expedition (5 teams + 9 validators)
 - `research/expedition-substrate-infrastructure/` — Second expedition
 - `research/expedition-substrate-deep-dive/` — First expedition
 - `research/future-expeditions.md` — Agent reviews, privacy UX, payment processor
@@ -91,7 +108,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 
 ### Priority 2: Trust Layer Wiring (MVTL — 5 sessions)
 1. Auth middleware on /api/query (token-based, wired to agent registry)
-2. Incident taxonomy definition (Guiding Light's product decision)
+2. Incident reporting format (credit bureau model — third parties report, Substrate records)
 3. record_query() wired to endpoints (every interaction becomes trust data)
 4. Agent name uniqueness enforcement
 5. compute_trust() using pure Beta formula, trust score in API responses
@@ -116,6 +133,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 
 ## Open Decisions
 - Open-source license (Apache 2.0 / BSL / AGPL)
-- Incident taxonomy (what specific agent behaviors constitute an incident — product decision)
 - Agent name uniqueness constraint (before trust scoring)
 - Success metrics for the 90-day experiment
+- On-device daemon integrity (what stops lying about scores? — unsolved)
+- Product name (substrate.com taken, need alternative)

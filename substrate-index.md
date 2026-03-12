@@ -18,6 +18,8 @@
   - EU AI Act implications — likely outside scope (deterministic arithmetic): `research/expedition-trust-layer/followup-5-eu-ai-act.md`
   - Solo founder feasibility — works for product phase, 5 sessions for MVTL: `research/expedition-trust-layer/followup-6-solo-founder.md`
 
+- **Protocol Architecture Expedition** (2026-03-11): Fourth expedition — what Substrate IS technically, how agents connect, competitive landscape update, adoption playbook. 5 teams + 9 validators. MCP confirmed, RATS RFC 9334 mapped, incident taxonomy resolved (credit bureau model), Go library landscape corrected. Details: `research/expedition-protocol-architecture/synthesis.md`
+
 - **V1 Foundation Build** (2026-03-10): Triadic construction — 3 builders + 3 reviewers. Privacy mode, SQLite, event bus, agent identity. 160 tests. Details: `research/triadic-build-v1-foundation/build-brief.md`
 
 - **Future Expedition Ideas** (2026-03-10): Agent reviews ecosystem, privacy mode UX, Substrate as payment processor. Details: `research/future-expeditions.md`
