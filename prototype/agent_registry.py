@@ -187,10 +187,16 @@ class AgentRegistry:
 
         # Enforce unique agent names — can't have two "ShoppingBot" with
         # different scores. Credit bureau model: one entity, one record.
+        # Names are permanent — even deregistered names cannot be reused.
         if self._db is not None:
             try:
                 existing = self._db.get_agent_by_name(agent_name)
                 if existing is not None:
+                    if existing.get("deregistered_at") is not None:
+                        raise ValueError(
+                            f"Agent name '{agent_name}' was previously registered and deregistered. "
+                            f"Names are permanent records and cannot be reused."
+                        )
                     raise ValueError(
                         f"Agent name '{agent_name}' is already registered"
                     )
@@ -274,6 +280,9 @@ class AgentRegistry:
                     record.get("agent_name"),
                 )
                 return None
+
+            if record.get("deregistered_at") is not None:
+                return None  # Deregistered agents cannot authenticate
 
             return record
 
