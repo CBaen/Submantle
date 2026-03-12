@@ -1,166 +1,161 @@
 # Submantle — Handoff
 
 ## What This Is
-The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. Brands decide their own thresholds.
+The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. It labels. Brands decide their own thresholds.
 
 ## Current State
 - **Phase**: STRATEGIC PIVOT — Trust bureau + MCP server is the V1 wedge. Dashboard follows when customers demand it.
 - **Git**: github.com/CBaen/SUBMANTLE (main branch)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
-- **Tests**: 160 passing across 4 test files
-- **Research**: 4 expeditions complete (deep-dive, infrastructure, trust-layer, protocol-architecture) + 6 targeted follow-ups
+- **Tests**: 160 passing across 4 test files (trust layer code from prior session still uncommitted — 187 tests with those changes)
+- **Research**: 4 expeditions + 6 follow-ups + 2 research councils complete. Files in `research/`.
+
+## What Just Happened (2026-03-12)
+
+### RESEARCH COUNCIL V2: Product-Market Fit — COMPLETE (ALL 5 PHASES)
+Full deliberation: 3 agents (Codebase Analyst, External Researcher, Devil's Advocate) + challenge round + orchestrator synthesis + Tension Analyst meta-analysis.
+
+**All files in `research/council-product-market-fit-v2/`:**
+- `research-brief.md` — Approved brief with settled decisions marked non-challengeable
+- `codebase-analyst-findings.md` + `codebase-analyst-challenge.md`
+- `external-researcher-findings.md` + `external-researcher-challenge.md`
+- `devils-advocate-findings.md` + `devils-advocate-challenge.md`
+- `synthesis.md` — Full synthesis with master score table, 6 high-confidence findings
+- `tension-report.md` — Meta-analysis of council's own deliberation
+- `plan-deepen-notes.md` — 5-agent research on implementation details
+
+**Council Key Findings (triple convergence):**
+1. Zero customer conversations is the #1 risk — two consecutive councils agree
+2. Reporter authentication is a legal ship-blocker (plain-text reporter field)
+3. MCP server is the product, not a feature — without it, trust data is meaningless
+4. Bidirectional trust should wait for V2 (network needs density first)
+5. Trust directory is a feature, not a business
+6. Moat is real only in multi-agent environments
+7. Business confidence: 4.5/10. Market existence: 9/10. Capture ability: 3/10.
+
+**Most Actionable External Finding:** Mastercard Verifiable Intent (launched March 5, 2026). SD-JWT standard. 8 enterprise partners. Explicitly excludes behavioral trust — Submantle fills the exact gap.
+
+### MAJOR DESIGN DECISIONS MADE (2026-03-12) — ALL SETTLED
+
+**1. Incident Reporting: eBay Model (Settled)**
+- Only registered Submantle members can file incident reports
+- Must reference a valid interaction ID (proves the parties actually interacted)
+- Both parties get interaction logs. Submantle retains neutral logs for verification.
+- Reports require: auth token + interaction ID + evidence
+- Submantle analyzes reporter history and agent history to contextualize grievances
+- System surfaces patterns ("consistent issue on your side") to help resolve, not just punish
+- Unintentional issues become actionable feedback, not just score hits
+- Decision log entry: 2026-03-12
+
+**2. Trust System Lifecycle Design (Settled)**
+- Incidents enter PENDING state before affecting score — review period required
+- Tiered review: automated for clear patterns (10K self-pings), human for ambiguous cases
+- Probationary periods for agents with valid incidents
+- Sandbox/testing mode for new users — simulate interactions without score impact
+- Users get warnings about abuse and how reviews work
+- System tracks inflation attempts as a signal (not just blocks them)
+- Interaction logs include: frequency, outcome, technical interpretation, AND layman interpretation
+- Fairness principle: users should not be permanently damaged by early mistakes
+- Decision log entry: 2026-03-12
+
+**3. Labels, Not Enforcement (Settled)**
+- Submantle publishes status labels ("New," "Active," "Under Review," "Probationary")
+- Submantle does NOT enforce these — brands decide whether to interact with under-review agents
+- A brand denying an under-review agent is itself an interaction that gets logged
+- That denial/approval generates trust data for BOTH parties
+- This is consistent with "always aware, never acting" principle
+
+### PLAN-DEEPEN FINDINGS — "Reporter Auth" Is 5 Things
+
+The council said "build reporter auth" as one task. Research found it's actually 5 dependent steps:
+1. **Soft-delete** for deregistration (prevents record erasure by bad actors)
+2. **Interaction logging table** with UUIDs (prerequisite — no interaction log exists today)
+3. **Reporter auth** via bearer token + valid interaction ID
+4. **Pending state** on incidents (buffer before formula impact)
+5. **Velocity caps** on queries (prevents self-inflation)
+
+MCP server can be built IN PARALLEL — it's a thin Python wrapper over existing modules. Stdio transport, no OAuth for V1.
+
+Billing can be nearly zero code — Stripe Payment Links for first ~10 customers.
+
+### PENDING: Trust Lifecycle Expedition — NOT YET DISPATCHED
+
+GL approved a 5-team expedition on Trust Lifecycle Design. Context ran out before dispatch. **The next instance MUST run this expedition.**
+
+**Topic:** `expedition-trust-lifecycle`
+**Teams:** 5 (Status Labels, Sandbox/Testing, Review Tiers, Fairness/Recovery, Interaction Metadata)
+
+**CRITICAL: The full approved expedition brief is in the conversation that produced this handoff. The next instance should:**
+1. Read `research/council-product-market-fit-v2/plan-deepen-notes.md` for implementation context
+2. Read `submantle-decisions.md` (search for 2026-03-12 entries) for ALL settled decisions
+3. Read VISION.md for the current product vision (updated 2026-03-12 with bidirectional trust, Experian model)
+4. Write the expedition research brief to `research/expedition-trust-lifecycle/research-brief.md`
+5. Dispatch 5 Opus teams using `/expedition` skill
+6. Include settled decisions as NON-CHALLENGEABLE constraints in the brief
+
+**WARNING: Prior research agents got opinionated over stale VISION.md data. The VISION.md was updated 2026-03-12 to reflect the strategic pivot. Ensure all agents read the CURRENT VISION.md, not cached content.**
 
 ## What Just Happened (2026-03-11)
 
-### STRATEGIC PIVOT SESSION — Most Consequential Session to Date (LATEST)
+### STRATEGIC PIVOT SESSION — Most Consequential Session to Date
 GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 
 **Key Decisions Made:**
-- **Trust bureau + MCP server is the V1 wedge.** Dashboard follows when customers demand it. Every successful infra platform (Stripe, Twilio, AWS) started with one sharp thing.
-- **Scores change ONLY through interaction, never through time.** Last interaction date is visible metadata. No expiry, no degradation.
-- **Interactions automatically generate trust data.** No manual reporting needed for core loop.
-- **Businesses pay to check scores. Agents register free.** Experian model. Supply side (agents) is free. Demand side (brands) pays.
-- **Submantle runs a verification service.** Brands query it directly. No complex credential-carrying for V1.
-- **Awareness layer and trust layer are inside/outside views of one product.** Not two products. Inside = your machine. Outside = your agents in the world. Data flows one direction: trust scores INTO local display. Local data NEVER flows out.
-- **Don't split into multiple companies.** Be the ONE standard. Let the ecosystem build on top.
+- Trust bureau + MCP server is the V1 wedge
+- Scores change ONLY through interaction, never through time
+- Businesses pay to check scores. Agents register free. (Experian model)
+- Awareness layer and trust layer are inside/outside views of one product
+- Don't split into multiple companies. Be the ONE standard.
 
 **New Competitors Found:**
-- **Signet** (agentsignet.com) — Closest trust competitor. Composite 0-1000 score, portable identity. BUT: no OS-level observation, scores based on reported data not behavioral evidence. Registry without bank statements.
-- **Gen Digital Agent Trust Hub** — Launched Feb 2026, Vercel partnership, 500M devices. Pre-install scanning only, not runtime behavioral scoring. Sleeping giant confirmed awake but facing the wrong direction.
-- **Microsoft Agent 365** — GA May 1, 2026, $15/user/mo. Full lifecycle management but Microsoft-scoped, not neutral.
-- **Galileo Agent Control** — Open-sourced March 11, 2026. Policy-as-code control plane. Enforcement, not scoring.
+- **Signet** — Closest trust competitor. Composite 0-1000 score. No OS-level observation, no revenue model.
+- **Gen Digital Agent Trust Hub** — Vercel partnership, 500M devices. Pre-install scanning only.
+- **Microsoft Agent 365** — GA May 1, 2026, $15/user/mo. Microsoft-scoped, not neutral.
 
-**Visa/Mastercard Opportunity (Billion-Dollar Path):**
-- Visa TAP (open-source) + Mastercard Verifiable Intent (open-sourced March 5) both handle transaction authorization but explicitly do NOT handle behavioral trust history.
-- A Submantle trust score could be a field inside Mastercard's Verifiable Intent record (supports Selective Disclosure).
-- Neither payment network can build neutral behavioral trust without favoring their own network.
-- This is the moonshot: become the behavioral trust layer for agent commerce infrastructure.
+**Visa/Mastercard Opportunity:** Submantle trust score as a field inside Mastercard Verifiable Intent records. Same SD-JWT standard. Neither payment network can build neutral behavioral trust.
 
-**Acceleration Stack Identified:**
-- OpenSaaS (Wasp) for SaaS skeleton, Supabase for DB + realtime, Tremor for dashboard components, Clerk for auth, Zuplo for API gateway with billing. Saves weeks of boilerplate.
+## Uncommitted Changes
 
-### Protocol Architecture Expedition — Complete
-5 research teams (Opus) + 9 validators (Opus). All files in `research/expedition-protocol-architecture/`.
+**From prior session (2026-03-11):** Trust layer code — 4 modified files + 1 new test file. 187 tests passing with these changes. Still uncommitted.
 
-**Key Findings (validated):**
-- MCP confirmed as V1 integration surface (Go SDK v1.4.0, maintained by Google under Anthropic org)
-- RATS RFC 9334 "Passport Model" maps precisely to Submantle's architecture — IETF standard vocabulary
-- Behavioral trust gap confirmed with sharper boundaries: no one combines OS-level observation + deterministic scoring + on-device computation + portable VC attestation
-- trustbloc/vc-go v1.3.6 — stable Go VC + SD-JWT stack (missed by researchers, caught by validators)
-- Incident taxonomy RESOLVED: credit bureau model — Submantle records reports from third parties, doesn't detect incidents itself
-- Android OS sandboxing blocks process awareness — desktop/laptop first, mobile later
-- Solo non-technical founder protocol precedent: NONE documented. Product first, protocol later.
-- Gen Digital (Norton, 500M devices) identified as sleeping giant — one pivot from competing
-- IETF RATS working group is better first standards venue than AAIF
+**From this session (2026-03-12):** VISION.md updates (bidirectional trust, Experian model, go-to-market). All research council V2 files. Plan-deepen notes. This HANDOFF.md.
 
-**Investor pitch validated:** "We're building the credit bureau for AI agents — every agent earns a trust score through behavior, carries it everywhere, and brands decide their own thresholds."
+**Next instance should commit all changes.**
 
-### Trust Layer Expedition — Complete
-5 research teams (Opus) + 3 validators (Opus) + 6 targeted follow-ups. All files in `research/expedition-trust-layer/`.
+## Build Priority — Revised (Post-Council, Post-Plan-Deepen)
 
-**Key Findings (validated):**
-- The behavioral trust gap is real and unoccupied. No protocol, product, or standard fills it. Confirmed by 5 teams, 3 validators, 6 follow-ups.
-- Mastercard's "Verifiable Intent" (March 5, 2026) explicitly excludes behavioral trust from its spec. Complementary, not competitive.
-- W3C VC 2.0 + SD-JWT (not BBS+) for V1 trust attestations. BBS+ is still a Candidate Recommendation — use SD-JWT (RFC 9901, finalized November 2025).
-- Pure Beta formula for V1: trust = total_queries / (total_queries + incidents). Initialize at (1,1) = 0.5.
-- EU AI Act: Submantle likely outside scope entirely (deterministic arithmetic, not ML).
-- cheqd has MCP toolkit for VC issuance but NO behavioral trust. Complementary infrastructure, not a competitor.
-- Three active IETF drafts exist (Huawei, AWS/Zscaler/Ping) for agent identity — NONE cover behavioral trust. Gap uncontested at standards level.
-- Solo founder + AI model works for product phase. Protocol phase needs technical contributors.
-- Realistic MVTL timeline: 5 focused sessions, not 1.
+| # | Task | Status | Why |
+|---|------|--------|-----|
+| 1 | Privacy mode | DONE | |
+| 2 | SQLite persistence | DONE | |
+| 3 | Event bus | DONE | |
+| 4 | Agent identity | DONE | |
+| 5 | Trust layer wiring | DONE (uncommitted) | record_query(), compute_trust(), anti-gaming stubs |
+| 6 | Soft-delete deregistration | NEXT | Prerequisite for reporter auth — prevents record erasure |
+| 7 | Interaction logging table | NEXT | Foundation for everything — three-sided logs with UUIDs |
+| 8 | Reporter auth + pending state + velocity caps | NEXT | The eBay model — only members report, must reference real interactions |
+| 9 | MCP server (Python, stdio) | NEXT (parallel with 6-8) | Thin wrapper over existing modules. The product. |
+| 10 | Business API keys + Stripe Payment Links | NEXT | Minimal billing — scales to ~10 customers with near-zero code |
+| 11 | Sandbox/testing mode | AFTER EXPEDITION | Design pending trust lifecycle expedition |
+| 12 | Status labels + review workflow | AFTER EXPEDITION | Design pending trust lifecycle expedition |
+| 13 | Dashboard depth | DEFERRED | Follows when customers demand it |
+| 14 | Go production rewrite | FUTURE | |
+| 15 | W3C VC attestation issuance | FUTURE (accelerate if Mastercard VI materializes) | |
 
-**Design Decision Resolved:**
-"Always aware, never acting" applies to the ENTIRE system including the trust layer. Submantle exposes trust scores. Third parties (brands, platforms) enforce their own thresholds. Submantle never blocks, never gates, never throttles. This makes Submantle infrastructure (like Visa), not a gatekeeper. More financial opportunities, not fewer — every consumer of trust data needs their own enforcement layer built on top.
+## Key Research Pointers
 
-### V1 Foundation — Previously Built (2026-03-10)
-3 builders (Opus) + 3 reviewers (Opus). All files in `research/triadic-build-v1-foundation/`.
+| Research | Location | Key Finding |
+|----------|----------|-------------|
+| Council V2: Product-Market Fit | `research/council-product-market-fit-v2/` | Business confidence 4.5/10. Zero customer conversations is critical risk. |
+| Plan-Deepen Notes | `research/council-product-market-fit-v2/plan-deepen-notes.md` | Reporter auth is 5 subtasks. MCP is simpler than expected. |
+| Tension Report | `research/council-product-market-fit-v2/tension-report.md` | MCP urgency vs sequencing tension. Anchor brand has no mechanism. |
+| Council V1: Scoring Model | `research/council-scoring-model/` | Formula sound. Single score correct for V1. |
+| Protocol Architecture | `research/expedition-protocol-architecture/` | MCP, RATS RFC 9334, Go libraries confirmed |
+| Trust Layer | `research/expedition-trust-layer/` | Beta formula, VC format, anti-gaming |
 
-**Built:**
-- **Privacy Mode** (`privacy.py`) — Real off switch. AWARE/PRIVATE toggle, thread-safe, persisted across restarts.
-- **SQLite Persistence** (`database.py`) — Four tables: scan_snapshots, agent_registry, events, settings. WAL mode.
-- **Event Bus** (`events.py`) — Internal pub/sub. 7 event types. Privacy filtering at bus level.
-- **Agent Identity** (`agent_registry.py`) — HMAC-SHA256 tokens, cryptographic registration, trust tracking schema.
-- **Integration** — All modules wired into api.py and submantle.py. 5 new API endpoints. Dashboard privacy toggle.
+## Open Questions
 
-**Open issues from V1 build (noted for next round):**
-- Open agent registration (no rate limit/passphrase) — fix before WiFi deployment
-- CORS wildcard — lock to localhost before V1
-- No API endpoint tests
-- record_query() not wired in api.py — trust data doesn't accumulate yet
-- No uniqueness constraint on agent names — decide before trust scoring
-
-## What Exists
-
-### Foundation Modules (prototype/)
-- `database.py` — SubmantleDB class, SQLite persistence, WAL mode
-- `events.py` — EventBus class, 7 event types, privacy filtering
-- `privacy.py` — PrivacyManager class, AWARE/PRIVATE states
-- `agent_registry.py` — AgentRegistry class, HMAC-SHA256 tokens
-- `tests/` — 160 tests across 4 test files
-
-### Existing (prototype/)
-- `dashboard.html` — Anthropic-styled dashboard with privacy toggle
-- `api.py` — FastAPI server, 10 endpoints (5 original + 5 new)
-- `submantle.py` — Core scanning + scan_with_events()
-- `signatures.json` — 15 community-curated identity signatures
-
-### API Endpoints
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| /api/health | GET | Health check |
-| /api/status | GET | Process awareness (privacy-gated) |
-| /api/query | GET | "What would break?" queries (privacy-gated) |
-| /api/devices | GET | Network device discovery |
-| /api/privacy/toggle | POST | Toggle AWARE/PRIVATE |
-| /api/privacy/status | GET | Current privacy state |
-| /api/agents/register | POST | Register agent, get token |
-| /api/agents | GET | List registered agents |
-| /api/agents/{id} | DELETE | Deregister (requires Bearer token) |
-
-### Research & Build Docs
-- `research/expedition-trust-layer/` — Trust layer expedition (17 files: 5 teams, 3 validators, 1 synthesis, 6 follow-ups, 1 brief)
-- `research/triadic-build-v1-foundation/` — V1 build (brief, 3 builder reports, 3 reviewer reports)
-- `research/expedition-protocol-architecture/` — Fourth expedition (5 teams + 9 validators)
-- `research/expedition-submantle-infrastructure/` — Second expedition
-- `research/expedition-submantle-deep-dive/` — First expedition
-- `research/future-expeditions.md` — Agent reviews, privacy UX, payment processor
-
-## What to Build Next (REVISED 2026-03-11 — Strategic Pivot)
-
-### Priority 1: Trust Layer Wiring (the wedge product)
-1. Wire record_query() — every API call from registered agent generates trust data automatically
-2. Agent name uniqueness enforcement
-3. compute_trust() — Beta formula on real data, trust score in API responses
-4. Auth middleware on /api/query (token-based)
-5. Verification endpoint — businesses query agent trust scores (this is where revenue starts)
-6. Interaction metadata schema — success, timing, patterns (not content — privacy-first)
-
-### Priority 2: MCP Server (how agents connect)
-- Agent registration via MCP protocol (every connecting agent is automatically a registrant)
-- Trust score query tools (agents and brands check scores)
-- Wire into event bus
-- This is the "seven lines of code" moment — one integration, one outcome
-
-### Priority 3: Dogfood Agents (prove the loop)
-- Build simple test agents that register, interact with public APIs, accumulate real scores
-- Analyze interaction data, refine scoring
-- First entries in the trust registry — seed data
-
-### Priority 4: Dashboard (second product, built when customers ask)
-- Clickable device rows, process categories, nested detail views
-- Agent trust score display (awareness layer CONSUMES trust data, doesn't produce it)
-- Mobile-responsive, lock CORS, registration passphrase
-
-## Architecture
-- **Prototype**: Python (FastAPI, psutil, SQLite, stdlib crypto)
-- **Production** (future): Go daemon, gRPC API, SQLite knowledge graph
-- **Integration**: MCP server (agents query via Model Context Protocol)
-- **Trust**: Pure Beta formula (deterministic), W3C VC 2.0 + SD-JWT for attestations
-- **Privacy**: On-device processing, real off switch, no telemetry
-
-## Open Decisions
-- Open-source license (Apache 2.0 / BSL / AGPL)
-- Agent name uniqueness constraint (before trust scoring)
-- Success metrics for the 90-day experiment
-- On-device daemon integrity (what stops lying about scores? — unsolved)
-- Product name — RESOLVED: Submantle (submantle.com purchased, full rebrand complete 2026-03-11)
+1. **How to acquire an anchor brand without supply?** Council's biggest unresolved question.
+2. **Should Mastercard VI integration be pursued now?** Most actionable external finding but requires W3C VC layer.
+3. **Trust lifecycle labels, sandbox, review tiers** — pending expedition results.
+4. **SDK version:** CLAUDE.md says "MCP Go SDK v1.4.0" but context7 found v0.4.0-v1.2. Verify before Go build.
