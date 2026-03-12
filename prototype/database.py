@@ -118,6 +118,11 @@ class SubmantleDB:
             conn.execute("PRAGMA journal_mode=WAL")
             conn.execute("PRAGMA foreign_keys=ON")
             conn.executescript(_SCHEMA)
+            # Schema migration: add deregistered_at if missing (existing DBs won't have it)
+            try:
+                conn.execute("ALTER TABLE agent_registry ADD COLUMN deregistered_at REAL DEFAULT NULL")
+            except Exception:
+                pass  # Column already exists
 
     # ── scan_snapshots ─────────────────────────────────────────────────────────
 
@@ -282,12 +287,17 @@ class SubmantleDB:
             ).fetchone()
             return _row_to_agent(row) if row else None
 
-    def list_agents(self) -> list[dict]:
-        """Return all registered agents, ordered by registration time."""
+    def list_agents(self, active_only: bool = True) -> list[dict]:
+        """Return registered agents, ordered by registration time."""
         with self._conn() as conn:
-            rows = conn.execute(
-                "SELECT * FROM agent_registry ORDER BY registration_time ASC"
-            ).fetchall()
+            if active_only:
+                rows = conn.execute(
+                    "SELECT * FROM agent_registry WHERE deregistered_at IS NULL ORDER BY registration_time ASC"
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM agent_registry ORDER BY registration_time ASC"
+                ).fetchall()
             return [_row_to_agent(r) for r in rows]
 
     def update_agent_last_seen(self, agent_id: int) -> None:
@@ -315,24 +325,27 @@ class SubmantleDB:
             )
 
     def deregister_agent(self, agent_id: int) -> bool:
-        """
-        Remove an agent registration.
-        Returns True if a row was deleted, False if agent_id was not found.
-        """
+        """Soft-delete: mark agent as deregistered. Record is permanent."""
         with self._conn() as conn:
             result = conn.execute(
-                "DELETE FROM agent_registry WHERE id = ?",
-                (agent_id,),
+                "UPDATE agent_registry SET deregistered_at = ? WHERE id = ? AND deregistered_at IS NULL",
+                (time.time(), agent_id),
             )
             return result.rowcount > 0
 
-    def get_agent_by_name(self, agent_name: str) -> dict | None:
-        """Look up an agent by name. Returns None if not found."""
+    def get_agent_by_name(self, agent_name: str, include_deregistered: bool = True) -> dict | None:
+        """Look up an agent by name. By default finds both active and deregistered agents."""
         with self._conn() as conn:
-            row = conn.execute(
-                "SELECT * FROM agent_registry WHERE agent_name = ?",
-                (agent_name,),
-            ).fetchone()
+            if include_deregistered:
+                row = conn.execute(
+                    "SELECT * FROM agent_registry WHERE agent_name = ?",
+                    (agent_name,),
+                ).fetchone()
+            else:
+                row = conn.execute(
+                    "SELECT * FROM agent_registry WHERE agent_name = ? AND deregistered_at IS NULL",
+                    (agent_name,),
+                ).fetchone()
             return _row_to_agent(row) if row else None
 
     def update_trust_metadata(self, agent_id: int, trust_metadata: dict) -> None:
@@ -645,7 +658,7 @@ def _row_to_scan_snapshot(row: sqlite3.Row) -> dict:
 
 
 def _row_to_agent(row: sqlite3.Row) -> dict:
-    return {
+    result = {
         "id": row["id"],
         "agent_name": row["agent_name"],
         "version": row["version"],
@@ -659,6 +672,12 @@ def _row_to_agent(row: sqlite3.Row) -> dict:
         "trust_metadata": json.loads(row["trust_metadata"])
             if row["trust_metadata"] is not None else None,
     }
+    # deregistered_at may not exist in older schemas before migration
+    try:
+        result["deregistered_at"] = row["deregistered_at"]
+    except (IndexError, KeyError):
+        result["deregistered_at"] = None
+    return result
 
 
 def _row_to_incident_report(row: sqlite3.Row) -> dict:
