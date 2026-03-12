@@ -613,6 +613,10 @@ CREATE TABLE IF NOT EXISTS incident_reports (
     incident_type   TEXT    NOT NULL,
     description     TEXT    NOT NULL DEFAULT '',
     timestamp       REAL    NOT NULL,
+    status          TEXT    NOT NULL DEFAULT 'accepted',   -- pending, accepted, rejected, duplicate
+    severity        TEXT    NOT NULL DEFAULT 'standard',   -- critical, standard
+    reviewed_at     REAL    DEFAULT NULL,                  -- when status changed from pending
+    duplicate_of    INTEGER DEFAULT NULL,                  -- FK to incident_reports(id) for dedup chain
     FOREIGN KEY (agent_id) REFERENCES agent_registry(id)
 );
 

@@ -7,7 +7,7 @@ The credit bureau for AI agents. Agents register, earn trust scores through inte
 - **Phase**: BUILDING — Wave 1 complete, Wave 2 next. Implementation sequence executing.
 - **Git**: github.com/CBaen/SUBMANTLE (main branch, in sync with origin)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
-- **Tests**: 193 passing across 4 test files
+- **Tests**: 200 passing across 4 test files
 - **Research**: ALL COMPLETE. 5 expeditions + 6 follow-ups + 3 research councils. Files in `research/`. DO NOT re-research settled topics — read this file and build.
 
 ## FOR NEW INSTANCES — READ THIS FIRST
