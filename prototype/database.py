@@ -123,6 +123,17 @@ class SubmantleDB:
                 conn.execute("ALTER TABLE agent_registry ADD COLUMN deregistered_at REAL DEFAULT NULL")
             except Exception:
                 pass  # Column already exists
+            # Wave 3 migration: add incident review columns
+            for col, spec in [
+                ("status", "TEXT NOT NULL DEFAULT 'accepted'"),
+                ("severity", "TEXT NOT NULL DEFAULT 'standard'"),
+                ("reviewed_at", "REAL DEFAULT NULL"),
+                ("duplicate_of", "INTEGER DEFAULT NULL"),
+            ]:
+                try:
+                    conn.execute(f"ALTER TABLE incident_reports ADD COLUMN {col} {spec}")
+                except Exception:
+                    pass  # Column already exists
 
     # ── scan_snapshots ─────────────────────────────────────────────────────────
 
@@ -365,6 +376,9 @@ class SubmantleDB:
         reporter: str,
         incident_type: str,
         description: str = "",
+        status: str = "accepted",
+        severity: str = "standard",
+        duplicate_of: int | None = None,
     ) -> int:
         """
         Record an incident report against an agent.
@@ -379,10 +393,12 @@ class SubmantleDB:
             cursor = conn.execute(
                 """
                 INSERT INTO incident_reports
-                    (agent_id, agent_name, reporter, incident_type, description, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (agent_id, agent_name, reporter, incident_type, description, timestamp,
+                     status, severity, duplicate_of)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (agent_id, agent_name, reporter, incident_type, description, time.time()),
+                (agent_id, agent_name, reporter, incident_type, description, time.time(),
+                 status, severity, duplicate_of),
             )
             return cursor.lastrowid
 
@@ -425,6 +441,50 @@ class SubmantleDB:
                 (agent_id,),
             ).fetchone()
             return row[0] if row else 0
+
+    def find_duplicate_incident(
+        self, agent_id: int, reporter: str, incident_type: str, window_seconds: float = 86400.0
+    ) -> dict | None:
+        """Find a recent incident with same agent + reporter + type within the time window. Returns the incident or None."""
+        cutoff = time.time() - window_seconds
+        with self._conn() as conn:
+            row = conn.execute(
+                """
+                SELECT * FROM incident_reports
+                WHERE agent_id = ? AND reporter = ? AND incident_type = ?
+                  AND timestamp > ? AND status != 'duplicate'
+                ORDER BY timestamp DESC LIMIT 1
+                """,
+                (agent_id, reporter, incident_type, cutoff),
+            ).fetchone()
+            return _row_to_incident_report(row) if row else None
+
+    def update_incident_status(self, incident_id: int, status: str) -> bool:
+        """Update an incident's status and set reviewed_at timestamp. Returns True if found."""
+        with self._conn() as conn:
+            result = conn.execute(
+                "UPDATE incident_reports SET status = ?, reviewed_at = ? WHERE id = ?",
+                (status, time.time(), incident_id),
+            )
+            return result.rowcount > 0
+
+    def get_accepted_incident_count(self, agent_id: int) -> int:
+        """Count accepted incidents for an agent. Used for formula compatibility."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT COUNT(*) FROM incident_reports WHERE agent_id = ? AND status = 'accepted'",
+                (agent_id,),
+            ).fetchone()
+            return row[0] if row else 0
+
+    def get_incident_by_id(self, incident_id: int) -> dict | None:
+        """Look up a specific incident report by ID."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM incident_reports WHERE id = ?",
+                (incident_id,),
+            ).fetchone()
+            return _row_to_incident_report(row) if row else None
 
     # ── events ─────────────────────────────────────────────────────────────────
 
@@ -685,7 +745,7 @@ def _row_to_agent(row: sqlite3.Row) -> dict:
 
 
 def _row_to_incident_report(row: sqlite3.Row) -> dict:
-    return {
+    result = {
         "id": row["id"],
         "agent_id": row["agent_id"],
         "agent_name": row["agent_name"],
@@ -694,6 +754,13 @@ def _row_to_incident_report(row: sqlite3.Row) -> dict:
         "description": row["description"],
         "timestamp": row["timestamp"],
     }
+    # Wave 3 fields — may not exist in older schemas
+    for field, default in [("status", "accepted"), ("severity", "standard"), ("reviewed_at", None), ("duplicate_of", None)]:
+        try:
+            result[field] = row[field]
+        except (IndexError, KeyError):
+            result[field] = default
+    return result
 
 
 def _row_to_event(row: sqlite3.Row) -> dict:
