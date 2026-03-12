@@ -1,414 +1,492 @@
 # Team 3 Findings: Agent Economy Infrastructure
 ## Date: 2026-03-11
-## Researcher: Team Member 3
+## Researcher: Team Member 3 (Claude Sonnet 4.6, Expedition Researcher role)
+## Research Angle: Who's building the roads agents will travel, and where does behavioral trust fit?
 
 ---
 
 ## Executive Summary
 
-The agent economy infrastructure is being built rapidly across three distinct layers: commerce protocols (how agents buy things), payment rails (how agents move money), and identity/authorization (proving who authorized what). A fourth layer — behavioral trust (should this agent be trusted based on its history?) — is emerging in nascent form but remains structurally underdeveloped. The market has built the receipt system, the payment rails, and the authorization proofs. Nobody has built the layer that says whether an agent has earned the right to better treatment based on accumulated behavior. That position is unoccupied at the OS-level, portable, deterministic layer.
+The agent economy infrastructure as of March 2026 consists of four distinct layers being built rapidly and in parallel by major players:
+
+1. **Commerce Protocols** — how agents discover products and initiate purchases (Google UCP, OpenAI/Stripe ACP)
+2. **Payment Rails** — how agents execute payments with user delegation (Google AP2, Stripe SPTs, Visa TAP, Mastercard Agent Pay, PayPal)
+3. **Authorization Proofs** — cryptographic evidence that a user authorized a specific action (Mastercard Verifiable Intent, Cloudflare Web Bot Auth)
+4. **Identity Verification** — who is the agent and who authorized it (Trulioo KYA, Sumsub KYA, cheqd, ERC-8004)
+
+A fifth layer — **behavioral trust** — is emerging in nascent, fragmented, and mostly web-layer-only form. Nobody has built portable, OS-level, deterministic behavioral trust infrastructure that follows an agent across platforms. The gap confirmed in the March 11, 2026 trust layer expedition has deepened with further research: not only is the gap real, the market is now actively naming it and searching for the answer.
+
+Substrate's insertion point in the agent transaction chain is **between identity verification and payment authorization** — the moment a merchant or payment network asks "not just who this agent is, but how has it behaved?" That question is being asked everywhere. It is not being answered by anyone at the level Substrate proposes.
 
 ---
 
-## Q1: Google's Universal Commerce Protocol (UCP)
+## Layer 1: Commerce Protocols
 
-### What It Is
-UCP is an open standard announced January 11, 2026, at the National Retail Federation conference by Sundar Pichai. It facilitates direct purchases within Google's AI surfaces (Search AI Mode, Gemini app) and is intended to become the universal protocol for agentic commerce across platforms.
-- **Source**: TechCrunch, January 11, 2026. https://techcrunch.com/2026/01/11/google-announces-a-new-protocol-to-facilitate-commerce-using-ai-agents/
-- **Source**: Google Developers Blog. https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/
+### What, Evidence, Source
 
-### What It Does
-- Covers the full shopping journey: discovery → buying → post-purchase support
-- Enables native checkout directly within Google Search AI Mode and Gemini
-- Handles secure payments via tokenization
-- Gives merchants control over customer data
-- Plans for multi-item carts, loyalty account linking, returns
-- Spec published at ucp.dev; GitHub repository open
+**Google Universal Commerce Protocol (UCP)**
+- **What:** Open-source standard announced January 11, 2026. Collapses N×N complexity between AI shopping interfaces and merchant backends into a single integration. Covers the full commerce lifecycle: product discovery, cart management, checkout, order management, payment, fulfillment, returns.
+- **Trust mechanisms:** OAuth 2.0 for agent-merchant authorization, cryptographic proof of user consent for payments, tokenized payment architecture. No behavioral trust component.
+- **Partners:** Shopify, Etsy, Wayfair, Target, Walmart, Adyen, American Express, Best Buy, Stripe, Visa, Mastercard, The Home Depot, Flipkart, Macy's, Zalando — 20+ endorsing partners.
+- **Current status:** Reference implementation live in Google Search AI Mode and Gemini app. Early adopter phase.
+- **Does it address behavioral trust?** No. Explicitly. The spec quotes: "does not solve which agents should be trusted." Trust mechanisms are transactional authorization only.
+- **Source:** developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/, ucp.dev, TechCrunch January 11, 2026
 
-### Partners
-Co-developed with Shopify, Etsy, Wayfair, Target, and Walmart. Endorsed by: Adyen, American Express, Best Buy, Flipkart, Macy's, Mastercard, Stripe, The Home Depot, Visa, Zalando (20+ total).
-- **Source**: InfoQ, January 2026. https://www.infoq.com/news/2026/01/google-agentic-commerce-ucp/
+**OpenAI/Stripe Agentic Commerce Protocol (ACP)**
+- **What:** Open standard (Apache 2.0) co-maintained by OpenAI and Stripe, currently in beta. Enables AI agents to access merchant product catalogs, pricing, and checkout systems. When ChatGPT places an order, it uses ACP to send details to merchant backends.
+- **Trust mechanisms:** Tokenized payment flows (Shared Payment Tokens), structured data exchange, merchant retains control of checkout.
+- **Partners:** Stripe, Microsoft Copilot, Wizard, Wix, WooCommerce, Squarespace, BigCommerce, Etsy.
+- **Current status:** Live in ChatGPT Instant Checkout (now moving to Apps). Expanding to multi-item carts, international markets. March 6, 2026: OpenAI shifted strategy to prioritize merchant apps over inline checkout.
+- **Does it address behavioral trust?** No. Authentication plus payment tokens only.
+- **Source:** openai.com/index/buy-it-in-chatgpt/, github.com/agentic-commerce-protocol, digitalcommerce360.com March 2026
 
-### Current Status (March 2026)
-Specification is live and public. Checkout on Google surfaces is in early access, limited to select US merchants. Global expansion and additional capabilities planned for coming months.
-- **Source**: Constellation Research, January 2026. https://www.constellationr.com/blog-news/insights/google-launches-agentic-commerce-tools-universal-commerce-protocol-gemini
+**Fits our case because:** These protocols generate the transaction data that Substrate's behavioral layer observes. More ACP/UCP transactions = more behavioral signals. Substrate doesn't compete — it reads the patterns these protocols create.
 
-### Protocol Compatibility
-Built to work with AP2 (Agent Payments Protocol), A2A (Agent2Agent), and MCP (Model Context Protocol).
-
-### What UCP Does NOT Cover
-No discussion of agent trust, reputation, behavioral scoring, or history-based differentiation. The specification explicitly covers transaction execution; it contains no mechanism for "should this agent receive preferential treatment?" The spec's own language confirms it addresses commerce mechanics, not trustworthiness of agents.
+**Tradeoffs/Risks:** These protocols are the standards battleground. If one wins, behavioral trust infrastructure built to be protocol-agnostic (like Substrate) benefits. If the market fragments, interoperability becomes critical.
 
 ---
 
-## Q2: Mastercard Verifiable Intent (March 5, 2026)
+## Layer 2: Payment Rails
 
-### What It Is
-Announced March 5, 2026 — jointly with Google — as an open-source, standards-based framework for creating cryptographic proof of authorization in agent-led commerce.
-- **Source**: Mastercard Newsroom. https://www.mastercard.com/us/en/news-and-trends/stories/2026/verifiable-intent.html
-- **Source**: PYMNTS. https://www.pymnts.com/mastercard/2026/mastercard-unveils-open-standard-to-verify-ai-agent-transactions/
+### What, Evidence, Source
 
-### What It Does
-Links three elements into a single tamper-resistant record:
-1. **Consumer identity** — who authorized the agent
-2. **Consumer instructions** — what the agent was told to do
-3. **Transaction outcome** — what the agent actually did
+**Google Agent Payments Protocol (AP2)**
+- **What:** Google's payment-specific protocol built atop UCP infrastructure. Three mandate types: Cart Mandates (specific item authorization), Intent Mandates (pre-authorized future purchases within constraints), Payment Mandates (credential encoded into transaction).
+- **Partners:** 60+ including Mastercard, PayPal, American Express, Coinbase, Salesforce, Trulioo.
+- **Trust mechanisms:** Verifiable digital credentials (VDCs) as "tamper-proof, cryptographically-signed digital contracts." Trust is per-transaction authorization, not longitudinal behavioral history.
+- **Status:** No live consumer product yet as of March 2026. Spec phase.
+- **Does it address behavioral trust?** No. Authorization only.
+- **Source:** cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol, ap2-protocol.org, everestgrp.com
 
-Uses Selective Disclosure: each party sees only the minimum necessary information. Creates a cryptographic audit trail for dispute resolution.
+**Stripe Agentic Commerce Suite + Shared Payment Tokens (SPTs)**
+- **What:** Live product. Businesses connect product catalog once; Stripe handles discovery, checkout, payment across agents. SPTs let agents initiate payments using saved methods without exposing credentials. Scoped to specific seller, time-bounded, amount-bounded.
+- **Trust mechanisms:** Stripe Radar for fraud detection. SPTs extended to work with Visa and Mastercard tokens, Affirm, Klarna. First provider supporting both network tokens and BNPL tokens in agentic commerce.
+- **Partners live today:** Coach, Kate Spade, URBN, Revolve, Ashley Furniture, Etsy, Urban Outfitters, Squarespace, Wix, WooCommerce, BigCommerce.
+- **Does it address behavioral trust?** No. Payment authentication + fraud detection only. Fraud detection is transaction-level pattern matching (Stripe Radar), not portable longitudinal behavioral scoring.
+- **Source:** stripe.com/blog/agentic-commerce-suite, stripe.com/newsroom/news/agentic-commerce-suite, americanbanker.com March 2026
 
-Aligned with Google's AP2 and UCP. Complementary to those protocols, not a replacement.
+**Visa Intelligent Commerce / Trusted Agent Protocol (TAP)**
+- **What:** Open framework announced October 2025. Uses cryptographically signed HTTP messages to transmit agent intent, verified user identity, and payment details. Adds digital proof-of-identity to every agent-initiated transaction. Two tags: agent-browser-auth (browsing) and agent-payer-auth (paying).
+- **Partners:** 100+ worldwide, 30+ actively building in VIC sandbox, 20+ agents integrating directly. Akamai providing edge-based behavioral intelligence layered on top.
+- **Trust mechanisms:** Cryptographic signatures + Akamai behavioral intelligence (third-party add-on). The behavioral layer is not Visa's — it's Akamai's separate product.
+- **Status:** Asia Pacific and Europe pilots kicking off early 2026. Mainstream consumer use targeted for 2026 holiday season.
+- **Does it address behavioral trust?** Partially — via third-party integration (Akamai), not native. TAP itself is authentication only. Akamai adds behavioral intelligence but it's web-layer only, not portable across platforms.
+- **Source:** developer.visa.com/capabilities/trusted-agent-protocol, corporate.visa.com/newsroom March 2026, oscilar.com/blog/visatap
 
-### Partners
-Google, Fiserv, IBM, Checkout.com, Basis Theory, Getnet.
-- **Source**: The Paypers. https://thepaypers.com/payments/news/mastercard-introduces-verifiable-intent-co-developed-with-google
+**Mastercard Agent Pay / Agent Suite**
+- **What:** Agent Suite launching Q2 2026. Agent Pay handles authentication and payment token infrastructure. Verifiable Intent (March 5, 2026) provides cryptographic authorization records. Full stack: Agent Suite + Agent Pay + Verifiable Intent + Cloudflare Web Bot Auth.
+- **Trust mechanisms:** Cryptographic delegation chain only. Budget enforcement (accounting, not behavioral). Explicitly no behavioral trust, reputation, or dynamic models.
+- **Source:** Previous expedition research (followup-1-mastercard-google.md) — confirmed, no new evidence contradicts.
 
-### Live Status
-Open-source specification available at verifiableintent.dev and GitHub. Integration into Mastercard Agent Pay's intent APIs planned for coming months.
+**PayPal Agentic Commerce**
+- **What:** Launched October 28, 2025. "Agent Ready" product instantly enables existing PayPal merchants for AI agent payments. Fraud detection, buyer protection, dispute resolution with no additional technical lift.
+- **Partners:** OpenAI (ChatGPT payments), Google Cloud (joint merchant solution), Affirm.
+- **Trust mechanisms:** Existing PayPal fraud infrastructure. No new behavioral trust layer.
+- **Source:** paypal.com/us/business/ai, investor.pypl.com newsroom 2026
 
-### What Verifiable Intent Explicitly Does NOT Cover
-Per the specification and all secondary sources reviewed:
-- No behavioral trust assessment or reputation scoring
-- No dynamic trust models adjusting based on transaction patterns
-- No real-time behavioral monitoring
-- No risk profiling beyond transaction-level verification
-- Not a payment protocol — works alongside ACP, UCP, AP2
+**PayPal Coinbase x402**
+- **What:** HTTP 402 revival — payment as a native HTTP operation. 500,000 weekly transactions on Base, Solana, BNB Chain by October 2025. Currently the only protocol with meaningful transaction volume in the agentic space.
+- **Does it address behavioral trust?** No. Payment primitive only.
+- **Source:** chainstack.com/the-agentic-payments-landscape/
 
-The PYMNTS analysis confirms: "Verifiable Intent appears narrowly focused on cryptographic proof of a specific transaction's authorization chain — not broader trust ecosystem features like behavioral analysis."
+**Cloudflare Web Bot Auth**
+- **What:** Infrastructure layer beneath Visa TAP and Mastercard Agent Pay. HTTP Message Signatures using Ed25519 public key cryptography. Validates agent identity at network edge (seven-step validation: timestamp, nonce uniqueness, Ed25519 signature, etc.).
+- **Trust mechanisms:** Cryptographic authentication only. Validates who an agent is. No behavioral trust signals.
+- **Source:** blog.cloudflare.com/secure-agentic-commerce/, developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/
 
-**Critical for Substrate**: Mastercard built the receipt and authorization proof. Substrate builds the trust score that determines whether the agent gets preferential rates in the first place. These are complementary, not competing.
-
----
-
-## Q3: Stripe and Agent Commerce
-
-### What Stripe Has Built
-Stripe has launched the most production-ready agent commerce infrastructure as of March 2026:
-- **Source**: Stripe blog. https://stripe.com/blog/introducing-our-agentic-commerce-solutions
-- **Source**: Stripe newsroom. https://stripe.com/newsroom/news/agentic-commerce-suite
-
-#### Shared Payment Tokens (SPT)
-The core payment primitive: agents initiate payments using buyer permissions without exposing card credentials. SPTs can be scoped to a specific business, time-limited, and revoked. Currently powering ChatGPT's Instant Checkout (live in US with Etsy sellers).
-
-#### Agentic Commerce Protocol (ACP)
-Co-developed with OpenAI. Open standard (Apache 2.0) enabling programmatic commerce flows between buyers, agents, and merchants. Deployed in production (ChatGPT checkout with Etsy, expanding to Shopify merchants).
-
-#### Agentic Commerce Suite
-Full product: discoverability, simplified checkout, agentic payment acceptance. Brands onboarded include URBN (Anthropologie, Free People, Urban Outfitters), Ashley Furniture, Coach, Kate Spade, Revolve.
-
-#### x402 Payment Protocol
-Partnership with Coinbase/Base. Revives HTTP 402 status code for micropayments. Agents pay for APIs, data, and compute in USDC. 500,000+ weekly transactions on Base as of October 2025, though volume dropped ~92% by February 2026.
-
-#### Agent Toolkit
-SDKs for OpenAI Agents SDK, Vercel AI SDK, LangChain, CrewAI. Compatible with Python and TypeScript.
-
-### Stripe's Trust Approach
-Stripe uses explicit authorization (Shared Payment Tokens with scoped permissions) + Stripe Radar fraud signals. Trust is currently based on cryptographic authorization proofs, not behavioral reputation. No behavioral scoring layer exists. The Stripe documentation notes "agent credit scores will emerge" as transaction histories accumulate — treating it as future state, not current infrastructure.
+**Fits our case because:** These are all the authorization and payment rails. None of them answer "has this agent earned trust through consistent behavior over time?" They all answer "was this specific transaction authorized?" Substrate's score lives above all of these.
 
 ---
 
-## Q4: a16z and Agentic Infrastructure
+## Layer 3: Authorization Proofs (per-transaction)
 
-### a16z's 2026 Position
-a16z designated 2026 as the year of agentic systems in their "Big Ideas 2026" framework. Their investment thesis centers on:
-- **Agent-native infrastructure**: Re-architecting the control plane for massively concurrent, recursive, bursty agent workloads
-- **$1.7 billion allocated** to infrastructure and general venture strategies
-- **Source**: a16z Big Ideas 2026. https://a16z.com/newsletter/big-ideas-2026-part-1/
+### What, Evidence, Source
 
-### Recent Investment: Lio
-On March 5, 2026, a16z led a $30M Series A in Lio, an enterprise procurement automation agent.
-- **Source**: TechCrunch, March 5, 2026. https://techcrunch.com/2026/03/05/lio-ai-series-a-a16z-30m-raise-automate-enterprise-procurement/
+**Mastercard Verifiable Intent** — See previous expedition. Confirmed: authorization only, no behavioral component. Partners: IBM, Worldpay, Fiserv, Getnet, Checkout.com, Basis Theory, Adyen.
 
-### AIEF Status
-No public evidence of an "Agentic AI Interoperability and Execution Framework (AIEF)" associated with a16z exists in any indexed web source as of March 2026. The term returned zero search results. This may be an internal framework, an unpublished initiative, or a term conflated with another project. The Agentic AI Foundation (AAIF, hosted by Linux Foundation) may be the entity being referenced — a16z is not among its founding members.
+**Google Verifiable Digital Credentials (VDCs in AP2)** — Cryptographic mandates proving user authorization. Same category as Verifiable Intent.
 
----
+**IETF Drafts (active as of March 2026)**
+- `draft-klrc-aiagent-auth`: AI Agent Authentication and Authorization. Audit events record authenticated agent identifiers and attestation state. No behavioral trust.
+- `draft-messous-eat-ai`: Entity Attestation Token for AI Agents. Covers model integrity, training provenance, runtime constraints. Explicitly does NOT cover behavioral trust or behavioral attestation — only measurable, cryptographically verifiable properties of the model itself. Status: active Internet-Draft, no formal IETF standing, expires August 2026.
+- `draft-huang-rats-agentic-eat-cap-attest`: Capability attestation extensions. Covers agent functional, reasoning, and operational capabilities.
+- `draft-berlinai-vera`: VERA — Verifiable Enforcement for Runtime Agents.
+- `draft-ni-wimse-ai-agent-identity`: WIMSE applicability for AI agents.
 
-## Q5: OASIS and Agent Standards
+**Critical finding:** Multiple IETF drafts note that "a successful authentication at the beginning of a session provides no guarantee of trustworthy behavior throughout" and "continuous attestation of behavioral patterns is required." The standards bodies know this gap exists. No draft addresses it. Future extensions are mentioned but not specified.
 
-### Finding
-OASIS Open (the standards consortium) has no dedicated AI agent working group or specification committee as of March 2026. What OASIS HAS done in the relevant space:
-- Published an MCP Security white paper through CoSAI (Coalition for Secure AI), an OASIS Open Project, in January 2026
-- **Source**: OASIS Open. https://www.oasis-open.org/
-
-The term "OASIS" in searches predominantly returns either the social simulation framework (OASIS: Open Agent Social Interaction Simulations) or the standards body's unrelated work. OASIS Security (a separate company) focuses on AI agent governance.
-
-**Conclusion**: OASIS Open is not a significant actor in the agent economy standards space as of March 2026.
+**Source:** datatracker.ietf.org/doc/draft-messous-eat-ai/, datatracker.ietf.org/doc/draft-klrc-aiagent-auth/, datatracker.ietf.org/doc/draft-huang-rats-agentic-eat-cap-attest/
 
 ---
 
-## Q6: W3C Working Groups Relevant to Agent Commerce/Identity/Trust
+## Layer 4: Identity Verification / Know Your Agent (KYA)
 
-### Active Groups
+### What, Evidence, Source
 
-#### AI Agent Protocol Community Group
-- **Formed**: May 2025
-- **Mission**: Develop open, interoperable protocols for AI agents to discover, identify, and collaborate on the Web
-- **Scope**: Authentication, authorization, verifiable credential-based trust, end-to-end encryption, agent identity
-- **Source**: W3C Community Groups. https://www.w3.org/community/agentprotocol/
+A full "Know Your Agent" (KYA) framework is emerging from multiple directions simultaneously. a16z articulated it in Big Ideas 2026: "The bottleneck for the agent economy is shifting from intelligence to identity." Non-human identities outnumber human employees 96-to-1 but remain "unbanked ghosts" without trust infrastructure.
 
-#### Verifiable Credentials Working Group
-- W3C VC 2.0 published as a full standard in 2025
-- Now being applied to agent systems — the format Substrate's attestations use
-- **Source**: https://w3c-ccg.github.io/vc-use-cases/
+**KYA Framework Definition (Trulioo / industry consensus):**
+Five verified checkpoints: (1) developer identity verification, (2) code integrity lock, (3) user consent capture, (4) Digital Agent Passport (DAP) issuance, (5) continuous transaction validation.
 
-#### Supply Chain VC Community Group (February 2026)
-- W3C launched a new group specifically to apply VCs to supply chain fraud prevention
-- Adjacent — establishes precedent for VC-based trust in commercial transactions
-- **Source**: Biometric Update. https://www.biometricupdate.com/202602/w3c-launches-group-to-tackle-supply-chain-fraud-with-vcs
+The six-layer KYA control stack is:
+- Identity & Lifecycle
+- Authentication
+- Authorization
+- Runtime Enforcement
+- Behavioral Monitoring ← this is where Substrate lives
+- Auditability
 
-#### Proposed: Semantic Agent Communication Community Group
-- Proposed November 2025, focused on ontology and knowledge representation standards for agent communication
-- **Source**: W3C Community Blog. https://www.w3.org/community/blog/2025/11/09/proposed-group-semantic-agent-communication-community-group/
+**Players in KYA identity space:**
+- **Trulioo:** KYA white paper, joined Google AP2, partnered with Worldpay. Focuses on agent-to-human binding and developer identity. No behavioral scoring — identity verification only.
+- **Sumsub:** AI Agent Verification launched January 29, 2026. Binds each agent to a verified human identity. Device intelligence, liveness detection. No longitudinal behavioral scoring.
+- **Socure:** Working to "continuously monitor autonomous agents." Behavioral monitoring is in their roadmap but not yet delivered.
+- **cheqd:** W3C VC issuance infrastructure. No behavioral component. (See followup-3 for full detail.)
+- **ERC-8004:** Ethereum standard (live mainnet January 29, 2026). Three registries: Identity Registry, Reputation Registry, Validation Registry. Reputation Registry records feedback tied to payment proofs. 24K+ agents registered in first two weeks. Not behavioral scoring from runtime observation — relies on ex-post feedback and staking rather than continuous behavioral monitoring. Explicitly excludes payment mechanisms.
 
-### W3C's Trust Gap Recognition
-The AI Agent Protocol Community Group explicitly identified "establishing secure and verifiable Agent Identity to help merchants trust the payment" as a major open challenge. W3C has framed a forthcoming Workshop on AI Agents and the Web around identifying these gaps.
-
-**Critical for Substrate**: Substrate's W3C VC 2.0 + SD-JWT attestation format is precisely what these groups are building toward. Substrate is ahead of the standardization curve, using the right format before the standards finalize adoption.
+**Source:** a16z.com/newsletter/big-ideas-2026-part-3/, stablecoininsider.org/know-your-agent-kya-in-2026/, trulioo.com/resources/white-papers/know-your-agent, sumsub.com/newsroom January 2026, eips.ethereum.org/EIPS/eip-8004
 
 ---
 
-## Q7: The Agentic AI Foundation (AAIF)
+## Layer 5: Behavioral Trust (The Gap)
 
-### What It Is
-A Linux Foundation initiative providing a neutral, open foundation for critical open-source agentic AI infrastructure. Launched December 2025 by founding members Anthropic, OpenAI, and Block.
-- **Source**: Linux Foundation press release. https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation
+### What exists today
 
-### Founding Projects
-1. **Model Context Protocol (MCP)** — Anthropic's universal agent-to-tool connectivity standard (10,000+ servers, adopted by Claude, Cursor, Microsoft Copilot, ChatGPT)
-2. **Goose** — Block's open-source AI agent framework
-3. **AGENTS.md** — OpenAI's convention for giving agents project-specific guidance (60,000+ repos)
+**HUMAN Security AgenticTrust**
+- **What:** Module in HUMAN Sightline platform. Assigns trust scores based on agent identity and behavior. Tracks "navigation paths, behavioral patterns, escalation curves, and intent shifts across sessions." Configures permissions per agent.
+- **Critical limitation:** Per-site only. Trust is computed within one merchant's or platform's application environment. Not portable. An agent with a high trust score on Site A carries zero credit to Site B. Also web-application-layer only — not OS-level, no process awareness, no cross-device context.
+- **Source:** humansecurity.com/applications/agentic-ai/, humansecurity.com/newsroom/first-adaptive-trust-layer
 
-### Members (February 2026 — 146 total)
-- **Platinum**: Amazon Web Services, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, OpenAI
-- **Gold** (18): Akamai, American Express, Autodesk, Circle, Diagrid, Equinix, Global Payments, Hitachi, Huawei, Infobip, JPMorgan Chase, Keycard, Lenovo, Red Hat, ServiceNow, TELUS, UiPath, Workato
-- **Silver** (79+): Shopify, Docker, Hugging Face, and others
-- **Source**: AAIF press release via PR Newswire. https://www.prnewswire.com/news-releases/agentic-ai-foundation-welcomes-97-new-members-as-demand-for-open-collaborative-agent-standardization-increases-302695992.html
+**DataDome Agent Trust Management**
+- **What:** Continuous behavioral trust scoring. "Dynamic trust score updates based on behavior, reputation, and historical patterns." Intent-based detection analyzing behavioral signals and contextual patterns. Recognized in Forrester's Bot and Agent Trust Management Software Landscape Q4 2025.
+- **Critical limitation:** Per-session, per-application analysis. Not portable behavioral history. Defensive framing (blocking malicious automation) rather than proactive trust accumulation. Web-layer only.
+- **Source:** datadome.co/products/agent-trust-management/, datadome.co/agent-trust-management/building-complete-agent-trust/
 
-### What They're Building
-Governance and standards for MCP, open protocols for agent interoperability, production-ready agentic infrastructure. MCP Dev Summit North America 2026 is April 2-3 in New York (95+ sessions).
+**ClawTrust**
+- **What:** Multi-factor trust scores (0-100) for agent-to-agent interactions. Four components: transaction success rate & volume (40%), reliability/uptime (25%), community trust ratings & vouches (20%), safety incident record (15%).
+- **Critical limitation:** Agent-to-agent commerce only. No ambient OS-level awareness. No portability across non-ClawTrust surfaces. No cryptographic attestation. Still in early/beta stage.
+- **Source:** clawtrust.io/
 
-### AAIF Scope
-Focused on agent connectivity (MCP), frameworks (Goose), and conventions (AGENTS.md). Does NOT cover behavioral trust, reputation scoring, or attestation. AAIF is building the roads and vehicles — not the insurance or credit scoring.
+**Mnemom**
+- **What:** "Trust Infrastructure for AI Agents." Agent Integrity Protocol (AIP) analyzes LLM thinking blocks during execution to detect prompt injection, value drift, manipulation. Trust Score (AAA-CCC plus 0-1000 scale). Five components: integrity ratio, compliance history, drift stability, trace completeness, coherence compatibility. Team Trust Ratings for agent groups (2-50 agents). Scores published to Base L2 via ERC-8004 smart contracts.
+- **Critical limitation:** Primarily monitors agent reasoning and prompt behavior — not OS-level process awareness or on-device computation. LLM-native (analyzes thinking blocks), not OS-native (does not observe processes, hardware, environment). On-chain anchoring adds complexity. Stage unclear.
+- **Source:** mnemom.ai, docs.mnemom.ai/introduction, theresanaiforthat.com/ai/mnemom/
 
-**Critical for Substrate**: AAIF's MCP standardization is favorable to Substrate. MCP is Substrate's integration surface. AAIF's growth means Substrate's MCP server reaches a rapidly expanding ecosystem. Substrate should watch for AAIF work on agent identity that could become a standard.
+**Signet**
+- **What:** Permanent agent identity (SID-0x... format) + Composite Signet Score (0-1000) across five dimensions: Reliability (30%), Quality (25%), Financial (20%), Security (15%), Stability (10%). API responses in under 50ms. Completely free.
+- **Critical limitation:** Score is capability-based and benchmark-based, not accumulated from runtime behavioral observation. "Earn badges through benchmarks and real-world performance" — the scoring methodology is opaque. No mention of on-device processing, no cryptographic attestation, no W3C VC format.
+- **Source:** agentsignet.com/
 
----
+**Kontext (Sequence AI)**
+- **What:** Trust and compliance toolkit for developers building with stablecoins and agentic workflows. Real-time trust scores for agent actions based on historical behavior, amount, context. Immutable audit trail. Human-in-the-loop confirmation for high-value transactions. Compliance report exports.
+- **Critical limitation:** Stablecoin/DeFi-focused. Not a general-purpose portable trust layer. No OS-level awareness.
+- **Source:** sequence-ai.com (now 404), web search results
 
-## Q8: Other Agent Commerce/Payment Infrastructure Projects
+**ZARQ**
+- **What:** "Crypto risk intelligence for AI agents." Moody's-style ratings for the machine economy. Conducted first open census of AI agent ecosystem (Q1 2026: 143K agents, 17K MCP servers, all trust scored).
+- **Critical limitation:** Ratings based on technical metrics (security vulnerabilities, maintenance cadence, ecosystem integrations) — NOT runtime behavioral trust. Code quality scoring, not behavioral trust scoring. (Previously identified as Nerq; same team, rebranded/expanded).
+- **Source:** dev.to/zarq-ai/state-of-ai-assets-q1-2026
 
-### Visa Intelligent Commerce
-- Announced December 2025; expanded to Asia Pacific January 2026
-- Provides tokenization, authentication, payment instructions, transaction signals for AI agents
-- **Trusted Agent Protocol**: cryptographic signatures enabling merchants to verify legitimate agents vs. bots
-- 100+ global partners; 30+ building in sandbox; 20+ agents directly integrating
-- Europe/Asia Pacific pilots early 2026; mainstream by 2026 holiday season
-- **Source**: Visa press release. https://investor.visa.com/news/news-details/2025/Visa-and-Partners-Complete-Secure-AI-Transactions-Setting-the-Stage-for-Mainstream-Adoption-in-2026/default.aspx
+**Oscilar**
+- **What:** AI Risk Decisioning Platform for financial institutions. Agents earn "behavioral trust score based on mandate handling, transaction success rates, and dispute frequency." Payment Fraud Agent, Account Takeover Agent, etc.
+- **Critical limitation:** Financial institution risk decisioning tool, not a portable behavioral trust layer. Per-institution. Proprietary. Serves the fraud prevention use case for payment processors, not the universal trust infrastructure use case.
+- **Source:** oscilar.com/blog/agentic-commerce, oscilar.com/blog/visatap
 
-### PayPal Agentic Commerce
-- Launched October 2025: fraud detection, buyer protection, dispute resolution for agent transactions
-- "Agent Ready" solution: available early 2026
-- AP2 partner; Google partner ecosystem
-- **Source**: PayPal newsroom. https://newsroom.paypal-corp.com/2025-10-28-PayPal-Launches-Agentic-Commerce-Services-to-Power-AI-Driven-Shopping
-
-### Skyfire (KYAPay)
-- Identity and payments platform specifically for autonomous AI agents
-- Developed "Know Your Agent" (KYA) protocol with verifiable transaction history
-- Demonstrated secure agentic purchase using Visa Intelligent Commerce (December 2025)
-- Builds verifiable track record of agent activity — early form of agent credit history
-- **Source**: Business Wire. https://www.businesswire.com/news/home/20251218520399/en/Skyfire-Demonstrates-Secure-Agentic-Commerce-Purchase-Using-the-KYAPay-Protocol-and-Visa-Intelligent-Commerce
-
-### Prove Verified Agent
-- Credential issuance + identity-bound tokens + shared trust registry for agent publishers
-- Focus on cryptographic verification and chain of custody, NOT behavioral scoring
-- **Source**: Prove blog. https://www.prove.com/blog/prove-verified-agent-secure-agentic-commerce
-
-### Signet (agentsignet.com)
-- Persistent identity (Signet ID) and behavioral trust scoring (Signet Score 0-1000) for AI agents
-- Scores five dimensions: Reliability (30%), Quality (25%), Financial behavior (20%), Security (15%), Stability (10%)
-- Score lookups under 50ms; free; open-source
-- Score decay on configuration changes (swapping LLMs triggers 25% decay)
-- **Significant**: Closest existing competitor to Substrate's trust scoring approach, but web-layer only, not OS-level, and focused on agent-to-agent discovery rather than portable attestation
-- **Source**: agentsignet.com
-
-### ClawTrust (clawtrust.io)
-- Trust infrastructure for the OpenClaw Agent Economy
-- Multi-factor trust scoring (0-100): transaction history, reliability, community vouches, safety record
-- Sub-100ms verification API; public searchable agent directory
-- Community reporting for destructive actions, data leaks, fraud
-- **Significant**: Ecosystem-specific (OpenClaw), not portable across ecosystems
-- **Source**: clawtrust.io
-
-### ERC-8004 (Ethereum)
-- Went live on Ethereum mainnet January 29, 2026
-- Three registries: Identity (ERC-721 based), Reputation (feedback signals), Validation (third-party checks)
-- Created by: Marco De Rossi (MetaMask), Davide Crapis (Ethereum Foundation), Jordan Ellis (Google), Erik Reppel (Coinbase)
-- On-chain only; blockchain-native; requires Ethereum integration
-- **Source**: EIPs. https://eips.ethereum.org/EIPS/eip-8004
-
-### Santander + Mastercard (March 2, 2026)
-- Completed Europe's first live end-to-end payment executed by an AI agent
-- Transaction: purchase of a T-shirt, executed in Spain within Santander's regulated banking framework
-- Technology: Mastercard Agent Pay + PayOS + Microsoft Azure OpenAI + Copilot Studio
-- Still a pilot; not commercial rollout
-- **Source**: Santander press release. https://www.santander.com/en/press-room/press-releases/2026/03/santander-and-mastercard-complete-europes-first-live-end-to-end-payment-executed-by-an-ai-agent
-
-### IETF Drafts (Active, No Standards Yet)
-Multiple active drafts addressing agent identity but NOT behavioral trust:
-- `draft-klrc-aiagent-auth-00`: Authentication and authorization for AI agents
-- `draft-yl-agent-id-requirements-00`: Digital Identity Management for AI Agent Communication Protocols
-- `draft-huang-rats-agentic-eat-cap-attest-00`: Capability Attestation Extensions for EAT in agentic systems
-- `draft-ni-a2a-ai-agent-security-requirements-01`: Security Requirements for AI Agents
-- None of these address behavioral reputation or portable trust scores
-- **Source**: IETF Datatracker. https://datatracker.ietf.org/
+**Forrester Market Category (Q4 2025): "Bot and Agent Trust Management"**
+- 19 vendors recognized including HUMAN, DataDome, Alibaba Cloud, Arkose Labs, CHEQ.
+- Definition: "Software that identifies and analyzes the intent of automated traffic directed at an application, establishing ongoing trusted relationships with good bots and AI agents."
+- **Critical observation:** This entire Forrester category is application-layer, per-site behavioral analysis. None of the 19 vendors in this category offer portable, cross-platform behavioral trust that travels with the agent.
+- **Source:** forrester.com/report/the-bot-and-agent-trust-management-software-landscape-q4-2025
 
 ---
 
-## Q9: Where in the Agent Transaction Chain Does Behavioral Trust Fit?
+## The Transaction Chain: Where Trust Gets Asked
 
-### The Full Transaction Sequence (Reconstructed from Multiple Sources)
-
-Based on analysis of AP2, ACP, UCP, Mastercard Verifiable Intent, and the Fintech Brainfood Agentic Payments Map:
+When an AI agent executes a purchase, the flow is:
 
 ```
-LAYER 1 — IDENTITY: Who is this agent? (KYA, Skyfire, Prove)
-   ↓
-LAYER 2 — BEHAVIORAL TRUST: Should we give this agent preferential access/rates? (← SUBSTRATE)
-   ↓
-LAYER 3 — MANDATE/AUTHORIZATION: What is this agent allowed to do? (AP2, Verifiable Intent)
-   ↓
-LAYER 4 — COMMERCE EXECUTION: How does the agent initiate a purchase? (ACP, UCP)
-   ↓
-LAYER 5 — PAYMENT RAIL: How does money move? (Visa IC, Mastercard Agent Pay, SPTs, x402)
-   ↓
-LAYER 6 — SETTLEMENT: Fiat or on-chain? (Card networks, stablecoins, Tempo)
-   ↓
-LAYER 7 — AUDIT/DISPUTE: Can parties prove what happened? (Verifiable Intent, ACP receipts)
+User sets delegation → Agent receives mandate → Agent discovers products (UCP/ACP/MCP)
+→ Agent initiates checkout → Identity verification (TAP/Web Bot Auth/KYA)
+→ Authorization proof (Verifiable Intent/AP2 mandates)
+→ Payment execution (Stripe SPTs/x402/AP2/Agent Pay)
+→ [BEHAVIORAL TRUST CHECK — HAPPENS HERE, NOWHERE ELSE]
+→ Merchant decides whether to honor loyalty/discounts/access level
+→ Post-transaction dispute resolution
 ```
 
-### Where Behavioral Trust Sits
-Behavioral trust (Layer 2) is a pre-authorization layer. It answers a different question than identity (Layer 1) or authorization (Layer 3):
+The behavioral trust check is the **one step in the entire chain that is unoccupied at the portable layer.** Here is how different parties encounter the behavioral trust question:
 
-- **Layer 1 (Identity)** answers: "Is this agent who it claims to be?"
-- **Layer 2 (Behavioral Trust)** answers: "Based on history, does this agent deserve preferential rates, enhanced access, or reduced friction?"
-- **Layer 3 (Authorization)** answers: "Does this agent have permission for THIS specific transaction?"
+| Actor | When they ask | What they have today | What's missing |
+|-------|--------------|----------------------|----------------|
+| **Merchant** | Before granting loyalty prices, premium access, or subscription discounts | Agent's cryptographic authentication, user authorization proof | Agent's history of trustworthy behavior across all merchants |
+| **Payment network** | Before authorizing agent-initiated transaction | User identity, spending limits, cryptographic authorization | Whether this agent has a history of responsible spending patterns |
+| **Platform** | Before granting API access tier | Agent registration, developer identity | Portable track record of consistent, incident-free behavior |
+| **Insurance/warranty providers** | Before honoring agent-initiated claim | Transaction receipt | Agent's behavioral history of honest representation |
+| **Enterprise buyer** | Before allowing agent to operate in their environment | Agent capability credentials | External behavioral reputation the agent has earned |
 
-Layer 2 is consulted by merchants and platforms BEFORE they decide what access level to grant, what rate to offer, and what friction to impose. It is NOT consulted during the payment execution itself.
-
-**Who checks it**: Brands/platforms building on top of Substrate query Layer 2 when deciding policy. A brand says "trust > 0.8 gets our discount" — they query Substrate before setting the agent's access tier.
-
-**Timing**: Behavioral trust checks happen at onboarding/session establishment and on a scheduled basis, NOT per-transaction. This is fundamentally different from per-transaction authorization.
-
-### Evidence for This Gap
-- The Chainstack agentic payments landscape analysis: "agent identity systems are nascent" and predicts "something like agent credit scores will emerge"
-- The Proxy blog on agent payments: "behavioral/historical trust mechanisms underdeveloped"
-- The useproxy.ai landscape analysis explicitly lists behavioral trust as a "critical gap"
-- The World Economic Forum (January 2026): "trust is the new currency in the AI agent economy"
-- **Sources**: https://chainstack.com/the-agentic-payments-landscape/ and https://www.useproxy.ai/blog/ai-agent-payments-landscape-2026
+**The Visa model maps perfectly:** Visa doesn't decide if you can buy something — the merchant decides. Visa provides the trust signal (credit score). Substrate is the Visa of agent behavioral trust: it provides the score; brands decide what threshold to enforce.
 
 ---
 
-## Q10: The Agent Economy — What's Actually Happening in March 2026
+## Agentic AI Foundation (AAIF)
 
-### What's Live (Production-Ready)
-- ChatGPT Instant Checkout (Stripe ACP) — US, live with Etsy, expanding to Shopify
-- x402 micropayments — 500K weekly transactions at peak (October 2025), dropped to ~57K/day by February 2026
-- On-chain agent economy — 140M+ transactions, $43M volume (State of Agents report)
-- Santander/Mastercard pilot — T-shirt purchase, one transaction, not commercial
-- ERC-8004 — live on Ethereum mainnet
-- AI-driven holiday traffic — 805% YoY increase in AI traffic to US retail sites (Black Friday 2025); $22B+ in agent-influenced global online sales
-- **Source**: MetaRouter blog. https://www.metarouter.io/post/agentic-commerce-trends-statistics
+- **What:** Neutral, open foundation under the Linux Foundation. Stewards three projects: MCP (Anthropic), goose (Block), AGENTS.md (OpenAI).
+- **Founding Platinum Members:** AWS, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, OpenAI.
+- **Gold Members:** Adyen, Arcade.dev, Cisco, Datadog, Docker, Ericsson, IBM, JetBrains, Okta, Oracle, Runlayer, Salesforce, SAP, Shopify, Snowflake, Temporal, Twilio.
+- **97 additional members joined** in a subsequent wave.
+- **Trust scoring on roadmap?** No explicit trust scoring or behavioral trust mandate found. The AAIF's scope as of March 2026 is protocol stewardship (MCP, goose, AGENTS.md), not trust infrastructure. No working groups found addressing behavioral trust.
+- **Strategic implication:** The AAIF becoming a steward of behavioral trust standards would be significant. No evidence this is on their roadmap yet. This is a potential standards-body entry point for Substrate — contributing a behavioral trust specification to AAIF would place Substrate inside the canonical agent infrastructure stack.
+- **Source:** aaif.io, linuxfoundation.org/press/agentic-ai-foundation, block.xyz/inside/block-anthropic-and-openai-launch-the-agentic-ai-foundation
 
-### What's in Pilot/Early Access
-- Visa Intelligent Commerce pilots (US, Asia Pacific, Europe)
-- Mastercard Agent Pay (30+ partners building in sandbox)
-- Google UCP checkout (select US merchants)
-- PayPal Agent Ready (available early 2026)
+---
 
-### What's Still Infrastructure-Building
-- AP2 protocol (60+ partners, no consumer product yet)
-- Agent credit scores / behavioral trust scoring at scale
-- Regulatory clarity on agent liability
+## W3C and Standards Bodies
 
-### Market Size Data
-- Agentic commerce market: $547M in 2025 → projected $5.2B by 2033
-- McKinsey: $5T by 2030
-- Morgan Stanley: $190B-$385B in US e-commerce by 2030 (10-20% of total)
-- WEF: AI agents could be worth $236B by 2034
-- **Source**: Sanbi AI market report. https://sanbi.ai/blog/agentic-shopping-market-trends
+**W3C Web Payments Working Group (active, January–February 2026 minutes)**
+- Actively tracking agentic commerce. Stripe and AP2 demos shown at meetings.
+- Key debate: "WPSIG wants coordination with the forthcoming AI and Web IG."
+- Proposal: Treat Digital Credentials API as a payment method within Payment Request API.
+- "Identity and payments are converging" — the old assumption they are separate is breaking down.
+- **Behavioral trust on agenda?** No evidence.
 
-### What 143K Agents Tells Us
-The "State of AI Assets Q1 2026" report documents 143K registered agents across tracked platforms, 17K MCP servers, with a system-wide average trust score of 65.5/100 — confirming that trust scoring infrastructure is emerging but immature.
-- **Source**: DEV Community. https://dev.to/zarq-ai/state-of-ai-assets-q1-2026-143k-agents-17k-mcp-servers-all-trust-scored-2dc2
+**W3C Payment Agent Task Force (Web Commerce Interest Group)**
+- Exists and is active. "User Payment Agent" could be browser-based or wallet-based.
+- "The Payment CG has already stated the close relationship between Identity and Payment concepts."
+
+**Strategic implication for Substrate:** W3C is the venue where W3C VC 2.0 (Substrate's attestation format) is standardized. Substrate's choice of W3C VC 2.0 + SD-JWT is correct — it places Substrate's attestations in the same format space that W3C WebPayments is actively integrating with payment flows.
+
+**Source:** w3.org/2026/01/15-wpwg-minutes, w3.org/2026/02/26-wpwg-minutes.html, sphericalcowconsulting.com/2025/12/23/web-payments-and-digital-identity/
+
+---
+
+## OASIS Open / Coalition for Secure AI (CoSAI)
+
+- **What:** CoSAI is an OASIS Open Project focused on AI security standards. Published "MCP Security" white paper January 2026.
+- **Members:** 40+ partner organizations including Meta (Premier Sponsor, joined February 2026).
+- **Focus:** Identity management, supply chain integrity, and protocol security for AI agent deployments.
+- **Behavioral trust on agenda?** No. Security/integrity focus, not behavioral reputation.
+- **Strategic implication:** CoSAI is the venue where MCP security standards are being set. Substrate's MCP server integration should be aware of CoSAI's security guidelines for MCP.
+- **Source:** oasis-open.org/2026/02/03/meta-joins-coalition-for-secure-ai
+
+---
+
+## WEF and Market Size
+
+- Global AI agents market: $5.4 billion in 2024, projected $236 billion by 2034.
+- WEF (January 2026): "The current trust infrastructure isn't equipped to answer: when a human isn't the transacting party, how do we establish identity certainty?"
+- WEF explicitly calls for KYA (Know Your Agent) framework as "the next trust layer."
+- **Source:** weforum.org/stories/2026/01/ai-agents-trust/
+
+---
+
+## Stripe's Five Levels of Agentic Commerce
+
+Stripe's annual letter articulated the trust escalation ladder. This is the most precise framing of where behavioral trust becomes critical:
+
+1. **Level 1:** Agent fills out forms for you. Low trust needed.
+2. **Level 2:** Agent reasons across products based on your description. Moderate trust.
+3. **Level 3:** Agent remembers your preferences. Higher trust.
+4. **Level 4:** Full delegation ("Buy back-to-school supplies, keep it under $400"). THIS IS THE TRUST CLIFF.
+5. **Level 5:** Anticipatory — agent acts before you ask, based on patterns.
+
+**Stripe's own framing:** "The jump from Level 3 to Level 4 is the real trust cliff. Levels 1-3 are variations of 'help me decide faster.' Level 4 is 'decide for me.'"
+
+At Levels 4 and 5, behavioral trust is not optional — it is the precondition for the entire relationship. No merchant will offer Level 4 access to an agent with no behavioral history. No user will delegate Level 5 authority to an unknown agent. Substrate provides the infrastructure that makes Levels 4 and 5 viable at scale.
+
+**Source:** stripe.com/blog/three-agentic-commerce-trends-nrf-2026, johndschultz.com/thoughts/five-levels-of-agentic-commerce/, businessengineer.ai/p/the-five-levels-of-agentic-commerce
+
+---
+
+## Battle-Tested Approaches
+
+**1. Per-site behavioral analysis (Forrester BATMS category)**
+- What: Application-layer behavioral monitoring. DataDome, HUMAN, Akamai, Arkose Labs, CHEQ, Alibaba Cloud.
+- Evidence: 19-vendor Forrester market category, Q4 2025. Well-established.
+- Fits our case because: Proves the market for behavioral trust exists and is recognized.
+- Tradeoffs: Per-site only. No portability. Solves fraud prevention for one merchant, not portable trust for the agent.
+
+**2. Cryptographic authorization proofs (Mastercard VI, Google AP2)**
+- What: Tamper-proof, cryptographically-signed records of user authorization.
+- Evidence: Multiple implementations live or nearly live (Q2 2026).
+- Fits our case because: These create the audit trail that behavioral trust can read.
+- Tradeoffs: Authorization only. No behavioral scoring. Complementary to Substrate.
+
+---
+
+## Novel Approaches
+
+**1. On-chain reputation registries (ERC-8004)**
+- What: Ethereum mainnet identity + reputation registry for agents. 24K+ agents registered in two weeks.
+- Evidence: eips.ethereum.org/EIPS/eip-8004, live January 29, 2026.
+- Fits our case because: Confirms market demand for persistent agent reputation. Validates Substrate's "identity survives model changes" principle.
+- Tradeoffs: On-chain = slower, gas costs, requires crypto knowledge. Feedback-based, not runtime behavioral observation. Excludes payment mechanisms by design.
+
+**2. LLM reasoning analysis (Mnemom AIP)**
+- What: Analyzes LLM thinking blocks during execution to detect prompt injection and value drift.
+- Evidence: mnemom.ai, active product with Team Trust Ratings launched Q1 2026.
+- Fits our case because: Directly targets agent behavioral integrity at the AI reasoning layer.
+- Tradeoffs: LLM-native (needs access to internal reasoning state). Not OS-level. Not deterministic — relies on AI analysis of AI behavior. Potential EU AI Act exposure if scoring uses ML inference.
+
+**3. Know Your Agent frameworks (Trulioo DAP, Sumsub KYA)**
+- What: Developer identity verification → code integrity → user consent → Digital Agent Passport.
+- Evidence: Trulioo joined AP2, partnered Worldpay. Sumsub launched January 29, 2026.
+- Fits our case because: Confirms "agent-to-human binding" is now a recognized need.
+- Tradeoffs: Credential-issuance only. No behavioral scoring. Answers "who authorized this agent" not "how has this agent behaved."
+
+---
+
+## Emerging Approaches
+
+**1. Protocol-native trust tagging (Cloudflare/Visa "agent-payer-auth")**
+- What: HTTP headers distinguish browsing agents from transacting agents cryptographically.
+- Evidence: blog.cloudflare.com/secure-agentic-commerce/
+- Fits our case because: The tag infrastructure could eventually carry a behavioral trust score alongside authentication.
+- Tradeoffs: Protocol-level only. No scoring layer. Would require Substrate to contribute to this spec.
+
+**2. Stablecoin-native agent payments (x402, Kontext)**
+- What: Payment as native HTTP operation + stablecoin-native trust/compliance toolkit.
+- Evidence: x402 500K weekly transactions by October 2025. Coinbase/Cloudflare backing.
+- Fits our case because: Demonstrates a parallel agentic payment ecosystem where Substrate's trust scores could integrate.
+- Tradeoffs: Crypto-native, niche audience. Regulatory uncertainty.
+
+**3. Team Trust Ratings for multi-agent systems (Mnemom)**
+- What: Trust ratings for agent teams (2-50 agents) using 0-1000 scale + AAA-CCC grades.
+- Evidence: Mnemom launched Q1 2026.
+- Fits our case because: As multi-agent workflows become standard, team-level behavioral trust is needed. Substrate could extend this direction.
+- Tradeoffs: No evidence of adoption. Stage unclear.
 
 ---
 
 ## Gaps and Unknowns
 
-### Confirmed Gaps (Unambiguous from Research)
-1. **No portable, OS-level behavioral trust layer exists.** Signet and ClawTrust score agents in their own ecosystems; they are not portable credentials. ERC-8004 requires Ethereum. HUMAN AgenticTrust is web-layer only. Nobody has built cross-platform, OS-level, portable behavioral trust attestation.
+**Gap 1: Portable behavioral trust is completely unbuilt at the OS level**
+Every player in the behavioral trust space operates at the application layer (web app, payment network) or ledger layer (on-chain). Nobody operates at the OS/device layer where the actual behavioral signals originate. Substrate's on-device daemon has no equivalent in the market.
 
-2. **No protocol-level behavioral scoring is in any of the four major commerce protocols** (UCP, AP2, ACP, Verifiable Intent). They all address authorization, identity, or payment execution — not behavioral history.
+**Gap 2: The Forrester BATMS category is explicitly per-application, not portable**
+Forrester's entire 19-vendor category is about protecting one application from malicious bots/agents. When an agent completes a transaction on Site A and moves to Site B, its Site A behavioral history is invisible to Site B. This is the portability gap Substrate fills.
 
-3. **The IETF drafts explicitly name behavioral attestation as future work**, not current scope. The language "future extensible identity management functions, including behavioral attestation" appears in draft-zheng-dispatch-agent-identity-management-00.
+**Gap 3: No deterministic, EU-AI-Act-safe behavioral trust formula exists in any live product**
+Mnemom uses LLM analysis of reasoning blocks (ML-based). DataDome uses ML pattern recognition. ERC-8004 uses stakeholder feedback. None use a deterministic mathematical formula (Beta Reputation or equivalent) that is provably outside EU AI Act scope. Substrate's pure-math approach is architecturally distinct and legally safer.
 
-4. **No standards body has a behavioral attestation standard.** W3C VC covers credentials but not behavioral scoring. IETF covers identity and auth. AAIF covers connectivity. Nobody is standardizing how to score agent behavior portably.
+**Gap 4: IETF explicitly acknowledges behavioral attestation is needed but undefined**
+Multiple active IETF drafts note "continuous attestation of behavioral patterns is required" and mark it as future work. The standards body has named the need. No draft exists for the format. Substrate could contribute this spec.
 
-5. **The trust gap is named by market players.** The industry uses language like "agent credit scores will emerge" and "behavioral trust underdeveloped" — these are explicit acknowledgments of the gap, not marketing.
+**Gap 5: Agent economy infrastructure assumes human-present trust infrastructure**
+All five layers above were designed for transaction authorization (human-present model extended to agents). None were designed for longitudinal trust accumulation (the credit bureau model). Substrate is building a credit bureau for agents in an ecosystem that has receipts but no credit scores.
 
-### Unknowns / Needs Monitoring
-1. **Skyfire's trajectory**: Skyfire (KYAPay) is building transaction history that could evolve toward behavioral scoring. They are the closest credible competitive signal if they add cross-platform portable attestation.
-2. **AAIF's scope expansion**: AAIF may add behavioral trust standards to its mandate. Monitor MCP Dev Summit North America (April 2-3) for any trust-related working groups.
-3. **x402 volume collapse**: The 92% drop in x402 transactions (October 2025 peak → February 2026) may indicate stablecoin micropayments are not the right primitive for most agent commerce. Warrants watching for whether fiat-based agent payments dominate.
-4. **ERC-8004 adoption**: If Ethereum-based agent identity/reputation becomes dominant, it creates a parallel ecosystem that could compete with or complement Substrate's approach.
-5. **NIST AI Agent Standards Initiative** (February 2026): NIST announced an "AI Agent Standards Initiative for Interoperable and Secure Innovation." Scope and behavioral trust inclusion unknown.
-   - **Source**: NIST. https://www.nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure
+**Gap 6: Multi-agent trust is unstudied**
+When ten agents collaborate in a workflow, whose trust matters? ERC-8004's Reputation Registry is individual-agent only. Mnemom's Team Trust Ratings are a first attempt. No standard exists. This is research-level for Substrate — not V1 scope but important for the protocol phase.
 
----
+**Unknown 1: Will ERC-8004's Reputation Registry evolve to runtime behavioral observation?**
+Currently it's feedback-based. If it evolves to accept behavioral attestation VCs (like what Substrate would issue), it becomes a distribution network for Substrate's scores.
 
-## Synthesis
+**Unknown 2: Will Cloudflare's Web Bot Auth headers evolve to carry behavioral trust scores?**
+Currently they carry agent identity and intent (browser vs. payer). If the header spec evolves to include a trust score, Substrate would want to be the score provider.
 
-### The Infrastructure Map (as of March 2026)
-
-| Layer | Who Built It | Status |
-|-------|-------------|--------|
-| Agent connectivity (MCP) | Anthropic / AAIF | Production, dominant |
-| Commerce protocol | Google (UCP), Stripe+OpenAI (ACP) | UCP early access; ACP live |
-| Payment authorization | Mastercard Verifiable Intent, AP2 | Spec live; implementation pipeline |
-| Payment rails | Visa IC, MC Agent Pay, SPT, x402 | Early pilot / early production |
-| Identity verification | Skyfire/KYA, Prove Verified Agent | Early commercial |
-| Behavioral trust (portable) | **Nobody** | Gap — nascent/ecosystem-locked attempts |
-| On-chain trust registry | ERC-8004, ClawTrust, Signet | Live but ecosystem-specific |
-
-### Substrate's Structural Position
-
-Substrate sits at Layer 2 (behavioral trust) — the one layer nobody is building portably and at the OS level. Every other layer has multiple well-funded incumbents. Layer 2 has:
-- Signet: ecosystem-specific, no OS integration, no portability
-- ClawTrust: OpenClaw ecosystem only
-- HUMAN AgenticTrust: web-layer only, not cross-platform
-- ERC-8004: Ethereum-only, requires on-chain integration
-
-None of these are:
-1. OS-level (Substrate sees what agents actually do on the device)
-2. Deterministically scored (ERC-8004 allows ML-based validation; Substrate stays outside EU AI Act)
-3. Portable W3C VC attestations (the format the payment ecosystem is converging on)
-4. Platform-agnostic (works across Visa, Mastercard, Stripe, any brand)
-
-### The Visa Analogy Is Validated by Market Structure
-Mastercard Agent Pay, Visa Intelligent Commerce, and AP2 are the payment rails. Stripe ACP and Google UCP are the commerce execution protocols. Mastercard Verifiable Intent is the receipt/authorization proof. None of these is the intermediary trust layer that tells every merchant, simultaneously, what an agent's behavioral track record is.
-
-Visa doesn't decide whether you can buy something. The merchant decides, using Visa's signal. Substrate is the signal layer. The market has built everything except the signal layer.
-
-### The Timing Advantage
-The market built the payment infrastructure first (2025-2026), and behavioral trust is being called for as the next necessary layer. This means Substrate is building into a named, felt gap — not speculative demand. Industry analysts, payment companies, and standards bodies are all naming behavioral trust as the missing piece. Substrate can be the answer to a question the market is already asking.
-
-### The AAIF / MCP Integration Opportunity
-AAIF's growth (146 members, MCP at 10,000+ servers) means Substrate's MCP server endpoint reaches an enormous and rapidly expanding ecosystem. Every MCP-compatible agent is a potential Substrate client. The AAIF community is building the pipes; Substrate provides the trust signal that flows through those pipes.
-
-### What This Means for the Trust Layer's Go-to-Market
-The transaction chain analysis reveals a specific integration point: brands and platforms query behavioral trust **before** granting access levels or setting rates — at onboarding or session establishment, not per-transaction. This is the Stripe / Visa analogy made precise: Substrate is queried to set the policy context (what tier is this agent?), and then AP2/Verifiable Intent handles the per-transaction authorization within that context.
-
-**The integration pitch to brands**: "You already use AP2 for per-transaction authorization. Use Substrate to set the trust tier that governs what AP2 permissions your agents get by default."
+**Unknown 3: Will any payment network make behavioral trust a hard requirement for Level 4/5 agent access?**
+Stripe articulated the trust cliff. If Visa, Mastercard, or Stripe require behavioral trust attestation for high-delegation access (Level 4+), Substrate becomes the only infrastructure that provides it. This is the regulatory-equivalent forcing function for behavioral trust adoption.
 
 ---
 
-*Team 3 research complete. All claims sourced. No stale information — all sources verified as March 2026 or confirmed current.*
+## Synthesis: Where Substrate Fits in the Agent Economy
+
+### The Stack
+
+```
+Layer 5: Consumer Experience (Level 1-5 delegation)
+Layer 4: Merchant Enforcement (loyalty, discounts, premium access thresholds)
+Layer 3: BEHAVIORAL TRUST LAYER ← Substrate lives here
+          - Portable behavioral scores across all platforms
+          - W3C VC 2.0 + SD-JWT attestations
+          - On-device, deterministic, privacy-preserving
+          - The credit bureau nobody has built
+Layer 2: Authorization (Verifiable Intent, AP2 mandates, KYA)
+Layer 1: Payment Execution (Stripe SPTs, x402, Visa/MC)
+Layer 0: Commerce Protocol (UCP, ACP, MCP)
+```
+
+### The Insertion Points
+
+**Primary insertion point:** After authorization, before merchant grants access level.
+- The merchant checks Cloudflare/TAP → agent is authenticated.
+- The merchant checks Verifiable Intent → transaction is authorized.
+- The merchant checks Substrate → **does this agent have the behavioral history to deserve our loyalty pricing / premium access?**
+- Merchant enforces their own threshold. Substrate provides the score.
+
+**Secondary insertion point:** Agent developer pitch moment.
+- Agent developer registers with Substrate during development.
+- Agent accumulates trust score through usage.
+- Agent carries W3C VC attestation to every platform it approaches.
+- "Substrate Verified" badge becomes the trust signal merchants look for.
+
+**Tertiary insertion point:** Enterprise risk management.
+- Enterprise IT evaluates agents before allowing them to operate in corporate environment.
+- No behavioral track record = no enterprise access.
+- Substrate provides the audit-grade behavioral history.
+
+### What Makes Substrate Structurally Different from Every Existing Player
+
+| Dimension | Existing BATMS vendors | Blockchain reputation (ERC-8004) | LLM-analysis (Mnemom) | Substrate |
+|-----------|------------------------|----------------------------------|----------------------|-----------|
+| **Portability** | Per-site only | Cross-chain only | App-layer | Cross-platform, cross-device |
+| **OS-level awareness** | No | No | No | Yes — process, hardware, environment |
+| **Trust formula** | ML pattern matching | Stakeholder feedback | LLM analysis | Deterministic Beta Reputation (pure math) |
+| **EU AI Act exposure** | Yes (ML-based) | Low | Yes (LLM-based) | None (deterministic arithmetic) |
+| **Privacy model** | Server-side | On-chain (public) | Server-side | On-device, zero telemetry |
+| **Attestation format** | Proprietary | ERC-8004 smart contracts | On-chain anchored | W3C VC 2.0 + SD-JWT (universal) |
+| **"Never acts" principle** | No — these products block/allow | Registries only | Alerts/blocks | Always — score only, third parties enforce |
+
+### The Visa Analogy is Vindicated
+
+Every player in the Forrester BATMS category is a merchant-side tool — it works for one merchant to protect their site. DataDome doesn't follow the agent from Walmart to Target. HUMAN's AgenticTrust doesn't travel.
+
+Visa doesn't protect one merchant. Visa provides a signal that any merchant can query. That's Substrate.
+
+No company in the BATMS category, the KYA category, the on-chain reputation category, or the payment rail category is building the Visa equivalent. They are all building merchant-side, network-side, or chain-specific tools. Substrate is the only proposed architecture that:
+1. Sits on the agent's home device
+2. Accumulates behavioral data from OS-level observation
+3. Issues portable credentials in universal W3C VC format
+4. Operates deterministically (no ML)
+5. Never acts — only scores
+
+### The Market Signal
+
+The WEF ($236B market), Stripe (Five Levels trust cliff), a16z (KYA as identity bottleneck), Forrester (19-vendor BATMS category), and multiple IETF drafts all converge on the same recognition: behavioral trust is the missing primitive for the agent economy to function at Levels 4 and 5.
+
+The WEF asked the question directly: "When a human isn't the transacting party, how do we establish identity certainty?" The KYA frameworks answer half of it (who is the agent). Substrate answers the other half (how has the agent behaved).
+
+---
+
+## Source Index
+
+| Claim | Source |
+|-------|--------|
+| Google UCP announced January 11, 2026, 20+ partners | developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/ |
+| UCP "does not solve which agents should be trusted" | ucp.dev spec; TechCrunch January 2026 |
+| OpenAI/Stripe ACP beta, live in ChatGPT | openai.com/index/buy-it-in-chatgpt/, github.com/agentic-commerce-protocol |
+| Stripe Agentic Commerce Suite, SPTs, live partners | stripe.com/blog/agentic-commerce-suite |
+| Stripe Five Levels of Agentic Commerce | stripe.com/blog/three-agentic-commerce-trends-nrf-2026 |
+| Google AP2, 60+ partners, spec phase | ap2-protocol.org, cloud.google.com blog |
+| Visa TAP, 100+ partners, 2026 pilots | developer.visa.com/capabilities/trusted-agent-protocol |
+| Mastercard Verifiable Intent, March 5, 2026, 8 partners | verifiableintent.dev (prior expedition research) |
+| PayPal Agentic Commerce launched October 28, 2025 | investor.pypl.com 2025 |
+| Cloudflare Web Bot Auth, Ed25519, seven-step validation | blog.cloudflare.com/secure-agentic-commerce/ |
+| x402, 500K weekly transactions, Coinbase backing | chainstack.com/the-agentic-payments-landscape/ |
+| AAIF founding platinum members, 97 additional | linuxfoundation.org/press/agentic-ai-foundation, aaif.io |
+| CoSAI/OASIS MCP Security whitepaper, Meta joined February 2026 | oasis-open.org/2026/02/03 |
+| W3C WebPayments working minutes January-February 2026 | w3.org/2026/01/15-wpwg-minutes |
+| IETF draft-messous-eat-ai, no behavioral trust coverage | datatracker.ietf.org/doc/draft-messous-eat-ai/ |
+| IETF acknowledges behavioral attestation needed, future work | datatracker.ietf.org/doc/draft-klrc-aiagent-auth/ |
+| ERC-8004 live mainnet January 29, 2026, 24K+ registrations | eips.ethereum.org/EIPS/eip-8004 |
+| Trulioo KYA, joined AP2, Worldpay partnership | trulioo.com/resources/white-papers/know-your-agent, trulioo.com/company/newsroom |
+| Sumsub AI Agent Verification launched January 29, 2026 | sumsub.com/newsroom January 2026, pymnts.com 2026 |
+| a16z "bottleneck shifting from intelligence to identity" | a16z.com/newsletter/big-ideas-2026-part-3/ |
+| WEF $236B projection, KYA call | weforum.org/stories/2026/01/ai-agents-trust/ |
+| HUMAN AgenticTrust, per-site behavioral scoring | humansecurity.com/applications/agentic-ai/ |
+| DataDome BATMS Forrester, 19 vendors Q4 2025 | forrester.com/report/the-bot-and-agent-trust-management-software-landscape-q4-2025 |
+| ClawTrust, four-factor 0-100 score, early stage | clawtrust.io/ |
+| Mnemom AIP, Team Trust Ratings, ERC-8004 anchoring | mnemom.ai, docs.mnemom.ai |
+| Signet composite score, five dimensions, free | agentsignet.com/ |
+| ZARQ/Nerq, technical metrics scoring, 143K agents Q1 2026 | dev.to/zarq-ai/state-of-ai-assets-q1-2026 |
+| Oscilar behavioral trust score per agent for financial institutions | oscilar.com/blog/agentic-commerce |
+| Merchant sees only "final payment signal" stripped of context | merchantadvisorygroup.org/news February 2026 |
+| KYA six-layer control stack including behavioral monitoring | stablecoininsider.org/know-your-agent-kya-in-2026/ |
