@@ -399,6 +399,20 @@ class SubmantleDB:
                 ).fetchall()
             return [_row_to_incident_report(r) for r in rows]
 
+    def get_reporter_diversity(self, agent_id: int) -> int:
+        """
+        Count distinct reporters who have filed incidents against an agent.
+
+        Used by compute_trust() to enrich the trust score response.
+        Returns 0 if the agent has no incident reports.
+        """
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT COUNT(DISTINCT reporter) FROM incident_reports WHERE agent_id = ?",
+                (agent_id,),
+            ).fetchone()
+            return row[0] if row else 0
+
     # ── events ─────────────────────────────────────────────────────────────────
 
     def log_event(
