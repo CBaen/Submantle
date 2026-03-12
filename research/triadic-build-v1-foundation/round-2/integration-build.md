@@ -38,7 +38,7 @@ Complete rewrite of api.py. All existing endpoints preserved with identical beha
 
 **Module initialization order (critical):**
 ```python
-_db      = SubstrateDB()
+_db      = SubmantleDB()
 _bus     = EventBus(db=_db)
 _privacy = PrivacyManager(db=_db, event_bus=_bus)
 _registry = AgentRegistry(db=_db, event_bus=_bus)
@@ -88,7 +88,7 @@ Added to `prototype/dashboard.html`. The existing visual design language (warm s
 
 1. **CSS:** `.privacy-toggle-wrap`, `.privacy-switch`, `.privacy-track`, `.privacy-label` — a native-feeling toggle switch. Active (PRIVATE) state uses amber (`#eab308`) rather than clay, because amber reads as "warning/caution" which is the correct emotional register for privacy mode. Using clay would be ambiguous — it's the brand colour, not a warning colour.
 
-2. **CSS:** `.privacy-overlay` — a card-sized block shown in place of the process sections when PRIVATE. Shows a lock emoji, "Substrate is not watching", and a description.
+2. **CSS:** `.privacy-overlay` — a card-sized block shown in place of the process sections when PRIVATE. Shows a lock emoji, "Submantle is not watching", and a description.
 
 3. **HTML topbar:** The toggle sits between `.scan-age` and `.theme-toggle` in the topbar, clearly visible without crowding the brand identity.
 
@@ -100,7 +100,7 @@ Added to `prototype/dashboard.html`. The existing visual design language (warm s
 
 **Key decisions:**
 
-1. **Amber, not clay.** Privacy mode is a warning state. Amber is semantically "caution/stop" in most design systems. Clay is the Substrate brand accent — using it for privacy mode would blur the distinction between "alive and watching" and "stopped watching."
+1. **Amber, not clay.** Privacy mode is a warning state. Amber is semantically "caution/stop" in most design systems. Clay is the Submantle brand accent — using it for privacy mode would blur the distinction between "alive and watching" and "stopped watching."
 
 2. **Optimistic UI.** The toggle responds instantly to the click rather than waiting for the server round-trip. This is standard UX for toggle switches. If the server rejects the toggle, the UI reverts.
 
@@ -123,7 +123,7 @@ Added to `prototype/dashboard.html`. The existing visual design language (warm s
 
 **`agent_registry.py` called `self._db.delete_agent()` but `database.py` exposes `deregister_agent()`.**
 
-The test mock used `delete_agent` (matching the broken call), so Round 1 tests passed despite the mismatch. At runtime against the real `SubstrateDB`, `deregister()` would always fail with `AttributeError`. Fixed by:
+The test mock used `delete_agent` (matching the broken call), so Round 1 tests passed despite the mismatch. At runtime against the real `SubmantleDB`, `deregister()` would always fail with `AttributeError`. Fixed by:
 1. Changing `agent_registry.py` to call `self._db.deregister_agent(agent_id)`
 2. Renaming `MockDB.delete_agent` to `MockDB.deregister_agent` in `tests/test_agent_registry.py`
 

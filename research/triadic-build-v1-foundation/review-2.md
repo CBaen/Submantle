@@ -1,4 +1,4 @@
-# Security Review — Substrate V1 Foundation
+# Security Review — Submantle V1 Foundation
 **Date:** 2026-03-10
 **Reviewer:** Independent (claude-sonnet-4-6)
 **Scope:** Privacy mode integrity, token forgery resistance, SQL injection, API input validation, data exposure, XSS, dashboard leakage
@@ -101,7 +101,7 @@ No exploit exists here — it is a semantic ambiguity, not a security gap. Worth
 
 **Severity: Medium — should be addressed before any non-local deployment**
 
-Any caller with network access can POST to `/api/agents/register` and receive a valid token. There is no rate limiting, no admin approval, no allowlist. For a localhost prototype serving a single user this is acceptable. But the moment Substrate is deployed on a network-accessible interface (which the "phone sees laptop via WiFi" V1 goal requires), any device on the LAN — or any malicious process on the host — can register arbitrary agents and receive valid HMAC tokens.
+Any caller with network access can POST to `/api/agents/register` and receive a valid token. There is no rate limiting, no admin approval, no allowlist. For a localhost prototype serving a single user this is acceptable. But the moment Submantle is deployed on a network-accessible interface (which the "phone sees laptop via WiFi" V1 goal requires), any device on the LAN — or any malicious process on the host — can register arbitrary agents and receive valid HMAC tokens.
 
 The tokens themselves are cryptographically sound. The weakness is that the issuance gate is open to anyone who can reach the port.
 
@@ -125,7 +125,7 @@ The integration builder chose to rewrite `api.py` rather than modify it surgical
 
 `api.py` sets `allow_origins=["*"]`. The DELETE endpoint requires `Authorization: Bearer <token>` in the header. On `allow_origins=["*"]`, the CORS spec does not allow `credentials: include` in browser requests, so this combination cannot be used to steal tokens via CSRF from a browser that holds them in cookies. However: the dashboard currently stores no tokens (it has no agent registration UI), and tokens are returned in response bodies only at registration time.
 
-The real risk: if a future feature allows the dashboard to act on behalf of a registered agent (e.g., storing the token in localStorage and passing it in headers), then any page the user visits can read and exfiltrate data from Substrate since all origins are allowed. A token stored in localStorage is not protected by same-origin policy against fetch() calls from other origins.
+The real risk: if a future feature allows the dashboard to act on behalf of a registered agent (e.g., storing the token in localStorage and passing it in headers), then any page the user visits can read and exfiltrate data from Submantle since all origins are allowed. A token stored in localStorage is not protected by same-origin policy against fetch() calls from other origins.
 
 For the current prototype (no tokens in browser storage, API is localhost-only), this is low risk. It must be restricted before V1.
 

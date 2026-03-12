@@ -440,7 +440,7 @@ def agents_register(body: AgentRegisterRequest):
     Register a new agent. Returns a bearer token.
 
     The token is the agent's credential for all subsequent calls.
-    Substrate does not store the raw token — the agent must preserve it.
+    Submantle does not store the raw token — the agent must preserve it.
     """
     try:
         token = _registry.register(

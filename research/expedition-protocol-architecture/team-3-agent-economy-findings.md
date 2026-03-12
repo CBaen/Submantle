@@ -16,7 +16,7 @@ The agent economy infrastructure as of March 2026 consists of four distinct laye
 
 A fifth layer — **behavioral trust** — is emerging in nascent, fragmented, and mostly web-layer-only form. Nobody has built portable, OS-level, deterministic behavioral trust infrastructure that follows an agent across platforms. The gap confirmed in the March 11, 2026 trust layer expedition has deepened with further research: not only is the gap real, the market is now actively naming it and searching for the answer.
 
-Substrate's insertion point in the agent transaction chain is **between identity verification and payment authorization** — the moment a merchant or payment network asks "not just who this agent is, but how has it behaved?" That question is being asked everywhere. It is not being answered by anyone at the level Substrate proposes.
+Submantle's insertion point in the agent transaction chain is **between identity verification and payment authorization** — the moment a merchant or payment network asks "not just who this agent is, but how has it behaved?" That question is being asked everywhere. It is not being answered by anyone at the level Submantle proposes.
 
 ---
 
@@ -40,9 +40,9 @@ Substrate's insertion point in the agent transaction chain is **between identity
 - **Does it address behavioral trust?** No. Authentication plus payment tokens only.
 - **Source:** openai.com/index/buy-it-in-chatgpt/, github.com/agentic-commerce-protocol, digitalcommerce360.com March 2026
 
-**Fits our case because:** These protocols generate the transaction data that Substrate's behavioral layer observes. More ACP/UCP transactions = more behavioral signals. Substrate doesn't compete — it reads the patterns these protocols create.
+**Fits our case because:** These protocols generate the transaction data that Submantle's behavioral layer observes. More ACP/UCP transactions = more behavioral signals. Submantle doesn't compete — it reads the patterns these protocols create.
 
-**Tradeoffs/Risks:** These protocols are the standards battleground. If one wins, behavioral trust infrastructure built to be protocol-agnostic (like Substrate) benefits. If the market fragments, interoperability becomes critical.
+**Tradeoffs/Risks:** These protocols are the standards battleground. If one wins, behavioral trust infrastructure built to be protocol-agnostic (like Submantle) benefits. If the market fragments, interoperability becomes critical.
 
 ---
 
@@ -94,7 +94,7 @@ Substrate's insertion point in the agent transaction chain is **between identity
 - **Trust mechanisms:** Cryptographic authentication only. Validates who an agent is. No behavioral trust signals.
 - **Source:** blog.cloudflare.com/secure-agentic-commerce/, developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/
 
-**Fits our case because:** These are all the authorization and payment rails. None of them answer "has this agent earned trust through consistent behavior over time?" They all answer "was this specific transaction authorized?" Substrate's score lives above all of these.
+**Fits our case because:** These are all the authorization and payment rails. None of them answer "has this agent earned trust through consistent behavior over time?" They all answer "was this specific transaction authorized?" Submantle's score lives above all of these.
 
 ---
 
@@ -133,7 +133,7 @@ The six-layer KYA control stack is:
 - Authentication
 - Authorization
 - Runtime Enforcement
-- Behavioral Monitoring ← this is where Substrate lives
+- Behavioral Monitoring ← this is where Submantle lives
 - Auditability
 
 **Players in KYA identity space:**
@@ -223,7 +223,7 @@ The behavioral trust check is the **one step in the entire chain that is unoccup
 | **Insurance/warranty providers** | Before honoring agent-initiated claim | Transaction receipt | Agent's behavioral history of honest representation |
 | **Enterprise buyer** | Before allowing agent to operate in their environment | Agent capability credentials | External behavioral reputation the agent has earned |
 
-**The Visa model maps perfectly:** Visa doesn't decide if you can buy something — the merchant decides. Visa provides the trust signal (credit score). Substrate is the Visa of agent behavioral trust: it provides the score; brands decide what threshold to enforce.
+**The Visa model maps perfectly:** Visa doesn't decide if you can buy something — the merchant decides. Visa provides the trust signal (credit score). Submantle is the Visa of agent behavioral trust: it provides the score; brands decide what threshold to enforce.
 
 ---
 
@@ -234,7 +234,7 @@ The behavioral trust check is the **one step in the entire chain that is unoccup
 - **Gold Members:** Adyen, Arcade.dev, Cisco, Datadog, Docker, Ericsson, IBM, JetBrains, Okta, Oracle, Runlayer, Salesforce, SAP, Shopify, Snowflake, Temporal, Twilio.
 - **97 additional members joined** in a subsequent wave.
 - **Trust scoring on roadmap?** No explicit trust scoring or behavioral trust mandate found. The AAIF's scope as of March 2026 is protocol stewardship (MCP, goose, AGENTS.md), not trust infrastructure. No working groups found addressing behavioral trust.
-- **Strategic implication:** The AAIF becoming a steward of behavioral trust standards would be significant. No evidence this is on their roadmap yet. This is a potential standards-body entry point for Substrate — contributing a behavioral trust specification to AAIF would place Substrate inside the canonical agent infrastructure stack.
+- **Strategic implication:** The AAIF becoming a steward of behavioral trust standards would be significant. No evidence this is on their roadmap yet. This is a potential standards-body entry point for Submantle — contributing a behavioral trust specification to AAIF would place Submantle inside the canonical agent infrastructure stack.
 - **Source:** aaif.io, linuxfoundation.org/press/agentic-ai-foundation, block.xyz/inside/block-anthropic-and-openai-launch-the-agentic-ai-foundation
 
 ---
@@ -252,7 +252,7 @@ The behavioral trust check is the **one step in the entire chain that is unoccup
 - Exists and is active. "User Payment Agent" could be browser-based or wallet-based.
 - "The Payment CG has already stated the close relationship between Identity and Payment concepts."
 
-**Strategic implication for Substrate:** W3C is the venue where W3C VC 2.0 (Substrate's attestation format) is standardized. Substrate's choice of W3C VC 2.0 + SD-JWT is correct — it places Substrate's attestations in the same format space that W3C WebPayments is actively integrating with payment flows.
+**Strategic implication for Submantle:** W3C is the venue where W3C VC 2.0 (Submantle's attestation format) is standardized. Submantle's choice of W3C VC 2.0 + SD-JWT is correct — it places Submantle's attestations in the same format space that W3C WebPayments is actively integrating with payment flows.
 
 **Source:** w3.org/2026/01/15-wpwg-minutes, w3.org/2026/02/26-wpwg-minutes.html, sphericalcowconsulting.com/2025/12/23/web-payments-and-digital-identity/
 
@@ -264,7 +264,7 @@ The behavioral trust check is the **one step in the entire chain that is unoccup
 - **Members:** 40+ partner organizations including Meta (Premier Sponsor, joined February 2026).
 - **Focus:** Identity management, supply chain integrity, and protocol security for AI agent deployments.
 - **Behavioral trust on agenda?** No. Security/integrity focus, not behavioral reputation.
-- **Strategic implication:** CoSAI is the venue where MCP security standards are being set. Substrate's MCP server integration should be aware of CoSAI's security guidelines for MCP.
+- **Strategic implication:** CoSAI is the venue where MCP security standards are being set. Submantle's MCP server integration should be aware of CoSAI's security guidelines for MCP.
 - **Source:** oasis-open.org/2026/02/03/meta-joins-coalition-for-secure-ai
 
 ---
@@ -290,7 +290,7 @@ Stripe's annual letter articulated the trust escalation ladder. This is the most
 
 **Stripe's own framing:** "The jump from Level 3 to Level 4 is the real trust cliff. Levels 1-3 are variations of 'help me decide faster.' Level 4 is 'decide for me.'"
 
-At Levels 4 and 5, behavioral trust is not optional — it is the precondition for the entire relationship. No merchant will offer Level 4 access to an agent with no behavioral history. No user will delegate Level 5 authority to an unknown agent. Substrate provides the infrastructure that makes Levels 4 and 5 viable at scale.
+At Levels 4 and 5, behavioral trust is not optional — it is the precondition for the entire relationship. No merchant will offer Level 4 access to an agent with no behavioral history. No user will delegate Level 5 authority to an unknown agent. Submantle provides the infrastructure that makes Levels 4 and 5 viable at scale.
 
 **Source:** stripe.com/blog/three-agentic-commerce-trends-nrf-2026, johndschultz.com/thoughts/five-levels-of-agentic-commerce/, businessengineer.ai/p/the-five-levels-of-agentic-commerce
 
@@ -308,7 +308,7 @@ At Levels 4 and 5, behavioral trust is not optional — it is the precondition f
 - What: Tamper-proof, cryptographically-signed records of user authorization.
 - Evidence: Multiple implementations live or nearly live (Q2 2026).
 - Fits our case because: These create the audit trail that behavioral trust can read.
-- Tradeoffs: Authorization only. No behavioral scoring. Complementary to Substrate.
+- Tradeoffs: Authorization only. No behavioral scoring. Complementary to Submantle.
 
 ---
 
@@ -317,7 +317,7 @@ At Levels 4 and 5, behavioral trust is not optional — it is the precondition f
 **1. On-chain reputation registries (ERC-8004)**
 - What: Ethereum mainnet identity + reputation registry for agents. 24K+ agents registered in two weeks.
 - Evidence: eips.ethereum.org/EIPS/eip-8004, live January 29, 2026.
-- Fits our case because: Confirms market demand for persistent agent reputation. Validates Substrate's "identity survives model changes" principle.
+- Fits our case because: Confirms market demand for persistent agent reputation. Validates Submantle's "identity survives model changes" principle.
 - Tradeoffs: On-chain = slower, gas costs, requires crypto knowledge. Feedback-based, not runtime behavioral observation. Excludes payment mechanisms by design.
 
 **2. LLM reasoning analysis (Mnemom AIP)**
@@ -340,18 +340,18 @@ At Levels 4 and 5, behavioral trust is not optional — it is the precondition f
 - What: HTTP headers distinguish browsing agents from transacting agents cryptographically.
 - Evidence: blog.cloudflare.com/secure-agentic-commerce/
 - Fits our case because: The tag infrastructure could eventually carry a behavioral trust score alongside authentication.
-- Tradeoffs: Protocol-level only. No scoring layer. Would require Substrate to contribute to this spec.
+- Tradeoffs: Protocol-level only. No scoring layer. Would require Submantle to contribute to this spec.
 
 **2. Stablecoin-native agent payments (x402, Kontext)**
 - What: Payment as native HTTP operation + stablecoin-native trust/compliance toolkit.
 - Evidence: x402 500K weekly transactions by October 2025. Coinbase/Cloudflare backing.
-- Fits our case because: Demonstrates a parallel agentic payment ecosystem where Substrate's trust scores could integrate.
+- Fits our case because: Demonstrates a parallel agentic payment ecosystem where Submantle's trust scores could integrate.
 - Tradeoffs: Crypto-native, niche audience. Regulatory uncertainty.
 
 **3. Team Trust Ratings for multi-agent systems (Mnemom)**
 - What: Trust ratings for agent teams (2-50 agents) using 0-1000 scale + AAA-CCC grades.
 - Evidence: Mnemom launched Q1 2026.
-- Fits our case because: As multi-agent workflows become standard, team-level behavioral trust is needed. Substrate could extend this direction.
+- Fits our case because: As multi-agent workflows become standard, team-level behavioral trust is needed. Submantle could extend this direction.
 - Tradeoffs: No evidence of adoption. Stage unclear.
 
 ---
@@ -359,42 +359,42 @@ At Levels 4 and 5, behavioral trust is not optional — it is the precondition f
 ## Gaps and Unknowns
 
 **Gap 1: Portable behavioral trust is completely unbuilt at the OS level**
-Every player in the behavioral trust space operates at the application layer (web app, payment network) or ledger layer (on-chain). Nobody operates at the OS/device layer where the actual behavioral signals originate. Substrate's on-device daemon has no equivalent in the market.
+Every player in the behavioral trust space operates at the application layer (web app, payment network) or ledger layer (on-chain). Nobody operates at the OS/device layer where the actual behavioral signals originate. Submantle's on-device daemon has no equivalent in the market.
 
 **Gap 2: The Forrester BATMS category is explicitly per-application, not portable**
-Forrester's entire 19-vendor category is about protecting one application from malicious bots/agents. When an agent completes a transaction on Site A and moves to Site B, its Site A behavioral history is invisible to Site B. This is the portability gap Substrate fills.
+Forrester's entire 19-vendor category is about protecting one application from malicious bots/agents. When an agent completes a transaction on Site A and moves to Site B, its Site A behavioral history is invisible to Site B. This is the portability gap Submantle fills.
 
 **Gap 3: No deterministic, EU-AI-Act-safe behavioral trust formula exists in any live product**
-Mnemom uses LLM analysis of reasoning blocks (ML-based). DataDome uses ML pattern recognition. ERC-8004 uses stakeholder feedback. None use a deterministic mathematical formula (Beta Reputation or equivalent) that is provably outside EU AI Act scope. Substrate's pure-math approach is architecturally distinct and legally safer.
+Mnemom uses LLM analysis of reasoning blocks (ML-based). DataDome uses ML pattern recognition. ERC-8004 uses stakeholder feedback. None use a deterministic mathematical formula (Beta Reputation or equivalent) that is provably outside EU AI Act scope. Submantle's pure-math approach is architecturally distinct and legally safer.
 
 **Gap 4: IETF explicitly acknowledges behavioral attestation is needed but undefined**
-Multiple active IETF drafts note "continuous attestation of behavioral patterns is required" and mark it as future work. The standards body has named the need. No draft exists for the format. Substrate could contribute this spec.
+Multiple active IETF drafts note "continuous attestation of behavioral patterns is required" and mark it as future work. The standards body has named the need. No draft exists for the format. Submantle could contribute this spec.
 
 **Gap 5: Agent economy infrastructure assumes human-present trust infrastructure**
-All five layers above were designed for transaction authorization (human-present model extended to agents). None were designed for longitudinal trust accumulation (the credit bureau model). Substrate is building a credit bureau for agents in an ecosystem that has receipts but no credit scores.
+All five layers above were designed for transaction authorization (human-present model extended to agents). None were designed for longitudinal trust accumulation (the credit bureau model). Submantle is building a credit bureau for agents in an ecosystem that has receipts but no credit scores.
 
 **Gap 6: Multi-agent trust is unstudied**
-When ten agents collaborate in a workflow, whose trust matters? ERC-8004's Reputation Registry is individual-agent only. Mnemom's Team Trust Ratings are a first attempt. No standard exists. This is research-level for Substrate — not V1 scope but important for the protocol phase.
+When ten agents collaborate in a workflow, whose trust matters? ERC-8004's Reputation Registry is individual-agent only. Mnemom's Team Trust Ratings are a first attempt. No standard exists. This is research-level for Submantle — not V1 scope but important for the protocol phase.
 
 **Unknown 1: Will ERC-8004's Reputation Registry evolve to runtime behavioral observation?**
-Currently it's feedback-based. If it evolves to accept behavioral attestation VCs (like what Substrate would issue), it becomes a distribution network for Substrate's scores.
+Currently it's feedback-based. If it evolves to accept behavioral attestation VCs (like what Submantle would issue), it becomes a distribution network for Submantle's scores.
 
 **Unknown 2: Will Cloudflare's Web Bot Auth headers evolve to carry behavioral trust scores?**
-Currently they carry agent identity and intent (browser vs. payer). If the header spec evolves to include a trust score, Substrate would want to be the score provider.
+Currently they carry agent identity and intent (browser vs. payer). If the header spec evolves to include a trust score, Submantle would want to be the score provider.
 
 **Unknown 3: Will any payment network make behavioral trust a hard requirement for Level 4/5 agent access?**
-Stripe articulated the trust cliff. If Visa, Mastercard, or Stripe require behavioral trust attestation for high-delegation access (Level 4+), Substrate becomes the only infrastructure that provides it. This is the regulatory-equivalent forcing function for behavioral trust adoption.
+Stripe articulated the trust cliff. If Visa, Mastercard, or Stripe require behavioral trust attestation for high-delegation access (Level 4+), Submantle becomes the only infrastructure that provides it. This is the regulatory-equivalent forcing function for behavioral trust adoption.
 
 ---
 
-## Synthesis: Where Substrate Fits in the Agent Economy
+## Synthesis: Where Submantle Fits in the Agent Economy
 
 ### The Stack
 
 ```
 Layer 5: Consumer Experience (Level 1-5 delegation)
 Layer 4: Merchant Enforcement (loyalty, discounts, premium access thresholds)
-Layer 3: BEHAVIORAL TRUST LAYER ← Substrate lives here
+Layer 3: BEHAVIORAL TRUST LAYER ← Submantle lives here
           - Portable behavioral scores across all platforms
           - W3C VC 2.0 + SD-JWT attestations
           - On-device, deterministic, privacy-preserving
@@ -409,23 +409,23 @@ Layer 0: Commerce Protocol (UCP, ACP, MCP)
 **Primary insertion point:** After authorization, before merchant grants access level.
 - The merchant checks Cloudflare/TAP → agent is authenticated.
 - The merchant checks Verifiable Intent → transaction is authorized.
-- The merchant checks Substrate → **does this agent have the behavioral history to deserve our loyalty pricing / premium access?**
-- Merchant enforces their own threshold. Substrate provides the score.
+- The merchant checks Submantle → **does this agent have the behavioral history to deserve our loyalty pricing / premium access?**
+- Merchant enforces their own threshold. Submantle provides the score.
 
 **Secondary insertion point:** Agent developer pitch moment.
-- Agent developer registers with Substrate during development.
+- Agent developer registers with Submantle during development.
 - Agent accumulates trust score through usage.
 - Agent carries W3C VC attestation to every platform it approaches.
-- "Substrate Verified" badge becomes the trust signal merchants look for.
+- "Submantle Verified" badge becomes the trust signal merchants look for.
 
 **Tertiary insertion point:** Enterprise risk management.
 - Enterprise IT evaluates agents before allowing them to operate in corporate environment.
 - No behavioral track record = no enterprise access.
-- Substrate provides the audit-grade behavioral history.
+- Submantle provides the audit-grade behavioral history.
 
-### What Makes Substrate Structurally Different from Every Existing Player
+### What Makes Submantle Structurally Different from Every Existing Player
 
-| Dimension | Existing BATMS vendors | Blockchain reputation (ERC-8004) | LLM-analysis (Mnemom) | Substrate |
+| Dimension | Existing BATMS vendors | Blockchain reputation (ERC-8004) | LLM-analysis (Mnemom) | Submantle |
 |-----------|------------------------|----------------------------------|----------------------|-----------|
 | **Portability** | Per-site only | Cross-chain only | App-layer | Cross-platform, cross-device |
 | **OS-level awareness** | No | No | No | Yes — process, hardware, environment |
@@ -439,9 +439,9 @@ Layer 0: Commerce Protocol (UCP, ACP, MCP)
 
 Every player in the Forrester BATMS category is a merchant-side tool — it works for one merchant to protect their site. DataDome doesn't follow the agent from Walmart to Target. HUMAN's AgenticTrust doesn't travel.
 
-Visa doesn't protect one merchant. Visa provides a signal that any merchant can query. That's Substrate.
+Visa doesn't protect one merchant. Visa provides a signal that any merchant can query. That's Submantle.
 
-No company in the BATMS category, the KYA category, the on-chain reputation category, or the payment rail category is building the Visa equivalent. They are all building merchant-side, network-side, or chain-specific tools. Substrate is the only proposed architecture that:
+No company in the BATMS category, the KYA category, the on-chain reputation category, or the payment rail category is building the Visa equivalent. They are all building merchant-side, network-side, or chain-specific tools. Submantle is the only proposed architecture that:
 1. Sits on the agent's home device
 2. Accumulates behavioral data from OS-level observation
 3. Issues portable credentials in universal W3C VC format
@@ -452,7 +452,7 @@ No company in the BATMS category, the KYA category, the on-chain reputation cate
 
 The WEF ($236B market), Stripe (Five Levels trust cliff), a16z (KYA as identity bottleneck), Forrester (19-vendor BATMS category), and multiple IETF drafts all converge on the same recognition: behavioral trust is the missing primitive for the agent economy to function at Levels 4 and 5.
 
-The WEF asked the question directly: "When a human isn't the transacting party, how do we establish identity certainty?" The KYA frameworks answer half of it (who is the agent). Substrate answers the other half (how has the agent behaved).
+The WEF asked the question directly: "When a human isn't the transacting party, how do we establish identity certainty?" The KYA frameworks answer half of it (who is the agent). Submantle answers the other half (how has the agent behaved).
 
 ---
 

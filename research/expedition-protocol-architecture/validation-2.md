@@ -29,7 +29,7 @@ Read all five team findings in full. Conducted external verification on the foll
 
 **What I found:** External verification confirms the documentation issue Team 5 flagged is substantive. The go-sd-jwt v1.4.0 release notes (August 30, 2025) contain no mention of RFC 9901. The README explicitly links to `datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/` — the draft path, not the RFC 9901 path. This matters because RFC 9901 was published November 2025, three months after v1.4.0. The library was written against a draft and has not published a release explicitly claiming RFC 9901 conformance.
 
-**Severity:** Moderate. RFC 9901 evolved from that draft, so the serialization format is likely compatible (the RFC process rarely makes breaking format changes this late). But Team 5's recommendation to "verify in the library source" before production use is correct and should be stronger: this is an unverified compatibility assumption, not a confirmed fact. Both teams presented it as confirmed. It is not. The validation recommendation stands: do not ship Substrate's attestation layer against go-sd-jwt v1.4.0 without running the RFC 9901 test vectors against it first.
+**Severity:** Moderate. RFC 9901 evolved from that draft, so the serialization format is likely compatible (the RFC process rarely makes breaking format changes this late). But Team 5's recommendation to "verify in the library source" before production use is correct and should be stronger: this is an unverified compatibility assumption, not a confirmed fact. Both teams presented it as confirmed. It is not. The validation recommendation stands: do not ship Submantle's attestation layer against go-sd-jwt v1.4.0 without running the RFC 9901 test vectors against it first.
 
 **Verdict:** Team 5 correctly flagged the risk but underweighted it. Teams should not have described this library as implementing RFC 9901 without verification.
 
@@ -71,13 +71,13 @@ Read all five team findings in full. Conducted external verification on the foll
 
 **What I found:** Team 5 cites go-sd-jwt as also being v1.4.0. This version number coincidence across two different libraries (MCP Go SDK and SD-JWT Go library) is suspicious and worth noting. However, I was unable to directly verify the MCP Go SDK version in the time available. Team 2's claim about "co-maintained by Anthropic and Google" is plausible given MCP's governance structure but the specific "Google" attribution is notable — Google DeepMind adopted MCP but "jointly maintained" is a stronger claim than adoption.
 
-**Severity:** Low. The core finding (MCP Go SDK exists, is production-grade, is the right target for Substrate) is well-evidenced. The specific version number and co-maintenance claim deserve spot verification before being cited in external materials.
+**Severity:** Low. The core finding (MCP Go SDK exists, is production-grade, is the right target for Submantle) is well-evidenced. The specific version number and co-maintenance claim deserve spot verification before being cited in external materials.
 
 ---
 
 ### Challenge 5 — Team 1: The attestation server's threat model is understated
 
-**Claim:** Team 1 (Section 4, Gap #4) identifies "Minimum viable attestation server footprint" as an unknown: "It holds the signing key for all Substrate trust attestations. If that key is compromised, all issued credentials are suspect. Key management for an attestation service is non-trivial — HSMs, key rotation, split custody."
+**Claim:** Team 1 (Section 4, Gap #4) identifies "Minimum viable attestation server footprint" as an unknown: "It holds the signing key for all Submantle trust attestations. If that key is compromised, all issued credentials are suspect. Key management for an attestation service is non-trivial — HSMs, key rotation, split custody."
 
 **Problem:** Team 1 identifies this gap but then proceeds to recommend the Tailscale model without resolving it. The synthesis presents the split-plane architecture as clear and feasible, while the key signing security problem is acknowledged in the gaps section but not weighted in the feasibility assessment. For a solo founder, running an HSM-secured key signing service is not trivial. This is not a minor operational footnote — it is the core security assumption of the entire attestation architecture.
 
@@ -95,7 +95,7 @@ Read all five team findings in full. Conducted external verification on the foll
 
 **The contradiction:** Team 1 correctly identifies that the attestation server is signing claims it cannot verify. Team 5 designs a VC schema as though this is a solved problem. Neither team provides a reconciliation.
 
-**Which has stronger evidence:** Team 1's concern is architecturally correct. The attestation server cannot verify that the local daemon computed the trust score honestly. This is not a minor edge case — it is the fundamental integrity assumption of the entire behavioral trust model. If a device can lie about its trust score and get Substrate to sign it, the entire attestation system is gameable from day one.
+**Which has stronger evidence:** Team 1's concern is architecturally correct. The attestation server cannot verify that the local daemon computed the trust score honestly. This is not a minor edge case — it is the fundamental integrity assumption of the entire behavioral trust model. If a device can lie about its trust score and get Submantle to sign it, the entire attestation system is gameable from day one.
 
 **Resolution needed:** This is the single most consequential unresolved tension in the five findings combined. It needs to be surfaced explicitly to the orchestrator, not buried in a "Novel Approaches > Risks" paragraph.
 
@@ -107,7 +107,7 @@ Read all five team findings in full. Conducted external verification on the foll
 
 **Team 4** (Anti-pattern #7) flags "adding ML to the trust formula" as an anti-pattern, but does not separately flag blockchain-dependent architectures even though the research brief's destructive boundaries explicitly state: "Do NOT recommend blockchain-required architectures."
 
-**Resolution:** Neither team recommended ERC-8004 for Substrate's use — Team 3 notes it as market context, not a recommendation. This is not a direct violation. But Team 3's framing of ERC-8004 as a "Novel Approach" with positive positioning ("Confirms market demand for persistent agent reputation. Validates Substrate's 'identity survives model changes' principle") is misleading — it is a blockchain-dependent architecture that Substrate has explicitly ruled out.
+**Resolution:** Neither team recommended ERC-8004 for Submantle's use — Team 3 notes it as market context, not a recommendation. This is not a direct violation. But Team 3's framing of ERC-8004 as a "Novel Approach" with positive positioning ("Confirms market demand for persistent agent reputation. Validates Submantle's 'identity survives model changes' principle") is misleading — it is a blockchain-dependent architecture that Submantle has explicitly ruled out.
 
 ---
 
@@ -129,7 +129,7 @@ Read all five team findings in full. Conducted external verification on the foll
 
 **The Brief asks:** Which network topology fits a behavioral trust layer given our constraints? What are the tradeoffs?
 
-**Team 1's answer:** The Tailscale split-plane model is correct. Substrate should run a thin attestation server for the control plane and keep computation on-device for the data plane.
+**Team 1's answer:** The Tailscale split-plane model is correct. Submantle should run a thin attestation server for the control plane and keep computation on-device for the data plane.
 
 **What's missing:** The Brief specifies the project is from a solo founder with a working Python prototype. "Run a thin attestation server" is not examined for solo founder feasibility. Tailscale's coordination server runs on hundreds of machines with a team of engineers. A "thin" version still requires:
 - Production HTTPS endpoint with high availability
@@ -149,7 +149,7 @@ Team 1 identifies these concerns in the gaps section but the synthesis does not 
 
 **Team 4's answer is honest:** "The credibility path is different: it comes from the working reference implementation, from the precision of the behavioral trust design, and from recruiting a technical co-author for the attestation format specification."
 
-**The drift:** Team 4 correctly identifies that all successful solo protocol founders had deep technical credibility (Torvalds, Cohen, Postel) or institutional affiliation (Postel at USC/ISI). The current Substrate founder has neither. Team 4 then recommends recruiting a technical co-author but does not explain how a non-technical solo founder finds and recruits a credible technical co-author for a novel protocol that has no funding. This is the most important question for adoption that the playbook raises and does not answer.
+**The drift:** Team 4 correctly identifies that all successful solo protocol founders had deep technical credibility (Torvalds, Cohen, Postel) or institutional affiliation (Postel at USC/ISI). The current Submantle founder has neither. Team 4 then recommends recruiting a technical co-author but does not explain how a non-technical solo founder finds and recruits a credible technical co-author for a novel protocol that has no funding. This is the most important question for adoption that the playbook raises and does not answer.
 
 **This is not an evidence failure** — the analysis is honest. It is an alignment drift: the Brief asked for a realistic path; Team 4 identifies a dependency (technical co-author) without a path to meet it.
 
@@ -157,9 +157,9 @@ Team 1 identifies these concerns in the gaps section but the synthesis does not 
 
 ### Drift 3 — Teams 2 and 3 treat the AAIF as a near-term standards pathway without verifying readiness
 
-**Team 3** writes: "Contributing a behavioral trust specification to AAIF would place Substrate inside the canonical agent infrastructure stack." This is presented as a strategic implication with high actionability.
+**Team 3** writes: "Contributing a behavioral trust specification to AAIF would place Submantle inside the canonical agent infrastructure stack." This is presented as a strategic implication with high actionability.
 
-**Team 4** writes: "For Substrate, the logical first co-signer is Anthropic. The Agentic AI Foundation is the institutional home where a behavioral trust standard could live."
+**Team 4** writes: "For Submantle, the logical first co-signer is Anthropic. The Agentic AI Foundation is the institutional home where a behavioral trust standard could live."
 
 **The problem:** Neither team verifies whether AAIF has a mechanism for accepting contributed behavioral trust specifications, or what the current working group charter covers. Team 3 explicitly notes "No working groups found addressing behavioral trust" — which is the most honest part of this finding. The prescription ("contribute a spec") does not follow from the finding ("no working group for this exists").
 
@@ -199,11 +199,11 @@ No other team addresses this. The CRDT proposal is not explored in terms of what
 
 ---
 
-### Missing Angle 4 — Team 3 does not address whether Substrate's Visa analogy holds for the bilateral dependency flywheel
+### Missing Angle 4 — Team 3 does not address whether Submantle's Visa analogy holds for the bilateral dependency flywheel
 
-Team 3 makes the Visa analogy strongly: "Substrate is the Visa of agent behavioral trust." The Visa flywheel requires bilateral dependency — merchants accept Visa because consumers carry it, consumers carry Visa because merchants accept it.
+Team 3 makes the Visa analogy strongly: "Submantle is the Visa of agent behavioral trust." The Visa flywheel requires bilateral dependency — merchants accept Visa because consumers carry it, consumers carry Visa because merchants accept it.
 
-Team 3 does not examine how Substrate achieves bilateral lock-in. Specifically: what prevents a brand from building its own per-site behavioral scoring (HUMAN Security model) rather than querying Substrate? The Forrester BATMS category has 19 vendors doing exactly that. Why does the Visa model apply rather than the "everyone builds their own" model that the Forrester category represents?
+Team 3 does not examine how Submantle achieves bilateral lock-in. Specifically: what prevents a brand from building its own per-site behavioral scoring (HUMAN Security model) rather than querying Submantle? The Forrester BATMS category has 19 vendors doing exactly that. Why does the Visa model apply rather than the "everyone builds their own" model that the Forrester category represents?
 
 The answer may exist (portability, O-level data, deterministic formula) but it was not articulated as a response to this specific objection.
 
@@ -231,7 +231,7 @@ Teams 1 and 4 both identify DKIM/DMARC as the architectural proof that "signal w
 
 ### Agreement 5 — Deterministic scoring is the right call both legally and architecturally
 
-Teams 3, 4, and 5 all confirm that ML-based scoring would create EU AI Act exposure. Team 3 adds the strongest evidence: all existing behavioral scoring competitors (DataDome, Mnemom) use ML, creating legal exposure they may not be aware of. Substrate's deterministic formula is a genuine legal and architectural differentiator.
+Teams 3, 4, and 5 all confirm that ML-based scoring would create EU AI Act exposure. Team 3 adds the strongest evidence: all existing behavioral scoring competitors (DataDome, Mnemom) use ML, creating legal exposure they may not be aware of. Submantle's deterministic formula is a genuine legal and architectural differentiator.
 
 ---
 
@@ -239,11 +239,11 @@ Teams 3, 4, and 5 all confirm that ML-based scoring would create EU AI Act expos
 
 ### Surprise 1 — Team 1's RATS RFC 9334 finding is genuinely useful and underused
 
-Team 1 (Section 8.1) identifies that RFC 9334 (IETF RATS Architecture) provides an exact standard vocabulary for what Substrate is building: Attester (on-device daemon), Verifier (attestation server), Relying Party (brands). This is not just an analogy — it is the IETF's formal architecture for exactly this kind of system. None of the other four teams referenced this. It should be treated as a primary architectural reference, not a supplementary finding. If Substrate submits to IETF, RATS is the working group home.
+Team 1 (Section 8.1) identifies that RFC 9334 (IETF RATS Architecture) provides an exact standard vocabulary for what Submantle is building: Attester (on-device daemon), Verifier (attestation server), Relying Party (brands). This is not just an analogy — it is the IETF's formal architecture for exactly this kind of system. None of the other four teams referenced this. It should be treated as a primary architectural reference, not a supplementary finding. If Submantle submits to IETF, RATS is the working group home.
 
 ### Surprise 2 — The go-sd-jwt RFC compliance issue is more significant than Team 5 flagged
 
-I expected to confirm Team 5's finding that go-sd-jwt v1.4.0 is the stable library for SD-JWT. What I found is that v1.4.0 was published in August 2025 and RFC 9901 was published in November 2025. The library predates the RFC by three months. The documentation still links to the draft. There is no release note claiming RFC 9901 conformance. This means both teams presenting go-sd-jwt as "implementing RFC 9901" are making an assumption that has not been verified. This needs a direct code audit or conformance test against RFC 9901 test vectors before Substrate uses it in production.
+I expected to confirm Team 5's finding that go-sd-jwt v1.4.0 is the stable library for SD-JWT. What I found is that v1.4.0 was published in August 2025 and RFC 9901 was published in November 2025. The library predates the RFC by three months. The documentation still links to the draft. There is no release note claiming RFC 9901 conformance. This means both teams presenting go-sd-jwt as "implementing RFC 9901" are making an assumption that has not been verified. This needs a direct code audit or conformance test against RFC 9901 test vectors before Submantle uses it in production.
 
 ### Surprise 3 — ERC-8004 is still a draft, undermining Team 3's market validation framing
 
@@ -251,7 +251,7 @@ The "24K+ agents registered in first two weeks" figure from Team 3 appears to ha
 
 ### Surprise 4 — The solo founder credibility problem is more acute than any team addressed directly
 
-Team 4 identifies it honestly. But no team addresses the compound problem: Substrate's founder is non-technical AND solo AND has no institutional affiliation AND is building in a space where the incumbent competitors (Trulioo, DataDome, HUMAN Security) have institutional backing and funded development teams. The path from here to institutional co-signer is not addressed. The research brief asked for what is "realistic" for a solo founder, and the honest answer from the playbook research is that the solo founder path requires either a technical co-author who provides credibility, a beachhead community that provides social proof, or a corporate co-signer who provides legitimacy — and Substrate currently has none of these.
+Team 4 identifies it honestly. But no team addresses the compound problem: Submantle's founder is non-technical AND solo AND has no institutional affiliation AND is building in a space where the incumbent competitors (Trulioo, DataDome, HUMAN Security) have institutional backing and funded development teams. The path from here to institutional co-signer is not addressed. The research brief asked for what is "realistic" for a solo founder, and the honest answer from the playbook research is that the solo founder path requires either a technical co-author who provides credibility, a beachhead community that provides social proof, or a corporate co-signer who provides legitimacy — and Submantle currently has none of these.
 
 ---
 
@@ -261,7 +261,7 @@ Team 4 identifies it honestly. But no team addresses the compound problem: Subst
 1. MCP is the right integration surface for V1. Evidence is strong, multi-team, and externally verified.
 2. The behavioral trust gap at the portable OS layer is real. All five teams confirm it independently.
 3. W3C VC 2.0 + SD-JWT is the right attestation format. The format choice is confirmed; the library conformance requires one additional verification step.
-4. The split-plane architecture (Tailscale model) is architecturally correct for Substrate's constraints.
+4. The split-plane architecture (Tailscale model) is architecturally correct for Submantle's constraints.
 5. Deterministic scoring has genuine legal and architectural advantages over all ML-based competitors.
 
 ### Requires Correction Before Use
@@ -270,12 +270,12 @@ Team 4 identifies it honestly. But no team addresses the compound problem: Subst
 3. **go-sd-jwt RFC 9901 conformance:** Do not state this library implements RFC 9901 without running conformance tests against RFC 9901 test vectors. The library was written before the RFC was published.
 
 ### Unresolved Tensions That Need Escalation
-1. **The behavioral attestation integrity problem:** What prevents a malicious on-device daemon from lying about its trust score and getting Substrate's server to sign it? Team 1 raises this in Novel Approaches. Team 5 designs around it in the VC schema. No team resolves it. This is an architectural-level integrity question that must be answered before the MVTL is designed.
+1. **The behavioral attestation integrity problem:** What prevents a malicious on-device daemon from lying about its trust score and getting Submantle's server to sign it? Team 1 raises this in Novel Approaches. Team 5 designs around it in the VC schema. No team resolves it. This is an architectural-level integrity question that must be answered before the MVTL is designed.
 2. **Solo founder attestation server operations:** The Tailscale model requires running a key-signing service with HSM-level security. This is not addressed in terms of what a solo founder can realistically operate. The architecture is right; the operational plan is missing.
 3. **The multi-device trust score federation problem:** The CRDT suggestion from Team 1 is a starting point, not a design. The Beta formula's behavior under CRDT merge is unverified mathematically.
 
 ### One Architectural Finding All Teams Missed
-Team 1's identification of RFC 9334 (IETF RATS Architecture) as the formal standard for what Substrate is building should be promoted to primary architectural reference status. RATS provides the standard vocabulary (Attester, Verifier, Relying Party), the two topology models (Passport Model vs. Background-Check Model), and the relevant IETF working group for any future standards submission. None of the other four teams referenced it. It should be in the expedition synthesis.
+Team 1's identification of RFC 9334 (IETF RATS Architecture) as the formal standard for what Submantle is building should be promoted to primary architectural reference status. RATS provides the standard vocabulary (Attester, Verifier, Relying Party), the two topology models (Passport Model vs. Background-Check Model), and the relevant IETF working group for any future standards submission. None of the other four teams referenced it. It should be in the expedition synthesis.
 
 ---
 

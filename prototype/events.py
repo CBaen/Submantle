@@ -105,14 +105,14 @@ class EventBus:
     Internal pub/sub event bus.
 
     Usage:
-        bus = EventBus(db=SubstrateDB())    # with persistence
+        bus = EventBus(db=SubmantleDB())    # with persistence
         bus = EventBus()                    # no persistence (tests, early init)
 
         def on_scan(event):
             print(f"Scan complete: {event.data['process_count']} processes")
 
         bus.subscribe(EventType.SCAN_COMPLETE, on_scan)
-        bus.emit(EventType.SCAN_COMPLETE, {"process_count": 42}, source="substrate")
+        bus.emit(EventType.SCAN_COMPLETE, {"process_count": 42}, source="submantle")
         bus.unsubscribe(EventType.SCAN_COMPLETE, on_scan)
 
     Privacy mode:

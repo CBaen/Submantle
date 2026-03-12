@@ -29,17 +29,17 @@ from typing import Any
 
 # Default database path — sits next to this file.
 # Tests should pass ':memory:' to the constructor instead.
-DEFAULT_DB_PATH = Path(__file__).parent / "substrate.db"
+DEFAULT_DB_PATH = Path(__file__).parent / "submantle.db"
 
 
-class SubstrateDB:
+class SubmantleDB:
     """
-    Lightweight SQLite interface for Substrate.
+    Lightweight SQLite interface for Submantle.
 
     Usage:
-        db = SubstrateDB()                  # uses prototype/substrate.db
-        db = SubstrateDB(':memory:')        # in-memory, for tests
-        db = SubstrateDB('/path/to/db')     # explicit path
+        db = SubmantleDB()                  # uses prototype/submantle.db
+        db = SubmantleDB(':memory:')        # in-memory, for tests
+        db = SubmantleDB('/path/to/db')     # explicit path
 
     Thread safety:
         File-backed: Each call acquires a short-lived connection. WAL mode allows
@@ -47,7 +47,7 @@ class SubstrateDB:
         Connection objects across threads.
 
         In-memory (':memory:'): A single persistent connection is held for the
-        lifetime of the SubstrateDB instance. SQLite :memory: databases are
+        lifetime of the SubmantleDB instance. SQLite :memory: databases are
         per-connection — a new connection sees an empty database. The persistent
         connection is protected with check_same_thread=False and is safe for
         single-threaded test use. For multi-threaded production use, always use
@@ -132,7 +132,7 @@ class SubstrateDB:
         Persist a process scan result.
 
         Args:
-            data: Full scan payload — the dict returned by substrate.scan_processes()
+            data: Full scan payload — the dict returned by submantle.scan_processes()
                   combined with the awareness_report(). Caller decides what to include.
             process_count: Total processes seen in this scan.
             identified_count: Processes matched to a signature.
@@ -225,7 +225,7 @@ class SubstrateDB:
         Insert a new agent registration.
 
         Args:
-            agent_name: Human-readable name (e.g., "SubstrateWatcher").
+            agent_name: Human-readable name (e.g., "SubmantleWatcher").
             version: Semver string.
             author: Publisher/author name.
             capabilities: List of capability strings the agent declares.

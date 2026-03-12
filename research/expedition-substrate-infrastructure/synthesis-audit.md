@@ -1,4 +1,4 @@
-# Synthesis Audit: Expedition — Substrate as Computing Infrastructure
+# Synthesis Audit: Expedition — Submantle as Computing Infrastructure
 ## Date: 2026-03-10
 ## Auditor: Independent (read all 8 source documents and synthesis in full)
 
@@ -14,7 +14,7 @@ Reading order: research-brief → team-1 → team-2 → team-3 → team-4 → te
 
 ## 1. Accuracy Check
 
-### Claim: "Every team independently confirmed that the layer Substrate targets — semantic OS-level process context for AI agents — is unoccupied."
+### Claim: "Every team independently confirmed that the layer Submantle targets — semantic OS-level process context for AI agents — is unoccupied."
 
 **Verdict: Substantially accurate, but overstated.**
 
@@ -68,15 +68,15 @@ Team 1 states "June 2026 spec release" as near-certain. Validation 1 specificall
 
 ---
 
-### Claim: "The technographics market is $1.17B (26% CAGR). Alternative data market $14-18B (50%+ CAGR). Desktop software co-occurrence data does not exist commercially. Substrate would own the category."
+### Claim: "The technographics market is $1.17B (26% CAGR). Alternative data market $14-18B (50%+ CAGR). Desktop software co-occurrence data does not exist commercially. Submantle would own the category."
 
-**Verdict: Market figures are accurate per Team 3 sourcing. "Substrate would own the category" is synthesis framing that goes beyond what Team 3 says. Team 3's actual language is "Substrate would own this category" — but Team 3 immediately qualifies this with five substantial gaps including unvalidated buyers, undefined consent architecture, and an actively shifting regulatory landscape. The synthesis presents the category ownership claim cleanly without the density of caveats Team 3 attaches to it.**
+**Verdict: Market figures are accurate per Team 3 sourcing. "Submantle would own the category" is synthesis framing that goes beyond what Team 3 says. Team 3's actual language is "Submantle would own this category" — but Team 3 immediately qualifies this with five substantial gaps including unvalidated buyers, undefined consent architecture, and an actively shifting regulatory landscape. The synthesis presents the category ownership claim cleanly without the density of caveats Team 3 attaches to it.**
 
 ---
 
 ### Claim: "A September 2025 CJEU ruling (C-413/23 P) suggests differentially private data may fall outside GDPR scope — favorable but untested."
 
-**Verdict: The "untested" qualifier is present, which is accurate. However, Validator 3 adds a dimension the synthesis omits: the ruling's applicability depends on Substrate being the *recipient* of already-anonymized data, but Substrate is also the *controller generating* the data — a meaningfully different legal position. The synthesis does not surface this controller-vs-recipient distinction. For a decision about whether to build a commercial data product, this distinction is material.**
+**Verdict: The "untested" qualifier is present, which is accurate. However, Validator 3 adds a dimension the synthesis omits: the ruling's applicability depends on Submantle being the *recipient* of already-anonymized data, but Submantle is also the *controller generating* the data — a meaningfully different legal position. The synthesis does not surface this controller-vs-recipient distinction. For a decision about whether to build a commercial data product, this distinction is material.**
 
 ---
 
@@ -100,17 +100,17 @@ These are findings in the source documents that appear nowhere in the synthesis 
 
 ### Missed Finding 1: Runlayer holds a governance seat in AAIF
 
-Validation 1, under "Surprises," explicitly states: "The AAIF gold member list includes Runlayer... Runlayer has a standards governance seat that Substrate does not. A competitor with governance access to the standard Substrate depends on is a more serious structural threat than either team identified."
+Validation 1, under "Surprises," explicitly states: "The AAIF gold member list includes Runlayer... Runlayer has a standards governance seat that Submantle does not. A competitor with governance access to the standard Submantle depends on is a more serious structural threat than either team identified."
 
-The synthesis mentions Runlayer as a competitor and market validator but does not mention this governance fact anywhere. This is significant: the company Substrate would most directly compete with as an MCP proxy can influence the standards that would govern Substrate's integration surface. This is not a footnote — it is a structural competitive disadvantage that should be in the risks section.
+The synthesis mentions Runlayer as a competitor and market validator but does not mention this governance fact anywhere. This is significant: the company Submantle would most directly compete with as an MCP proxy can influence the standards that would govern Submantle's integration surface. This is not a footnote — it is a structural competitive disadvantage that should be in the risks section.
 
 ---
 
 ### Missed Finding 2: Microsoft's Recall failure is a specific strategic opening on Windows, not just context
 
-Validator 3 flags this explicitly: "Microsoft's Recall failure is a strategic asset for Substrate, not just context. Enterprise IT teams who rejected Recall on privacy grounds are the exact audience for a privacy-first, user-controlled alternative. No team developed this angle. It should have been the center of the Windows go-to-market analysis."
+Validator 3 flags this explicitly: "Microsoft's Recall failure is a strategic asset for Submantle, not just context. Enterprise IT teams who rejected Recall on privacy grounds are the exact audience for a privacy-first, user-controlled alternative. No team developed this angle. It should have been the center of the Windows go-to-market analysis."
 
-The synthesis mentions the Recall failure briefly (as validation that Substrate's opposite approach is correct) but does not develop it as an active market opening. There is a specific buyer segment — enterprise IT teams that blocked Recall — who are currently experiencing a gap in ambient OS monitoring and are warm to a privacy-first alternative. The synthesis misses this.
+The synthesis mentions the Recall failure briefly (as validation that Submantle's opposite approach is correct) but does not develop it as an active market opening. There is a specific buyer segment — enterprise IT teams that blocked Recall — who are currently experiencing a gap in ambient OS monitoring and are warm to a privacy-first alternative. The synthesis misses this.
 
 ---
 
@@ -118,7 +118,7 @@ The synthesis mentions the Recall failure briefly (as validation that Substrate'
 
 Validator 3, under "Surprises," states: "The Insights revenue model... requires a binary architectural decision before anything else. There is no 'build it later' option for federated analytics — the privacy architecture must be designed in from the start, or the data that accumulates will not be usable for this product. This is not a 'future consideration' finding. It is an upfront design choice that needs to be made before the daemon is written in Go."
 
-The synthesis says: "design the daemon's data layer to support federated queries from the start." This is technically present in the synthesis, but it is buried in the "Novel Approaches" section under "Substrate Insights." It is not surfaced as a time-sensitive, go/no-go-level decision that must be made before V1 development begins. A reader could easily miss that this is a prerequisite decision, not a design recommendation.
+The synthesis says: "design the daemon's data layer to support federated queries from the start." This is technically present in the synthesis, but it is buried in the "Novel Approaches" section under "Submantle Insights." It is not surfaced as a time-sensitive, go/no-go-level decision that must be made before V1 development begins. A reader could easily miss that this is a prerequisite decision, not a design recommendation.
 
 ---
 
@@ -136,13 +136,13 @@ Both Validator 1 and Validator 2 independently caught that Dapr has had a stable
 
 ### Missed Finding 6: Team 4's cost table excludes billing infrastructure and overstates how cheaply V1 can run
 
-Validator 2 notes: "Team 4's cost table does not account for agent transaction settlement infrastructure... If agent transactions are processed through Substrate's coordination layer, the event ingestion and billing infrastructure is not a $50/month operation." The synthesis uses Team 4's infrastructure cost findings without this caveat. The "$50/month for 1,000 users" figure is accurate for the coordination server only, not the full billing-enabled product.
+Validator 2 notes: "Team 4's cost table does not account for agent transaction settlement infrastructure... If agent transactions are processed through Submantle's coordination layer, the event ingestion and billing infrastructure is not a $50/month operation." The synthesis uses Team 4's infrastructure cost findings without this caveat. The "$50/month for 1,000 users" figure is accurate for the coordination server only, not the full billing-enabled product.
 
 ---
 
 ### Missed Finding 7: The "just use X" kill shot is stronger for governance features than the synthesis acknowledges
 
-Team 5's Kill Shot 7 makes a specific argument the synthesis compresses: the governance wrapper (audit logs, compliance, authorization, permissions) IS replicable by incumbents. Datadog, Palo Alto, CyberArk, and Zenity can bolt these features onto existing products with existing distribution. The synthesis says Substrate should "lead with the novel capability" but doesn't explain that the other 80% of Substrate's described value (the governance layer) is genuinely commoditizable. The implication — that Substrate's moat is narrower than the full product description — is lost.
+Team 5's Kill Shot 7 makes a specific argument the synthesis compresses: the governance wrapper (audit logs, compliance, authorization, permissions) IS replicable by incumbents. Datadog, Palo Alto, CyberArk, and Zenity can bolt these features onto existing products with existing distribution. The synthesis says Submantle should "lead with the novel capability" but doesn't explain that the other 80% of Submantle's described value (the governance layer) is genuinely commoditizable. The implication — that Submantle's moat is narrower than the full product description — is lost.
 
 ---
 
@@ -156,7 +156,7 @@ The synthesis opens: "GO. But not on the full vision — on a specific, buildabl
 
 ---
 
-### Misrepresentation 2: "The team assigned to kill Substrate couldn't."
+### Misrepresentation 2: "The team assigned to kill Submantle couldn't."
 
 This closing sentence of the synthesis is the single most misleading sentence in the document. Team 5 identified nine kill shots. Three of them survived as serious threats — by Team 5's own assessment. Kill Shot 3 (solo non-technical founder) was called "the strongest kill shot" and "essentially no successful precedent" by Team 5. Kill Shot 1 (platform incumbents) was called "the most consequential long-term" risk. The synthesis frames the failure to deliver a clean kill as endorsement of the idea. It is more accurate to say: Team 5 found the kill shot is about the founding configuration, not the idea — which is a different statement that carries more weight for the person making the decision. The synthesis buries this by turning it into a triumph.
 
@@ -198,13 +198,13 @@ Kill Shot 3 says a technical co-founder is likely needed. The synthesis says: sh
 
 ### Unsaid 3: The community signatures moat requires a community that doesn't exist yet
 
-The synthesis calls the community signature repository "the moat" multiple times. Team 2 identifies the incentive problem in a gap item but doesn't resolve it: "What incentivizes a developer to contribute an identity signature to Substrate for free?" This is not a rhetorical question. It is the question the moat depends on. If the community doesn't contribute, the free library stays small, the premium packs have no foundation, and the differentiation claim collapses. All three validators and the synthesis agree the incentive structure "must be designed before the community is needed" — but none of them design it. The synthesis presents the signatures moat as established when it is aspirational.
+The synthesis calls the community signature repository "the moat" multiple times. Team 2 identifies the incentive problem in a gap item but doesn't resolve it: "What incentivizes a developer to contribute an identity signature to Submantle for free?" This is not a rhetorical question. It is the question the moat depends on. If the community doesn't contribute, the free library stays small, the premium packs have no foundation, and the differentiation claim collapses. All three validators and the synthesis agree the incentive structure "must be designed before the community is needed" — but none of them design it. The synthesis presents the signatures moat as established when it is aspirational.
 
 ---
 
 ### Unsaid 4: The privacy-first brand and the Insights revenue model are in deeper tension than acknowledged
 
-Team 3 says federated analytics dissolves the tension. The synthesis accepts this. But consider what Substrate would actually be doing at scale: it is a daemon running persistently on users' machines, monitoring all running processes, and periodically answering queries about what those users run, in aggregate. To a user who does not understand federated analytics — which is most users — this is indistinguishable from surveillance. The brand risk is not only about GDPR legal exposure; it is about user perception if a journalist writes "Substrate: The App That Monitors Every Process on Your Computer and Sells Aggregate Reports." Federated analytics is technically clean. Its marketability to non-technical users has not been established. No team researched how to explain federated analytics in consumer-facing language that doesn't sound like "we sell data about you."
+Team 3 says federated analytics dissolves the tension. The synthesis accepts this. But consider what Submantle would actually be doing at scale: it is a daemon running persistently on users' machines, monitoring all running processes, and periodically answering queries about what those users run, in aggregate. To a user who does not understand federated analytics — which is most users — this is indistinguishable from surveillance. The brand risk is not only about GDPR legal exposure; it is about user perception if a journalist writes "Submantle: The App That Monitors Every Process on Your Computer and Sells Aggregate Reports." Federated analytics is technically clean. Its marketability to non-technical users has not been established. No team researched how to explain federated analytics in consumer-facing language that doesn't sound like "we sell data about you."
 
 ---
 
@@ -226,7 +226,7 @@ Having read all 8 source documents and the synthesis, here is my go/no-go — wh
 
 **The idea is genuinely interesting. The near-term product is unclear. The founding configuration is the primary risk, not a secondary one.**
 
-The strongest evidence for building Substrate:
+The strongest evidence for building Submantle:
 - The OS-layer semantic process context gap is real. No current product occupies it. This has been confirmed across multiple independent research angles with real competitive analysis. It is not speculation.
 - MCP's adoption trajectory (97M+ monthly downloads, Linux Foundation governance, multi-vendor adoption) makes it the right integration surface. This is not a bet — it is a current fact.
 - The Tier 1 MCP server is genuinely buildable by a solo founder with AI assistance. The prototype exists. The gap between prototype and a working MCP server is manageable.
@@ -239,7 +239,7 @@ The strongest evidence against building it at the current founding configuration
 
 **My verdict: Conditional go, with the condition being more load-bearing than the synthesis acknowledges.**
 
-The condition is not "build V1 and iterate." The condition is: build V1 fast enough (before June 2026 WWDC, before AAIF standards set, before Helixar or a funded competitor occupies the specific niche), get enough real customer signal to distinguish genuine demand from developer curiosity, and use that signal to either raise pre-seed capital or attract a technical co-founder. If any of those three things doesn't happen — too slow, no signal, can't attract help — the window closes on the full infrastructure vision and Substrate remains a useful personal tool.
+The condition is not "build V1 and iterate." The condition is: build V1 fast enough (before June 2026 WWDC, before AAIF standards set, before Helixar or a funded competitor occupies the specific niche), get enough real customer signal to distinguish genuine demand from developer curiosity, and use that signal to either raise pre-seed capital or attract a technical co-founder. If any of those three things doesn't happen — too slow, no signal, can't attract help — the window closes on the full infrastructure vision and Submantle remains a useful personal tool.
 
 The synthesis says "put your energy into this." I would say: put your energy into the 90-day experiment. Define what V1 means concretely (working MCP server, queryable by at least one major agent framework, open-source daemon on GitHub), set a ship date, define what success looks like in user and revenue terms, and evaluate at that point whether the evidence warrants the larger investment.
 
@@ -253,7 +253,7 @@ These are specific changes that would make the synthesis more accurate without u
 
 ### Revision 1: Add Runlayer's AAIF governance seat to the Risks section
 
-Under "Critical" or "High" risks, add: "Runlayer holds a gold member governance seat in the AAIF — the same standards body governing MCP. A direct competitor has standards influence that Substrate does not. This should be resolved by Substrate shipping a public reference implementation before standards are written."
+Under "Critical" or "High" risks, add: "Runlayer holds a gold member governance seat in the AAIF — the same standards body governing MCP. A direct competitor has standards influence that Submantle does not. This should be resolved by Submantle shipping a public reference implementation before standards are written."
 
 **Source: Validation 1, Surprises section.**
 
@@ -269,7 +269,7 @@ The "Ship Before June 2026 WWDC" finding should explicitly state: the urgency co
 
 ### Revision 3: Correct the CJEU ruling's legal scope
 
-In the Insights section, add: "The September 2025 CJEU ruling's applicability is further complicated by the controller-vs-recipient distinction: the ruling favors a *recipient* of already-anonymized data, but Substrate is also the *controller generating* that data. Legal review must address this distinction specifically."
+In the Insights section, add: "The September 2025 CJEU ruling's applicability is further complicated by the controller-vs-recipient distinction: the ruling favors a *recipient* of already-anonymized data, but Submantle is also the *controller generating* that data. Legal review must address this distinction specifically."
 
 **Source: Validation 3, Evidence Challenge 3.**
 
@@ -283,9 +283,9 @@ In the x402 correction, add: "Validator 3 calculated the implied average x402 tr
 
 ---
 
-### Revision 5: Reframe "The team assigned to kill Substrate couldn't"
+### Revision 5: Reframe "The team assigned to kill Submantle couldn't"
 
-Change to: "Team 5 found that the kill shot is about who builds Substrate, not whether Substrate should be built. Three of its nine kill shots survive as serious threats: the solo non-technical founder ceiling, platform incumbents, and market timing. The fourth finding — that the idea is sound — is meaningful precisely because it comes from the team whose job was to find fatal flaws."
+Change to: "Team 5 found that the kill shot is about who builds Submantle, not whether Submantle should be built. Three of its nine kill shots survive as serious threats: the solo non-technical founder ceiling, platform incumbents, and market timing. The fourth finding — that the idea is sound — is meaningful precisely because it comes from the team whose job was to find fatal flaws."
 
 This preserves the endorsement value while accurately representing what Team 5 found.
 

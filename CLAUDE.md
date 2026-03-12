@@ -61,9 +61,9 @@ Submantle's defensible position is **structural neutrality**:
 - **Formula**: `trust = total_queries / (total_queries + incidents)` — Beta Reputation. Initialize at (1,1) = 0.5 ("unknown").
 - **Attestation format**: W3C Verifiable Credentials 2.0 + SD-JWT (RFC 9901). NOT BBS+ (still Candidate, no Go support).
 - **Agent identity**: `did:web` (DNS-anchored, no blockchain) for public identity, `did:key` for ephemeral.
-- **Tiers**: Anonymous (open access) -> Registered ("Substrate Verified") -> Trusted (high score, best rates).
+- **Tiers**: Anonymous (open access) -> Registered ("Submantle Verified") -> Trusted (high score, best rates).
 - **Anti-gaming**: Deterministic rules only — velocity caps, query diversity requirements, registration age visibility. No ML.
-- **Standards alignment**: IETF RATS RFC 9334 "Passport Model" maps precisely to Substrate's architecture (Attester = daemon, Verifier = attestation server, Relying Party = brands).
+- **Standards alignment**: IETF RATS RFC 9334 "Passport Model" maps precisely to Submantle's architecture (Attester = daemon, Verifier = attestation server, Relying Party = brands).
 - **Go libraries for production**: trustbloc/vc-go v1.3.6 (VC + SD-JWT), pascaldekloe/did v1.1.0 (DID parsing), MCP Go SDK v1.4.0.
 
 ## What "An Agent" Is
@@ -74,17 +74,17 @@ An agent is the **registered software entity**. Not the model. Not the context w
 
 - Don't add LLM-based process classification — signatures handle this
 - Don't send process data off-device
-- Don't add features that make Substrate an agent (it's the ground, not the organism)
+- Don't add features that make Submantle an agent (it's the ground, not the organism)
 - Don't over-engineer the prototype — it's for proving concepts
 - Don't add ML-based trust scoring or anomaly detection — this would enter EU AI Act scope and destroy a core competitive advantage
-- Don't build enforcement into Substrate — no blocking, no gating, no throttling. Substrate exposes scores; third parties decide what to do with them
+- Don't build enforcement into Submantle — no blocking, no gating, no throttling. Submantle exposes scores; third parties decide what to do with them
 - Don't add blockchain dependencies — deterministic, chain-agnostic
 - Don't build for mobile first — Android sandboxing blocks process awareness. Desktop/laptop only for V1.
-- Don't skip the credit bureau model — Substrate records third-party reports, it does NOT detect incidents
+- Don't skip the credit bureau model — Submantle records third-party reports, it does NOT detect incidents
 
 ## Build Priority — V1 Path to Proof
 
-The goal is ONE working customer loop: an agent carries a Substrate score, a brand uses it. Everything below serves that goal.
+The goal is ONE working customer loop: an agent carries a Submantle score, a brand uses it. Everything below serves that goal.
 
 | # | Task | Status | Why It Matters |
 |---|------|--------|---------------|
@@ -94,7 +94,7 @@ The goal is ONE working customer loop: an agent carries a Substrate score, a bra
 | 4 | Agent identity | DONE | Cryptographic registration |
 | 5 | Dashboard depth | NEXT | Nested data, clickable devices — makes the demo compelling |
 | 6 | Trust layer wiring | NEXT | Auth middleware, record_query(), compute_trust(), anti-gaming rules |
-| 7 | MCP server | NEXT | Agents query Substrate via Model Context Protocol — first real agent users |
+| 7 | MCP server | NEXT | Agents query Submantle via Model Context Protocol — first real agent users |
 | 8 | Demo / landing page | NEEDED | "Show me" must have an answer |
 | 9 | Go production rewrite | FUTURE | Real OS daemon, production performance |
 | 10 | W3C VC attestation issuance | FUTURE | Portable trust credentials |

@@ -163,7 +163,7 @@ The correct architecture for this is `asyncio.Lock` on `_get_state()`, but this 
 
 The agent registry's `record_query()` method tracks last_seen and total_queries. This is the foundation of the future trust scoring system. There is no call to `_registry.record_query(token)` anywhere in `api.py`. The query counter and last_seen timestamp will never increment through normal API usage.
 
-This means the trust tracking infrastructure built in Round 1 is correctly wired to the DB but disconnected at the API layer. When the MCP server queries Substrate, no usage data accumulates. The trust scoring algorithm (future work) will have no data to work with.
+This means the trust tracking infrastructure built in Round 1 is correctly wired to the DB but disconnected at the API layer. When the MCP server queries Submantle, no usage data accumulates. The trust scoring algorithm (future work) will have no data to work with.
 
 ### Finding 4.3 — `deregister` endpoint returns 404 if deregister() returns False AFTER verify() succeeded [IMPOSSIBLE STATE]
 
@@ -216,7 +216,7 @@ Any website can POST to `/api/privacy/toggle` and flip privacy mode, or POST to 
 
 ### Finding 6.2 — Agent token returned in plain JSON, no transport encryption [PROTOTYPE ACCEPTABLE]
 
-`POST /api/agents/register` returns the bearer token in JSON. On localhost this is fine. When Substrate gains a network-accessible interface (MCP server, mesh sync), this endpoint must be TLS-only. Documenting this now protects the MCP builder from assuming the token channel is secure.
+`POST /api/agents/register` returns the bearer token in JSON. On localhost this is fine. When Submantle gains a network-accessible interface (MCP server, mesh sync), this endpoint must be TLS-only. Documenting this now protects the MCP builder from assuming the token channel is secure.
 
 ### Finding 6.3 — Token security design is sound
 
@@ -224,7 +224,7 @@ HMAC-SHA256 construction, timing-safe comparison via `hmac.compare_digest`, SHA-
 
 ### Finding 6.4 — Privacy mode cannot be remotely disabled by an agent [CORRECT BEHAVIOR]
 
-The `/api/privacy/toggle` endpoint has no authentication requirement. Anyone with network access to the API can toggle privacy off. This is currently acceptable because Substrate is localhost-only. The MCP server build round must decide: should agents be able to disable privacy mode? Almost certainly not. Document this decision before the MCP endpoints are designed.
+The `/api/privacy/toggle` endpoint has no authentication requirement. Anyone with network access to the API can toggle privacy off. This is currently acceptable because Submantle is localhost-only. The MCP server build round must decide: should agents be able to disable privacy mode? Almost certainly not. Document this decision before the MCP endpoints are designed.
 
 ---
 
@@ -236,7 +236,7 @@ The `/api/privacy/toggle` endpoint has no authentication requirement. Anyone wit
 
 2. **No scan_with_events tests** — `substrate.py`'s new function has no test coverage. The `None` vs `[]` semantics (Finding 3.1), the PROCESS_STARTED/DIED diff logic, and the PRIVATE mode early return are all untested.
 
-3. **No integration tests that cross module boundaries with real objects** — all tests mock their dependencies. There is no test that wires `SubstrateDB + EventBus + PrivacyManager + AgentRegistry` together and verifies the whole chain. Finding 1.1 (bus privacy mode not synced) would be caught by an integration test.
+3. **No integration tests that cross module boundaries with real objects** — all tests mock their dependencies. There is no test that wires `SubmantleDB + EventBus + PrivacyManager + AgentRegistry` together and verifies the whole chain. Finding 1.1 (bus privacy mode not synced) would be caught by an integration test.
 
 4. **MockDB in `test_agent_registry.py` does not call `get_agent_by_id`** — this method is used in the real DB but the mock doesn't implement it. The mock is not a faithful contract proxy.
 
@@ -279,7 +279,7 @@ The `to_dict()` method on Event is correctly implemented. The wildcard subscript
 
 ## 9. SQLite Schema Soundness
 
-The schema is well-designed for Substrate's long-term needs:
+The schema is well-designed for Submantle's long-term needs:
 
 - `analytics_metadata` column on `scan_snapshots` is correctly present from day one, nullable, with detailed comments explaining why it cannot be retrofitted. This is sound forward architecture.
 - WAL mode is correct for the concurrent read/write access pattern.

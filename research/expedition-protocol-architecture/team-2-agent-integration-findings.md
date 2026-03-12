@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-MCP (Model Context Protocol) is the dominant, production-ready integration surface for AI agents as of March 2026. Anthropic-originated but community-governed, with an official Go SDK (v1.4.0, jointly maintained by Anthropic and Google), making it a natural fit for Substrate's production language. The integration path is clear: Substrate as an MCP server, exposing trust queries and ambient awareness as Tools and Resources. Every major agent framework (LangChain, CrewAI, AutoGen, Semantic Kernel) either natively connects to MCP servers or has an adapter. A single MCP server implementation reaches the majority of production agents without requiring framework-specific connectors.
+MCP (Model Context Protocol) is the dominant, production-ready integration surface for AI agents as of March 2026. Anthropic-originated but community-governed, with an official Go SDK (v1.4.0, jointly maintained by Anthropic and Google), making it a natural fit for Submantle's production language. The integration path is clear: Submantle as an MCP server, exposing trust queries and ambient awareness as Tools and Resources. Every major agent framework (LangChain, CrewAI, AutoGen, Semantic Kernel) either natively connects to MCP servers or has an adapter. A single MCP server implementation reaches the majority of production agents without requiring framework-specific connectors.
 
 ---
 
@@ -34,13 +34,13 @@ Source: modelcontextprotocol.io/docs/concepts/architecture, verified 2026-03-11
 
 ### Three Core Primitives (Server-Exposed)
 
-| Primitive | Description | Substrate Example |
+| Primitive | Description | Submantle Example |
 |-----------|-------------|-------------------|
 | Tools | Executable functions the LLM invokes | substrate_get_trust(agent_id) |
 | Resources | Data sources providing context | substrate://ambient-stream |
 | Prompts | Reusable interaction templates | "Analyze this agent behavioral history" |
 
-Tools are model-controlled (LLM decides when to call them). Resources are application-driven (host decides when to include them as context). Resources support subscriptions -- clients subscribe to a URI and receive push notifications when data changes. This is the ambient stream model Substrate needs.
+Tools are model-controlled (LLM decides when to call them). Resources are application-driven (host decides when to include them as context). Resources support subscriptions -- clients subscribe to a URI and receive push notifications when data changes. This is the ambient stream model Submantle needs.
 
 Source: MCP spec 2025-11-25, verified 2026-03-11
 
@@ -68,7 +68,7 @@ Tools carry: name (unique identifier), description (what the LLM reads to decide
 
 - TypeScript SDK: 11.8k GitHub stars, v1.27.1 (Feb 24, 2026), 158 contributors, 1,400 commits
 - Python SDK: v1.26.0 (Jan 24, 2026), Tier 1 (full spec compliance), Beta status
-- Go SDK: v1.4.0 (Feb 2026), 4.1k stars, 373 forks, 995 dependent projects, jointly maintained by Anthropic and Google. This is Substrate's production SDK.
+- Go SDK: v1.4.0 (Feb 2026), 4.1k stars, 373 forks, 995 dependent projects, jointly maintained by Anthropic and Google. This is Submantle's production SDK.
 - Also available: C#, Java, Rust, Swift, Ruby, PHP, Kotlin
 - MCP clients: Claude Desktop, ChatGPT, VS Code Copilot, Cursor, Windsurf, Zed, Replit, and dozens more
 
@@ -82,7 +82,7 @@ Source: GitHub repos and modelcontextprotocol.io/docs/sdk, verified 2026-03-11
 
 Tools defined with: name, description, input_schema (JSON Schema). When Claude decides a tool is needed, it returns a tool_use content block. The host executes and returns a tool_result block. Claude continues reasoning with the result.
 
-Anthropic supports strict: true on tool definitions for guaranteed schema conformance via Structured Outputs. This matters for Substrate: strict mode eliminates malformed trust queries reaching the server.
+Anthropic supports strict: true on tool definitions for guaranteed schema conformance via Structured Outputs. This matters for Submantle: strict mode eliminates malformed trust queries reaching the server.
 
 Source: docs.anthropic.com tool use docs, verified 2026-03-11
 
@@ -90,7 +90,7 @@ Source: docs.anthropic.com tool use docs, verified 2026-03-11
 
 Nearly identical pattern: tools defined with name, description, parameters (JSON Schema). Model returns a function call with arguments. Host executes and returns results.
 
-Critical constraint documented by OpenAI: no more than 10-20 tools per LLM call -- model accuracy degrades beyond that. Substrate's MCP tool surface should stay under 10 for MVP.
+Critical constraint documented by OpenAI: no more than 10-20 tools per LLM call -- model accuracy degrades beyond that. Submantle's MCP tool surface should stay under 10 for MVP.
 
 Source: Semantic Kernel docs referencing OpenAI function calling guide, verified 2026-03-11
 
@@ -102,7 +102,7 @@ Every major LLM provider (Anthropic, OpenAI, Google, Mistral, Cohere) uses the s
 3. Host executes and returns result
 4. Model continues
 
-MCP is the standardization layer above this. MCP defines how tools are discovered from external servers (via tools/list) and how calls are routed (via tools/call). Individual AI providers still have their own native APIs, but MCP abstracts the discovery layer so the same Substrate MCP server works with all of them without provider-specific code.
+MCP is the standardization layer above this. MCP defines how tools are discovered from external servers (via tools/list) and how calls are routed (via tools/call). Individual AI providers still have their own native APIs, but MCP abstracts the discovery layer so the same Submantle MCP server works with all of them without provider-specific code.
 
 ---
 
@@ -112,7 +112,7 @@ MCP is the standardization layer above this. MCP defines how tools are discovere
 
 Official MCP adapter (langchain-mcp-adapters, 3.4k GitHub stars as of March 2026). Wraps MCP tools into LangChain-compatible tools via MultiServerMCPClient. An agent connects to multiple MCP servers simultaneously, loads all tools via load_mcp_tools(), and binds them to any LLM via bind_tools().
 
-What this means for Substrate: A LangChain/LangGraph agent can connect to a Substrate MCP server with roughly 10 lines of configuration code. No Substrate-specific integration work needed from the agent developer.
+What this means for Submantle: A LangChain/LangGraph agent can connect to a Submantle MCP server with roughly 10 lines of configuration code. No Submantle-specific integration work needed from the agent developer.
 
 Source: github.com/langchain-ai/langchain-mcp-adapters, 3.4k stars, verified 2026-03-11
 
@@ -124,13 +124,13 @@ Source: docs.crewai.com/concepts/tools, verified 2026-03-11
 
 ### Microsoft Semantic Kernel
 
-Semantic Kernel explicitly supports three plugin import methods: native code, OpenAPI specification, and MCP Server. The docs state directly: "You can create a MCP Server from your Kernel instance, which allows other applications to consume your plugins as a service." Substrate as an MCP server would be natively importable as a Semantic Kernel plugin with no custom code.
+Semantic Kernel explicitly supports three plugin import methods: native code, OpenAPI specification, and MCP Server. The docs state directly: "You can create a MCP Server from your Kernel instance, which allows other applications to consume your plugins as a service." Submantle as an MCP server would be natively importable as a Semantic Kernel plugin with no custom code.
 
 Source: learn.microsoft.com/en-us/semantic-kernel/concepts/plugins/, verified 2026-03-11
 
 ### Framework Integration Summary
 
-| Framework | MCP Support | Path to Substrate |
+| Framework | MCP Support | Path to Submantle |
 |-----------|-------------|-------------------|
 | LangChain/LangGraph | Official adapter (3.4k stars) | Drop-in via langchain-mcp-adapters |
 | CrewAI | MCP toolkit | Via adapter or direct MCP client |
@@ -144,7 +144,7 @@ The network effect is real: an MCP server is not 7 different integrations. It is
 
 ---
 
-## 4. The MCP Authorization Model (Critical for Substrate)
+## 4. The MCP Authorization Model (Critical for Submantle)
 
 ### STDIO Transport (Local)
 
@@ -160,22 +160,22 @@ MCP has a full OAuth 2.1 authorization specification for HTTP-based servers:
 - PKCE required (S256 challenge method) for all authorization code flows
 - Session management via MCP-Session-Id header
 
-For Substrate specifically: An agent that has registered with Substrate and received a bearer token includes that token in every MCP HTTP request. The Substrate MCP server validates the token using the existing AgentRegistry.verify() logic and knows exactly which registered agent is asking. This maps perfectly to the existing architecture -- no new auth model is needed.
+For Submantle specifically: An agent that has registered with Submantle and received a bearer token includes that token in every MCP HTTP request. The Submantle MCP server validates the token using the existing AgentRegistry.verify() logic and knows exactly which registered agent is asking. This maps perfectly to the existing architecture -- no new auth model is needed.
 
 Source: modelcontextprotocol.io/specification/2025-11-25/basic/authorization, verified 2026-03-11
 
-### The Simplest Auth Path for Substrate MVP
+### The Simplest Auth Path for Submantle MVP
 
 For V1 (local, single machine):
-1. Agent calls Substrate REST API (POST /api/agents/register) to register and get token
+1. Agent calls Submantle REST API (POST /api/agents/register) to register and get token
 2. Token stored as environment variable
 3. MCP server (stdio transport) reads token from env at startup
 4. All subsequent MCP calls are pre-authorized
 
 For V2 (network, multi-tenant):
-1. Substrate MCP server responds to unauthenticated requests with HTTP 401 + WWW-Authenticate header
+1. Submantle MCP server responds to unauthenticated requests with HTTP 401 + WWW-Authenticate header
 2. MCP clients follow the OAuth 2.1 discovery flow automatically
-3. Substrate acts as its own authorization server or delegates to one
+3. Submantle acts as its own authorization server or delegates to one
 4. Full bearer token flow per the spec
 
 ---
@@ -202,17 +202,17 @@ Recommended pattern from A2A docs: "Use MCP for tools, A2A for agents."
 
 LangChain, Salesforce, SAP, ServiceNow, PayPal, Workday, MongoDB, Intuit, Atlassian, Box, Cohere, UKG. Enterprise-heavy -- aimed at business workflow automation where one agent delegates to another.
 
-### Relevance to Substrate
+### Relevance to Submantle
 
-A2A matters for Substrate's future, not V1. When agents collaborate peer-to-peer via A2A, they need to verify each other's trustworthiness before delegating work. An agent presenting its Substrate trust attestation (W3C VC + SD-JWT) to an A2A peer is the natural integration pattern. Substrate provides the credential; A2A defines how agents exchange it.
+A2A matters for Submantle's future, not V1. When agents collaborate peer-to-peer via A2A, they need to verify each other's trustworthiness before delegating work. An agent presenting its Submantle trust attestation (W3C VC + SD-JWT) to an A2A peer is the natural integration pattern. Submantle provides the credential; A2A defines how agents exchange it.
 
 Short term: build for MCP. Long term: trust attestations flow through A2A interactions.
 
 ---
 
-## 6. What a Substrate SDK Would Look Like
+## 6. What a Submantle SDK Would Look Like
 
-### Step A: Register with Substrate
+### Step A: Register with Submantle
 
 Today (REST API):
   POST /api/agents/register with agent_name, version, author, capabilities
@@ -238,12 +238,12 @@ Via MCP Tool call:
 
 ### What No-SDK Integration Looks Like
 
-Because MCP is JSON-RPC 2.0 over HTTP, the minimum for any agent to talk to Substrate:
+Because MCP is JSON-RPC 2.0 over HTTP, the minimum for any agent to talk to Submantle:
 1. HTTP POST to /mcp endpoint
 2. JSON-RPC initialize call (capability handshake, one round trip)
 3. JSON-RPC tools/call with tool name and arguments
 
-No Substrate SDK required. Any language with an HTTP library works. The official SDKs (Go, Python, TypeScript) just make it ergonomic.
+No Submantle SDK required. Any language with an HTTP library works. The official SDKs (Go, Python, TypeScript) just make it ergonomic.
 
 ---
 
@@ -251,28 +251,28 @@ No Substrate SDK required. Any language with an HTTP library works. The official
 
 ### MCP as Primary Integration Surface
 
-What: Build Substrate as an MCP server. Expose trust queries and awareness data as Tools and Resources.
+What: Build Submantle as an MCP server. Expose trust queries and awareness data as Tools and Resources.
 
 Evidence: Official Go SDK at v1.4.0, 4.1k stars, 995 dependent projects, co-maintained by Anthropic and Google. TypeScript SDK has 11.8k stars. Every major agent framework either natively supports MCP or has an official adapter.
 
 Source: github.com/modelcontextprotocol/go-sdk, github.com/modelcontextprotocol/typescript-sdk, modelcontextprotocol.io/docs/sdk, verified 2026-03-11
 
-Fits our case because: MCP is explicitly designed for agents querying external systems for context and action. Substrate IS the context provider. The architectural match is not incidental. One MCP server serves Claude, ChatGPT, LangChain, CrewAI, Semantic Kernel, VS Code Copilot simultaneously with no per-client integration work.
+Fits our case because: MCP is explicitly designed for agents querying external systems for context and action. Submantle IS the context provider. The architectural match is not incidental. One MCP server serves Claude, ChatGPT, LangChain, CrewAI, Semantic Kernel, VS Code Copilot simultaneously with no per-client integration work.
 
 Tradeoffs/Risks:
-- MCP spec is evolving. The old HTTP+SSE transport was deprecated in favor of Streamable HTTP. Breaking changes have happened between protocol versions. Pin to a specific protocol version in Substrate's implementation.
-- OAuth 2.1 auth for HTTP transport adds implementation complexity, but the spec is thorough and maps to Substrate's existing token model.
+- MCP spec is evolving. The old HTTP+SSE transport was deprecated in favor of Streamable HTTP. Breaking changes have happened between protocol versions. Pin to a specific protocol version in Submantle's implementation.
+- OAuth 2.1 auth for HTTP transport adds implementation complexity, but the spec is thorough and maps to Submantle's existing token model.
 - For local (same-machine) deployment, stdio transport limits to one client at a time. Acceptable for V1; Streamable HTTP resolves this for V2.
 
 ### Ambient Stream via MCP Resources and Subscriptions
 
-What: Expose real-time process awareness data as a subscribable MCP Resource. Agents subscribe once; Substrate pushes updates via notifications/resources/updated.
+What: Expose real-time process awareness data as a subscribable MCP Resource. Agents subscribe once; Submantle pushes updates via notifications/resources/updated.
 
 Evidence: MCP Resources support subscription natively (via resources/subscribe and notifications/resources/updated notifications). Documented in the 2025-11-25 spec and implemented in all Tier 1 SDKs.
 
 Source: modelcontextprotocol.io/specification/2025-11-25/server/resources, verified 2026-03-11
 
-Fits our case because: This is Substrate's ambient stream concept mapped directly to an existing MCP primitive. Agents feel the ground by subscribing to the resource rather than polling. No custom protocol needed.
+Fits our case because: This is Submantle's ambient stream concept mapped directly to an existing MCP primitive. Agents feel the ground by subscribing to the resource rather than polling. No custom protocol needed.
 
 Tradeoffs/Risks:
 - Resource subscriptions are stateful -- server must track which clients are subscribed and push updates. More complex than stateless tool calls.
@@ -284,19 +284,19 @@ Tradeoffs/Risks:
 
 ### MCP + A2A Trust Bridge
 
-What: Substrate issues W3C VC trust attestations (already designed) that agents present during A2A peer negotiations. Substrate MCP server is the credential issuer; A2A is the credential presentation channel.
+What: Submantle issues W3C VC trust attestations (already designed) that agents present during A2A peer negotiations. Submantle MCP server is the credential issuer; A2A is the credential presentation channel.
 
 Evidence: A2A v0.3.0 supports authentication and authorization as first-class features. W3C VC 2.0 + SD-JWT is designed for portable presentation. The two are architecturally complementary -- each solves a different layer.
 
 Source: github.com/google/A2A (22.4k stars, Linux Foundation), a2aprotocol.ai, verified 2026-03-11
 
-Fits our case because: Closes the loop on the portable trust promise. An agent earns trust through Substrate MCP interactions, carries the VC attestation, presents it to A2A peers who verify with Substrate.
+Fits our case because: Closes the loop on the portable trust promise. An agent earns trust through Submantle MCP interactions, carries the VC attestation, presents it to A2A peers who verify with Submantle.
 
 Tradeoffs/Risks: A2A is at v0.3.0, pre-1.0. Credential presentation format may shift before 1.0. This is future work, not V1 scope.
 
 ### MCP Tools with Structured Output Schemas
 
-What: Define outputSchema on all Substrate trust tools, enabling strict schema validation and direct LLM consumption of structured trust data without text parsing or hallucination risk.
+What: Define outputSchema on all Submantle trust tools, enabling strict schema validation and direct LLM consumption of structured trust data without text parsing or hallucination risk.
 
 Evidence: MCP spec 2025-11-25 explicitly defines outputSchema as a JSON Schema field on Tool definitions. When provided, servers must return structured results conforming to the schema. Anthropic strict mode for tool use guarantees schema conformance.
 
@@ -322,7 +322,7 @@ Tradeoffs/Risks: Marked experimental -- API may change before stabilization. Not
 
 ### MCP Elicitation for Human-Confirmed Incident Recording
 
-What: MCP's Elicitation primitive allows servers to request additional information from users. When an incident is flagged, Substrate could elicit confirmation from the agent's human operator before recording it in the trust ledger.
+What: MCP's Elicitation primitive allows servers to request additional information from users. When an incident is flagged, Submantle could elicit confirmation from the agent's human operator before recording it in the trust ledger.
 
 Fits our case because: Incident taxonomy (the number one unresolved design decision from prior trust layer research) needs human judgment. Elicitation creates a structured, MCP-native channel for that.
 
@@ -333,10 +333,10 @@ Tradeoffs/Risks: Client must support Elicitation (not all MCP clients do as of M
 ## Gaps and Unknowns
 
 1. MCP Auth Bootstrapping for Stdio Mode
-   For local deployments (stdio transport), the spec says retrieve credentials from the environment. Substrate needs a pre-auth step: agent registers via REST API (POST /api/agents/register), stores the token, and passes it as an env var before starting the MCP subprocess. No standard convention for this exists in the MCP spec -- implementer discretion.
+   For local deployments (stdio transport), the spec says retrieve credentials from the environment. Submantle needs a pre-auth step: agent registers via REST API (POST /api/agents/register), stores the token, and passes it as an env var before starting the MCP subprocess. No standard convention for this exists in the MCP spec -- implementer discretion.
 
 2. Tool Count vs. LLM Accuracy Tradeoff
-   OpenAI recommends 10-20 tools max per LLM call, with accuracy degrading beyond that. If Substrate exposes many tools (trust, process, devices, attestation, etc.), agents using OpenAI models may see degraded tool selection. Mitigation: keep MCP tool count under 10 for MVP by grouping related capabilities or using Resources for passive data that does not require active invocation.
+   OpenAI recommends 10-20 tools max per LLM call, with accuracy degrading beyond that. If Submantle exposes many tools (trust, process, devices, attestation, etc.), agents using OpenAI models may see degraded tool selection. Mitigation: keep MCP tool count under 10 for MVP by grouping related capabilities or using Resources for passive data that does not require active invocation.
 
 3. CrewAI Native MCP Status
    CrewAI official docs did not clearly document direct MCP server support in the portion accessible to this research. The LangChain adapter path works (CrewAI integrates LangChain Tools natively), but CrewAI's own first-party MCP integration story is unclear. Low risk -- the adapter path is confirmed functional.
@@ -353,21 +353,21 @@ Tradeoffs/Risks: Client must support Elicitation (not all MCP clients do as of M
 
 ### The Single Integration That Reaches the Most Agents
 
-Build Substrate as an MCP server using the official Go SDK (v1.4.0).
+Build Submantle as an MCP server using the official Go SDK (v1.4.0).
 
 This is not a close call. MCP has:
 - Official Go SDK with production metrics (4.1k stars, 995 dependent projects, co-maintained by Anthropic + Google)
 - Native support in Claude, ChatGPT, VS Code Copilot, Cursor, Windsurf (the tools developers use to build and run agents)
 - Official adapters for LangChain and Semantic Kernel (the frameworks that build production agent pipelines)
-- A complete authorization spec (OAuth 2.1) that maps directly to Substrate's existing HMAC bearer token model
+- A complete authorization spec (OAuth 2.1) that maps directly to Submantle's existing HMAC bearer token model
 - Ambient stream support via the Resources + Subscriptions primitive
 
-A LangChain agent, a Claude Desktop user, a CrewAI crew, and a Semantic Kernel enterprise system can all connect to the same Substrate MCP server with zero Substrate-specific client code. Widest reach, least effort, single implementation.
+A LangChain agent, a Claude Desktop user, a CrewAI crew, and a Semantic Kernel enterprise system can all connect to the same Submantle MCP server with zero Submantle-specific client code. Widest reach, least effort, single implementation.
 
-### What the Substrate MCP Server Exposes
+### What the Submantle MCP Server Exposes
 
 Tools (active queries, model-controlled -- LLM decides when to call):
-- substrate_register: register this agent with Substrate, receive HMAC bearer token
+- substrate_register: register this agent with Submantle, receive HMAC bearer token
 - substrate_get_trust: query trust score for any registered agent by agent_id
 - substrate_get_attestation: get W3C VC trust credential for this agent (portable proof of tier)
 - substrate_query_process: what is this process and what does it mean for the system?
@@ -383,10 +383,10 @@ For registered agents: Bearer token in every request; trust accumulates via reco
 
 ### The Authorization Mapping
 
-Substrate's existing bearer token model maps directly to MCP HTTP transport auth:
+Submantle's existing bearer token model maps directly to MCP HTTP transport auth:
 - Agent registers via substrate_register MCP tool, receives HMAC-SHA256 token
 - Agent stores token; includes it as Authorization: Bearer token on every subsequent MCP HTTP request
-- Substrate MCP server validates via AgentRegistry.verify() (existing code, unchanged)
+- Submantle MCP server validates via AgentRegistry.verify() (existing code, unchanged)
 - record_query() called on every valid authenticated request; trust score accumulates
 - Trust score updates reflected immediately in subsequent substrate_get_trust calls
 
@@ -394,7 +394,7 @@ This is the existing auth model surfaced through MCP's standard HTTP transport l
 
 ### Build Order Recommendation
 
-Phase 1 (Immediate): Wrap existing FastAPI REST routes as MCP Tools via Python MCP SDK (FastMCP, mcp package v1.2.0+). Enables MCP clients to reach Substrate within one session -- no Go migration required. Prototype validates the MCP integration surface before committing to the Go rewrite.
+Phase 1 (Immediate): Wrap existing FastAPI REST routes as MCP Tools via Python MCP SDK (FastMCP, mcp package v1.2.0+). Enables MCP clients to reach Submantle within one session -- no Go migration required. Prototype validates the MCP integration surface before committing to the Go rewrite.
 
 Phase 2 (Trust Layer Wiring): As trust layer wires (record_query, compute_trust, issue_attestation), expose as new MCP tools: substrate_get_trust, substrate_get_attestation.
 
@@ -402,11 +402,11 @@ Phase 3 (Resources and Subscriptions): Implement ambient stream as a subscribabl
 
 Phase 4 (Go Production Server): Rewrite MCP server in Go using official Go SDK (v1.4.0). Python prototype served its purpose -- retire it.
 
-Phase 5 (A2A Bridge): Once trust attestations are issuing, design A2A credential presentation pattern. Substrate attestations become the trust signal that A2A agents present to each other during peer delegation.
+Phase 5 (A2A Bridge): Once trust attestations are issuing, design A2A credential presentation pattern. Submantle attestations become the trust signal that A2A agents present to each other during peer delegation.
 
-### Why A2A Does Not Compete with MCP for Substrate's Integration Surface
+### Why A2A Does Not Compete with MCP for Submantle's Integration Surface
 
-MCP is for tool use -- agent queries a system. A2A is for peer delegation -- agent delegates to another agent. Substrate is a system that agents query, not an agent itself. Therefore MCP is the correct protocol for Substrate's integration surface. A2A becomes relevant when agents use Substrate-issued credentials in their peer negotiations -- Substrate provides the credential, A2A is the channel where it gets presented. Complementary, not competitive.
+MCP is for tool use -- agent queries a system. A2A is for peer delegation -- agent delegates to another agent. Submantle is a system that agents query, not an agent itself. Therefore MCP is the correct protocol for Submantle's integration surface. A2A becomes relevant when agents use Submantle-issued credentials in their peer negotiations -- Submantle provides the credential, A2A is the channel where it gets presented. Complementary, not competitive.
 
 ---
 

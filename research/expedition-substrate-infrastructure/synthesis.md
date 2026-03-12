@@ -1,4 +1,4 @@
-# Expedition Synthesis: Substrate as Computing Infrastructure
+# Expedition Synthesis: Submantle as Computing Infrastructure
 ## Date: 2026-03-10
 ## Vetted by: Orchestrator
 ## Alignment: Checked against Research Brief
@@ -10,7 +10,7 @@
 
 **GO — on a 90-day experiment with defined success criteria.** Not on the full infrastructure vision. Not an open-ended commitment.
 
-The category is real. The technical differentiation is genuine. The market timing is urgent in Substrate's favor. The founding configuration is the constraint, not the vision. Three of five teams independently confirmed that the layer Substrate targets — semantic OS-level process context for AI agents — is unoccupied (Teams 1, 3, 5 confirmed; Teams 2 and 4 assumed it). No product, funded or otherwise, knows what processes *mean*. That gap is real and defensible. However: the governance features (audit logs, compliance, authorization) ARE replicable by incumbents like Datadog and Palo Alto — the moat is narrower than the full product description implies.
+The category is real. The technical differentiation is genuine. The market timing is urgent in Submantle's favor. The founding configuration is the constraint, not the vision. Three of five teams independently confirmed that the layer Submantle targets — semantic OS-level process context for AI agents — is unoccupied (Teams 1, 3, 5 confirmed; Teams 2 and 4 assumed it). No product, funded or otherwise, knows what processes *mean*. That gap is real and defensible. However: the governance features (audit logs, compliance, authorization) ARE replicable by incumbents like Datadog and Palo Alto — the moat is narrower than the full product description implies.
 
 The Brief asked: "Does this expedition prove or disprove I should put my energy into this?" The honest answer is: **yes, put your energy into this — but frame it as a 90-day experiment.** Define what V1 means concretely (working MCP server, queryable by at least one major agent framework, open-source daemon on GitHub). Define what success looks like in user and revenue terms. Ship it. Evaluate whether the evidence warrants the larger investment.
 
@@ -26,7 +26,7 @@ Five teams gave conditional verdicts. No team delivered an unconditional go or n
 **Evidence strength: Very high.** Teams 1, 2, 4, 5 all independently confirm. 97M+ monthly SDK downloads. Adopted by Anthropic, OpenAI, Google, Microsoft. Donated to Linux Foundation's AAIF (December 2025). Platinum members: Amazon, Anthropic, Google, Microsoft, OpenAI. No team challenged this. Validators confirmed.
 
 ### 2. The OS-Layer Process Context Is Genuinely Unoccupied
-**Evidence strength: High.** Teams 1, 3, 5 confirm. Runlayer, Kong Context Mesh, agentgateway — none enriches agent requests with OS-level process awareness. Kong sees enterprise API data. Runlayer sees MCP traffic. Substrate would see what the machine is actually doing. This is real differentiation that composable alternatives cannot replicate without building Substrate. Team 5's strongest concession: "the semantic process identity and workflow graph are genuinely novel."
+**Evidence strength: High.** Teams 1, 3, 5 confirm. Runlayer, Kong Context Mesh, agentgateway — none enriches agent requests with OS-level process awareness. Kong sees enterprise API data. Runlayer sees MCP traffic. Submantle would see what the machine is actually doing. This is real differentiation that composable alternatives cannot replicate without building Submantle. Team 5's strongest concession: "the semantic process identity and workflow graph are genuinely novel."
 
 ### 3. Subscriptions Are the Near-Term Revenue Path
 **Evidence strength: High.** Teams 2, 5 converge. Microtransaction revenue at $0.001/query requires 1 billion queries/year for $1M ARR — a volume that took Stripe and Cloudflare years to reach. The subscription tiers ($15/month pro, $12/user team, $50-500K enterprise) are benchmarked against comparable products (Tailscale, 1Password, Datadog) — but no customer interviews were conducted, so these price points are benchmarked, not validated with real buyers. Agent transaction fees are a long-term aspiration, not launch revenue.
@@ -35,10 +35,10 @@ Five teams gave conditional verdicts. No team delivered an unconditional go or n
 **Evidence strength: High.** Teams 1, 4, 5 converge. The Tailscale model (open-source client, closed coordination server). Trust requires transparency for a product that monitors processes. No team argued against this. The commercial moat is the coordination layer, the store, and the knowledge graph — not the daemon code.
 
 ### 5. Ship Before June 2026 WWDC
-**Evidence strength: High.** The urgency comes from two independent sources: (1) Apple's WWDC 2026 may reveal process awareness capabilities (rumored Core AI framework — Team 5), and (2) the AAIF is forming standards now that will govern MCP's evolution (Teams 1, 5). Note: Team 1 cited a "June 2026 MCP spec release" but this date was fabricated — the actual roadmap contains no release date. The WWDC and AAIF drivers are real; the MCP spec date is not. If Substrate has a public, working MCP server before those standards are written, it has influence. If not, it implements someone else's spec.
+**Evidence strength: High.** The urgency comes from two independent sources: (1) Apple's WWDC 2026 may reveal process awareness capabilities (rumored Core AI framework — Team 5), and (2) the AAIF is forming standards now that will govern MCP's evolution (Teams 1, 5). Note: Team 1 cited a "June 2026 MCP spec release" but this date was fabricated — the actual roadmap contains no release date. The WWDC and AAIF drivers are real; the MCP spec date is not. If Submantle has a public, working MCP server before those standards are written, it has influence. If not, it implements someone else's spec.
 
 ### 6. Privacy-by-Architecture Is Defensible and Differentiated
-**Evidence strength: High.** All teams treat this as settled. On-device processing reduces GDPR exposure. Microsoft's Recall failure (opaque, continuous, cloud-connected monitoring) validates the opposite approach. Substrate's design — local, opt-in, query-driven, no cloud telemetry — avoids every property that made Recall fail.
+**Evidence strength: High.** All teams treat this as settled. On-device processing reduces GDPR exposure. Microsoft's Recall failure (opaque, continuous, cloud-connected monitoring) validates the opposite approach. Submantle's design — local, opt-in, query-driven, no cloud telemetry — avoids every property that made Recall fail.
 
 ### 7. The Solo Non-Technical Founder Ceiling Is the Strongest Constraint
 **Evidence strength: Very high.** Team 5 identifies. All 3 validators confirm as the most important finding. Every comparable infrastructure company (Tailscale, Docker, WireGuard, Signal, HashiCorp) was founded by engineers. No successful precedent exists for a solo non-technical founder building protocol-layer infrastructure. Vibe coding raises the ceiling but does not eliminate it — OS-level process monitoring across four platforms, signed kernel drivers, CRDT sync are not problems current AI coding tools solve reliably.
@@ -50,7 +50,7 @@ This is not an attack on capability. It is a structural observation about what t
 ## Battle-Tested Approaches (Proven Patterns, Filtered for Alignment)
 
 ### The Nginx Path (Team 1 — Strongest Analogy)
-Start as the authoritative process awareness source. Deploy as an MCP server. Evolve into the proxy that enriches all MCP traffic. Become the entry point that everything passes through because context lives there. Nginx became infrastructure not by claiming to be infrastructure, but by being the thing operators put in their config once. Substrate follows the same path: solve one problem well (what is running on this machine and what does it mean?), then accumulate into the routing layer because that's where the knowledge lives.
+Start as the authoritative process awareness source. Deploy as an MCP server. Evolve into the proxy that enriches all MCP traffic. Become the entry point that everything passes through because context lives there. Nginx became infrastructure not by claiming to be infrastructure, but by being the thing operators put in their config once. Submantle follows the same path: solve one problem well (what is running on this machine and what does it mean?), then accumulate into the routing layer because that's where the knowledge lives.
 
 *Note: This analogy comes from Team 1, which also produced the fabricated June 2026 MCP date. All three validators independently recognized the Nginx analogy as the strongest framing regardless. Weight Team 1's specific technical claims with additional caution; the Nginx strategic insight holds.*
 
@@ -58,8 +58,8 @@ Start as the authoritative process awareness source. Deploy as an MCP server. Ev
 The billing mechanism that solves three problems at once: eliminates per-microtransaction payment overhead, prevents unpaid usage (credits must exist before queries), and creates a natural fraud ceiling. This is what Clay.ai, OpenAI, and emerging agent billing platforms converge on. Stripe metered billing handles enterprise monthly invoicing. Together, they cover the billing architecture without requiring crypto or novel payment rails.
 
 ### Three-Tier Architecture (Teams 1, 4, 5)
-- **Tier 1 — MCP Server (buildable now):** Voluntary. Agents query Substrate for process context. No platform permission required. This IS the product at launch.
-- **Tier 2 — MCP Proxy (post-Go rewrite):** Substrate as local MCP gateway. All MCP traffic on the device passes through Substrate. Requires developer opt-in via configuration.
+- **Tier 1 — MCP Server (buildable now):** Voluntary. Agents query Submantle for process context. No platform permission required. This IS the product at launch.
+- **Tier 2 — MCP Proxy (post-Go rewrite):** Submantle as local MCP gateway. All MCP traffic on the device passes through Submantle. Requires developer opt-in via configuration.
 - **Tier 3 — OS-Level Guardian (requires platform credentials):** Kernel-level interception. Requires signed drivers (Microsoft) and ESF entitlements (Apple). Not bootstrappable — requires proven product and company credibility.
 
 The progression is buildable incrementally. Each tier adds value. Tier 1 alone justifies the product.
@@ -71,22 +71,22 @@ The key insight from the first expedition stands: signatures, not LLMs, identify
 
 ## Novel Approaches (Unconventional, Filtered for Feasibility)
 
-### Substrate Insights — Usage Intelligence (Team 3)
-"Google knows what people search for. Substrate knows what people actually use." The technographics market is $1.17B (26% CAGR). Alternative data market $14-18B (50%+ CAGR). Desktop software co-occurrence data does not exist commercially. Substrate would own the category.
+### Submantle Insights — Usage Intelligence (Team 3)
+"Google knows what people search for. Submantle knows what people actually use." The technographics market is $1.17B (26% CAGR). Alternative data market $14-18B (50%+ CAGR). Desktop software co-occurrence data does not exist commercially. Submantle would own the category.
 
-**The requirement:** Federated analytics architecture (Google Parfait model). Queries run on-device, only differentially private aggregates transmitted, raw data never leaves the device. This is the ONLY way Insights is compatible with privacy-first brand. A September 2025 CJEU ruling (C-413/23 P) suggests differentially private data may fall outside GDPR scope — favorable but untested. Important caveat from Validator 3: the ruling favors a *recipient* of already-anonymized data, but Substrate would also be the *controller generating* that data — a meaningfully different legal position that legal review must address specifically.
+**The requirement:** Federated analytics architecture (Google Parfait model). Queries run on-device, only differentially private aggregates transmitted, raw data never leaves the device. This is the ONLY way Insights is compatible with privacy-first brand. A September 2025 CJEU ruling (C-413/23 P) suggests differentially private data may fall outside GDPR scope — favorable but untested. Important caveat from Validator 3: the ruling favors a *recipient* of already-anonymized data, but Submantle would also be the *controller generating* that data — a meaningfully different legal position that legal review must address specifically.
 
 **The verdict on Insights:** Not for V1. The federated analytics infrastructure is a 6-18 month engineering investment on top of the core daemon. However, this is functionally a V1 no-go, not merely a deferral — Team 3's "conditional go" means "not buildable with current resources."
 
 **PREREQUISITE DECISION (must be made before Go daemon development begins):** The federated analytics architecture must be designed into the daemon's data layer from the start. There is no "build it later" option — if the data structures are not designed for federated queries, the data that accumulates will not be usable for this product later. This is a binary architectural choice, not a design recommendation. It does not require building Insights. It requires deciding NOW whether to preserve the option.
 
-### "Substrate Safe" Certification (Team 2)
-A SOC 2-style certification for AI agents: "this agent correctly uses the Substrate broker API and respects its signals." Revenue: $2,500-$5,000/year per agent framework. 83% of enterprise buyers require SOC 2 — if "Substrate Safe" reaches similar purchasing-requirement status, it becomes a recurring revenue engine.
+### "Submantle Safe" Certification (Team 2)
+A SOC 2-style certification for AI agents: "this agent correctly uses the Submantle broker API and respects its signals." Revenue: $2,500-$5,000/year per agent framework. 83% of enterprise buyers require SOC 2 — if "Submantle Safe" reaches similar purchasing-requirement status, it becomes a recurring revenue engine.
 
 **The verdict:** 12-24 months out. Certification is meaningless before the platform has adoption. Build credibility first, monetize the badge second. But UL Solutions launching AI safety certification (UL 3115, November 2025) validates the market exists.
 
 ### Agent Discovery via Standard Registries (Team 1)
-Substrate publishes a `/.well-known/substrate-card.json` describing its capabilities. Discovery registries (IETF ARDP, Microsoft Entra, Kong MCP Registry) index it. Agents searching for "OS context" find Substrate automatically. Passive growth — Substrate doesn't push; agents pull. This is how a service becomes infrastructure.
+Submantle publishes a `/.well-known/substrate-card.json` describing its capabilities. Discovery registries (IETF ARDP, Microsoft Entra, Kong MCP Registry) index it. Agents searching for "OS context" find Submantle automatically. Passive growth — Submantle doesn't push; agents pull. This is how a service becomes infrastructure.
 
 ---
 
@@ -100,9 +100,9 @@ The HTTP 402 "Payment Required" revival as an agent payment rail. Zero protocol 
 **The corrected verdict:** x402 exists and functions, but is in a developer-experimentation phase, not enterprise infrastructure. Keep it as an experimental developer track. Do not build billing architecture around it. Enterprise-ready timeline: 2028 at earliest.
 
 ### Agent Mesh Pattern (Team 1)
-The "agent mesh" is an emerging architectural pattern (named by Solo.io, Gartner, others) describing a runtime layer for agent discovery, secure communication, and policy enforcement. Substrate's process awareness would function as the data plane of a device-centric agent mesh.
+The "agent mesh" is an emerging architectural pattern (named by Solo.io, Gartner, others) describing a runtime layer for agent discovery, secure communication, and policy enforcement. Submantle's process awareness would function as the data plane of a device-centric agent mesh.
 
-**The corrected verdict:** The pattern is being defined by infrastructure vendors with existing businesses. Substrate's differentiation must be the OS-level context that cloud-first vendors cannot see — not competing on the mesh features themselves.
+**The corrected verdict:** The pattern is being defined by infrastructure vendors with existing businesses. Submantle's differentiation must be the OS-level context that cloud-first vendors cannot see — not competing on the mesh features themselves.
 
 ---
 
@@ -155,7 +155,7 @@ The "agent mesh" is an emerging architectural pattern (named by Solo.io, Gartner
 - **All 3 Validators:** Team 4 proves infrastructure is cheap to RUN. Team 5 proves infrastructure is hard to BUILD. Different questions. Both correct in their domain.
 - **My assessment:** Team 5 is the stronger finding. The resolution is Team 5's Option 3 — ship what you can, prove the value, then get help.
 
-### Is Substrate Insights Compatible with Privacy?
+### Is Submantle Insights Compatible with Privacy?
 - **Team 3:** Yes, with federated analytics. The privacy tension dissolves architecturally.
 - **Prior Expedition (Team 6):** Ruled it out due to the privacy paradox.
 - **All 3 Validators:** Team 3 wins this argument. But the engineering investment is a real gate.
@@ -188,22 +188,22 @@ The "agent mesh" is an emerging architectural pattern (named by Solo.io, Gartner
 ## Unresearched Gaps (Flagged by Validators, Not Addressed by Teams)
 
 ### 1. Anthropic Partnership Path
-The Brief explicitly asked for this. No team investigated it. MCP alignment is noted throughout, but the specific question — what would an Anthropic partnership look like, what precedents exist, what the relationship between Substrate and Anthropic's tooling would be — is unaddressed. This gap should be closed before finalizing strategy.
+The Brief explicitly asked for this. No team investigated it. MCP alignment is noted throughout, but the specific question — what would an Anthropic partnership look like, what precedents exist, what the relationship between Submantle and Anthropic's tooling would be — is unaddressed. This gap should be closed before finalizing strategy.
 
 ### 2. Customer Validation
-No team sourced developer interviews, enterprise buyer conversations, or willingness-to-pay evidence. The entire business case rests on market analogy. Validator 1 flags this as "the single largest gap across all five reports." Before investing months of build time, Substrate needs evidence that real developers and enterprises want what it provides.
+No team sourced developer interviews, enterprise buyer conversations, or willingness-to-pay evidence. The entire business case rests on market analogy. Validator 1 flags this as "the single largest gap across all five reports." Before investing months of build time, Submantle needs evidence that real developers and enterprises want what it provides.
 
 ### 3. Windows-First Strategy
 The prototype runs on Windows. Microsoft's Recall failure is not just context — it is an active market opening. Enterprise IT teams that blocked Recall on privacy grounds are precisely the buyer segment for a privacy-first, user-controlled alternative. They are warm RIGHT NOW. Windows ETW is better documented and less credential-gated than macOS ESF. No team examined whether Windows-first narrows the founding capability problem enough to make V1 buildable by a solo founder, or developed the Recall-gap go-to-market angle. This could substantially change the calculus on Kill Shot 3 and should be the center of go-to-market planning.
 
 ### 4. Helixar.ai
-Team 5 flags Helixar.ai as building "a detection layer with a lightweight endpoint agent combined with an inbound API security layer" — potentially the exact product Substrate describes. Pre-GA, VC-backed. No team investigated their architecture, funding, or timeline. If Helixar ships before Substrate, it materially changes the competitive picture.
+Team 5 flags Helixar.ai as building "a detection layer with a lightweight endpoint agent combined with an inbound API security layer" — potentially the exact product Submantle describes. Pre-GA, VC-backed. No team investigated their architecture, funding, or timeline. If Helixar ships before Submantle, it materially changes the competitive picture.
 
 ### 5. /dev/agents Architecture
-$56M at $500M valuation. Founded by Stripe CTO, Hugo Barra. Their actual architecture is unknown. If they are building local-process-aware functionality (not just cloud agent orchestration), they are Substrate's most dangerous competitor. Job postings, GitHub repos, and public demos should be investigated.
+$56M at $500M valuation. Founded by Stripe CTO, Hugo Barra. Their actual architecture is unknown. If they are building local-process-aware functionality (not just cloud agent orchestration), they are Submantle's most dangerous competitor. Job postings, GitHub repos, and public demos should be investigated.
 
 ### 6. Android and Mobile
-Substrate's vision includes phones (fall detection, work migration between devices). Google's AppFunctions is a direct hit on mobile process identity. No team assessed what Substrate looks like on Android or whether mobile can be deferred.
+Submantle's vision includes phones (fall detection, work migration between devices). Google's AppFunctions is a direct hit on mobile process identity. No team assessed what Submantle looks like on Android or whether mobile can be deferred.
 
 ### 7. Developer Community Flywheel
 No team researched what specifically makes developer-facing daemon tools achieve community adoption. Why would a developer contribute process identity signatures? The incentive structure is undefined.
@@ -213,13 +213,13 @@ No team researched what specifically makes developer-facing daemon tools achieve
 ## Risks
 
 ### Critical
-- **Apple ships native process context broker at WWDC 2026.** Substrate's macOS TAM evaporates. Probability: low-medium (rumors exist, no confirmation). Impact: severe for macOS, survivable if Windows-first.
+- **Apple ships native process context broker at WWDC 2026.** Submantle's macOS TAM evaporates. Probability: low-medium (rumors exist, no confirmation). Impact: severe for macOS, survivable if Windows-first.
 - **Solo founder ceiling prevents production daemon from being built.** The strongest finding in the expedition. Mitigated by scoping V1 to Tier 1 MCP server only.
 
 ### High
 - **No customer validation exists.** The business case is built on analogy, not demand. First real user conversations could invalidate assumptions. Mitigate by validating before building beyond prototype.
-- **AAIF standards crystallize without Substrate at the table.** Runlayer — Substrate's closest competitor as an MCP proxy — holds a gold member governance seat in the AAIF, the standards body governing MCP. A direct competitor has standards influence over the protocol Substrate depends on. Substrate does not. Mitigate by shipping a public reference implementation before standards are written.
-- **EU AI Act classification triggers compliance costs.** If Substrate markets as an "AI safety" product, it may trigger high-risk AI system classification. 145 days to August 2026 deadline. Legal review is not optional.
+- **AAIF standards crystallize without Submantle at the table.** Runlayer — Submantle's closest competitor as an MCP proxy — holds a gold member governance seat in the AAIF, the standards body governing MCP. A direct competitor has standards influence over the protocol Submantle depends on. Submantle does not. Mitigate by shipping a public reference implementation before standards are written.
+- **EU AI Act classification triggers compliance costs.** If Submantle markets as an "AI safety" product, it may trigger high-risk AI system classification. 145 days to August 2026 deadline. Legal review is not optional.
 
 ### Medium
 - **Funded competitors (/dev/agents, Helixar.ai) ship first.** The 12-24 month window before category consolidation is real but finite. Mitigate by occupying the niche (OS-level process context) that funded competitors haven't targeted.
@@ -228,13 +228,13 @@ No team researched what specifically makes developer-facing daemon tools achieve
 
 ### Low
 - **MCP loses to competing protocol.** MCP's adoption (97M+ monthly downloads) and governance (AAIF, Linux Foundation) make displacement unlikely in the 3-5 year horizon. Monitor A2A and ACP.
-- **x402 fails entirely.** Not a risk to Substrate — x402 was always an experimental track, not core billing.
+- **x402 fails entirely.** Not a risk to Submantle — x402 was always an experimental track, not core billing.
 
 ---
 
 ## What This Expedition Proved
 
-1. The category Substrate targets is real, funded, and activating NOW
+1. The category Submantle targets is real, funded, and activating NOW
 2. The specific layer (semantic OS-level process context) is unoccupied by every existing and funded product
 3. MCP is the right integration surface with dominant adoption
 4. Subscriptions are the viable near-term revenue path
@@ -248,14 +248,14 @@ No team researched what specifically makes developer-facing daemon tools achieve
 1. That real customers exist and would pay (no demand validation conducted)
 2. That the Anthropic partnership path is realistic (not researched despite Brief's request)
 3. That the founding configuration can be resolved (identified as constraint, not resolved)
-4. That Substrate Insights can survive EU regulatory scrutiny (legal review flagged as needed, not done)
+4. That Submantle Insights can survive EU regulatory scrutiny (legal review flagged as needed, not done)
 5. That Helixar.ai or /dev/agents are not building the same product (not investigated)
 
 ---
 
 ## Final Word
 
-Team 5 found that the kill shot is about who builds Substrate, not whether Substrate should be built. Three of its nine kill shots survive as serious threats: the solo non-technical founder ceiling, platform incumbents, and market timing. The finding that matters — that the idea is sound — is meaningful precisely because it comes from the team whose job was to find fatal flaws. Their own conclusion: "The idea is strong. The configuration that executes it needs to change."
+Team 5 found that the kill shot is about who builds Submantle, not whether Submantle should be built. Three of its nine kill shots survive as serious threats: the solo non-technical founder ceiling, platform incumbents, and market timing. The finding that matters — that the idea is sound — is meaningful precisely because it comes from the team whose job was to find fatal flaws. Their own conclusion: "The idea is strong. The configuration that executes it needs to change."
 
 Five teams. Three validators. One independent auditor. The convergence is clear: the idea is sound, the timing is urgent, the differentiation is real. The path is narrow but walkable: ship the MCP server, prove the value, then earn the resources the full vision requires.
 

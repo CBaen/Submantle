@@ -7,7 +7,7 @@
 
 ## Preface: Method
 
-I read all five team findings and the research brief before writing this report. The brief's expected outcome was a clear architectural blueprint explaining: what Substrate is technically, how agents connect, how it grows with AI, who else is building adjacent infrastructure, and how a protocol achieves global adoption — explained for a non-technical founder. I evaluated findings against that stated outcome and against the non-negotiable constraints.
+I read all five team findings and the research brief before writing this report. The brief's expected outcome was a clear architectural blueprint explaining: what Submantle is technically, how agents connect, how it grows with AI, who else is building adjacent infrastructure, and how a protocol achieves global adoption — explained for a non-technical founder. I evaluated findings against that stated outcome and against the non-negotiable constraints.
 
 The divergence-first protocol is followed exactly: problems before agreements.
 
@@ -69,15 +69,15 @@ Team 4 cites "240,000 certificates per day by year-end 2016" and "HTTPS jumped f
 
 ## Section 2: Contradictions
 
-### Contradiction 2.1 — Team 1 and Team 5 give conflicting signals on "Substrate as trust registry"
+### Contradiction 2.1 — Team 1 and Team 5 give conflicting signals on "Submantle as trust registry"
 
-Team 1 (Section 2.4, Synthesis) describes the recommended architecture as a "thin coordination layer" where Substrate's servers act as a "notary, not a data processor" — receiving "this agent has score X, computed on device Y" and issuing a signed VC. The emphasis is on minimal server involvement.
+Team 1 (Section 2.4, Synthesis) describes the recommended architecture as a "thin coordination layer" where Submantle's servers act as a "notary, not a data processor" — receiving "this agent has score X, computed on device Y" and issuing a signed VC. The emphasis is on minimal server involvement.
 
-Team 5 (Part 8) proposes that "Substrate itself as a trust registry" using TRQP v2.0 would make Substrate "the first behavioral trust registry in the TRQP ecosystem" — a TRQP-compliant API that answers behavioral questions through a governance registry interface.
+Team 5 (Part 8) proposes that "Submantle itself as a trust registry" using TRQP v2.0 would make Submantle "the first behavioral trust registry in the TRQP ecosystem" — a TRQP-compliant API that answers behavioral questions through a governance registry interface.
 
-**The tension:** Team 1's model is a thin notary. Team 5's model is a queryable registry with a REST API that organizations consult. These are architecturally different trust relationships. A notary stamps credentials and steps back. A registry is a live, queryable authoritative source. If Substrate is a TRQP registry, it becomes a critical dependency for any verifier who uses the TRQP interface — rather than being a pure credential issuer whose credentials can be verified offline.
+**The tension:** Team 1's model is a thin notary. Team 5's model is a queryable registry with a REST API that organizations consult. These are architecturally different trust relationships. A notary stamps credentials and steps back. A registry is a live, queryable authoritative source. If Submantle is a TRQP registry, it becomes a critical dependency for any verifier who uses the TRQP interface — rather than being a pure credential issuer whose credentials can be verified offline.
 
-**Which has stronger evidence?** Both derive from valid protocol analogies (TLS for Team 1, TRQP registry pattern for Team 5). But the Brief's constraint "privacy by architecture — on-device processing" sits more naturally with Team 1's thin notary model. A live, queryable TRQP registry would create call-home behavior — verifiers querying Substrate's servers every time they need to validate an agent credential — which conflicts with Team 1's offline-verifiable VC model.
+**Which has stronger evidence?** Both derive from valid protocol analogies (TLS for Team 1, TRQP registry pattern for Team 5). But the Brief's constraint "privacy by architecture — on-device processing" sits more naturally with Team 1's thin notary model. A live, queryable TRQP registry would create call-home behavior — verifiers querying Submantle's servers every time they need to validate an agent credential — which conflicts with Team 1's offline-verifiable VC model.
 
 **Resolution needed:** The two models are not irreconcilable, but the distinction between "offline-verifiable VC issuer" (Team 1) and "live queryable behavioral trust registry" (Team 5) needs to be explicitly resolved before the architecture is finalized. They have different privacy implications, different uptime requirements, and different competitive positioning.
 
@@ -85,7 +85,7 @@ Team 5 (Part 8) proposes that "Substrate itself as a trust registry" using TRQP 
 
 ### Contradiction 2.2 — Team 4's "solo founder technical credibility gap" contradicts Team 4's own optimism about the IETF path
 
-Team 4 simultaneously argues that (a) an individual can submit to the IETF Independent Stream for an RFC without working group sponsorship, and (b) the credibility gap is that Substrate needs "a human technical voice — not necessarily the founder, but someone who can co-author the attestation specification and respond to expert review."
+Team 4 simultaneously argues that (a) an individual can submit to the IETF Independent Stream for an RFC without working group sponsorship, and (b) the credibility gap is that Submantle needs "a human technical voice — not necessarily the founder, but someone who can co-author the attestation specification and respond to expert review."
 
 These two claims are in tension. The IETF independent submission path does not require institutional backing, but it does require a specification that survives "technical competence" review — which Team 4 acknowledges requires a technical co-author because the current builder (Guiding Light) cannot defend design decisions under expert peer review. Team 4 calls this "not a showstopper" but it is the single largest concrete obstacle to the IETF path.
 
@@ -97,9 +97,9 @@ These two claims are in tension. The IETF independent submission path does not r
 
 ### Contradiction 2.3 — Teams 3 and 5 treat ERC-8004 differently
 
-Team 3 cites ERC-8004 as evidence of "market demand for persistent agent reputation" and notes 24K+ agents registered in the first two weeks. Team 5 does not mention ERC-8004. Team 3 identifies ERC-8004's limitations (feedback-based, not runtime behavioral, excludes payment mechanisms, requires crypto knowledge). Neither team asks: if ERC-8004 has 24K+ registrations in two weeks, does this suggest the on-chain feedback-based approach is winning the "persistent agent reputation" space before Substrate can establish a beachhead?
+Team 3 cites ERC-8004 as evidence of "market demand for persistent agent reputation" and notes 24K+ agents registered in the first two weeks. Team 5 does not mention ERC-8004. Team 3 identifies ERC-8004's limitations (feedback-based, not runtime behavioral, excludes payment mechanisms, requires crypto knowledge). Neither team asks: if ERC-8004 has 24K+ registrations in two weeks, does this suggest the on-chain feedback-based approach is winning the "persistent agent reputation" space before Submantle can establish a beachhead?
 
-**Assessment:** This question is unasked. ERC-8004's 24K registrations in two weeks is either an impressive signal of product-market fit for on-chain agent reputation (which Substrate would compete with) or it is a low-bar automated registration event (ERC-8004 excludes payment mechanisms, meaning registration has no cost or consequence). Team 3 notes that ERC-8004 Reputation Registry is feedback-based, not runtime behavioral. But the rate of adoption (24K in two weeks) deserves more scrutiny — if this ecosystem grows and layers behavioral attestation on top (Team 3's Unknown 1), it becomes a more serious competitive concern than currently assessed.
+**Assessment:** This question is unasked. ERC-8004's 24K registrations in two weeks is either an impressive signal of product-market fit for on-chain agent reputation (which Submantle would compete with) or it is a low-bar automated registration event (ERC-8004 excludes payment mechanisms, meaning registration has no cost or consequence). Team 3 notes that ERC-8004 Reputation Registry is feedback-based, not runtime behavioral. But the rate of adoption (24K in two weeks) deserves more scrutiny — if this ecosystem grows and layers behavioral attestation on top (Team 3's Unknown 1), it becomes a more serious competitive concern than currently assessed.
 
 **Severity:** Moderate. Not a current threat, but an unstudied competitive trajectory.
 
@@ -121,11 +121,11 @@ What was delivered: Five technically detailed research documents with excellent 
 
 ### Drift 3.2 — The "always aware, never acting" constraint is occasionally violated in framing
 
-The Brief's constraint: "Substrate exposes scores, never enforces." The findings, particularly Team 3, describe Substrate as living "between identity verification and payment authorization — the moment a merchant asks..." This framing positions Substrate as an active checkpoint in the transaction flow, not a passive score provider.
+The Brief's constraint: "Submantle exposes scores, never enforces." The findings, particularly Team 3, describe Submantle as living "between identity verification and payment authorization — the moment a merchant asks..." This framing positions Submantle as an active checkpoint in the transaction flow, not a passive score provider.
 
-Team 3's transaction chain diagram shows: `→ [BEHAVIORAL TRUST CHECK — HAPPENS HERE]` — written as though Substrate performs an active check. The correct framing is: a merchant optionally queries Substrate's score, then the merchant decides whether to proceed. The behavioral trust check is the merchant's act, not Substrate's.
+Team 3's transaction chain diagram shows: `→ [BEHAVIORAL TRUST CHECK — HAPPENS HERE]` — written as though Submantle performs an active check. The correct framing is: a merchant optionally queries Submantle's score, then the merchant decides whether to proceed. The behavioral trust check is the merchant's act, not Submantle's.
 
-**Assessment:** The constraint is technically maintained (Team 3 consistently says "Substrate provides the score; brands decide"), but the transaction chain visualization frames Substrate as an active gatekeeper rather than a passive data source. For a non-technical founder using this as a compass, this framing is subtly misleading. Guiding Light may incorrectly describe Substrate as "checking agents at payment time" rather than "providing scores that merchants use to make their own checks."
+**Assessment:** The constraint is technically maintained (Team 3 consistently says "Submantle provides the score; brands decide"), but the transaction chain visualization frames Submantle as an active gatekeeper rather than a passive data source. For a non-technical founder using this as a compass, this framing is subtly misleading. Guiding Light may incorrectly describe Submantle as "checking agents at payment time" rather than "providing scores that merchants use to make their own checks."
 
 **Severity:** Low technically, moderate for Guiding Light's communication of the product.
 
@@ -179,7 +179,7 @@ The Brief's team assignment for Team 4 included: "What's realistic for a solo fo
 
 2. **What does the "recruit a technical co-author" step actually look like?** Team 4 names this as the prerequisite but provides no guidance on where to find this person, what they'd need to be paid/compensated, or what the equivalent relationships looked like in the historical cases.
 
-3. **Can Substrate survive on Guiding Light's personal resources through the 18-24 month window before inflection?** The MCP case study (Anthropic-backed, 8 people on the initial team) and the ISRG case study (nonprofit with EFF backing from day one) are not solo-founder analogies despite being used as such. Git and BitTorrent are the true solo-founder cases — and both Torvalds (paid by OSDL) and Cohen (independent but immediately visible at CodeCon) had means to sustain themselves.
+3. **Can Submantle survive on Guiding Light's personal resources through the 18-24 month window before inflection?** The MCP case study (Anthropic-backed, 8 people on the initial team) and the ISRG case study (nonprofit with EFF backing from day one) are not solo-founder analogies despite being used as such. Git and BitTorrent are the true solo-founder cases — and both Torvalds (paid by OSDL) and Cohen (independent but immediately visible at CodeCon) had means to sustain themselves.
 
 **Assessment:** Team 4 identifies the credibility gap and names the ISRG parallel correctly. But the analysis stops at "here's what you need" without examining "here's whether you can get it and what it realistically takes." For a non-technical founder using this as a compass, the missing piece is: what does the first 90 days actually look like? This is the most consequential gap in the entire expedition relative to the Brief's stated purpose.
 
@@ -192,7 +192,7 @@ The Brief's team assignment for Team 4 included: "What's realistic for a solo fo
 The Brief lists the incident taxonomy as "#1 blocking design decision" from prior research. Five teams researched adjacent areas. None investigated what competing behavioral trust systems use as their incident definitions, or what IETF/W3C drafts have proposed. This information would have:
 
 1. Given Guiding Light concrete options to react to instead of designing from scratch
-2. Validated whether Substrate's Beta formula (which requires a defined "incident") is compatible with any existing framework
+2. Validated whether Submantle's Beta formula (which requires a defined "incident") is compatible with any existing framework
 
 Team 2 mentions MCP Elicitation as a potential channel for human-confirmed incident recording. Team 3 identifies Stripe's Five Levels (the trust cliff at Level 4) as a useful framing for what incidents would matter to merchants. But no team investigated what DataDome, HUMAN Security, Oscilar, or Mnemom actually count as incidents — which would have provided empirical ground truth for the taxonomy decision.
 
@@ -202,15 +202,15 @@ Team 2 mentions MCP Elicitation as a potential channel for human-confirmed incid
 
 ---
 
-### Missing 4.5 — Team 5 did not investigate whether Substrate's "on-device" model survives mobile (Android) deployment
+### Missing 4.5 — Team 5 did not investigate whether Submantle's "on-device" model survives mobile (Android) deployment
 
 The Brief notes Guiding Light's devices include a Windows 11 laptop and an Android phone. Team 5 recommends a two-tier DID model: did:key for local-only, did:web for externally verifiable. But Android's sandboxing model is significantly different from Windows:
 
-- On Android, apps cannot observe other apps' processes — the OS-level process awareness that is Substrate's core competitive advantage (Team 3: "OS-level daemon has no equivalent") is blocked by Android's security model.
+- On Android, apps cannot observe other apps' processes — the OS-level process awareness that is Submantle's core competitive advantage (Team 3: "OS-level daemon has no equivalent") is blocked by Android's security model.
 - did:web for mobile agents requires an always-on HTTPS endpoint, which is not practical for a phone.
-- Substrate's "inner ring" (software awareness) is architecturally blocked on modern mobile OSes by design.
+- Submantle's "inner ring" (software awareness) is architecturally blocked on modern mobile OSes by design.
 
-**Assessment:** This gap is meaningful for the product roadmap but was outside Team 5's research scope. It should be flagged because the Brief's architecture vision ("any agent can query it, any device can run a node") includes mobile, and mobile OS constraints may fundamentally limit Substrate's awareness capabilities there. The trust layer (attestation issuance, score querying) could still work on mobile — but the behavioral observation capability that generates the trust signals cannot work on mobile the way it works on desktop.
+**Assessment:** This gap is meaningful for the product roadmap but was outside Team 5's research scope. It should be flagged because the Brief's architecture vision ("any agent can query it, any device can run a node") includes mobile, and mobile OS constraints may fundamentally limit Submantle's awareness capabilities there. The trust layer (attestation issuance, score querying) could still work on mobile — but the behavioral observation capability that generates the trust signals cannot work on mobile the way it works on desktop.
 
 **Severity:** Moderate for V1 (mobile is not in scope), High for the "any device" vision.
 
@@ -221,7 +221,7 @@ The Brief notes Guiding Light's devices include a Windows 11 laptop and an Andro
 The following findings were reached independently by multiple teams and carry high confidence:
 
 **Agreement 5.1 — The behavioral trust gap at the portable, OS-level is real and unoccupied.**
-Teams 3, 4, and 5 independently confirmed this from different research angles (agent economy infrastructure, protocol adoption history, decentralized identity). Team 3 found 19 Forrester vendors, all per-site only. Team 5 found no behavioral attestation VC schema anywhere in the W3C/DID ecosystem. Team 4 found no protocol that occupies Substrate's specific market position. Three independent confirmations from different research methodologies. This is the highest-confidence finding in the expedition.
+Teams 3, 4, and 5 independently confirmed this from different research angles (agent economy infrastructure, protocol adoption history, decentralized identity). Team 3 found 19 Forrester vendors, all per-site only. Team 5 found no behavioral attestation VC schema anywhere in the W3C/DID ecosystem. Team 4 found no protocol that occupies Submantle's specific market position. Three independent confirmations from different research methodologies. This is the highest-confidence finding in the expedition.
 
 **Agreement 5.2 — MCP is the right integration surface for V1.**
 Teams 1 and 2 both arrive at MCP independently. Team 1 from protocol topology analysis (MCP as the OAuth-layer for agent tools). Team 2 from direct investigation of agent framework integration paths. Both confirm the Go SDK is production-appropriate. The framework adoption evidence (LangChain 3.4k stars adapter, Semantic Kernel native, Claude native) is sourced and independently consistent.
@@ -236,23 +236,23 @@ Teams 1 and 2 independently arrive at a control/data plane split. Team 1 names i
 Teams 4 and 1 both arrive at this conclusion. Team 4 through historical case studies (RSS failure, MCP Linux Foundation donation). Team 1 through analysis of the brand trust bootstrapping problem. The timing recommendation from Team 4 (after institutional co-sign, before critical mass commercial deployment) is specific and evidence-based.
 
 **Agreement 5.6 — A2A is complementary, not competitive, and is future-work only.**
-Teams 1 and 2 both independently defer A2A to Phase 5/future scope. The reasoning is consistent: MCP handles agent-to-system queries, A2A handles agent-to-agent peer delegation. Substrate is a system, not an agent. V1 focus on MCP is correct.
+Teams 1 and 2 both independently defer A2A to Phase 5/future scope. The reasoning is consistent: MCP handles agent-to-system queries, A2A handles agent-to-agent peer delegation. Submantle is a system, not an agent. V1 focus on MCP is correct.
 
 ---
 
 ## Section 6: Surprises
 
 **Surprise 6.1 — IETF actively knows behavioral attestation is missing and has no draft for it.**
-Team 3's finding that multiple IETF drafts explicitly state "continuous attestation of behavioral patterns is required" and mark it as "future work" is the most strategically significant finding in the expedition. Standards bodies do not normally call out gaps they aren't filling. This is an invitation. The absence of a competing draft is not just a gap — it is an open door. A Substrate-submitted Internet-Draft for a behavioral attestation format would not be entering a crowded standards space; it would be filling a named, acknowledged vacancy. The expedition found this but none of the teams fully underscored its strategic weight.
+Team 3's finding that multiple IETF drafts explicitly state "continuous attestation of behavioral patterns is required" and mark it as "future work" is the most strategically significant finding in the expedition. Standards bodies do not normally call out gaps they aren't filling. This is an invitation. The absence of a competing draft is not just a gap — it is an open door. A Submantle-submitted Internet-Draft for a behavioral attestation format would not be entering a crowded standards space; it would be filling a named, acknowledged vacancy. The expedition found this but none of the teams fully underscored its strategic weight.
 
 **Surprise 6.2 — Ceramic Network pivoted away from decentralized identity and toward agent intelligence.**
-Team 5 found that Ceramic (February 2025, 3Box Labs + Textile merger) has pivoted toward "an open intelligence network where AI agents can autonomously buy and sell intelligence from each other." This is directionally adjacent to Substrate's domain (agent intelligence infrastructure), but Ceramic's approach (marketplace for intelligence) is different from Substrate's (behavioral trust scoring). This is worth monitoring — if Ceramic builds toward portable agent reputations as part of their intelligence marketplace, they could become a late-stage competitor from an unexpected direction.
+Team 5 found that Ceramic (February 2025, 3Box Labs + Textile merger) has pivoted toward "an open intelligence network where AI agents can autonomously buy and sell intelligence from each other." This is directionally adjacent to Submantle's domain (agent intelligence infrastructure), but Ceramic's approach (marketplace for intelligence) is different from Submantle's (behavioral trust scoring). This is worth monitoring — if Ceramic builds toward portable agent reputations as part of their intelligence marketplace, they could become a late-stage competitor from an unexpected direction.
 
 **Surprise 6.3 — The "solo founder" historical analogies are systematically stronger-than-solo.**
-Every solo founder protocol case in Team 4 — Git (Torvalds paid by OSDL for Linux kernel work), BitTorrent (Cohen immediately high-profile at CodeCon), ISRG (four collaborators) — had institutional backing, domain credibility, or immediate community recognition that Substrate does not yet have. The gap between "one person wrote this" and "one person with no institutional affiliation or prior domain recognition wrote this" is larger than the historical analogies suggest. This is not disqualifying — but the optimistic read of these analogies papers over a real structural difference in the starting position.
+Every solo founder protocol case in Team 4 — Git (Torvalds paid by OSDL for Linux kernel work), BitTorrent (Cohen immediately high-profile at CodeCon), ISRG (four collaborators) — had institutional backing, domain credibility, or immediate community recognition that Submantle does not yet have. The gap between "one person wrote this" and "one person with no institutional affiliation or prior domain recognition wrote this" is larger than the historical analogies suggest. This is not disqualifying — but the optimistic read of these analogies papers over a real structural difference in the starting position.
 
 **Surprise 6.4 — Oscilar's per-institution behavioral scoring is the most direct near-competitor that was not previously identified.**
-Team 3 identifies Oscilar as an "AI Risk Decisioning Platform for financial institutions" that computes "behavioral trust score based on mandate handling, transaction success rates, and dispute frequency." This is the closest structural match to Substrate's approach that has been found across all research. Oscilar is per-institution (not portable) and proprietary (not open), but its existence proves that financial institutions will pay for behavioral trust scoring of agents. Oscilar competing or partnering with Substrate at the financial institution layer deserves a dedicated future expedition.
+Team 3 identifies Oscilar as an "AI Risk Decisioning Platform for financial institutions" that computes "behavioral trust score based on mandate handling, transaction success rates, and dispute frequency." This is the closest structural match to Submantle's approach that has been found across all research. Oscilar is per-institution (not portable) and proprietary (not open), but its existence proves that financial institutions will pay for behavioral trust scoring of agents. Oscilar competing or partnering with Submantle at the financial institution layer deserves a dedicated future expedition.
 
 ---
 
@@ -273,7 +273,7 @@ Team 3 identifies Oscilar as an "AI Risk Decisioning Platform for financial inst
 ### What Is Genuinely Open and Needs Guiding Light's Input
 1. **Incident taxonomy** — Still the #1 blocking decision, untouched by this expedition. No technical progress is possible on trust wiring until this has product input.
 2. **Technical co-author recruitment** — Team 4 correctly identifies this as a prerequisite for IETF credibility. It needs a plan, not just an acknowledgment.
-3. **Who is the gatekeeper?** — Team 4 identifies this as the single most important strategic question for adoption: which AI platform, marketplace, or enterprise buyer could make "no Substrate trust score" feel like a product liability? This requires Guiding Light's business judgment.
+3. **Who is the gatekeeper?** — Team 4 identifies this as the single most important strategic question for adoption: which AI platform, marketplace, or enterprise buyer could make "no Submantle trust score" feel like a product liability? This requires Guiding Light's business judgment.
 
 ### Special Focus Verdicts
 
@@ -281,7 +281,7 @@ Team 3 identifies Oscilar as an "AI Risk Decisioning Platform for financial inst
 
 **"No competitor" claim:** Substantially validated. The behavioral trust gap at the portable, OS-level, deterministic layer is genuinely unoccupied. However, "unoccupied" requires three qualifications: (1) Oscilar occupies the per-institution financial layer and is the closest structural competitor found; (2) ERC-8004's rapid registration growth (24K in two weeks) represents an on-chain reputation approach that could evolve toward behavioral attestation; (3) if any of the 19 Forrester BATMS vendors builds portability, or if Ceramic's intelligence network adds reputation scoring, the gap narrows. "No competitor" today does not mean "no competitor at protocol launch."
 
-**Solo founder realism:** Honest but incomplete. Team 4's analysis is the most candid of the five teams on this question. The historical analogies are valid but systematically rosier than Substrate's actual starting position — every cited solo protocol founder had institutional backing or immediate domain credibility. The practical path (ship running code, recruit a technical co-author, target one institutional co-signer, submit to IETF independent stream) is directionally correct. What is missing is operational specificity: what does finding a technical co-author actually look like? What does it cost? What does the first 90 days look like for the IETF path? A solo non-technical founder using this document as a compass needs more granular next steps on the credibility prerequisites, not just the acknowledgment that they exist.
+**Solo founder realism:** Honest but incomplete. Team 4's analysis is the most candid of the five teams on this question. The historical analogies are valid but systematically rosier than Submantle's actual starting position — every cited solo protocol founder had institutional backing or immediate domain credibility. The practical path (ship running code, recruit a technical co-author, target one institutional co-signer, submit to IETF independent stream) is directionally correct. What is missing is operational specificity: what does finding a technical co-author actually look like? What does it cost? What does the first 90 days look like for the IETF path? A solo non-technical founder using this document as a compass needs more granular next steps on the credibility prerequisites, not just the acknowledgment that they exist.
 
 ---
 

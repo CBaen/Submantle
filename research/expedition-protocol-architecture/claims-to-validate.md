@@ -18,7 +18,7 @@ These are the key claims from 5 research teams that need external verification.
 
 **Claim A4 (Team 2):** Every major agent framework (LangChain, CrewAI, AutoGen, Semantic Kernel) either natively connects to MCP servers or has an adapter. A single MCP server implementation reaches the majority of production agents.
 
-**Claim A5 (Team 2):** MCP OAuth 2.1 authorization spec maps directly to Substrate's existing HMAC bearer token model.
+**Claim A5 (Team 2):** MCP OAuth 2.1 authorization spec maps directly to Submantle's existing HMAC bearer token model.
 - Source cited: modelcontextprotocol.io/specification/2025-11-25/basic/authorization
 
 **Claim A6 (Team 2):** A2A protocol (Google) has 22.4k GitHub stars, v0.3.0, Linux Foundation stewardship.
@@ -55,7 +55,7 @@ These are the key claims from 5 research teams that need external verification.
 
 ## CLUSTER C: Protocol Architecture
 
-**Claim C1 (Team 1):** RATS RFC 9334 "Passport Model" (agent carries credential, presents anywhere) names Substrate's architecture precisely.
+**Claim C1 (Team 1):** RATS RFC 9334 "Passport Model" (agent carries credential, presents anywhere) names Submantle's architecture precisely.
 - Source cited: IETF RATS architecture
 
 **Claim C2 (Team 1):** Tailscale's split-plane model (thin control plane + on-device data plane) is the correct reference architecture.
@@ -79,7 +79,7 @@ These are the key claims from 5 research teams that need external verification.
 **Claim D4 (Team 5):** Ceramic Network pivoted away from decentralized identity (February 2025 merger with Textile).
 - Source cited: blog.ceramic.network/ceramic-is-joining-textile/
 
-**Claim D5 (Team 5):** TRQP v2.0 (Trust Registry Query Protocol) is finalizing in 2026 — Substrate could implement as first behavioral trust registry.
+**Claim D5 (Team 5):** TRQP v2.0 (Trust Registry Query Protocol) is finalizing in 2026 — Submantle could implement as first behavioral trust registry.
 - Source cited: trustoverip.github.io/tswg-trust-registry-protocol/
 
 **Claim D6 (Team 5):** BehavioralAttestation credential type does not exist anywhere in the VC ecosystem.
@@ -107,6 +107,6 @@ These are the key claims from 5 research teams that need external verification.
 
 1. Has ANY new behavioral trust competitor emerged since March 2026 that we missed?
 2. Is MCP actually as dominant as claimed, or are there serious alternatives the teams didn't consider?
-3. Is the "product first, protocol later" path actually viable, or does Substrate need to start as a protocol from day one?
+3. Is the "product first, protocol later" path actually viable, or does Submantle need to start as a protocol from day one?
 4. Can a non-technical founder maintain direction over a protocol project, or will they inevitably lose control?
 5. Are there regulatory risks the teams understated?

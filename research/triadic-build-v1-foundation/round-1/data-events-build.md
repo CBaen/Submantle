@@ -9,7 +9,7 @@
 
 ### Task 1: SQLite Persistence (`prototype/database.py`)
 
-`SubstrateDB` class. Raw sqlite3, no ORM, WAL mode.
+`SubmantleDB` class. Raw sqlite3, no ORM, WAL mode.
 
 **Four tables:**
 - `scan_snapshots` — process scan results with nullable `analytics_metadata` column
@@ -20,8 +20,8 @@
 **Interface summary for Integration builder (Round 2):**
 
 ```
-db = SubstrateDB()              # file-backed, default path
-db = SubstrateDB(':memory:')    # in-memory (tests only)
+db = SubmantleDB()              # file-backed, default path
+db = SubmantleDB(':memory:')    # in-memory (tests only)
 
 # Scans
 db.save_scan_snapshot(data, process_count, identified_count)  -> int (row id)
@@ -75,7 +75,7 @@ db.all_settings()                   -> dict[str, str]
 ```python
 from events import EventBus, EventType, Event
 
-bus = EventBus(db=SubstrateDB())   # with persistence
+bus = EventBus(db=SubmantleDB())   # with persistence
 bus = EventBus()                   # without persistence (early startup)
 
 # Subscribe
@@ -145,7 +145,7 @@ bool(bus.privacy_mode)        # current state
 ```
 
 Coverage:
-- `SubstrateDB`: all public methods covered, including edge cases (empty results, constraint violations, prune no-ops, timestamp updates)
+- `SubmantleDB`: all public methods covered, including edge cases (empty results, constraint violations, prune no-ops, timestamp updates)
 - `EventBus`: subscribe/unsubscribe mechanics, all EventType privacy rules, SQLite integration, error isolation, wildcard subscriptions, data immutability
 
 ---
@@ -160,7 +160,7 @@ Coverage:
 
 ## Notes for Integration Builder (Round 2)
 
-- **Initialization order matters.** `SubstrateDB` must be created before `EventBus` if you want persistence. It's safe to create `EventBus(db=None)` early and call `bus._db = db` later if needed.
+- **Initialization order matters.** `SubmantleDB` must be created before `EventBus` if you want persistence. It's safe to create `EventBus(db=None)` early and call `bus._db = db` later if needed.
 - **Privacy sync.** When `PrivacyManager` toggles state, it should call both `bus.set_privacy_mode(active)` AND emit `EventType.PRIVACY_TOGGLED`. The bus will allow PRIVACY_TOGGLED through regardless of mode.
 - **Scan persistence.** After each `scan_processes()` call, pass the result to `db.save_scan_snapshot(data, process_count, identified_count)`. The `data` field is flexible — include whatever the API needs to reconstruct the last known state on restart.
 - **Pruning.** Call `db.prune_scan_history()` and `db.prune_events()` periodically (e.g., once per hour). Default keep counts are 1000 snapshots and 10000 events — generous for a prototype, adjustable.

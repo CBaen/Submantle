@@ -153,7 +153,7 @@ The `delete_agent`/`deregister_agent` mismatch bug caught and fixed by Integrati
 
 **No injection risk found.** All SQLite queries use parameterized statements (`?` placeholders). No string formatting into SQL.
 
-**No deserialization risk.** `json.loads` is used only on data written by Substrate itself (not from external input).
+**No deserialization risk.** `json.loads` is used only on data written by Submantle itself (not from external input).
 
 ---
 
@@ -178,7 +178,7 @@ The `delete_agent`/`deregister_agent` mismatch bug caught and fixed by Integrati
        bus.set_privacy_mode.assert_called_once_with(True)
    ```
 
-2. **No integration tests across module boundaries.** The test suite tests each module in isolation with mocks. There are no tests that run `PrivacyManager` + `EventBus` + `SubstrateDB` together through the actual API layer. An end-to-end test (even a minimal one hitting the FastAPI app with `httpx` or `TestClient`) would have caught BUG-1 immediately.
+2. **No integration tests across module boundaries.** The test suite tests each module in isolation with mocks. There are no tests that run `PrivacyManager` + `EventBus` + `SubmantleDB` together through the actual API layer. An end-to-end test (even a minimal one hitting the FastAPI app with `httpx` or `TestClient`) would have caught BUG-1 immediately.
 
 3. **No test for `scan_with_events` in `substrate.py`.** The function is entirely untested. Its privacy gate, PID diffing logic, and event emissions are not covered.
 

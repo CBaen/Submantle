@@ -1,10 +1,10 @@
-# Build Brief: Substrate V1 Foundation
+# Build Brief: Submantle V1 Foundation
 ## Date: 2026-03-10
-## Project: Substrate
+## Project: Submantle
 ## Source: Fresh-eyes audit + expedition synthesis + Guiding Light product direction
 
 ### Goal
-Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistence, an internal event bus, and agent identity registration. These four components are the foundation that the MCP server, ambient awareness stream, and polished dashboard will build on in subsequent rounds.
+Build the invisible groundwork for Submantle V1: privacy mode, SQLite persistence, an internal event bus, and agent identity registration. These four components are the foundation that the MCP server, ambient awareness stream, and polished dashboard will build on in subsequent rounds.
 
 ### Existing Code (all in prototype/)
 - `substrate.py` (238 lines) — process scanning, signature matching, process tree, impact queries
@@ -41,7 +41,7 @@ Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistenc
   - `settings` — key-value settings store (key TEXT PRIMARY KEY, value TEXT, updated_at)
 - CRITICAL: Include nullable `analytics_metadata JSON` column on scan_snapshots for future federated analytics accommodation. This is a prerequisite architectural decision — can't retrofit later.
 - Database file: prototype/substrate.db (must be gitignored)
-- Provide clean Python interface: SubstrateDB class with methods for each operation
+- Provide clean Python interface: SubmantleDB class with methods for each operation
 - No ORM — raw sqlite3, keep it lightweight
 - WAL mode for concurrent read access
 
@@ -60,7 +60,7 @@ Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistenc
 - PrivacyManager class managing AWARE and PRIVATE states
 - AWARE: normal operation
 - PRIVATE: stops scanning, drops in-memory state, writes nothing to SQLite scan tables, suppresses process events
-- Privacy mode still allows: health checks, agent registry queries, "Substrate is running" signals, PRIVACY_TOGGLED events
+- Privacy mode still allows: health checks, agent registry queries, "Submantle is running" signals, PRIVACY_TOGGLED events
 - State persisted via SQLite settings table (call database.py interface)
 - Thread-safe state access (threading.Lock)
 - check_privacy() method that other components call before doing sensitive work
@@ -68,9 +68,9 @@ Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistenc
 **Task 4: Agent Identity & Registration (prototype/agent_registry.py)**
 - AgentRegistry class managing agent lifecycle
 - Registration requires: agent_name, version, author/publisher, capabilities list
-- Substrate issues HMAC-SHA256 token using a server secret (generated on first run, stored in settings)
+- Submantle issues HMAC-SHA256 token using a server secret (generated on first run, stored in settings)
 - Token structure: HMAC(secret, agent_name + registration_timestamp)
-- Verification: agent presents token, Substrate validates via HMAC check
+- Verification: agent presents token, Submantle validates via HMAC check
 - Trust fields tracked: registration_time, last_seen, total_queries, incidents (schema only — scoring algorithm is future work)
 - Methods: register(name, version, author, capabilities) -> token, verify(token) -> agent_info or None, list_agents(), deregister(token), record_query(token)
 - Agent registry operates in both AWARE and PRIVATE modes (identity is not sensitive — activity is)
@@ -97,7 +97,7 @@ Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistenc
 **Task 7: Dashboard privacy toggle**
 - Add a prominent privacy mode toggle to dashboard.html
 - Big, visible, top of the page near the brand dot
-- When PRIVATE: dashboard shows "Privacy Mode — Substrate is not watching" with reduced UI
+- When PRIVATE: dashboard shows "Privacy Mode — Submantle is not watching" with reduced UI
 - When toggling: immediate visual feedback, then API call
 - Honest about what it does — tooltip or label explaining "Stops all monitoring. No data collected."
 
@@ -119,7 +119,7 @@ Build the invisible groundwork for Substrate V1: privacy mode, SQLite persistenc
 - Do NOT change the dashboard's visual design language (Anthropic warm slate palette, clay accent)
 
 ### Verification Plan
-- `cd prototype && python -c "from database import SubstrateDB; db = SubstrateDB(':memory:'); print('DB OK')"` — SQLite module loads
+- `cd prototype && python -c "from database import SubmantleDB; db = SubmantleDB(':memory:'); print('DB OK')"` — SQLite module loads
 - `cd prototype && python -c "from events import EventBus; bus = EventBus(); print('Events OK')"` — Event bus loads
 - `cd prototype && python -c "from privacy import PrivacyManager; print('Privacy OK')"` — Privacy module loads
 - `cd prototype && python -c "from agent_registry import AgentRegistry; print('Registry OK')"` — Agent registry loads

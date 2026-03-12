@@ -12,11 +12,11 @@ Team 5 claims MichaelFraser99/go-sd-jwt is "the primary Go SD-JWT library" and t
 
 - `github.com/trustbloc/vc-go/sdjwt` — v1.3.6, Apache-2.0, published January 29, 2026. This is a **complete SD-JWT implementation** covering all three roles (issuer, holder, verifier) with full lifecycle support. It is production-stable, has 50 importers, and is actively maintained (4 months newer than go-sd-jwt's last release). This is a material omission.
 
-The omission matters because trustbloc/vc-go also covers W3C VC 2.0 data model and DIF Presentation Exchange. If Substrate uses trustbloc/vc-go, it gets SD-JWT AND VC issuance in one v1.0+ dependency, eliminating the gap Team 5 identified for VC issuance. Team 5's Go library landscape table (Part 12) listed trustbloc under the SD-JWT verifier only and did not surface that the parent module is a full v1.0+ VC stack.
+The omission matters because trustbloc/vc-go also covers W3C VC 2.0 data model and DIF Presentation Exchange. If Submantle uses trustbloc/vc-go, it gets SD-JWT AND VC issuance in one v1.0+ dependency, eliminating the gap Team 5 identified for VC issuance. Team 5's Go library landscape table (Part 12) listed trustbloc under the SD-JWT verifier only and did not surface that the parent module is a full v1.0+ VC stack.
 
 **A secondary concern on go-sd-jwt itself:** The library's README references the IETF draft URL (`draft-ietf-oauth-selective-disclosure-jwt/`), not RFC 9901 specifically. Team 5 noted this caveat but assessed it as minor. This deserves stronger flagging: before production use, the library's serialization format must be verified against RFC 9901's finalized encoding. The draft and RFC may differ in normative details. This is not a blocker but is a genuine implementation risk Team 5 underweighted.
 
-**Correction on RFC 9901 status:** Team 5 calls it an "Internet Standard" (the highest IETF designation). IETF datatracker confirms RFC 9901 is a **Proposed Standard**, not a full Internet Standard. This is still a strong standard designation with IESG approval and community review, but the characterization is technically incorrect. It does not affect Substrate's decision to use SD-JWT.
+**Correction on RFC 9901 status:** Team 5 calls it an "Internet Standard" (the highest IETF designation). IETF datatracker confirms RFC 9901 is a **Proposed Standard**, not a full Internet Standard. This is still a strong standard designation with IESG approval and community review, but the characterization is technically incorrect. It does not affect Submantle's decision to use SD-JWT.
 
 ---
 
@@ -48,13 +48,13 @@ The ION releases page itself shows v1.0.4 on June 9, **2021**. The "3.5 years ol
 
 **D4 — CONFIRMED WITH NUANCE:** Ceramic did merge with Textile in February 2025 and did pivot away from decentralized identity as its primary use case. The blog post confirms this. However, the characterization "pivoted away from decentralized identity" is slightly too absolute. The post states Ceramic continues operating with no disruption and positions itself as "a foundational component of an open intelligence network where AI agents buy and sell intelligence." This is a pivot toward AI agent infrastructure, not a shutdown or abandonment of all prior work. ComposeDB deprecation is mentioned in Team 5's findings but not directly confirmed by the blog post excerpt.
 
-**For Substrate's purposes:** Ceramic is correctly assessed as irrelevant to decentralized identity or VC infrastructure going forward.
+**For Submantle's purposes:** Ceramic is correctly assessed as irrelevant to decentralized identity or VC infrastructure going forward.
 
 ---
 
 **D5 — CONFIRMED BUT STATUS NEEDS PRECISION:** TRQP v2.0 is real and active. The spec document confirms it completed Public Review 02 in December 2025 and is being dispositioned in the Trust Over IP Trust Registry Task Force. Team 5 describes this as "finalizing in 2026" — which is accurate as a description of where it is headed, but it has not yet finalized. It is post-public-review, in disposition. A final spec could land in 2026 but is not guaranteed.
 
-The claim that "Substrate could be the first behavioral trust registry" implementing TRQP is a logical argument, not a verified fact. No search contradicts it — no behavioral trust registry implementing TRQP was found — but this is an inference, not an independently confirmed finding.
+The claim that "Submantle could be the first behavioral trust registry" implementing TRQP is a logical argument, not a verified fact. No search contradicts it — no behavioral trust registry implementing TRQP was found — but this is an inference, not an independently confirmed finding.
 
 ---
 
@@ -78,22 +78,22 @@ The claim that "Substrate could be the first behavioral trust registry" implemen
 ### Missing Angles
 
 **1. trustbloc/vc-go is the elephant in the room.**
-The most significant gap in Team 5's research is not flagging `github.com/trustbloc/vc-go` as the closest thing to a production-ready Go VC stack. At v1.3.6 (January 2026), Apache-2.0, it covers VC data model, SD-JWT (full issuer/holder/verifier), BBS+ signatures, DIF Presentation Exchange, and StatusList2021 revocation. It has 50+ importers and is maintained by TrustBloc (a Hyperledger Labs project). This library substantially narrows the "Go library gap" Team 5 identified. Substrate should evaluate it seriously before the Go rewrite.
+The most significant gap in Team 5's research is not flagging `github.com/trustbloc/vc-go` as the closest thing to a production-ready Go VC stack. At v1.3.6 (January 2026), Apache-2.0, it covers VC data model, SD-JWT (full issuer/holder/verifier), BBS+ signatures, DIF Presentation Exchange, and StatusList2021 revocation. It has 50+ importers and is maintained by TrustBloc (a Hyperledger Labs project). This library substantially narrows the "Go library gap" Team 5 identified. Submantle should evaluate it seriously before the Go rewrite.
 
 **2. The "draft vs. RFC" question for trustbloc/vc-go SD-JWT needs its own check.**
 trustbloc/vc-go's sdjwt package may also reference older drafts rather than RFC 9901. Both go-sd-jwt and trustbloc carry the same implementation risk. Team 5 flagged it for go-sd-jwt only.
 
 **3. pascaldekloe/did for DID parsing.**
-A zero-dependency, CC0-licensed, v1.1.0 Go DID parsing library was not surfaced. For Substrate's purposes — where the primary need is parsing agent DIDs to record behavioral data against them — this library may be sufficient for V1 without taking a dependency on heavier frameworks.
+A zero-dependency, CC0-licensed, v1.1.0 Go DID parsing library was not surfaced. For Submantle's purposes — where the primary need is parsing agent DIDs to record behavioral data against them — this library may be sufficient for V1 without taking a dependency on heavier frameworks.
 
 **4. axone-protocol/axone-sdk/credential.**
 A v1.2.0 (April 2025) BSD-3-Clause Go VC library from the Axone Protocol was found. It is smaller and less established than trustbloc/vc-go but is another v1.0+ option not mentioned in Team 5's findings.
 
 **5. The did:dht method was not assessed.**
-The decentralized-identity/web5-go package lists `did:dht` as an active (though under-development) method. did:dht anchors DID documents in the Mainline DHT network — no blockchain, no DNS dependency, globally resolvable. It is the method TBD is actively building toward and could be relevant for Substrate's "externally verifiable on-device agent" problem (see Team 5's Gap #5). Not mentioned in Team 5's DID method assessment.
+The decentralized-identity/web5-go package lists `did:dht` as an active (though under-development) method. did:dht anchors DID documents in the Mainline DHT network — no blockchain, no DNS dependency, globally resolvable. It is the method TBD is actively building toward and could be relevant for Submantle's "externally verifiable on-device agent" problem (see Team 5's Gap #5). Not mentioned in Team 5's DID method assessment.
 
 ---
 
 ### Overall Assessment
 
-Team 5's core conclusions are directionally sound: ION is stalled, Ceramic has pivoted, BehavioralAttestation is a novel credential type, and the Go DID/VC ecosystem is fragmented and pre-v1.0 for most tooling. However, the research has three material gaps that matter for Substrate's architecture decisions. First, the trustbloc/vc-go library (v1.3.6, January 2026, Apache-2.0) is a full Go SD-JWT and VC stack at v1.0+ that Team 5 missed — it partially contradicts the "no stable Go VC tooling" narrative and should be evaluated before the Go rewrite begins. Second, the D1 claim that go-sd-jwt is "the ONLY stable Go SD-JWT library" is demonstrably false; trustbloc/vc-go/sdjwt is a second production-stable option with full issuer/holder/verifier coverage. Third, the ION last-release date cited (June 2022) appears to be incorrect — the actual last formal release was June 2021 — a minor factual error that should be corrected in any external documentation. The TRQP v2.0 claim is directionally accurate but overstates finalization readiness; it has completed public review but is not yet final. None of these challenges undermine Substrate's architectural direction, but the Go library landscape is meaningfully less barren than Team 5 portrayed.
+Team 5's core conclusions are directionally sound: ION is stalled, Ceramic has pivoted, BehavioralAttestation is a novel credential type, and the Go DID/VC ecosystem is fragmented and pre-v1.0 for most tooling. However, the research has three material gaps that matter for Submantle's architecture decisions. First, the trustbloc/vc-go library (v1.3.6, January 2026, Apache-2.0) is a full Go SD-JWT and VC stack at v1.0+ that Team 5 missed — it partially contradicts the "no stable Go VC tooling" narrative and should be evaluated before the Go rewrite begins. Second, the D1 claim that go-sd-jwt is "the ONLY stable Go SD-JWT library" is demonstrably false; trustbloc/vc-go/sdjwt is a second production-stable option with full issuer/holder/verifier coverage. Third, the ION last-release date cited (June 2022) appears to be incorrect — the actual last formal release was June 2021 — a minor factual error that should be corrected in any external documentation. The TRQP v2.0 claim is directionally accurate but overstates finalization readiness; it has completed public review but is not yet final. None of these challenges undermine Submantle's architectural direction, but the Go library landscape is meaningfully less barren than Team 5 portrayed.
