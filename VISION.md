@@ -224,50 +224,46 @@ Tiers affect Submantle's own API pricing — higher trust = volume discounts. Th
 
 ## Customers & Revenue
 
-### Who Pays Submantle
+### The Experian Model — Who Pays and Why
 
-**Customer 1: Agent Developers** — the agents themselves
-- **What they pay for:** Registration, trust attestation credentials, API query volume
-- **Why they pay:** Higher trust score = better rates everywhere. "Submantle Verified" badge is the trust signal brands look for. Trust credentials are portable — earn trust on one platform, carry it to all of them.
-- **Model:** Usage-based API pricing + attestation issuance fees
-- **Analogy:** Like credit check fees — you pay to prove you're trustworthy
+**Agents register free. Businesses pay to check scores.** This is the credit bureau model: the supply side (the entities being scored) has every incentive to participate for free, because a good score opens doors. The demand side (the entities making decisions based on scores) pays for access to the trust data they need.
 
-**Customer 2: Brands & Platforms** — the merchants
-- **What they pay for:** Trust score API access, bulk trust queries, integration support
-- **Why they pay:** They need to know which agents deserve discounts, premium features, or priority access. "Show me all agents above trust 0.8" saves them from fraud and rewards good actors.
-- **Model:** API access tiers (pay per query or monthly volume), enterprise contracts
-- **Analogy:** Like merchant interchange fees — brands pay for access to the trust network
+**Why this works:** Agents want scores because higher trust = better rates and access from brands. Brands want scores because they need to know which agents to trust. Submantle sits in the middle — the neutral bureau that both sides need.
 
-**Customer 3: Device Owners** — the humans
-- **What they pay for:** The feeling. "Your devices know what's going on." Multi-device mesh, privacy mode, process awareness, audit history.
-- **Why they pay:** Peace of mind. Awareness. The confidence that comes from knowing what's happening on your devices. Privacy mode is the #1 trust feature.
-- **Model:** Freemium — single device free, multi-device mesh = Pro
-- **Analogy:** Like antivirus — free basic protection, paid premium features
+### Who Uses Submantle
 
-**Customer 4: Enterprises** — the big fish
-- **What they pay for:** Managed trust policies, compliance certification, SSO, agent governance across their organization
-- **Why they pay:** They need to control which agents operate in their environment and at what trust level. Regulatory compliance requires audit trails of agent behavior.
-- **Model:** Annual contracts ($50k-$500k/yr)
-- **Analogy:** Like enterprise security suites
+**Agents** — the supply side (FREE)
+- Register for free. Build trust scores through consistent, incident-free behavior.
+- Higher trust unlocks better treatment from brands — not from Submantle, from the market itself.
+- "Submantle Verified" badge is the trust signal. Portable W3C VC credentials carry trust everywhere.
+- **Analogy:** You don't pay Experian to have a credit score. You get one by participating in the system.
 
-**Customer 5: Data Buyers** — Submantle Insights
-- **What they pay for:** Anonymized, aggregated intelligence about what software people actually use, what hardware combos exist, what agent patterns emerge, what products get used together
-- **Why they pay:** Nobody else has this data. Google knows what people search for. Submantle knows what people actually use.
-- **Model:** Data licensing, analytics dashboards, custom reports
-- **Analogy:** Like how credit bureaus sell anonymized trend data to financial institutions
+**Brands & Platforms** — the demand side (PAYS)
+- **What they pay for:** Trust score queries. "Show me this agent's trust score" or "show me all agents above 0.8."
+- **Why they pay:** Fraud reduction, compliance audit trails, competitive advantage. They need to know which agents deserve discounts, premium features, or priority access.
+- **Model:** API access tiers — pay per query or monthly volume.
+- **Analogy:** Lenders pay Experian to pull credit reports. Merchants pay Visa for transaction processing. The entity making the trust decision pays for the trust data.
 
-### Revenue Streams (ordered by go-to-market timing)
+**Enterprises** — brands at scale (PAYS MORE)
+- **What they pay for:** Everything brands pay for, plus managed trust policies, compliance certification, agent governance across their organization.
+- **Why they pay:** Regulatory compliance requires audit trails of agent behavior (NIST AI RMF, internal governance). They need to control which agents operate in their environment and at what trust level.
+- **Model:** Annual contracts.
+- **Analogy:** Enterprise credit monitoring — same bureau, bigger contract, more features.
+
+**Device Owners** — the growth engine (FREE for V1)
+- Device awareness is the on-ramp. Single device free. Multi-device mesh is a future premium feature.
+- Device owners are not the V1 revenue source — they're the adoption engine that puts Submantle on machines where agents operate.
+- **Analogy:** Free antivirus gets installed on millions of devices. The enterprise version is where the money is.
+
+### Revenue Streams (ordered by V1 priority)
 
 | # | Stream | When | Source |
 |---|--------|------|--------|
-| 1 | **Pro Subscriptions** | V1 launch | Device owners paying for multi-device mesh |
-| 2 | **Agent API Fees** | MCP server live | Per-query microtransactions from agent developers |
-| 3 | **Submantle Store** | Community grows | Identity packs, data plugins, premium signatures (marketplace commission) |
-| 4 | **Trust Attestation Fees** | Trust layer wired | Agents paying for portable W3C VC trust credentials |
-| 5 | **Brand Trust API** | Brand partnerships | Brands paying to query trust scores for their own enforcement |
-| 6 | **Enterprise Contracts** | Market traction | Managed policies, compliance, dedicated support |
-| 7 | **Submantle Insights** | Scale (100K+ devices) | Anonymized aggregate intelligence licensing |
-| 8 | **"Submantle Safe" Certification** | Ecosystem maturity | Agent developers paying for compatibility/trust certification |
+| 1 | **Brand Trust API** | V1 launch | Brands paying per-query to check agent trust scores |
+| 2 | **Enterprise Contracts** | Market traction | Managed policies, compliance, dedicated support |
+| 3 | **Trust Attestation Fees** | Trust layer mature | Agents optionally paying for portable W3C VC credentials (premium, not required) |
+| 4 | **Pro Subscriptions** | Adoption at scale | Device owners paying for multi-device mesh |
+| 5 | **Submantle Store** | Ecosystem maturity | Identity packs, data plugins, premium signatures |
 
 ### The Flywheel
 
