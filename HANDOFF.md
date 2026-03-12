@@ -106,17 +106,35 @@ Billing can be nearly zero code — Stripe Payment Links for first ~10 customers
 
 **NEXT STEP: GL rules on 3 contested decisions (see section below), then implementation begins.**
 
-### RESEARCH COUNCIL V2: Scoring Model (Weights & Measures) — IN PROGRESS (Phase 1 Complete)
+### RESEARCH COUNCIL V2: Scoring Model (Weights & Measures) — NEAR COMPLETE (Phase 5 in progress)
 
-3 agents researched independently. Challenge round pending.
+Full deliberation: 3 agents (Codebase Analyst, External Researcher, Devil's Advocate) + challenge round + orchestrator synthesis. Tension Analyst dispatched.
 
 **All files in `research/council-scoring-model-v2/`:**
 - `research-brief.md` — Approved brief: what interactions change a score, data exchange, two-way grading, enforcement boundary
-- `codebase-analyst-findings.md` — trust_metadata never written, formula is 3 lines, 10-step dependency chain
-- `external-researcher-findings.md` — FICO 5-category composition, D&B PAYDEX, PeerTrust, SecurityScorecard recalibration
-- `devils-advocate-findings.md` — 5 risks: dual source of truth, float breaks Beta, reporter bootstrapping, FICO fragmentation, EU AI Act fragility
+- `codebase-analyst-findings.md` + `codebase-analyst-challenge.md`
+- `external-researcher-findings.md` + `external-researcher-challenge.md`
+- `devils-advocate-findings.md` + `devils-advocate-challenge.md`
+- `synthesis.md` — Full synthesis with master score table, 9 high-confidence findings, 5-wave implementation sequence
+- `tension-report.md` — Pending (Tension Analyst dispatched)
 
-**NEXT STEP: Phase 2 — Dispatch 3 agents to read each other's findings and write structured challenges.**
+**Council Key Findings (triple convergence):**
+1. Reporter credibility is V2 (Go rewrite) — 8 prerequisites missing, bootstrapping unsolved
+2. Severity determines processing path, NOT formula weight for V1 — avoids float-in-Beta entirely
+3. Pending state must precede any formula change — non-negotiable prerequisite
+4. Two-track architecture: Beta score + trust_metadata enrichment — production-validated pattern
+5. Incidents COUNTED (integers), not weighted (floats) for V1 — preserves Beta distribution math
+6. Score versioning (FICO version fork model) ships in V1
+7. Corroboration is metadata, not formula multiplier
+8. `has_history` flag and `reporter_diversity` count ship in V1 API
+9. Deregistered agent names are permanent records (credit bureau model)
+
+**V1 Implementation: 5-Wave Build Sequence**
+- Wave 1: trust_metadata enrichment + score_version + has_history (no dependencies)
+- Wave 2: Soft-delete (history preservation)
+- Wave 3: Pending state + status column + severity classification + dedup
+- Wave 4: Formula reads accepted incidents from table (not counter) + API response update
+- Wave 5: MCP server (parallel with Waves 3-4)
 
 ### CONTESTED DECISIONS — Awaiting GL's Ruling
 
