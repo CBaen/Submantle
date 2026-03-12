@@ -37,3 +37,7 @@ Read VISION.md for the full picture. Read HANDOFF.md for current state.
 | substrate-index.md | Project root | Pointers to research and reference material |
 | substrate-decisions.md | Project root | Append-only decision log. Use decision-search.py, never read full file. |
 | signatures.json | prototype/ | 15 identity signatures |
+
+## Self-Improvement Loop
+
+After ANY correction from the user, append a lesson to `lessons-learned.md` in this project root. Format: `### Title` / `- **Pattern**:` what went wrong / `- **Rule**:` what to do instead / `- **Why**:` why the old way fails. Universal lessons go to `C:\Users\baenb\.claude\lessons-learned.md` instead.

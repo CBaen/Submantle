@@ -4,11 +4,11 @@
 The ground beneath everything. A persistent awareness layer AND behavioral trust infrastructure for computing. Your devices know what's going on, and the agents on them earn their place.
 
 ## Current State
-- **Phase**: V1 Foundation built, trust layer expedition complete, dashboard depth next
-- **Git**: github.com/CBaen/SUBSTRATE (main branch, uncommitted research files)
+- **Phase**: V1 Foundation built, 4 expeditions complete, trust layer wiring next
+- **Git**: github.com/CBaen/SUBSTRATE (main branch)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
 - **Tests**: 160 passing across 4 test files
-- **Research**: 3 expeditions complete (deep-dive, infrastructure, trust-layer) + 6 targeted follow-ups
+- **Research**: 4 expeditions complete (deep-dive, infrastructure, trust-layer, protocol-architecture) + 6 targeted follow-ups
 
 ## What Just Happened (2026-03-11)
 
