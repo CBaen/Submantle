@@ -222,10 +222,14 @@ class TestAgentRegistry:
         assert agent["incidents"] == 1
 
     def test_deregister_agent(self, db):
+        """Deregister is a soft-delete: record remains with deregistered_at set."""
         agent_id = self._sample_agent(db)
         result = db.deregister_agent(agent_id)
         assert result is True
-        assert db.get_agent_by_id(agent_id) is None
+        record = db.get_agent_by_id(agent_id)
+        assert record is not None
+        assert record["deregistered_at"] is not None
+        assert isinstance(record["deregistered_at"], float)
 
     def test_deregister_nonexistent_returns_false(self, db):
         assert db.deregister_agent(9999) is False
