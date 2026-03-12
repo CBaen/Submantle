@@ -1,8 +1,8 @@
-# Substrate — Dashboard Design Specification
+# Submantle — Dashboard Design Specification
 
 **Version**: 1.0
 **Date**: 2026-03-10
-**Purpose**: Visual and technical specification for the Substrate awareness dashboard prototype
+**Purpose**: Visual and technical specification for the Submantle awareness dashboard prototype
 
 ---
 
@@ -22,11 +22,11 @@ Influences: Apple System Preferences (confidence through whitespace), Vercel das
 
 | Role | Name | Hex | Usage |
 |------|------|-----|-------|
-| Background | Substrate Deep | `#0A0B0D` | Page background |
-| Surface | Substrate Surface | `#111318` | Card backgrounds |
-| Surface Raised | Substrate Elevated | `#171B23` | Hover states, dropdowns |
-| Border | Substrate Border | `#1E2330` | Card outlines, dividers |
-| Border Subtle | Substrate Border Subtle | `#161A22` | Inner separators |
+| Background | Submantle Deep | `#0A0B0D` | Page background |
+| Surface | Submantle Surface | `#111318` | Card backgrounds |
+| Surface Raised | Submantle Elevated | `#171B23` | Hover states, dropdowns |
+| Border | Submantle Border | `#1E2330` | Card outlines, dividers |
+| Border Subtle | Submantle Border Subtle | `#161A22` | Inner separators |
 | Text Primary | | `#E8EAF0` | Headlines, important values |
 | Text Secondary | | `#8B90A0` | Labels, descriptions |
 | Text Tertiary | | `#4A4F62` | Placeholders, muted |
@@ -35,21 +35,21 @@ Influences: Apple System Preferences (confidence through whitespace), Vercel das
 
 | State | Name | Hex | Usage |
 |-------|------|-----|-------|
-| Healthy | Substrate Green | `#2ECC8A` | Active/healthy processes |
+| Healthy | Submantle Green | `#2ECC8A` | Active/healthy processes |
 | Healthy Glow | | `#2ECC8A1A` | Green card background tint |
-| Caution | Substrate Amber | `#F5A623` | Medium importance, warnings |
+| Caution | Submantle Amber | `#F5A623` | Medium importance, warnings |
 | Caution Glow | | `#F5A6231A` | Amber card background tint |
-| Critical | Substrate Red | `#E8504A` | Critical processes, do-not-kill |
+| Critical | Submantle Red | `#E8504A` | Critical processes, do-not-kill |
 | Critical Glow | | `#E8504A1A` | Red card background tint |
-| Inert | Substrate Gray | `#4A4F62` | Unidentified, unknown |
+| Inert | Submantle Gray | `#4A4F62` | Unidentified, unknown |
 
 ### Brand Accent
 
 | Role | Hex | Usage |
 |------|-----|-------|
-| Substrate Blue | `#4F8EF7` | Interactive elements, links, focus rings |
-| Substrate Blue Dim | `#4F8EF71A` | Button backgrounds, hover states |
-| Substrate Pulse | `#2ECC8A` | The awareness pulse indicator |
+| Submantle Blue | `#4F8EF7` | Interactive elements, links, focus rings |
+| Submantle Blue Dim | `#4F8EF71A` | Button backgrounds, hover states |
+| Submantle Pulse | `#2ECC8A` | The awareness pulse indicator |
 
 ### Light Mode Overrides
 
@@ -130,7 +130,7 @@ Responsive breakpoint at 1024px: stack to single column, right column moves belo
 Height: 56px. Sticky. Slightly blurred backdrop: `backdrop-filter: blur(20px)`.
 
 Contents (left to right):
-- Substrate wordmark (left): `SUBSTRATE` in weight 700, 15px, tracking 0.15em — with a 6px dot before it in `#2ECC8A` that breathes (the global pulse indicator)
+- Submantle wordmark (left): `SUBSTRATE` in weight 700, 15px, tracking 0.15em — with a 6px dot before it in `#2ECC8A` that breathes (the global pulse indicator)
 - Tagline (left, after wordmark): "the ground beneath everything" — weight 300, 12px, `#4A4F62`
 - Spacer
 - Last scan timestamp: "scanned 3s ago" — weight 400, 12px, `#8B90A0`
@@ -216,7 +216,7 @@ Hover on row: `background: #171B23`, reveals a "→" chevron suggesting expandab
 Full-width card. This is the most interactive component.
 
 Structure:
-- Card header: "What Would Break?" title + "Ask Substrate" subtitle
+- Card header: "What Would Break?" title + "Ask Submantle" subtitle
 - Search input:
   - Full width, height 48px
   - Background: `#0A0B0D` (one level darker than card)
@@ -243,7 +243,7 @@ A circular visualization — not a chart, a presence indicator.
 
 Structure:
 - Dark circle, ~140px diameter
-- Center: the Substrate mark (a simple radiating dot pattern)
+- Center: the Submantle mark (a simple radiating dot pattern)
 - Three concentric rings that pulse outward, staggered timing
 - Ring 1 (innermost): opacity 0.6, 3s loop
 - Ring 2: opacity 0.4, 3s loop, 1s delay
@@ -254,7 +254,7 @@ Below the circle:
 - "Monitoring 342 processes" in `#8B90A0`, 12px
 - Last scan: "3s ago" in `#4A4F62`, 11px
 
-If Substrate loses connection to the backend: rings stop, dot dims to gray, label changes to "OFFLINE" in `#4A4F62`.
+If Submantle loses connection to the backend: rings stop, dot dims to gray, label changes to "OFFLINE" in `#4A4F62`.
 
 The pulse ring animation:
 ```css
@@ -407,7 +407,7 @@ Simple liveness check.
 - No full-page reload — DOM updates in place
 - Stat values transition smoothly when numbers change
 - Scan timestamp updates: "just now", "3s ago", "12s ago"
-- If poll fails 3 consecutive times: Pulse goes offline state, banner appears: "Lost connection to Substrate daemon"
+- If poll fails 3 consecutive times: Pulse goes offline state, banner appears: "Lost connection to Submantle daemon"
 
 ### What Would Break Query
 - User types in the input field
@@ -435,7 +435,7 @@ Simple liveness check.
 
 ## Visual Identity Details
 
-### The Substrate Mark
+### The Submantle Mark
 Used in the Pulse component center. A simple radial pattern: a 6px center dot surrounded by 4 lines radiating outward at 45-degree offsets, each 8px long, 1px wide. Rendered in SVG. Color: `#2ECC8A` when alive, `#4A4F62` when offline.
 
 ### Process Category Color Mapping
@@ -474,7 +474,7 @@ Used in the Pulse component center. A simple radial pattern: a 6px center dot su
 
 - Process detail drawer (click to expand full process info)
 - Workflow graph visualization (the process relationship tree)
-- Cross-device mesh view (connecting multiple Substrate instances)
+- Cross-device mesh view (connecting multiple Submantle instances)
 - Historical timeline (how system state changed over time)
 - Alert configuration (notify me if X stops running)
-- Substrate Store integration
+- Submantle Store integration

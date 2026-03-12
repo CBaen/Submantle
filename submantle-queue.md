@@ -1,16 +1,16 @@
-# Substrate Queue
+# Submantle Queue
 
 **Purpose:** Active tasks only. Git commit history preserves completed tasks.
 
 ## URGENT — Business Foundation (before more code)
 
 - [x] **Legal entity exists** (completed: 2026-03-11)
-      What: Built by Cameron LLC — Wyoming, EIN 41-4309920, Mercury banking. Business purpose broad enough for Substrate.
+      What: Built by Cameron LLC — Wyoming, EIN 41-4309920, Mercury banking. Business purpose broad enough for Submantle.
       Context: Located at C:\Users\baenb\projects\builtbycameron\business documents\
 
-- [ ] **Check "Substrate" name availability** (added: 2026-03-11)
-      What: Trademark search (USPTO + EU), domain availability, conflict check against Parity Technologies' "Substrate" blockchain framework.
-      Context: Naming conflict with an established tech product could force expensive rebrand later. Check before investing more identity.
+- [x] **Product name decided — Submantle** (completed: 2026-03-11)
+      What: submantle.com purchased. Complete rebrand from "Substrate" to "Submantle" across all 91 files.
+      Context: "Substrate" conflicted with Parity Technologies' blockchain framework. "Submantle" = the layer beneath everything. Clean trademark space.
 
 - [ ] **License decision — BSL recommended** (added: 2026-03-11)
       What: Choose Business Source License (BSL). Code visible, readable, forkable — but companies above a threshold can't use commercially without paying. Converts to open source after 3-4 years.
@@ -36,10 +36,10 @@
 
 - [ ] **MCP server** (added: 2026-03-10)
       What: Ambient awareness stream + deep query tools via Model Context Protocol. This is the bridge to real agent users.
-      Context: Fresh-eyes audit: "let agents be the first users." MCP server makes Substrate queryable by Claude Code and any MCP-compatible agent. First real validation.
+      Context: Fresh-eyes audit: "let agents be the first users." MCP server makes Submantle queryable by Claude Code and any MCP-compatible agent. First real validation.
 
 - [ ] **Demo / landing page** (added: 2026-03-11)
-      What: Something to show when someone asks "what is Substrate?" — a 30-second story with a visual. Localhost dashboard is not a pitch.
+      What: Something to show when someone asks "what is Submantle?" — a 30-second story with a visual. Localhost dashboard is not a pitch.
       Context: No demo video, no landing page, no pitch deck exists. If Anthropic/investor/journalist asks "show me," need something ready.
 
 - [ ] **Dashboard depth** (added: 2026-03-10)
@@ -53,8 +53,8 @@
       Context: Expedition synthesis "MVTL step 1". Blocking gap identified by 3 independent research passes.
 
 - [ ] **Trust layer wiring — incident reporting format** (updated: 2026-03-11)
-      What: Design the reporting format for third-party incident reports. Credit bureau model — Substrate records, doesn't detect.
-      Context: RESOLVED by protocol architecture expedition. Not a product decision. Third parties report incidents; Substrate stores and scores.
+      What: Design the reporting format for third-party incident reports. Credit bureau model — Submantle records, doesn't detect.
+      Context: RESOLVED by protocol architecture expedition. Not a product decision. Third parties report incidents; Submantle stores and scores.
 
 - [ ] **Trust layer wiring — record_query()** (added: 2026-03-11)
       What: Wire record_query() to API endpoints so every agent interaction becomes trust data.
@@ -76,7 +76,7 @@
 
 - [ ] **EU AI Act compliance docs** (added: 2026-03-11)
       What: Three lightweight documents — self-assessment ("not an AI system"), privacy policy, data flow docs.
-      Context: Follow-up research confirmed Substrate likely outside scope. Documents needed before August 2026.
+      Context: Follow-up research confirmed Submantle likely outside scope. Documents needed before August 2026.
 
 - [ ] **Agent identity definition in API docs** (added: 2026-03-11)
       What: Document that an "agent" = registered software entity (not model, not context window, not user). Include edge cases: multi-model, version upgrades, forks.

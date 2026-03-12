@@ -1,12 +1,12 @@
-# Substrate Index
+# Submantle Index
 
 **Purpose:** Pointers to research and reference material. Permanent. Stays small.
 
 ## Research
 
-- **Substrate Deep Dive Expedition** (2026-03-09): First expedition — what Substrate is, competitive landscape, MCP integration strategy, process identity architecture. Details: `research/expedition-substrate-deep-dive/synthesis.md`
+- **Submantle Deep Dive Expedition** (2026-03-09): First expedition — what Submantle is, competitive landscape, MCP integration strategy, process identity architecture. Details: `research/expedition-substrate-deep-dive/synthesis.md`
 
-- **Substrate Infrastructure Expedition** (2026-03-09): Second expedition — Go vs Rust vs Python, SQLite architecture, daemon design, gRPC vs REST, plugin isolation. Details: `research/expedition-substrate-infrastructure/synthesis.md`
+- **Submantle Infrastructure Expedition** (2026-03-09): Second expedition — Go vs Rust vs Python, SQLite architecture, daemon design, gRPC vs REST, plugin isolation. Details: `research/expedition-substrate-infrastructure/synthesis.md`
 
 - **Trust Layer Expedition** (2026-03-11): Third expedition — behavioral trust as internet protocol layer. 5 teams (historical precedents, protocol architecture, behavioral trust science, marketplace competitors, gap analysis) + 3 validators + 1 synthesis. Details: `research/expedition-trust-layer/synthesis.md`
 
@@ -18,11 +18,11 @@
   - EU AI Act implications — likely outside scope (deterministic arithmetic): `research/expedition-trust-layer/followup-5-eu-ai-act.md`
   - Solo founder feasibility — works for product phase, 5 sessions for MVTL: `research/expedition-trust-layer/followup-6-solo-founder.md`
 
-- **Protocol Architecture Expedition** (2026-03-11): Fourth expedition — what Substrate IS technically, how agents connect, competitive landscape update, adoption playbook. 5 teams + 9 validators. MCP confirmed, RATS RFC 9334 mapped, incident taxonomy resolved (credit bureau model), Go library landscape corrected. Details: `research/expedition-protocol-architecture/synthesis.md`
+- **Protocol Architecture Expedition** (2026-03-11): Fourth expedition — what Submantle IS technically, how agents connect, competitive landscape update, adoption playbook. 5 teams + 9 validators. MCP confirmed, RATS RFC 9334 mapped, incident taxonomy resolved (credit bureau model), Go library landscape corrected. Details: `research/expedition-protocol-architecture/synthesis.md`
 
 - **V1 Foundation Build** (2026-03-10): Triadic construction — 3 builders + 3 reviewers. Privacy mode, SQLite, event bus, agent identity. 160 tests. Details: `research/triadic-build-v1-foundation/build-brief.md`
 
-- **Future Expedition Ideas** (2026-03-10): Agent reviews ecosystem, privacy mode UX, Substrate as payment processor. Details: `research/future-expeditions.md`
+- **Future Expedition Ideas** (2026-03-10): Agent reviews ecosystem, privacy mode UX, Submantle as payment processor. Details: `research/future-expeditions.md`
 
 ## Reference
 

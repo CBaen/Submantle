@@ -101,14 +101,14 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 ## What to Build Next
 
 ### Priority 1: Dashboard Depth (Guiding Light's direct request)
-- Clickable device rows that expand to show everything Substrate knows
+- Clickable device rows that expand to show everything Submantle knows
 - Process categories with nested detail views
-- "Ask Substrate" results with full dependency chains
+- "Ask Submantle" results with full dependency chains
 - Every field that shows a count should be expandable
 
 ### Priority 2: Trust Layer Wiring (MVTL — 5 sessions)
 1. Auth middleware on /api/query (token-based, wired to agent registry)
-2. Incident reporting format (credit bureau model — third parties report, Substrate records)
+2. Incident reporting format (credit bureau model — third parties report, Submantle records)
 3. record_query() wired to endpoints (every interaction becomes trust data)
 4. Agent name uniqueness enforcement
 5. compute_trust() using pure Beta formula, trust score in API responses
@@ -136,4 +136,4 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 - Agent name uniqueness constraint (before trust scoring)
 - Success metrics for the 90-day experiment
 - On-device daemon integrity (what stops lying about scores? — unsolved)
-- Product name (substrate.com taken, need alternative)
+- Product name — RESOLVED: Submantle (submantle.com purchased, full rebrand complete 2026-03-11)

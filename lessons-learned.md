@@ -1,4 +1,4 @@
-# Substrate — Lessons Learned
+# Submantle — Lessons Learned
 
 ### Never Ask Guiding Light Technical Questions
 - **Pattern**: Identified "incident taxonomy" as blocking and asked GL to define it
@@ -12,5 +12,5 @@
 
 ### Incident Taxonomy Is a Credit Bureau Model
 - **Pattern**: All 5 research teams treated incident taxonomy as a complex product design problem.
-- **Rule**: Substrate doesn't DETECT incidents (that would require ML). It RECORDS reports from third parties. Like a credit bureau — the bureau doesn't catch missed payments, the bank reports them.
+- **Rule**: Submantle doesn't DETECT incidents (that would require ML). It RECORDS reports from third parties. Like a credit bureau — the bureau doesn't catch missed payments, the bank reports them.
 - **Why**: This eliminated the #1 "blocking decision" that had stalled trust layer progress.
