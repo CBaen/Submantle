@@ -338,7 +338,7 @@ class AgentRegistry:
                 return False
 
             if removed:
-                logger.info("Agent deregistered: name=%s id=%s", agent_name, agent_id)
+                logger.info("Agent soft-deleted: name=%s id=%s", agent_name, agent_id)
                 self._emit("AGENT_DEREGISTERED", {"agent_name": agent_name, "agent_id": agent_id})
 
             return removed
@@ -428,6 +428,7 @@ class AgentRegistry:
             "score_version": "v1.0",
             "has_history": q > 0,
             "reporter_diversity": reporter_diversity,
+            "is_active": record.get("deregistered_at") is None,
         }
 
     def record_incident(

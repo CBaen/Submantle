@@ -131,7 +131,7 @@ class TestComputeTrust(unittest.TestCase):
         required_keys = {
             "agent_name", "trust_score", "total_queries", "incidents",
             "registration_time", "last_seen", "version", "author",
-            "score_version", "has_history", "reporter_diversity",
+            "score_version", "has_history", "reporter_diversity", "is_active",
         }
         self.assertEqual(required_keys, set(result.keys()))
         self.assertEqual(result["agent_name"], "meta-agent")

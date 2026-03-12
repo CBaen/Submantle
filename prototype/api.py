@@ -521,7 +521,7 @@ def agents_deregister(agent_id: int, authorization: Optional[str] = Header(None)
     if not success:
         raise HTTPException(status_code=404, detail="Agent not found")
 
-    return {"deregistered": True, "agent_id": agent_id}
+    return {"deregistered": True, "agent_id": agent_id, "permanent": True}
 
 
 # ── Trust Bureau — Verification (Door 2: for businesses) ──────────────────────
@@ -534,7 +534,7 @@ def verify_directory():
     This is the trust bureau's public face. Businesses browse this to see
     which agents exist and what their scores are.
     """
-    agents = _registry.list_agents()
+    agents = _registry.list_agents(active_only=False)
     scored = []
     for agent in agents:
         trust = _registry.compute_trust(agent_id=agent["id"])
