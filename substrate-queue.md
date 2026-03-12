@@ -30,9 +30,9 @@
 
 ## HIGH — Traction (things that create users)
 
-- [ ] **Commit all research files** (added: 2026-03-11)
-      What: 17 expedition files + 6 follow-ups + updated project docs. All uncommitted.
-      Context: Trust layer expedition complete, documents updated, need to persist to git.
+- [x] **Commit all research files** (completed: 2026-03-11)
+      What: 17 expedition files + 6 follow-ups + protocol architecture expedition (5 teams + 9 validators). All committed and pushed.
+      Context: 4 expeditions complete. 40 commits on origin/main.
 
 - [ ] **MCP server** (added: 2026-03-10)
       What: Ambient awareness stream + deep query tools via Model Context Protocol. This is the bridge to real agent users.
