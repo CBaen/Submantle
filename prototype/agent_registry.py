@@ -289,9 +289,9 @@ class AgentRegistry:
         # No DB — ephemeral mode: we cannot verify (we have no stored records)
         return None
 
-    def list_agents(self) -> list[dict]:
+    def list_agents(self, active_only: bool = True) -> list[dict]:
         """
-        Return all registered agents.
+        Return registered agents.
 
         Token hashes are NOT included in the output — only safe metadata.
         """
@@ -299,7 +299,7 @@ class AgentRegistry:
             return []
 
         try:
-            records = self._db.list_agents()
+            records = self._db.list_agents(active_only=active_only)
         except Exception as exc:
             logger.error("Failed to list agents: %s", exc)
             return []
