@@ -190,8 +190,8 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 | 4 | Agent identity | DONE | |
 | 5 | Trust layer wiring | DONE | record_query(), compute_trust(), anti-gaming stubs |
 | 6 | Wave 1: trust_metadata + score_version + has_history | DONE | score_version "v1.0", has_history bool, reporter_diversity count. |
-| 7 | Wave 2: Soft-delete deregistration | DONE | Permanent names, token invalidation, is_active field. 200 tests. |
-| 8 | Wave 3: Pending state + severity classification + dedup | NEXT | Non-negotiable prerequisite for formula change. |
+| 7 | Wave 2: Soft-delete deregistration | DONE | Permanent names, token invalidation, is_active field. |
+| 8 | Wave 3: Pending state + severity classification + dedup | DONE | 3-step pipeline: self-ping reject, dedup, auto-accept. 213 tests. |
 | 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. accepted_incidents, reporter_diversity in API. |
 | 10 | Wave 5: MCP server (Python, stdio) | NEXT (parallel with 8-9) | Thin wrapper over existing modules. The product. |
 | 11 | Business API keys + Stripe Payment Links | NEXT | Minimal billing — scales to ~10 customers with near-zero code |
