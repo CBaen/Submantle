@@ -189,8 +189,8 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 | 3 | Event bus | DONE | |
 | 4 | Agent identity | DONE | |
 | 5 | Trust layer wiring | DONE | record_query(), compute_trust(), anti-gaming stubs |
-| 6 | Wave 1: trust_metadata + score_version + has_history | DONE | score_version "v1.0", has_history bool, reporter_diversity count. 193 tests. |
-| 7 | Wave 2: Soft-delete deregistration | NEXT | Credit bureau model — permanent records. |
+| 6 | Wave 1: trust_metadata + score_version + has_history | DONE | score_version "v1.0", has_history bool, reporter_diversity count. |
+| 7 | Wave 2: Soft-delete deregistration | DONE | Permanent names, token invalidation, is_active field. 200 tests. |
 | 8 | Wave 3: Pending state + severity classification + dedup | NEXT | Non-negotiable prerequisite for formula change. |
 | 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. accepted_incidents, reporter_diversity in API. |
 | 10 | Wave 5: MCP server (Python, stdio) | NEXT (parallel with 8-9) | Thin wrapper over existing modules. The product. |
