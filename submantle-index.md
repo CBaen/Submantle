@@ -22,13 +22,19 @@
 
 - **V1 Foundation Build** (2026-03-10): Triadic construction — 3 builders + 3 reviewers. Privacy mode, SQLite, event bus, agent identity. 160 tests. Details: `research/triadic-build-v1-foundation/build-brief.md`
 
+- **Research Council V2: Product-Market Fit** (2026-03-12): Full 5-phase council — 3 agents + challenge round + synthesis + tension report + plan-deepen. Business confidence 4.5/10. Zero customer conversations is #1 risk. Reporter auth is 5 subtasks. Mastercard VI opportunity. Details: `research/council-product-market-fit-v2/synthesis.md`
+
+- **Research Council V2: Scoring Model (Weights & Measures)** (2026-03-12): Phase 1 complete (3 agents). What interactions change scores, data exchange specs, two-way grading, enforcement boundary, anti-gaming. FICO/PAYDEX/PeerTrust analysis. 5 risks from Devil's Advocate. Phase 2 (challenge round) pending. Details: `research/council-scoring-model-v2/`
+
+- **Expedition: Trust Lifecycle Design** (2026-03-12): 5-team expedition + 3 validators. Status labels, sandbox/testing, review tiers, fairness/recovery, interaction metadata. Phase 2 (cross-validation) complete. Synthesis pending. Key blockers: fractional weights, reporter bootstrapping, patient attacker vector. Details: `research/expedition-trust-lifecycle/`
+
 - **Future Expedition Ideas** (2026-03-10): Agent reviews ecosystem, privacy mode UX, Submantle as payment processor. Details: `research/future-expeditions.md`
 
 ## Reference
 
 - **Competitive Landscape** (2026-03-11): 20+ companies analyzed. HUMAN Security is closest behavioral competitor (web-layer only). Mastercard Verifiable Intent is complementary. No one builds portable behavioral trust at OS/device layer. Details: `research/expedition-trust-layer/team-4-marketplace-competitors-findings.md`
 
-- **Trust Formula** (2026-03-11): Pure Beta Reputation — trust = total_queries / (total_queries + incidents). Validated by Josang 2002, IoT/MANET/P2P production systems, 3 independent research passes. Initialize at (1,1) = 0.5. Details: `research/expedition-trust-layer/team-3-behavioral-trust-science-findings.md`
+- **Trust Formula** (2026-03-11, corrected 2026-03-12): Beta Reputation with Laplace smoothing — trust = (total_queries + 1) / (total_queries + incidents + 2). Validated by Josang 2002, IoT/MANET/P2P production systems, 3 independent research passes. Initialize at (0,0) = 0.5. Details: `research/expedition-trust-layer/team-3-behavioral-trust-science-findings.md`
 
 - **Standards Landscape** (2026-03-11): W3C VC 2.0 finalized May 2025. SD-JWT RFC 9901 finalized November 2025. BBS+ still Candidate. IETF RFC 9711 EAT published April 2025. Three active agent identity drafts (Huawei, AWS/Zscaler/Ping). No behavioral attestation standard exists. Details: `research/expedition-trust-layer/team-2-protocol-architecture-findings.md`
 

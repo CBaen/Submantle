@@ -58,7 +58,7 @@ Submantle's defensible position is **structural neutrality**:
 
 ## Trust Layer Architecture
 
-- **Formula**: `trust = total_queries / (total_queries + incidents)` — Beta Reputation. Initialize at (1,1) = 0.5 ("unknown").
+- **Formula**: `trust = (total_queries + 1) / (total_queries + incidents + 2)` — Beta Reputation with Laplace smoothing. Initialize at (0,0) = 0.5 ("unknown"). The +1/+2 prevents division by zero and provides a Bayesian prior.
 - **Attestation format**: W3C Verifiable Credentials 2.0 + SD-JWT (RFC 9901). NOT BBS+ (still Candidate, no Go support).
 - **Agent identity**: `did:web` (DNS-anchored, no blockchain) for public identity, `did:key` for ephemeral.
 - **Tiers**: Anonymous (open access) -> Registered ("Submantle Verified") -> Trusted (high score, best rates).

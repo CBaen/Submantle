@@ -191,7 +191,7 @@ Submantle isn't just awareness — it's the **behavioral trust infrastructure** 
 
 Every registered entity — agent, business, API, service — accumulates a trust score based on observed interactions. Not opinions. Not self-reported credentials. What they actually do, verified by both sides.
 
-**Trust = total_queries / (total_queries + incidents)** — the Beta Reputation formula, mathematically proven in P2P networks, IoT systems, and marketplace economics.
+**Trust = (total_queries + 1) / (total_queries + incidents + 2)** — the Beta Reputation formula with Laplace smoothing, mathematically proven in P2P networks, IoT systems, and marketplace economics. The +1/+2 prevents division by zero and provides a Bayesian prior (new agents start at 0.5, not undefined).
 
 ### Bidirectional Trust — The Core Innovation
 
