@@ -131,6 +131,7 @@ class TestComputeTrust(unittest.TestCase):
         required_keys = {
             "agent_name", "trust_score", "total_queries", "incidents",
             "registration_time", "last_seen", "version", "author",
+            "score_version", "has_history", "reporter_diversity",
         }
         self.assertEqual(required_keys, set(result.keys()))
         self.assertEqual(result["agent_name"], "meta-agent")
@@ -418,6 +419,89 @@ class TestIncidentReportedEvent(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(len(received), 1)
         self.assertEqual(received[0].event_type, EventType.INCIDENT_REPORTED)
+
+
+# ── TestWave1TrustMetadata ─────────────────────────────────────────────────────
+
+class TestWave1TrustMetadata(unittest.TestCase):
+    """Wave 1 enrichment fields: score_version, has_history, reporter_diversity."""
+
+    def test_score_version_present(self):
+        """New agent's compute_trust result includes score_version = 'v1.0'."""
+        registry, db = _make_registry()
+        _register(registry, "version-agent")
+        result = registry.compute_trust(agent_name="version-agent")
+        self.assertIsNotNone(result)
+        self.assertEqual(result["score_version"], "v1.0")
+
+    def test_has_history_false_for_new_agent(self):
+        """Brand new agent with zero queries has has_history = False."""
+        registry, db = _make_registry()
+        _register(registry, "no-history-agent")
+        result = registry.compute_trust(agent_name="no-history-agent")
+        self.assertIsNotNone(result)
+        self.assertFalse(result["has_history"])
+
+    def test_has_history_true_after_queries(self):
+        """After recording at least one query, has_history = True."""
+        registry, db = _make_registry()
+        token = _register(registry, "history-agent")
+        registry.record_query(token)
+        result = registry.compute_trust(agent_name="history-agent")
+        self.assertIsNotNone(result)
+        self.assertTrue(result["has_history"])
+
+    def test_reporter_diversity_zero_for_clean_agent(self):
+        """Agent with no incidents has reporter_diversity = 0."""
+        registry, db = _make_registry()
+        _register(registry, "clean-agent")
+        result = registry.compute_trust(agent_name="clean-agent")
+        self.assertIsNotNone(result)
+        self.assertEqual(result["reporter_diversity"], 0)
+
+    def test_reporter_diversity_counts_distinct_reporters(self):
+        """Same reporter filing twice = 1. Two different reporters = 2."""
+        registry, db = _make_registry()
+        _register(registry, "diversity-agent")
+
+        # Same reporter files twice — should count as 1
+        registry.record_incident(
+            agent_name="diversity-agent",
+            reporter="brand-alpha",
+            incident_type="policy_violation",
+        )
+        registry.record_incident(
+            agent_name="diversity-agent",
+            reporter="brand-alpha",
+            incident_type="data_exfiltration",
+        )
+        result = registry.compute_trust(agent_name="diversity-agent")
+        self.assertEqual(result["reporter_diversity"], 1)
+
+        # Second distinct reporter — should now count as 2
+        registry.record_incident(
+            agent_name="diversity-agent",
+            reporter="brand-beta",
+            incident_type="policy_violation",
+        )
+        result = registry.compute_trust(agent_name="diversity-agent")
+        self.assertEqual(result["reporter_diversity"], 2)
+
+    def test_compute_trust_returns_wave1_fields(self):
+        """compute_trust result contains all expected keys including Wave 1 fields."""
+        registry, db = _make_registry()
+        _register(registry, "wave1-agent", version="3.0.0", author="Wave Corp")
+        result = registry.compute_trust(agent_name="wave1-agent")
+        self.assertIsNotNone(result)
+        required_keys = {
+            "agent_name", "trust_score", "total_queries", "incidents",
+            "registration_time", "last_seen", "version", "author",
+            "score_version", "has_history", "reporter_diversity",
+        }
+        self.assertEqual(required_keys, set(result.keys()))
+        self.assertEqual(result["score_version"], "v1.0")
+        self.assertIsInstance(result["has_history"], bool)
+        self.assertIsInstance(result["reporter_diversity"], int)
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────

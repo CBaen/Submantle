@@ -401,6 +401,12 @@ class AgentRegistry:
         i = record["incidents"]
         score = (q + 1) / (q + i + 2)
 
+        reporter_diversity = 0
+        try:
+            reporter_diversity = self._db.get_reporter_diversity(record["id"])
+        except Exception as exc:
+            logger.warning("Failed to get reporter diversity for agent id=%s: %s", record["id"], exc)
+
         return {
             "agent_name": record["agent_name"],
             "trust_score": round(score, 4),
@@ -410,6 +416,9 @@ class AgentRegistry:
             "last_seen": record["last_seen"],
             "version": record["version"],
             "author": record["author"],
+            "score_version": "v1.0",
+            "has_history": q > 0,
+            "reporter_diversity": reporter_diversity,
         }
 
     def record_incident(
