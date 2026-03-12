@@ -4,18 +4,18 @@
 The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. It labels. Brands decide their own thresholds.
 
 ## Current State
-- **Phase**: BUILDING — Wave 1 complete, Wave 2 next. Implementation sequence executing.
+- **Phase**: BUILDING — Waves 1-3 complete, Wave 4 next.
 - **Git**: github.com/CBaen/SUBMANTLE (main branch, in sync with origin)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
-- **Tests**: 200 passing across 4 test files
+- **Tests**: 213 passing across 4 test files
 - **Research**: ALL COMPLETE. 5 expeditions + 6 follow-ups + 3 research councils. Files in `research/`. DO NOT re-research settled topics — read this file and build.
 
 ## FOR NEW INSTANCES — READ THIS FIRST
 1. Research phase is DONE. Do not start new expeditions or councils unless GL explicitly requests one.
 2. All design decisions are settled (see below). Do not re-litigate.
-3. The 5-wave implementation sequence is ready to execute. Start at Wave 1.
+3. Waves 1-3 of the 5-wave implementation are DONE. Start at Wave 4.
 4. GL is the bottleneck. Do not ask GL technical questions — research internally first.
-5. Push to remote is needed (~42 commits ahead of origin/main).
+5. Remote is in sync. Push after committing new work.
 
 ## What Just Happened (2026-03-12)
 
