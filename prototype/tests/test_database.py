@@ -1,5 +1,5 @@
 """
-Tests for prototype/database.py — SubstrateDB
+Tests for prototype/database.py — SubmantleDB
 
 Runs entirely in memory (:memory:) — no files created, no cleanup needed.
 Each test gets a fresh database via the db fixture.
@@ -16,7 +16,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from database import SubstrateDB
+from database import SubmantleDB
 
 
 # ── Fixtures ───────────────────────────────────────────────────────────────────
@@ -24,7 +24,7 @@ from database import SubstrateDB
 @pytest.fixture
 def db():
     """Fresh in-memory database for each test. No disk I/O, no cleanup."""
-    return SubstrateDB(":memory:")
+    return SubmantleDB(":memory:")
 
 
 # ── Initialization ─────────────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ class TestInitialization:
 
     def test_idempotent_init(self):
         """Calling __init__ twice on same path must not fail or duplicate schema."""
-        db = SubstrateDB(":memory:")
+        db = SubmantleDB(":memory:")
         # Re-initialize the same instance (simulating server restart with same file)
         db._initialize()  # Should not raise or create duplicate tables
 

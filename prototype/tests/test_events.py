@@ -80,7 +80,7 @@ class TestEventDataclass:
         e = Event(
             event_type=EventType.SCAN_COMPLETE,
             data={"process_count": 10},
-            source="substrate",
+            source="submantle",
         )
         assert e.event_type == EventType.SCAN_COMPLETE
         assert e.data["process_count"] == 10
@@ -318,7 +318,7 @@ class TestPrivacyMode:
 class TestPersistenceIntegration:
     def test_events_logged_to_db(self, bus_with_db):
         bus, db = bus_with_db
-        bus.emit(EventType.SCAN_COMPLETE, {"process_count": 5}, source="substrate")
+        bus.emit(EventType.SCAN_COMPLETE, {"process_count": 5}, source="submantle")
         events = db.get_recent_events(limit=10)
         assert len(events) == 1
         assert events[0]["event_type"] == "SCAN_COMPLETE"
@@ -328,7 +328,7 @@ class TestPersistenceIntegration:
         """Privacy-suppressed events must not reach the database."""
         bus, db = bus_with_db
         bus.set_privacy_mode(True)
-        bus.emit(EventType.PROCESS_STARTED, {"pid": 1}, source="substrate")
+        bus.emit(EventType.PROCESS_STARTED, {"pid": 1}, source="submantle")
         events = db.get_recent_events(limit=10)
         assert len(events) == 0
 
@@ -344,7 +344,7 @@ class TestPersistenceIntegration:
     def test_privacy_mode_flag_reflected_in_log(self, bus_with_db):
         bus, db = bus_with_db
         bus.set_privacy_mode(False)
-        bus.emit(EventType.SCAN_COMPLETE, {}, source="substrate")
+        bus.emit(EventType.SCAN_COMPLETE, {}, source="submantle")
 
         events = db.get_recent_events(limit=1)
         assert events[0]["privacy_mode_active"] is False

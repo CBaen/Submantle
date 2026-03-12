@@ -61,7 +61,7 @@ Public data (traffic, weather, air quality via free APIs), user-consented extern
 Knows every running process — not just as PIDs, but what they ARE.
 
 Three layers of identification (lightest first):
-1. **Community signatures** from the Substrate Store (kilobytes, instant)
+1. **Community signatures** from the Submantle Store (kilobytes, instant)
 2. **Metadata inference** — folder names, command lines, parent processes, file handles
 3. **User teaching** — "What is this?" asked once, answer shared to community
 
@@ -69,28 +69,28 @@ Three layers of identification (lightest first):
 Maps relationships between processes. "These 3 processes were launched together. They share files. They're all part of one pipeline."
 
 ### 3. Awareness Mesh
-Connected substrates form a grid. A family's devices share awareness. An office building contributes to collective knowledge. Your phone knows your laptop is dying and has unsaved work — and can act on that knowledge.
+Connected Submantle instances form a grid. A family's devices share awareness. An office building contributes to collective knowledge. Your phone knows your laptop is dying and has unsaved work — and can act on that knowledge.
 
 Cross-device sync is end-to-end encrypted. The sync server cannot read the data (1Password model).
 
 ### 4. Agent API (The Broker)
-Any agent can query Substrate:
+Any agent can query Submantle:
 - "What's running and what does it mean?"
 - "What would I break if I did X?"
 - "Is the user in a meeting? At their desk? Away?"
 - "What devices are connected and what's their state?"
 
 But it's not just defensive. It's generative:
-- Substrate notices an app glitching → tells an agent → agent fixes it
-- Substrate feels the phone jerk abnormally → checks if the user fell → uses grid resources to call for help
-- Substrate knows the laptop battery is dying → moves unsaved work to the phone
+- Submantle notices an app glitching → tells an agent → agent fixes it
+- Submantle feels the phone jerk abnormally → checks if the user fell → uses grid resources to call for help
+- Submantle knows the laptop battery is dying → moves unsaved work to the phone
 
-### 5. Substrate Store
+### 5. Submantle Store
 The intelligence and business engine:
-- **Identity packs** — how Substrate recognizes software (free + premium)
+- **Identity packs** — how Submantle recognizes software (free + premium)
 - **Data source plugins** — how the outer ring grows
-- **Agent transaction fees** — microtransactions when agents query Substrate
-- **"Substrate Safe" certification** — agent developers certify compatibility
+- **Agent transaction fees** — microtransactions when agents query Submantle
+- **"Submantle Safe" certification** — agent developers certify compatibility
 
 ---
 
