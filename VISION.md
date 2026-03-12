@@ -304,21 +304,37 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 | Microsoft Recall | Screenshots everything, searchable | Passive recording, no broker |
 | Apple Intelligence | On-device semantic index | Closed ecosystem, no agent API |
 
-### Trust & Identity (validated March 2026 expedition)
+### Trust & Identity (validated March 2026 — 4 expeditions, 9 validators)
 
 | Product | What it does | What it lacks |
 |---------|-------------|---------------|
-| HUMAN Security AgenticTrust | Behavioral trust for web apps | Web-layer only, not portable, not OS-level |
+| HUMAN Security AgenticTrust | Behavioral trust for web apps, adding "portable identity" via HTTP Message Signatures | Per-application scoring, not OS-level. One product decision from narrowing the gap. |
+| Mnemom | Agent-layer behavioral trust with cryptographic attestation, drift detection, hash-chain-anchored scores | Wraps agent clients — doesn't observe OS-level processes. Closest architectural competitor. |
 | Zenity ($55M, Gartner Cool Vendor) | Enterprise agent governance | Defensive monitoring, no portable trust scores |
 | Mastercard Verifiable Intent (March 2026) | Cryptographic purchase authorization for agents | Explicitly excludes behavioral trust, reputation, dynamic models |
 | cheqd MCP Toolkit | W3C VC issuance for AI agents | No behavioral component — credential management only |
 | Google UCP (January 2026) | Commerce authorization protocol | "Does not solve which agents should be trusted" — their own spec |
+| Vouched / KnowThat.ai ($17M, Feb 2026) | Community reputation directory for agents | Same marketing vocabulary, different architecture — directory, not behavioral scoring |
+| t54 Labs ($5M, Feb 2026) | Crypto-rails behavioral risk engine | Blockchain dependency, not OS-level, not portable VCs |
 | Composio, LangChain, CrewAI | Agent frameworks and tooling | Build agents, don't score them |
 | Decagon ($4.5B, Jan 2026) | Customer service agents | Action-taking agents, no trust infrastructure |
 
-**The gap**: Mastercard built the receipt system. Google built the commerce protocol. Nobody built the layer that says whether the agent holding the receipt should be trusted. That's Substrate.
+### Sleeping Giant
 
-**Confirmed by:** 5 research teams, 3 independent validators, 6 targeted follow-up investigations. The behavioral trust gap is real, documented, and unoccupied as of March 2026.
+**Gen Digital (Norton parent, ~500M device install base)** already does pre-install safety scanning through their Agent Trust Hub. One product pivot from OS-level behavioral monitoring at massive scale. They have the device footprint. They don't have the trust scoring model or the portable credential architecture. Watch closely.
+
+### Standards Bodies — No Behavioral Trust Standard Exists
+
+- **Three active IETF drafts** (Huawei, AWS/Zscaler/Ping) cover agent identity — NONE cover behavioral trust
+- **NIST AI Agent Standards Initiative** (February 2026) — could define behavioral trust. Monitor actively.
+- **AAIF** — no behavioral trust working group. Corporate-weighted membership.
+- **IETF RATS Working Group** — already has the vocabulary (RFC 9334). Better first venue for Substrate.
+
+**The precise gap**: No company combines all four of: (1) OS-level observation, (2) deterministic scoring, (3) on-device computation, (4) portable W3C VC attestation. Individual pieces exist in isolation. The combination is unoccupied.
+
+**The pitch**: "We're building the credit bureau for AI agents — every agent earns a trust score through behavior, carries it everywhere, and brands decide their own thresholds."
+
+**Confirmed by:** 5 research teams, 9 independent validators, 6 targeted follow-up investigations across 4 expeditions. The behavioral trust gap is real, documented, and unoccupied as of March 2026.
 
 ---
 
