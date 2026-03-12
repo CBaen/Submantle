@@ -17,10 +17,10 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 
 **Key Findings (validated):**
 - MCP confirmed as V1 integration surface (Go SDK v1.4.0, maintained by Google under Anthropic org)
-- RATS RFC 9334 "Passport Model" maps precisely to Substrate's architecture — IETF standard vocabulary
+- RATS RFC 9334 "Passport Model" maps precisely to Submantle's architecture — IETF standard vocabulary
 - Behavioral trust gap confirmed with sharper boundaries: no one combines OS-level observation + deterministic scoring + on-device computation + portable VC attestation
 - trustbloc/vc-go v1.3.6 — stable Go VC + SD-JWT stack (missed by researchers, caught by validators)
-- Incident taxonomy RESOLVED: credit bureau model — Substrate records reports from third parties, doesn't detect incidents itself
+- Incident taxonomy RESOLVED: credit bureau model — Submantle records reports from third parties, doesn't detect incidents itself
 - Android OS sandboxing blocks process awareness — desktop/laptop first, mobile later
 - Solo non-technical founder protocol precedent: NONE documented. Product first, protocol later.
 - Gen Digital (Norton, 500M devices) identified as sleeping giant — one pivot from competing
@@ -36,14 +36,14 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 - Mastercard's "Verifiable Intent" (March 5, 2026) explicitly excludes behavioral trust from its spec. Complementary, not competitive.
 - W3C VC 2.0 + SD-JWT (not BBS+) for V1 trust attestations. BBS+ is still a Candidate Recommendation — use SD-JWT (RFC 9901, finalized November 2025).
 - Pure Beta formula for V1: trust = total_queries / (total_queries + incidents). Initialize at (1,1) = 0.5.
-- EU AI Act: Substrate likely outside scope entirely (deterministic arithmetic, not ML).
+- EU AI Act: Submantle likely outside scope entirely (deterministic arithmetic, not ML).
 - cheqd has MCP toolkit for VC issuance but NO behavioral trust. Complementary infrastructure, not a competitor.
 - Three active IETF drafts exist (Huawei, AWS/Zscaler/Ping) for agent identity — NONE cover behavioral trust. Gap uncontested at standards level.
 - Solo founder + AI model works for product phase. Protocol phase needs technical contributors.
 - Realistic MVTL timeline: 5 focused sessions, not 1.
 
 **Design Decision Resolved:**
-"Always aware, never acting" applies to the ENTIRE system including the trust layer. Substrate exposes trust scores. Third parties (brands, platforms) enforce their own thresholds. Substrate never blocks, never gates, never throttles. This makes Substrate infrastructure (like Visa), not a gatekeeper. More financial opportunities, not fewer — every consumer of trust data needs their own enforcement layer built on top.
+"Always aware, never acting" applies to the ENTIRE system including the trust layer. Submantle exposes trust scores. Third parties (brands, platforms) enforce their own thresholds. Submantle never blocks, never gates, never throttles. This makes Submantle infrastructure (like Visa), not a gatekeeper. More financial opportunities, not fewer — every consumer of trust data needs their own enforcement layer built on top.
 
 ### V1 Foundation — Previously Built (2026-03-10)
 3 builders (Opus) + 3 reviewers (Opus). All files in `research/triadic-build-v1-foundation/`.
@@ -53,7 +53,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 - **SQLite Persistence** (`database.py`) — Four tables: scan_snapshots, agent_registry, events, settings. WAL mode.
 - **Event Bus** (`events.py`) — Internal pub/sub. 7 event types. Privacy filtering at bus level.
 - **Agent Identity** (`agent_registry.py`) — HMAC-SHA256 tokens, cryptographic registration, trust tracking schema.
-- **Integration** — All modules wired into api.py and substrate.py. 5 new API endpoints. Dashboard privacy toggle.
+- **Integration** — All modules wired into api.py and submantle.py. 5 new API endpoints. Dashboard privacy toggle.
 
 **Open issues from V1 build (noted for next round):**
 - Open agent registration (no rate limit/passphrase) — fix before WiFi deployment
@@ -65,7 +65,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 ## What Exists
 
 ### Foundation Modules (prototype/)
-- `database.py` — SubstrateDB class, SQLite persistence, WAL mode
+- `database.py` — SubmantleDB class, SQLite persistence, WAL mode
 - `events.py` — EventBus class, 7 event types, privacy filtering
 - `privacy.py` — PrivacyManager class, AWARE/PRIVATE states
 - `agent_registry.py` — AgentRegistry class, HMAC-SHA256 tokens
@@ -74,7 +74,7 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 ### Existing (prototype/)
 - `dashboard.html` — Anthropic-styled dashboard with privacy toggle
 - `api.py` — FastAPI server, 10 endpoints (5 original + 5 new)
-- `substrate.py` — Core scanning + scan_with_events()
+- `submantle.py` — Core scanning + scan_with_events()
 - `signatures.json` — 15 community-curated identity signatures
 
 ### API Endpoints
@@ -94,8 +94,8 @@ The ground beneath everything. A persistent awareness layer AND behavioral trust
 - `research/expedition-trust-layer/` — Trust layer expedition (17 files: 5 teams, 3 validators, 1 synthesis, 6 follow-ups, 1 brief)
 - `research/triadic-build-v1-foundation/` — V1 build (brief, 3 builder reports, 3 reviewer reports)
 - `research/expedition-protocol-architecture/` — Fourth expedition (5 teams + 9 validators)
-- `research/expedition-substrate-infrastructure/` — Second expedition
-- `research/expedition-substrate-deep-dive/` — First expedition
+- `research/expedition-submantle-infrastructure/` — Second expedition
+- `research/expedition-submantle-deep-dive/` — First expedition
 - `research/future-expeditions.md` — Agent reviews, privacy UX, payment processor
 
 ## What to Build Next
