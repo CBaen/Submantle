@@ -45,6 +45,11 @@
 - **Rule**: Check this file at session end. If you learned something, write it. The rule already exists. Follow it.
 - **Why**: Repeating a documented mistake is worse than making it the first time. It means the lessons-learned system failed at its one job.
 
+### New Instances Must Be Helpful and Focused — GL Is the Bottleneck
+- **Pattern**: Research accumulates across sessions. New instances arrive, read stale research, and re-litigate settled decisions or get confused by outdated findings.
+- **Rule**: HANDOFF.md is the single source of truth for current state. Research files are historical records — they inform, they don't override. New instances should read HANDOFF.md, check the build priority table, and start building. Don't re-research what's settled. Don't ask GL to re-explain context. GL is one person with ADHD — every re-explanation costs focus they can't afford.
+- **Why**: GL said "I am the bottleneck." Every minute GL spends re-teaching context is a minute not spent on design decisions only GL can make. The documentation must carry the full context so new instances can be productive immediately.
+
 ### Rebrand Early, Rebrand Completely
 - **Pattern**: "Substrate" conflicted with Parity Technologies' blockchain framework. Caught before public launch but after 91 files existed.
 - **Rule**: Resolve naming conflicts before writing significant code. When rebranding, dispatch parallel agents by file zone (docs, code, research) and verify with grep afterward. Rename files AND folders, not just content.
