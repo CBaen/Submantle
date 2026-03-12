@@ -37,13 +37,13 @@ class PrivacyState(Enum):
     PRIVATE = "PRIVATE"
 
 
-# Settings key used in the SubstrateDB settings table
+# Settings key used in the SubmantleDB settings table
 _SETTING_KEY = "privacy_mode"
 
 
 class PrivacyManager:
     """
-    Manages privacy state for Substrate.
+    Manages privacy state for Submantle.
 
     Designed to be instantiated once at startup and shared across components.
     Use check_privacy() before any sensitive operation.
@@ -52,7 +52,7 @@ class PrivacyManager:
     def __init__(self, db=None, event_bus=None):
         """
         Args:
-            db: SubstrateDB instance. If None, state is not persisted across
+            db: SubmantleDB instance. If None, state is not persisted across
                 restarts (safe for testing and single-shot use).
             event_bus: EventBus instance. If None, PRIVACY_TOGGLED events are
                 not emitted (safe for testing).

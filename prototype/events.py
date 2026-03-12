@@ -129,7 +129,7 @@ class EventBus:
     def __init__(self, db=None) -> None:
         """
         Args:
-            db: Optional SubstrateDB instance. If provided, events are persisted
+            db: Optional SubmantleDB instance. If provided, events are persisted
                 to the events table. If None, events are only dispatched in-memory.
                 Pass None for tests or when the DB layer isn't ready yet.
         """
@@ -229,7 +229,7 @@ class EventBus:
                   personal data when privacy mode is active — callers must
                   scrub sensitive data before calling emit() in PRIVATE mode.
             source: The component emitting this event. Used for tracing.
-                    Suggested values: "substrate", "api", "privacy", "agent_registry".
+                    Suggested values: "submantle", "api", "privacy", "agent_registry".
 
         Returns:
             The Event that was dispatched, or None if the event was suppressed
@@ -267,7 +267,7 @@ class EventBus:
                 )
             except Exception:
                 # Silently continue — event dispatch proceeds regardless of
-                # persistence failure. This keeps Substrate running even if
+                # persistence failure. This keeps Submantle running even if
                 # the database is temporarily locked or corrupted.
                 pass
 

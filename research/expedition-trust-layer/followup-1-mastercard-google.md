@@ -10,7 +10,7 @@
 
 The Mastercard/Google "trust layer" is a real, named product: **Verifiable Intent**, announced March 5, 2026. It is co-developed by Mastercard and Google, open-sourced, and backed by eight industry partners.
 
-**The critical finding for Substrate:** Verifiable Intent is purely transactional authorization infrastructure. It does not provide behavioral trust scoring, agent reputation, or longitudinal monitoring. The specification explicitly excludes these. Three independent validators were correct: this is not Substrate's space. It is the plumbing beneath where Substrate would operate.
+**The critical finding for Submantle:** Verifiable Intent is purely transactional authorization infrastructure. It does not provide behavioral trust scoring, agent reputation, or longitudinal monitoring. The specification explicitly excludes these. Three independent validators were correct: this is not Submantle's space. It is the plumbing beneath where Submantle would operate.
 
 ---
 
@@ -77,17 +77,17 @@ Portability is the stated goal. Lock-in is the practical near-term reality.
 
 ---
 
-### 4. Does it compete with Substrate's vision of universal behavioral trust?
+### 4. Does it compete with Submantle's vision of universal behavioral trust?
 
 **No. It occupies a different layer entirely.**
 
 Verifiable Intent answers: "Did this agent do what it was authorized to do in this transaction?"
 
-Substrate's thesis answers: "What is the behavioral profile of this agent across all its actions, over time, across all contexts?"
+Submantle's thesis answers: "What is the behavioral profile of this agent across all its actions, over time, across all contexts?"
 
-These are complementary layers, not competing solutions. Verifiable Intent is the transactional authorization layer. Substrate (as behavioral trust infrastructure) would sit above it — reading the patterns that Verifiable Intent's audit trail creates, but synthesizing them into reputation, reliability scores, and behavioral signatures.
+These are complementary layers, not competing solutions. Verifiable Intent is the transactional authorization layer. Submantle (as behavioral trust infrastructure) would sit above it — reading the patterns that Verifiable Intent's audit trail creates, but synthesizing them into reputation, reliability scores, and behavioral signatures.
 
-A useful framing: Verifiable Intent is the receipt printer. Substrate is the analyst who reads ten thousand receipts and builds a trust model of each agent.
+A useful framing: Verifiable Intent is the receipt printer. Submantle is the analyst who reads ten thousand receipts and builds a trust model of each agent.
 
 **Source:** Multiple sources confirm VI's scope is per-transaction only; no source shows any behavioral scoring component.
 
@@ -153,7 +153,7 @@ The only ongoing state tracking is budget enforcement — counting dollars spent
 Given the gap Verifiable Intent leaves, I searched for other players in the behavioral trust space. Three emerged:
 
 ### ClawTrust (clawtrust.io)
-A reputation system purpose-built for agent-to-agent interactions. Uses behavioral scoring: transaction success rates (40%), reliability/uptime (25%), community vouches from other agents (20%), safety incident record (15%). Scores 0–100. Sub-100ms trust checks. This is the closest existing analog to Substrate's behavioral trust layer — but it is commerce-transaction-only, agent-to-agent only, and has no ambient awareness component. No cryptographic verification. No cross-device or cross-context awareness.
+A reputation system purpose-built for agent-to-agent interactions. Uses behavioral scoring: transaction success rates (40%), reliability/uptime (25%), community vouches from other agents (20%), safety incident record (15%). Scores 0–100. Sub-100ms trust checks. This is the closest existing analog to Submantle's behavioral trust layer — but it is commerce-transaction-only, agent-to-agent only, and has no ambient awareness component. No cryptographic verification. No cross-device or cross-context awareness.
 
 ### Nerq (dev.to/zarq-ai)
 Scores 143,642+ AI assets across six registries (GitHub, npm, PyPI, HuggingFace, Docker Hub, MCP). Pure technical metrics: security vulnerabilities, maintenance cadence, popularity, documentation quality, ecosystem integrations. No behavioral scoring. No runtime awareness. It is a code quality scoring system, not a behavioral trust system.
@@ -161,11 +161,11 @@ Scores 143,642+ AI assets across six registries (GitHub, npm, PyPI, HuggingFace,
 ### A2Apex (a2apex.io)
 Compliance certification for Google's A2A Protocol. Tests protocol compliance, not behavior. Assigns Gold/Silver/Bronze badges. No runtime behavioral analysis.
 
-**None of these provide what Substrate proposes:** ambient, cross-context, cross-device behavioral awareness that accumulates into persistent trust profiles for agents operating in the real world.
+**None of these provide what Submantle proposes:** ambient, cross-context, cross-device behavioral awareness that accumulates into persistent trust profiles for agents operating in the real world.
 
 ---
 
-## Strategic Implications for Substrate
+## Strategic Implications for Submantle
 
 ### The space is real and unoccupied
 
@@ -173,9 +173,9 @@ Every source confirmed the same gap: the existing trust infrastructure (Verifiab
 
 The WEF published "Trust is the new currency in the AI agent economy" (July 2025). The question is widely recognized. The answer does not yet exist at the behavioral layer.
 
-### Verifiable Intent is infrastructure Substrate could read
+### Verifiable Intent is infrastructure Submantle could read
 
-Verifiable Intent will create a growing corpus of cryptographically verified agent action records. This is raw material — behavioral signals that Substrate's pattern-matching layer could synthesize into trust profiles. Rather than competing, Substrate could explicitly position itself as the behavioral intelligence layer built on top of Verifiable Intent's transactional audit trail.
+Verifiable Intent will create a growing corpus of cryptographically verified agent action records. This is raw material — behavioral signals that Submantle's pattern-matching layer could synthesize into trust profiles. Rather than competing, Submantle could explicitly position itself as the behavioral intelligence layer built on top of Verifiable Intent's transactional audit trail.
 
 ### The Mastercard stack does not close the behavioral trust gap
 
@@ -187,19 +187,19 @@ Mastercard's full stack as of March 2026:
 
 None of these layers, individually or combined, provide behavioral trust scoring. Mastercard explicitly said they will "continue working with industry bodies to define complementary standards for conversational AI in commerce" — signaling they know gaps remain.
 
-### Timing is favorable for Substrate
+### Timing is favorable for Submantle
 
-Verifiable Intent was just announced (March 5, 2026). It is not yet integrated into Agent Pay. The behavioral trust layer does not exist. The industry is now building the authorization plumbing that will generate the data a behavioral trust layer needs. Substrate's timing — building the behavioral layer while the transactional layer is being established — is architecturally correct.
+Verifiable Intent was just announced (March 5, 2026). It is not yet integrated into Agent Pay. The behavioral trust layer does not exist. The industry is now building the authorization plumbing that will generate the data a behavioral trust layer needs. Submantle's timing — building the behavioral layer while the transactional layer is being established — is architecturally correct.
 
 ---
 
 ## What Team 4's Validators Got Right
 
-All three validators who flagged this as the highest-priority unknown were correct to be concerned, but for the right reason in the wrong direction. The concern was: "does this close the behavioral trust gap and threaten Substrate's thesis?"
+All three validators who flagged this as the highest-priority unknown were correct to be concerned, but for the right reason in the wrong direction. The concern was: "does this close the behavioral trust gap and threaten Submantle's thesis?"
 
-The answer is no — and the evidence is clear and explicit in the specification itself. What the validators correctly sensed was the significance of this development: a major industry coalition building trust infrastructure for agentic commerce is a strong signal that the market is real and moving fast. But they are building the floor, not Substrate's layer.
+The answer is no — and the evidence is clear and explicit in the specification itself. What the validators correctly sensed was the significance of this development: a major industry coalition building trust infrastructure for agentic commerce is a strong signal that the market is real and moving fast. But they are building the floor, not Submantle's layer.
 
-The correct updated framing: Mastercard/Google are building the authorization layer. **This is a tailwind, not a headwind.** The more transactions flow through Verifiable Intent, the more behavioral data becomes available for a layer like Substrate to analyze.
+The correct updated framing: Mastercard/Google are building the authorization layer. **This is a tailwind, not a headwind.** The more transactions flow through Verifiable Intent, the more behavioral data becomes available for a layer like Submantle to analyze.
 
 ---
 

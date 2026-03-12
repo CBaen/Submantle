@@ -21,7 +21,7 @@ The strongest finding of the expedition. Teams 1, 2, 4, and 5 all independently 
 
 ### 2. W3C Verifiable Credentials 2.0 Is the Right Portable Trust Format
 
-Three independent teams (2, 3, 5) converged on W3C VC 2.0 as the format for Substrate Trust Attestations. The standard was finalized as a W3C Recommendation on May 15, 2025. All three validators confirmed this convergence as the expedition's highest-confidence technical finding.
+Three independent teams (2, 3, 5) converged on W3C VC 2.0 as the format for Submantle Trust Attestations. The standard was finalized as a W3C Recommendation on May 15, 2025. All three validators confirmed this convergence as the expedition's highest-confidence technical finding.
 
 **Caveat (from Validator 2):** BBS+ cryptosuites for selective disclosure (the "prove your tier without revealing your data" feature) were NOT among the seven specifications finalized in May 2025. Two specifications remained as Candidate Recommendations. Whether BBS+ is one of them is unverified. The privacy-preserving tier proof architecture depends on BBS+ being stable. This is a "verify before building" item, not a blocker for the overall VC direction.
 
@@ -45,15 +45,15 @@ Teams 3 and 5, plus the mae-principles expedition validators, all identified the
 
 ### 5. Open Access Design Correctly Handles Agent-Level Cold Start
 
-Teams 1, 3, and 5 independently confirmed through different research angles (credit bureau history, Bayesian statistics, gap analysis) that Substrate's "register to earn benefits, not to participate" design is the correct cold start answer.
+Teams 1, 3, and 5 independently confirmed through different research angles (credit bureau history, Bayesian statistics, gap analysis) that Submantle's "register to earn benefits, not to participate" design is the correct cold start answer.
 
-**Caveat (from Validator 3):** Agent-level cold start is handled. Platform-level cold start (Substrate itself has no registered agents, no brand partners, no demonstrated trust economy) is a separate chicken-and-egg problem requiring market development strategy, not a formula adjustment. No team addressed this.
+**Caveat (from Validator 3):** Agent-level cold start is handled. Platform-level cold start (Submantle itself has no registered agents, no brand partners, no demonstrated trust economy) is a separate chicken-and-egg problem requiring market development strategy, not a formula adjustment. No team addressed this.
 
 **Confidence: HIGH for agent cold start. UNADDRESSED for platform cold start.**
 
 ### 6. Sybil Resistance by Locality Is a Genuine Architectural Advantage
 
-Team 3's novel finding: Substrate's local-only trust computation makes distributed Sybil attacks structurally irrelevant because there is no global score to influence from outside the device. Validator 1 called this "genuinely novel and strong." Validator 3 confirmed it should be documented as a design principle.
+Team 3's novel finding: Submantle's local-only trust computation makes distributed Sybil attacks structurally irrelevant because there is no global score to influence from outside the device. Validator 1 called this "genuinely novel and strong." Validator 3 confirmed it should be documented as a design principle.
 
 **Caveat (from Validator 3):** Team 3 simultaneously claims Sybil resistance is "solved by locality" AND that it's a "known sacrifice in the trilemma." These are incompatible. The resolution: distributed Sybil attacks are neutralized by locality. Local self-gaming (device owner inflating own scores) is a separate vulnerability that no team mitigated. This matters for the trust economy.
 
@@ -63,27 +63,27 @@ Team 3's novel finding: Substrate's local-only trust computation makes distribut
 
 ## Battle-Tested Approaches (proven patterns with production evidence)
 
-### 7. Credit Bureau Model Is Substrate's Closest Ancestor
+### 7. Credit Bureau Model Is Submantle's Closest Ancestor
 
-Team 1 mapped credit bureau architecture to Substrate's design and found deep structural parallels: behavioral observation, score computation from observed actions, tiered access based on score, portability of score across providers. The credit bureau model survived being hated (Equifax breach, score opaqueness) because of bilateral dependency: lenders need scores, borrowers need credit. Substrate's flywheel works the same way: brands need trust signals, agents need trust credentials.
+Team 1 mapped credit bureau architecture to Submantle's design and found deep structural parallels: behavioral observation, score computation from observed actions, tiered access based on score, portability of score across providers. The credit bureau model survived being hated (Equifax breach, score opaqueness) because of bilateral dependency: lenders need scores, borrowers need credit. Submantle's flywheel works the same way: brands need trust signals, agents need trust credentials.
 
 **Key lesson:** Every trust system that reached internet scale shares one property — the trust mechanism was invisible to the end user and mandatory for participants. Certificate Transparency is the architectural ancestor for trust logging.
 
 ### 8. Progressive Snapshot Is the Best Product Analogy
 
-Team 4 surfaced this and Validator 1 elevated it above the credit bureau comparison. Progressive Snapshot: observe driving behavior -> score safety -> adjust insurance rate -> create economic incentive for safer driving. Average savings: $322/year for safe drivers. This is exactly Substrate's loop: observe agent behavior -> score trust -> adjust transaction rates -> create economic incentive for trustworthy behavior. It's more visible to consumers, better understood as a product mechanic, and more easily explained than credit bureaus.
+Team 4 surfaced this and Validator 1 elevated it above the credit bureau comparison. Progressive Snapshot: observe driving behavior -> score safety -> adjust insurance rate -> create economic incentive for safer driving. Average savings: $322/year for safe drivers. This is exactly Submantle's loop: observe agent behavior -> score trust -> adjust transaction rates -> create economic incentive for trustworthy behavior. It's more visible to consumers, better understood as a product mechanic, and more easily explained than credit bureaus.
 
 ### 9. The Visa Model for Trust Intermediation
 
-Team 4's strongest marketplace finding: Substrate as trust intermediary, not risk-taker. Visa doesn't hold money or make loans. It provides the trust infrastructure that connects merchants and cardholders. Bilateral dependency flywheel: merchants need verified customers, customers need accepted cards. Neither can leave without losing access to the other side.
+Team 4's strongest marketplace finding: Submantle as trust intermediary, not risk-taker. Visa doesn't hold money or make loans. It provides the trust infrastructure that connects merchants and cardholders. Bilateral dependency flywheel: merchants need verified customers, customers need accepted cards. Neither can leave without losing access to the other side.
 
 ---
 
 ## Novel Approaches (unconventional ideas with theoretical backing)
 
-### 10. Google's Universal Commerce Protocol NEEDS Substrate
+### 10. Google's Universal Commerce Protocol NEEDS Submantle
 
-Team 4 found that Google's UCP (January 2026, backed by Walmart/Target/Shopify/Mastercard/Visa) explicitly does NOT solve behavioral trust. "Protocols regulate how agents interact, not which agents should be trusted." UCP handles commerce authorization. Substrate handles the trust scoring that makes authorization decisions meaningful. This is a natural integration point, not a competitive threat.
+Team 4 found that Google's UCP (January 2026, backed by Walmart/Target/Shopify/Mastercard/Visa) explicitly does NOT solve behavioral trust. "Protocols regulate how agents interact, not which agents should be trusted." UCP handles commerce authorization. Submantle handles the trust scoring that makes authorization decisions meaningful. This is a natural integration point, not a competitive threat.
 
 ### 11. Standards Window Is Open — But Requires New Submission
 
@@ -91,7 +91,7 @@ Team 2 identified IETF RFC 9711 (Entity Attestation Token) as the right base for
 
 ### 12. cheqd as Reference Implementation (Not Just Validation)
 
-Team 5 cited cheqd as having already built MCP servers for VC issuance to AI agents. Validator 1 elevated this: cheqd has a working implementation of MCP-integrated VC infrastructure. Substrate could potentially extend or integrate with cheqd's work rather than building VC issuance from scratch. No team investigated what cheqd actually built. This deserves attention before committing to a full custom implementation.
+Team 5 cited cheqd as having already built MCP servers for VC issuance to AI agents. Validator 1 elevated this: cheqd has a working implementation of MCP-integrated VC infrastructure. Submantle could potentially extend or integrate with cheqd's work rather than building VC issuance from scratch. No team investigated what cheqd actually built. This deserves attention before committing to a full custom implementation.
 
 **Also flagged as potential competitor (Validator 3):** If cheqd pivots from VC issuance infrastructure into behavioral trust scoring, they'd be the closest direct competitor.
 
@@ -107,7 +107,7 @@ Teams 2 and 3 identified ZKPs as the future mechanism for agents to prove trust 
 
 ## Synthesized Recommendation
 
-Based on vetting all findings against the Research Brief, validator challenges, and project constraints, here is what Substrate should build and in what order:
+Based on vetting all findings against the Research Brief, validator challenges, and project constraints, here is what Submantle should build and in what order:
 
 ### The Minimum Viable Trust Layer (MVTL)
 
@@ -129,7 +129,7 @@ Steps 1-5 require zero new dependencies. Step 6 is a schema/API change.
 
 ### The Trust Attestation Layer (Post-MVTL)
 
-- W3C VC 2.0 format for Substrate Trust Attestations
+- W3C VC 2.0 format for Submantle Trust Attestations
 - Verify BBS+ cryptosuite finalization status before committing to selective disclosure
 - Investigate cheqd's MCP VC implementation before building from scratch
 - VC revocation mechanism must be designed (no team solved this; it's blocking for attestations)
@@ -137,7 +137,7 @@ Steps 1-5 require zero new dependencies. Step 6 is a schema/API change.
 ### The Standards Path (Background, Not Blocking)
 
 - IETF RFC 9711 EAT is the right base
-- Agentic extension draft expired — requires new submission if Substrate wants to define the standard
+- Agentic extension draft expired — requires new submission if Submantle wants to define the standard
 - W3C AI Agent Protocol Community Group exists for engagement
 - MCP's Linux Foundation governance makes it permanent infrastructure
 
@@ -170,15 +170,15 @@ Steps 1-5 require zero new dependencies. Step 6 is a schema/API change.
 
 This is the most consequential unresolved question from the expedition. All three validators independently flagged it. No team addressed it.
 
-**The problem:** Substrate's design principle is "always aware, never acting — provides knowledge, doesn't act." The trust layer, as designed by the teams, includes mechanisms that ARE actions: blocking agents (Hard Gate), changing transaction rates based on score, throttling queries (velocity caps), gating access to features. These are not awareness. They are interventions.
+**The problem:** Submantle's design principle is "always aware, never acting — provides knowledge, doesn't act." The trust layer, as designed by the teams, includes mechanisms that ARE actions: blocking agents (Hard Gate), changing transaction rates based on score, throttling queries (velocity caps), gating access to features. These are not awareness. They are interventions.
 
-**Why it matters:** Either the principle is modified for the trust layer context, or the enforcement mechanisms must be redesigned so Substrate only EXPOSES the trust signal and third parties decide whether to act on it.
+**Why it matters:** Either the principle is modified for the trust layer context, or the enforcement mechanisms must be redesigned so Submantle only EXPOSES the trust signal and third parties decide whether to act on it.
 
 **The two possible resolutions:**
-1. **Scope the principle:** "Always aware, never acting" applies to the awareness layer (process scanning, event observation). The trust layer is a different context where Substrate provides scored signals AND third parties enforce them. Substrate doesn't block agents — brands and platforms set their own thresholds using Substrate's scores.
-2. **Redesign enforcement:** Substrate only provides trust scores. Rate changes, access gating, and blocking are all implemented by the consumers of trust data (brands, platforms, other agents), never by Substrate itself.
+1. **Scope the principle:** "Always aware, never acting" applies to the awareness layer (process scanning, event observation). The trust layer is a different context where Submantle provides scored signals AND third parties enforce them. Submantle doesn't block agents — brands and platforms set their own thresholds using Submantle's scores.
+2. **Redesign enforcement:** Submantle only provides trust scores. Rate changes, access gating, and blocking are all implemented by the consumers of trust data (brands, platforms, other agents), never by Submantle itself.
 
-**This must be resolved before the trust layer is built.** The answer determines whether Substrate is extending its architecture or contradicting its foundation.
+**This must be resolved before the trust layer is built.** The answer determines whether Submantle is extending its architecture or contradicting its foundation.
 
 ---
 
@@ -190,7 +190,7 @@ This is the most consequential unresolved question from the expedition. All thre
 | Standards participation strategy (4-step roadmap) | Team 2 | Strategic roadmapping, not research findings. Useful context but exceeds Brief scope. |
 | Three-signal V1 formula | Team 5 | Over-engineers the prototype. All 3 validators flagged. Pure Beta is validated. |
 | IETF EAT draft as "active opportunity" | Teams 2, 5 | Draft expired December 15, 2025. Caught by Validator 2. The opportunity exists but requires a NEW submission. |
-| EigenTrust scalability rejection rationale | Team 3 | Conclusion correct (don't use EigenTrust) but the scalability argument is wrong per Validator 2. Correct reason: requires pre-existing trust graph Substrate doesn't have. |
+| EigenTrust scalability rejection rationale | Team 3 | Conclusion correct (don't use EigenTrust) but the scalability argument is wrong per Validator 2. Correct reason: requires pre-existing trust graph Submantle doesn't have. |
 | "One session" effort estimate for MVTL | Team 5 | Aspirational. Incident taxonomy alone is iterative design work requiring multiple cycles. Validator 3 confirmed. |
 | eBay inflation as hard evidence | Team 1 | Self-acknowledged by Team 1 as anecdotal. The pattern holds across other cases (Amazon, Steam) so the lesson is valid even without eBay specifics. |
 | Starbucks "60% of revenue" from loyalty | Team 4 | Validator 1 flagged: figure refers to transactions, not revenue. Approximate, not precise evidence. The loyalty mechanics lesson is valid regardless of exact percentage. |
@@ -203,7 +203,7 @@ This is the most consequential unresolved question from the expedition. All thre
 Every team identified it. No team proposed a draft taxonomy. Validator 3: "The incident definition determines what the Beta formula measures. If defined too narrowly, every error-free agent gets perfect trust. If too broadly, legitimate high-frequency agents are penalized." This requires iterative calibration against real behavioral data that doesn't exist yet. It is not a one-shot design decision.
 
 ### 2. VC Revocation Is Unsolved
-If Substrate issues a trust VC and the agent's behavior deteriorates, how is the credential revoked without creating a global revocation list that reveals which agents have been penalized? Team 2 flagged this. No team answered it. W3C StatusList2021 and Bitstring Status List exist but their privacy tradeoffs were not evaluated. This is blocking for the attestation layer.
+If Submantle issues a trust VC and the agent's behavior deteriorates, how is the credential revoked without creating a global revocation list that reveals which agents have been penalized? Team 2 flagged this. No team answered it. W3C StatusList2021 and Bitstring Status List exist but their privacy tradeoffs were not evaluated. This is blocking for the attestation layer.
 
 ### 3. Platform Cold Start Is Not Addressed
 Agent-level cold start is solved (open access + Beta prior). Platform cold start (who builds the first 30 integrations, who are the first brand partners, what makes agents register before there's a trust economy to benefit from) requires market development strategy. No team addressed this despite Validator 3 flagging the solo founder constraint.
@@ -215,7 +215,7 @@ EU AI Act (August 2026 deadline per project memory). FCRA-style implications for
 A device owner can run high-frequency benign queries from their own agents to inflate trust scores. This is not a Sybil attack (legitimate identity, single device) and doesn't violate any architectural constraint. But it undermines the trust economy. No team proposed a mitigation.
 
 ### 6. HUMAN Security Is a More Sophisticated Near-Competitor Than Acknowledged
-Their own language: "Trust is not a score, a label, or a rule; trust is a dynamic, ongoing decision based on what the agent does." The real gap between them and Substrate is layer (web application vs. OS) and portability (per-website vs. universal), not sophistication. A product pivot from HUMAN Security could close the gap.
+Their own language: "Trust is not a score, a label, or a rule; trust is a dynamic, ongoing decision based on what the agent does." The real gap between them and Submantle is layer (web application vs. OS) and portability (per-website vs. universal), not sophistication. A product pivot from HUMAN Security could close the gap.
 
 ---
 
@@ -223,8 +223,8 @@ Their own language: "Trust is not a score, a label, or a rule; trust is a dynami
 
 1. **Mastercard/Google "new trust layer" partnership** — Is this a direct competitor? Highest-priority open question.
 2. **BBS+ cryptosuite finalization** — Is it in the W3C Recommendation set or still Candidate?
-3. **cheqd's actual implementation** — What did they build? Can Substrate extend it?
-4. **IETF EAT agentic draft revival** — Can the expired draft be revived, or does Substrate need to submit new?
+3. **cheqd's actual implementation** — What did they build? Can Submantle extend it?
+4. **IETF EAT agentic draft revival** — Can the expired draft be revived, or does Submantle need to submit new?
 5. **EU AI Act implications** — Does behavioral trust scoring trigger high-risk AI classification?
 6. **Solo founder feasibility** — No team addressed the Brief's explicit question about this.
 

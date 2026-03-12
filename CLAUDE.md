@@ -115,9 +115,9 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 | VISION.md | Project root | Product vision, business model, architecture, competitive landscape |
 | HANDOFF.md | Project root | Current state, what's next, open decisions |
 | CLAUDE.md | Project root | Rules, conventions, design principles, competitive context, build priorities |
-| substrate-queue.md | Project root | Active tasks only. Git preserves completed. |
-| substrate-index.md | Project root | Pointers to research and reference material |
-| substrate-decisions.md | Project root | Append-only decision log. Use decision-search.py, never read full file. |
+| submantle-queue.md | Project root | Active tasks only. Git preserves completed. |
+| submantle-index.md | Project root | Pointers to research and reference material |
+| submantle-decisions.md | Project root | Append-only decision log. Use decision-search.py, never read full file. |
 | signatures.json | prototype/ | 15 identity signatures |
 
 ## Self-Improvement Loop
@@ -126,8 +126,8 @@ After ANY correction from Guiding Light, append a lesson to `lessons-learned.md`
 
 ## Key Research (for deep context)
 
-4 expeditions + 6 follow-ups completed. Pointers in `substrate-index.md`. Key syntheses:
+4 expeditions + 6 follow-ups completed. Pointers in `submantle-index.md`. Key syntheses:
 - `research/expedition-protocol-architecture/synthesis.md` — MCP, RATS RFC 9334, competitive gaps, Go libraries
 - `research/expedition-trust-layer/synthesis.md` — Beta formula, VC format, regulatory, anti-gaming
-- `research/expedition-substrate-infrastructure/synthesis.md` — Go vs Rust, SQLite, daemon design
-- `research/expedition-substrate-deep-dive/synthesis.md` — What Substrate is, competitive landscape, MCP strategy
+- `research/expedition-submantle-infrastructure/synthesis.md` — Go vs Rust, SQLite, daemon design
+- `research/expedition-submantle-deep-dive/synthesis.md` — What Submantle is, competitive landscape, MCP strategy

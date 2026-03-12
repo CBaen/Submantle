@@ -30,7 +30,7 @@ crypto-financial-rails only.
 **Gen Agent Trust Hub** (February 4, 2026, NASDAQ: GEN — parent of Norton/NortonLifeLock):
 Pre-install safety scanning for AI agent skills. Risk classification (Safe / Low / High / Critical).
 Partnership with Vercel for skills.sh marketplace. This is defensive and pre-install only — no
-behavioral history accumulation, no portable trust scores. Not a real competitor for Substrate's
+behavioral history accumulation, no portable trust scores. Not a real competitor for Submantle's
 use case today, but Gen has consumer device distribution that could enable OS-level behavioral
 monitoring if they chose to extend the product.
 
@@ -113,7 +113,7 @@ claim remains accurate.
 Confirmed via multiple independent 2026 sources. DataDome's March 2026 Security Boulevard post
 explicitly states: UCP and ACP "don't address which agents should be trusted." This is now an
 industry consensus statement cited by market commentators, not just a reading of the UCP spec. The
-claim has been externally validated by Substrate's most directly comparable competitor.
+claim has been externally validated by Submantle's most directly comparable competitor.
 
 **Verdict:** Verified and stronger than originally claimed. The quote in question is corroborated
 industry-wide.
@@ -140,7 +140,7 @@ behavioral trust working group found. The security and observability working gro
 but not equivalent.
 
 **Verdict:** Verified. Note for strategy: AAIF's observability working group is the most proximate
-entry point if Substrate wanted to contribute a spec.
+entry point if Submantle wanted to contribute a spec.
 
 ---
 
@@ -158,7 +158,7 @@ architecturally incompatible with behavioral observation — it just does not im
 
 **Verdict:** Verified for current state. Flag the theoretical extension as a future risk: if
 someone builds runtime behavioral scoring on top of ERC-8004's identity layer and writes to the
-registry, that directly competes with Substrate's attestation layer.
+registry, that directly competes with Submantle's attestation layer.
 
 Separate factual note not in this cluster but relevant: Validation-2.md (the pre-existing report)
 found that ERC-8004 is still in Draft status as an EIP. Team 3 described it as "live mainnet
@@ -180,7 +180,7 @@ observation claim but is a factual error the expedition synthesis should correct
   reputation-by-measurement). No on-device computation. No deterministic formula. No EU AI Act
   safety advantage. No process-level OS awareness. The portability is user-reported, not observed.
 - Threat level: Medium. Vouched will attract funding and market attention in the same vocabulary
-  space as Substrate. The conceptual overlap is high; the architectural overlap is low.
+  space as Submantle. The conceptual overlap is high; the architectural overlap is low.
 
 ### 2. t54 Labs — Crypto-rails behavioral risk engine
 - Funding: $5M seed (February 2026). Investors: Ripple, Franklin Templeton, Anagram, PL Capital.
@@ -190,7 +190,7 @@ observation claim but is a factual error the expedition synthesis should correct
 - Critical limitations: Financial-rails only. Blockchain-native (on-chain = inherently public,
   no on-device privacy). No OS-level process awareness. No deterministic formula cited.
   Crypto-native audience limits general market reach.
-- Threat level: Low for Substrate's general-purpose use case. Medium for the crypto/DeFi segment.
+- Threat level: Low for Submantle's general-purpose use case. Medium for the crypto/DeFi segment.
 
 ### 3. Gen Agent Trust Hub — Consumer device company with device distribution
 - Parent: Gen Digital (NASDAQ: GEN), owner of Norton, Avast, LifeLock.
@@ -267,14 +267,14 @@ The behavioral trust gap is real. The strongest version of B1 — that no compan
 behavioral trust derived from OS-level, deterministic, on-device observation — holds under direct
 search pressure. Three companies missed by Team 3 (Vouched, t54 Labs, Gen) have entered the
 vocabulary space of "portable agent trust" since the Q4 2025 research that produced the Forrester
-BATMS category. None of them threaten the architectural distinctiveness of Substrate's core
+BATMS category. None of them threaten the architectural distinctiveness of Submantle's core
 proposition: all three lack OS-level process awareness, all three lack deterministic non-ML scoring,
 and all three lack on-device privacy-preserving computation. The closest conceptual competitor is
-Vouched/KnowThat.ai, whose community reputation model overlaps with Substrate's portability thesis
+Vouched/KnowThat.ai, whose community reputation model overlaps with Submantle's portability thesis
 at the marketing level while differing fundamentally at the architecture level — reputation-by-
 testimony versus reputation-by-measurement. The IETF and AAIF findings confirm that no standards
 body has filled or is currently filling this gap. Market signals from WEF, Stripe, and a16z are
 independently verified. The primary risk is not that the gap is occupied — it is not. The primary
 risk is that Vouched, Gen, or an undetected YC company captures the "portable agent trust"
-narrative in market perception before Substrate ships the architecturally superior version. Speed
+narrative in market perception before Submantle ships the architecturally superior version. Speed
 of narrative matters here as much as architectural correctness.

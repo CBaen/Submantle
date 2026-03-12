@@ -1,4 +1,4 @@
-# Substrate — The Ground Beneath Everything
+# Submantle — The Ground Beneath Everything
 
 **Founded**: March 10, 2026
 **Creator**: Guiding Light
