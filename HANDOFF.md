@@ -171,7 +171,9 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 
 **Next instance should commit all changes.**
 
-## Build Priority — Revised (Post-Council, Post-Plan-Deepen)
+## Build Priority — Revised (Post-Scoring-Model-Council)
+
+**V1 Goal:** ONE working customer loop — agent carries score, brand uses it.
 
 | # | Task | Status | Why |
 |---|------|--------|-----|
@@ -180,16 +182,18 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 | 3 | Event bus | DONE | |
 | 4 | Agent identity | DONE | |
 | 5 | Trust layer wiring | DONE (uncommitted) | record_query(), compute_trust(), anti-gaming stubs |
-| 6 | Soft-delete deregistration | NEXT | Prerequisite for reporter auth — prevents record erasure |
-| 7 | Interaction logging table | NEXT | Foundation for everything — three-sided logs with UUIDs |
-| 8 | Reporter auth + pending state + velocity caps | NEXT | The eBay model — only members report, must reference real interactions |
-| 9 | MCP server (Python, stdio) | NEXT (parallel with 6-8) | Thin wrapper over existing modules. The product. |
-| 10 | Business API keys + Stripe Payment Links | NEXT | Minimal billing — scales to ~10 customers with near-zero code |
-| 11 | Sandbox/testing mode | AFTER EXPEDITION | Design pending trust lifecycle expedition |
-| 12 | Status labels + review workflow | AFTER EXPEDITION | Design pending trust lifecycle expedition |
-| 13 | Dashboard depth | DEFERRED | Follows when customers demand it |
-| 14 | Go production rewrite | FUTURE | |
-| 15 | W3C VC attestation issuance | FUTURE (accelerate if Mastercard VI materializes) | |
+| 6 | Wave 1: trust_metadata + score_version + has_history | NEXT | No dependencies. Enriches API immediately. |
+| 7 | Wave 2: Soft-delete deregistration | NEXT | Credit bureau model — permanent records. |
+| 8 | Wave 3: Pending state + severity classification + dedup | NEXT | Non-negotiable prerequisite for formula change. |
+| 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. accepted_incidents, reporter_diversity in API. |
+| 10 | Wave 5: MCP server (Python, stdio) | NEXT (parallel with 8-9) | Thin wrapper over existing modules. The product. |
+| 11 | Business API keys + Stripe Payment Links | NEXT | Minimal billing — scales to ~10 customers with near-zero code |
+| 12 | Interaction logging table + reporter auth | V1.1 | eBay model — only members report, must reference interactions |
+| 13 | Sandbox/testing mode | V1.1 | Design from Trust Lifecycle Expedition |
+| 14 | Status labels + review workflow | V1.1 | Design from Trust Lifecycle Expedition |
+| 15 | Dashboard depth | DEFERRED | Follows when customers demand it |
+| 16 | Go production rewrite | FUTURE | Reporter credibility, severity-as-formula-weight, recency weighting |
+| 17 | W3C VC attestation issuance | FUTURE (accelerate if Mastercard VI materializes) | |
 
 ## Key Research Pointers
 

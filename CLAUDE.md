@@ -84,7 +84,7 @@ An agent is the **registered software entity**. Not the model. Not the context w
 
 ## Build Priority — V1 Path to Proof
 
-The goal is ONE working customer loop: an agent carries a Submantle score, a brand uses it. Everything below serves that goal.
+The goal is ONE working customer loop: an agent carries a Submantle score, a brand uses it. Everything below serves that goal. Build sequence derived from Scoring Model Council V2 (2026-03-12).
 
 | # | Task | Status | Why It Matters |
 |---|------|--------|---------------|
@@ -92,12 +92,15 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 | 2 | SQLite persistence | DONE | Data survives restarts |
 | 3 | Event bus | DONE | Internal pub/sub for all modules |
 | 4 | Agent identity | DONE | Cryptographic registration |
-| 5 | Dashboard depth | NEXT | Nested data, clickable devices — makes the demo compelling |
-| 6 | Trust layer wiring | NEXT | Auth middleware, record_query(), compute_trust(), anti-gaming rules |
-| 7 | MCP server | NEXT | Agents query Submantle via Model Context Protocol — first real agent users |
-| 8 | Demo / landing page | NEEDED | "Show me" must have an answer |
-| 9 | Go production rewrite | FUTURE | Real OS daemon, production performance |
-| 10 | W3C VC attestation issuance | FUTURE | Portable trust credentials |
+| 5 | Trust layer wiring | DONE (uncommitted) | record_query(), compute_trust(), anti-gaming stubs |
+| 6 | Wave 1: trust_metadata + score_version + has_history | NEXT | Enriches API immediately, no dependencies |
+| 7 | Wave 2: Soft-delete deregistration | NEXT | Credit bureau model — permanent records |
+| 8 | Wave 3: Pending state + severity classification + dedup | NEXT | Prerequisite for formula change |
+| 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. Core scoring evolution. |
+| 10 | Wave 5: MCP server (Python, stdio) | NEXT (parallel) | The product — agents query Submantle |
+| 11 | Business API keys + Stripe Payment Links | NEXT | First revenue — near-zero code |
+| 12 | Go production rewrite | FUTURE | Reporter credibility, severity weights, recency |
+| 13 | W3C VC attestation issuance | FUTURE | Portable trust credentials |
 
 ## Conventions
 
