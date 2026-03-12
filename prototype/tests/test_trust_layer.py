@@ -88,12 +88,17 @@ class TestComputeTrust(unittest.TestCase):
         token = _register(registry, "formula-agent")
         for _ in range(10):
             registry.record_query(token)
-        for _ in range(2):
-            registry.record_incident(
-                agent_name="formula-agent",
-                reporter="acme-brand",
-                incident_type="policy_violation",
-            )
+        # Use different reporters so neither is a duplicate
+        registry.record_incident(
+            agent_name="formula-agent",
+            reporter="acme-brand",
+            incident_type="policy_violation",
+        )
+        registry.record_incident(
+            agent_name="formula-agent",
+            reporter="other-brand",
+            incident_type="policy_violation",
+        )
         result = registry.compute_trust(agent_name="formula-agent")
         expected = round(11 / 14, 4)
         self.assertAlmostEqual(result["trust_score"], expected, places=4)
