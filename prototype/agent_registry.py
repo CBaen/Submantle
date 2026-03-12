@@ -185,6 +185,24 @@ class AgentRegistry:
         version = version.strip()
         author = author.strip()
 
+        # Enforce unique agent names — can't have two "ShoppingBot" with
+        # different scores. Credit bureau model: one entity, one record.
+        if self._db is not None:
+            try:
+                existing = self._db.get_agent_by_name(agent_name)
+                if existing is not None:
+                    raise ValueError(
+                        f"Agent name '{agent_name}' is already registered"
+                    )
+            except ValueError:
+                raise  # Re-raise our own ValueError
+            except Exception as exc:
+                logger.warning(
+                    "Could not check agent name uniqueness: %s. "
+                    "Proceeding — DB unique index will catch duplicates.",
+                    exc,
+                )
+
         # The registry owns the registration_time because the HMAC token is
         # derived from it. The DB stores what it's given — it does not generate
         # its own timestamp for this field. (See module docstring for rationale.)
@@ -339,6 +357,135 @@ class AgentRegistry:
                 logger.warning(
                     "Failed to update query stats for agent id=%s: %s", agent_id, exc
                 )
+
+        return True
+
+    def compute_trust(
+        self,
+        agent_name: str | None = None,
+        agent_id: int | None = None,
+    ) -> dict | None:
+        """
+        Compute trust score for an agent using Beta Reputation.
+
+        Formula: trust = (total_queries + 1) / (total_queries + incidents + 2)
+        This is the mean of Beta(alpha=queries+1, beta=incidents+1) with a
+        uniform (1,1) prior. New agents with zero history score 0.5 ("unknown").
+
+        Scores change ONLY through interaction. No time-based decay. No expiry.
+
+        Args:
+            agent_name: Look up by name (used by verification endpoint).
+            agent_id: Look up by ID (used internally).
+
+        Returns:
+            Dict with trust score and metadata, or None if agent not found.
+        """
+        if self._db is None:
+            return None
+
+        record = None
+        try:
+            if agent_name is not None:
+                record = self._db.get_agent_by_name(agent_name)
+            elif agent_id is not None:
+                record = self._db.get_agent_by_id(agent_id)
+        except Exception as exc:
+            logger.error("DB error computing trust: %s", exc)
+            return None
+
+        if record is None:
+            return None
+
+        q = record["total_queries"]
+        i = record["incidents"]
+        score = (q + 1) / (q + i + 2)
+
+        return {
+            "agent_name": record["agent_name"],
+            "trust_score": round(score, 4),
+            "total_queries": q,
+            "incidents": i,
+            "registration_time": record["registration_time"],
+            "last_seen": record["last_seen"],
+            "version": record["version"],
+            "author": record["author"],
+        }
+
+    def record_incident(
+        self,
+        agent_name: str,
+        reporter: str,
+        incident_type: str,
+        description: str = "",
+    ) -> bool:
+        """
+        Record an incident report against an agent.
+
+        Credit bureau model: Submantle records third-party reports.
+        It does not detect incidents itself. The bank reports the missed
+        payment — the bureau stores it.
+
+        Increments the agent's incident counter and stores the full report
+        for audit trail.
+
+        Args:
+            agent_name: The agent the incident is about.
+            reporter: Who is reporting (business name, identifier).
+            incident_type: Category of incident (e.g., "unauthorized_access",
+                           "data_exfiltration", "policy_violation").
+            description: Free-text description of what happened.
+
+        Returns:
+            True if the report was recorded, False if agent not found.
+        """
+        if self._db is None:
+            return False
+
+        if not agent_name or not agent_name.strip():
+            return False
+        if not reporter or not reporter.strip():
+            return False
+        if not incident_type or not incident_type.strip():
+            return False
+
+        try:
+            record = self._db.get_agent_by_name(agent_name.strip())
+        except Exception as exc:
+            logger.error("DB error looking up agent for incident: %s", exc)
+            return False
+
+        if record is None:
+            return False
+
+        agent_id = record["id"]
+
+        try:
+            self._db.increment_agent_incidents(agent_id)
+            self._db.save_incident_report(
+                agent_id=agent_id,
+                agent_name=agent_name.strip(),
+                reporter=reporter.strip(),
+                incident_type=incident_type.strip(),
+                description=description.strip() if description else "",
+            )
+        except Exception as exc:
+            logger.error(
+                "Failed to record incident for agent '%s': %s",
+                agent_name, exc,
+            )
+            return False
+
+        logger.info(
+            "Incident recorded: agent=%s reporter=%s type=%s",
+            agent_name, reporter, incident_type,
+        )
+
+        self._emit("INCIDENT_REPORTED", {
+            "agent_name": agent_name.strip(),
+            "reporter": reporter.strip(),
+            "incident_type": incident_type.strip(),
+        })
 
         return True
 

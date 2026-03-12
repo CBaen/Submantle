@@ -326,6 +326,15 @@ class SubmantleDB:
             )
             return result.rowcount > 0
 
+    def get_agent_by_name(self, agent_name: str) -> dict | None:
+        """Look up an agent by name. Returns None if not found."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM agent_registry WHERE agent_name = ?",
+                (agent_name,),
+            ).fetchone()
+            return _row_to_agent(row) if row else None
+
     def update_trust_metadata(self, agent_id: int, trust_metadata: dict) -> None:
         """Replace trust_metadata JSON for an agent."""
         with self._conn() as conn:
@@ -333,6 +342,62 @@ class SubmantleDB:
                 "UPDATE agent_registry SET trust_metadata = ? WHERE id = ?",
                 (json.dumps(trust_metadata), agent_id),
             )
+
+    # ── incident_reports ────────────────────────────────────────────────────────
+
+    def save_incident_report(
+        self,
+        agent_id: int,
+        agent_name: str,
+        reporter: str,
+        incident_type: str,
+        description: str = "",
+    ) -> int:
+        """
+        Record an incident report against an agent.
+
+        Credit bureau model: Submantle stores third-party reports.
+        It does not detect incidents itself.
+
+        Returns:
+            Row ID of the new incident report.
+        """
+        with self._conn() as conn:
+            cursor = conn.execute(
+                """
+                INSERT INTO incident_reports
+                    (agent_id, agent_name, reporter, incident_type, description, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (agent_id, agent_name, reporter, incident_type, description, time.time()),
+            )
+            return cursor.lastrowid
+
+    def get_incident_reports(
+        self,
+        agent_id: int | None = None,
+        limit: int = 100,
+    ) -> list[dict]:
+        """
+        Return incident reports, newest first.
+        If agent_id is provided, filter to that agent only.
+        """
+        with self._conn() as conn:
+            if agent_id is not None:
+                rows = conn.execute(
+                    """
+                    SELECT * FROM incident_reports
+                    WHERE agent_id = ?
+                    ORDER BY timestamp DESC LIMIT ?
+                    """,
+                    (agent_id, limit),
+                ).fetchall()
+            else:
+                rows = conn.execute(
+                    "SELECT * FROM incident_reports ORDER BY timestamp DESC LIMIT ?",
+                    (limit,),
+                ).fetchall()
+            return [_row_to_incident_report(r) for r in rows]
 
     # ── events ─────────────────────────────────────────────────────────────────
 
@@ -578,6 +643,18 @@ def _row_to_agent(row: sqlite3.Row) -> dict:
         "incidents": row["incidents"],
         "trust_metadata": json.loads(row["trust_metadata"])
             if row["trust_metadata"] is not None else None,
+    }
+
+
+def _row_to_incident_report(row: sqlite3.Row) -> dict:
+    return {
+        "id": row["id"],
+        "agent_id": row["agent_id"],
+        "agent_name": row["agent_name"],
+        "reporter": row["reporter"],
+        "incident_type": row["incident_type"],
+        "description": row["description"],
+        "timestamp": row["timestamp"],
     }
 
 

@@ -49,6 +49,10 @@ class EventType(str, Enum):
     AGENT_REGISTERED = "AGENT_REGISTERED"
     AGENT_DEREGISTERED = "AGENT_DEREGISTERED"
 
+    # Trust layer — passes through in PRIVATE mode
+    # (trust data is not sensitive — it's the product)
+    INCIDENT_REPORTED = "INCIDENT_REPORTED"
+
     # System health — passes through in PRIVATE mode
     RESOURCE_WARNING = "RESOURCE_WARNING"
 

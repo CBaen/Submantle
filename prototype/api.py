@@ -329,6 +329,20 @@ class AgentRegisterRequest(BaseModel):
     capabilities: list[str] = []
 
 
+class IncidentReportRequest(BaseModel):
+    agent_name: str
+    reporter: str
+    incident_type: str
+    description: str = ""
+
+
+def _extract_token(authorization: str | None) -> str | None:
+    """Extract bearer token from Authorization header. Returns None if absent."""
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    return authorization.removeprefix("Bearer ").strip() or None
+
+
 # ── Routes ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/health")
