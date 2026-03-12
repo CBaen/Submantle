@@ -20,7 +20,7 @@
 **Challenge 2: Team 2's revenue projections rest on an unvalidated query rate assumption**
 
 - **Finding:** Team 2, Gaps section — revenue projection table showing $365,000/year at 10K active agents up to $365M/year at 10M active agents, at $0.001/query, "1M queries/day" at 10K agents scale.
-- **Problem:** The table assumes 100 queries/agent/day at early scale. Team 2 explicitly acknowledges "the query rate is the uncertain variable — an agent might make 1 Substrate query per task, or 10." But the table embeds 100 queries/agent/day without flagging this as a high-end assumption. If agents make 1 Substrate query per task and run 10 tasks/day, the figure is 10 queries/agent/day — 10x lower than the table implies, collapsing early revenue to $36,500/year at 10K agents. No research surface found data on realistic query-per-agent rates. This assumption does the most work in the revenue model and receives the least scrutiny.
+- **Problem:** The table assumes 100 queries/agent/day at early scale. Team 2 explicitly acknowledges "the query rate is the uncertain variable — an agent might make 1 Submantle query per task, or 10." But the table embeds 100 queries/agent/day without flagging this as a high-end assumption. If agents make 1 Submantle query per task and run 10 tasks/day, the figure is 10 queries/agent/day — 10x lower than the table implies, collapsing early revenue to $36,500/year at 10K agents. No research surface found data on realistic query-per-agent rates. This assumption does the most work in the revenue model and receives the least scrutiny.
 - **Severity:** Moderate. This doesn't invalidate the model — it underlines that the revenue projections span two orders of magnitude depending on a single unresearched variable. The orchestrator should treat the table as scenario analysis, not projection.
 - **What I checked:** Internal review of Team 2 assumptions. Cross-referenced with Team 5's Kill Shot 5 analysis, which independently identifies the same structural problem ("to reach $1M ARR requires 1 BILLION queries per year") but does not reconcile the table's embedded assumptions.
 
@@ -29,16 +29,16 @@
 **Challenge 3: Team 3's federated analytics production maturity claim is understated**
 
 - **Finding:** Team 3 cites federated analytics as the recommended architecture and describes Google Parfait as a production deployment. This is accurate. However, Team 3 itself notes "only 5.2% of federated learning research has reached production deployment" — then recommends federated analytics as the architecture without fully accounting for this gap.
-- **Problem:** The 5.2% production deployment figure is for federated *learning* (model training), not federated *analytics* (query-and-aggregate). These are distinct. Federated analytics has stronger production precedent (Google Gboard, Apple emoji/Safari). However, Team 3 does not separate these cleanly — using the 5.2% figure as a risk caveat while recommending the approach. A reader could be misled into thinking the production gap applies more broadly than it does to the specific federated statistics pattern Substrate would use. Conversely, the GDPR Article 17 erasure problem Team 3 flags ("less acute for pure federated statistics — the query-and-aggregate pattern is more erasure-compatible") is a genuine distinction that should be stated more confidently rather than hedged.
+- **Problem:** The 5.2% production deployment figure is for federated *learning* (model training), not federated *analytics* (query-and-aggregate). These are distinct. Federated analytics has stronger production precedent (Google Gboard, Apple emoji/Safari). However, Team 3 does not separate these cleanly — using the 5.2% figure as a risk caveat while recommending the approach. A reader could be misled into thinking the production gap applies more broadly than it does to the specific federated statistics pattern Submantle would use. Conversely, the GDPR Article 17 erasure problem Team 3 flags ("less acute for pure federated statistics — the query-and-aggregate pattern is more erasure-compatible") is a genuine distinction that should be stated more confidently rather than hedged.
 - **Severity:** Minor. The recommendation is still sound; the framing creates unnecessary ambiguity about production risk.
 - **What I checked:** Internal cross-reference of Team 3's risk section against the specific use case described (aggregation, not model training).
 
 ---
 
-**Challenge 4: Team 4's cost table for the coordination server is optimistic for the Substrate use case**
+**Challenge 4: Team 4's cost table for the coordination server is optimistic for the Submantle use case**
 
 - **Finding:** Team 4's scale ladder shows "$50/month" infrastructure for 0–1,000 users and "$200/month" for 1,000–10,000 users.
-- **Problem:** Team 4 correctly notes that Substrate's coordination server is lightweight — distributing updates and encrypted blobs, not relaying data. But the cost table does not account for agent transaction settlement infrastructure, which Team 4 explicitly defers to Team 2. If agent transactions are processed through Substrate's coordination layer (as implied by the overall architecture), the event ingestion and billing infrastructure is not a $50/month operation. Team 2 recommends Nevermined-style billing infrastructure capable of 200,000 events/second — that is a separate cost center not reflected in Team 4's table. The table is accurate for the coordination-only server but misleading if read as total infrastructure cost.
+- **Problem:** Team 4 correctly notes that Submantle's coordination server is lightweight — distributing updates and encrypted blobs, not relaying data. But the cost table does not account for agent transaction settlement infrastructure, which Team 4 explicitly defers to Team 2. If agent transactions are processed through Submantle's coordination layer (as implied by the overall architecture), the event ingestion and billing infrastructure is not a $50/month operation. Team 2 recommends Nevermined-style billing infrastructure capable of 200,000 events/second — that is a separate cost center not reflected in Team 4's table. The table is accurate for the coordination-only server but misleading if read as total infrastructure cost.
 - **Severity:** Minor. The coordination server costs are valid as stated; the gap is the missing integration with billing infrastructure costs.
 - **What I checked:** Cross-reference of Team 4 cost table against Team 2's billing infrastructure recommendations.
 
@@ -53,10 +53,10 @@
 
 ---
 
-**Challenge 6: Team 5's framing of Microsoft's AI walkback overstates the "warning" for Substrate**
+**Challenge 6: Team 5's framing of Microsoft's AI walkback overstates the "warning" for Submantle**
 
-- **Finding:** Team 5, Kill Shot 1 — "Microsoft is walking back Windows 11's AI overload... Windows Recall is internally considered a failure. Microsoft is pulling back precisely because OS-level ambient monitoring triggered massive user backlash. This is not validation for Substrate — it is a warning."
-- **Problem:** Verified via WebSearch: Microsoft's walkback is real. However, the reasons are more nuanced than Team 5 states. Microsoft's Recall problems were driven by a specific failure mode: screenshotting *all* activity continuously without clear user benefit, at a time when the privacy implications were poorly communicated. Substrate's architecture is the opposite: on-device, minimal data surface, opt-in, and query-driven rather than continuous surveillance. Team 5 is correct that the backlash is a warning, but attributing it to "OS-level ambient monitoring" generically is too broad. The lesson is more specific: *opaque, continuous, cloud-connected ambient monitoring* fails. Substrate's design explicitly avoids all three of those properties. Team 5 should have made this distinction rather than presenting the Recall failure as a direct analog.
+- **Finding:** Team 5, Kill Shot 1 — "Microsoft is walking back Windows 11's AI overload... Windows Recall is internally considered a failure. Microsoft is pulling back precisely because OS-level ambient monitoring triggered massive user backlash. This is not validation for Submantle — it is a warning."
+- **Problem:** Verified via WebSearch: Microsoft's walkback is real. However, the reasons are more nuanced than Team 5 states. Microsoft's Recall problems were driven by a specific failure mode: screenshotting *all* activity continuously without clear user benefit, at a time when the privacy implications were poorly communicated. Submantle's architecture is the opposite: on-device, minimal data surface, opt-in, and query-driven rather than continuous surveillance. Team 5 is correct that the backlash is a warning, but attributing it to "OS-level ambient monitoring" generically is too broad. The lesson is more specific: *opaque, continuous, cloud-connected ambient monitoring* fails. Submantle's design explicitly avoids all three of those properties. Team 5 should have made this distinction rather than presenting the Recall failure as a direct analog.
 - **Severity:** Minor. The warning is real; the framing overgeneralizes the lesson.
 - **What I checked:** WebSearch for "Microsoft Recall Windows 11 AI walkback Copilot 2026." Multiple sources confirm the specific nature of the Recall failure.
 
@@ -102,10 +102,10 @@
 
 ---
 
-**Contradiction 4: Team 1 says "agents query Substrate" vs. "agents travel through Substrate" are categorically different commitments; Team 5's Kill Shot 9 makes the same point but labels it a kill shot**
+**Contradiction 4: Team 1 says "agents query Submantle" vs. "agents travel through Submantle" are categorically different commitments; Team 5's Kill Shot 9 makes the same point but labels it a kill shot**
 
 - **Team 1 says:** The distinction is essential, the proxy path is real (Runlayer validates it), and the three-layer progression is buildable incrementally.
-- **Team 5 says:** Tier 1 (MCP server) is viable; Tier 3 (kernel-level) requires Apple/Microsoft credentials a bootstrapped startup cannot get; calling Substrate a "transport layer" without Tier 3 is overreach.
+- **Team 5 says:** Tier 1 (MCP server) is viable; Tier 3 (kernel-level) requires Apple/Microsoft credentials a bootstrapped startup cannot get; calling Submantle a "transport layer" without Tier 3 is overreach.
 - **Stronger evidence:** Team 1 is more nuanced and technically accurate. Team 5 correctly identifies the limitation of Tier 3 but frames it as a kill shot when Team 1 already acknowledged it as a caveat. The real question is whether Tier 1 + Tier 2 provide sufficient value before Tier 3 is achievable. Team 1's case that Tier 1+2 justify the "transport layer" narrative for developer and investor purposes (with appropriate honesty about current state vs. trajectory) is reasonable. Team 5's framing that this is deceptive is too strong.
 - **My assessment:** Team 1's three-layer framework is the right mental model. Team 5's Kill Shot 9 is a useful calibration on the marketing language, not a true architectural kill shot.
 
@@ -117,7 +117,7 @@
 
 **Alignment Issue 1: Team 3's synthesis does not give a go/no-go answer — violating the Brief's core requirement**
 
-- **Finding:** Team 3 concludes with "conditional go" and then asks Guiding Light a question: "Is Substrate willing to invest in federated analytics infrastructure to build Insights the right way?" This is a question directed at the founder, not a recommendation for the orchestrator.
+- **Finding:** Team 3 concludes with "conditional go" and then asks Guiding Light a question: "Is Submantle willing to invest in federated analytics infrastructure to build Insights the right way?" This is a question directed at the founder, not a recommendation for the orchestrator.
 - **Drift:** The Research Brief's Expected Outcome states: "Walk away with a clear go or no-go. Either: 'This is viable at scale and here's the path' — or 'This sounds big but here's why it won't work.' No hedging. Evidence-based conviction in one direction or the other." Team 3's "conditional go pending a design decision" is a hedge. The condition is significant engineering infrastructure that takes 6-18 months. A "go if you first solve a hard problem" is closer to a no-go for current resources.
 - **Severity:** Moderate. The research itself is thorough and honest. The failure is in translating findings into the conviction the Brief requires. The orchestrator should note: Team 3's "conditional go" means "no-go for V1, possible go for V2 once platform has resources."
 
@@ -126,7 +126,7 @@
 **Alignment Issue 2: Team 4's synthesis buries the bootstrappability question under infrastructure optimism**
 
 - **Finding:** Team 4's synthesis is titled "Protocol Scale Is Not the Hard Problem" and concludes the solo founder can bootstrap to 10,000 users comfortably.
-- **Drift:** The Brief's constraint states Substrate "must be buildable incrementally by a solo creator with AI assistance." Team 4 validates this for the *infrastructure operations* layer but does not examine whether the *daemon itself* is buildable by a solo non-technical creator — which is the real constraint question. Team 4's mandate was "Protocol-Scale Infrastructure," so examining daemon buildability was arguably out of scope. But the synthesis's confident "yes, bootstrappable" conclusion reads as answering the broader constraint question when it only answers the narrower infrastructure operations question. This creates a false sense of security that Team 5's Kill Shot 3 then has to spend significant effort correcting.
+- **Drift:** The Brief's constraint states Submantle "must be buildable incrementally by a solo creator with AI assistance." Team 4 validates this for the *infrastructure operations* layer but does not examine whether the *daemon itself* is buildable by a solo non-technical creator — which is the real constraint question. Team 4's mandate was "Protocol-Scale Infrastructure," so examining daemon buildability was arguably out of scope. But the synthesis's confident "yes, bootstrappable" conclusion reads as answering the broader constraint question when it only answers the narrower infrastructure operations question. This creates a false sense of security that Team 5's Kill Shot 3 then has to spend significant effort correcting.
 - **Severity:** Minor. The research is in-scope. The synthesis language creates a framing gap that the orchestrator should correct.
 
 ---
@@ -149,15 +149,15 @@ The Brief notes the current prototype is Windows-based and the first expedition 
 
 **2. No team examined existing open-source process monitoring tools as a foundation**
 
-Team 5 mentions osquery (open source, Facebook scale) as a "just use X" alternative. Neither Team 1 nor Team 4 examined whether Substrate could be built *on top of* osquery, sysmon, or ETW wrappers rather than from scratch. If the process awareness layer can be assembled from existing open-source primitives, Team 5's Kill Shot 3 (solo non-technical founder cannot build infrastructure) weakens substantially. This is a significant missing angle for the bootstrappability constraint.
+Team 5 mentions osquery (open source, Facebook scale) as a "just use X" alternative. Neither Team 1 nor Team 4 examined whether Submantle could be built *on top of* osquery, sysmon, or ETW wrappers rather than from scratch. If the process awareness layer can be assembled from existing open-source primitives, Team 5's Kill Shot 3 (solo non-technical founder cannot build infrastructure) weakens substantially. This is a significant missing angle for the bootstrappability constraint.
 
-**3. No team addressed the specific consent UX design for Substrate Insights**
+**3. No team addressed the specific consent UX design for Submantle Insights**
 
 Team 3 correctly identifies that the consent architecture for data contribution is undefined and that this blocks legal launch in the EU and California. But no team researched what consent UX actually looks like for comparable products (Apple's analytics opt-in, Firefox telemetry, etc.) — which would give Guiding Light a concrete design pattern to evaluate, not just a legal requirement to satisfy.
 
-**4. The "Substrate's own AI" revenue engine was not researched**
+**4. The "Submantle's own AI" revenue engine was not researched**
 
-The Brief lists "Substrate's own AI trained on unique awareness data" as one of the new ideas. Team 3 touches on AI training data *licensing* (selling data to other AI companies) but no team examined whether Substrate training its own AI is viable, on what timeline, or what it would require. This is arguably the highest-upside revenue engine in the vision and received no direct research attention.
+The Brief lists "Submantle's own AI trained on unique awareness data" as one of the new ideas. Team 3 touches on AI training data *licensing* (selling data to other AI companies) but no team examined whether Submantle training its own AI is viable, on what timeline, or what it would require. This is arguably the highest-upside revenue engine in the vision and received no direct research attention.
 
 **5. No team examined the competitive threat from Datadog specifically**
 
@@ -183,9 +183,9 @@ Teams 1, 4, and 5 all converge on the open-source daemon as essential for trust 
 
 **High confidence: Platform incumbents (especially Apple) are the most dangerous long-term threat**
 
-Teams 1, 4, and 5 all flag this. Team 5 provides the most specific evidence (ESF, App Intents, Core AI rumors). Team 1 acknowledges the window is finite. Team 4 does not address it directly but implies it through the "open-source for auditability" argument (which only matters if Substrate needs trust differentiation from platform-native alternatives). Independent convergence across three teams.
+Teams 1, 4, and 5 all flag this. Team 5 provides the most specific evidence (ESF, App Intents, Core AI rumors). Team 1 acknowledges the window is finite. Team 4 does not address it directly but implies it through the "open-source for auditability" argument (which only matters if Submantle needs trust differentiation from platform-native alternatives). Independent convergence across three teams.
 
-**High confidence: "Substrate Safe" certification is a 12-24 month play, not a launch feature**
+**High confidence: "Submantle Safe" certification is a 12-24 month play, not a launch feature**
 
 Teams 2 and 5 independently converge on this. Team 2 explicitly states 12-18 months post-adoption. Team 5 implicitly agrees by treating the subscription tiers (not certification revenue) as the viable near-term path. No team argues for certification at launch.
 

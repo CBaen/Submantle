@@ -16,10 +16,10 @@ Design decisions:
   and uses hmac.compare_digest for timing-safe comparison.
 - Trust scoring schema is captured but algorithm is deferred (future work).
 - Agent registry works in BOTH privacy states — identity is not sensitive,
-  activity is. Agents can still be looked up when Substrate is in PRIVATE mode.
+  activity is. Agents can still be looked up when Submantle is in PRIVATE mode.
 - Capabilities stored as JSON array in the DB.
 
-The token is the agent's bearer credential. Substrate does not store the raw
+The token is the agent's bearer credential. Submantle does not store the raw
 token — only the SHA-256 hash of it. This means a compromised DB leaks nothing
 usable. Agents must keep their own token.
 
@@ -72,7 +72,7 @@ class AgentRegistry:
     def __init__(self, db=None, event_bus=None):
         """
         Args:
-            db: SubstrateDB instance. If None, registry is not persisted
+            db: SubmantleDB instance. If None, registry is not persisted
                 (safe for testing).
             event_bus: EventBus instance. If None, events are not emitted.
         """
@@ -89,7 +89,7 @@ class AgentRegistry:
         Load the HMAC secret from settings, or generate a new one.
 
         The secret is a 32-byte random value encoded as hex in the settings table.
-        Generating on first run means Substrate doesn't require any config.
+        Generating on first run means Submantle doesn't require any config.
         """
         if self._db is not None:
             try:
@@ -154,7 +154,7 @@ class AgentRegistry:
         """
         Register a new agent and return a bearer token.
 
-        The token is the agent's only credential. Substrate does not store it —
+        The token is the agent's only credential. Submantle does not store it —
         only its SHA-256 hash. The agent must preserve the token.
 
         Args:

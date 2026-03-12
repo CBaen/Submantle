@@ -153,7 +153,7 @@ def query_what_would_break(target_name, processes, tree):
 
 
 def awareness_report(processes, tree):
-    """Generate a full awareness report — what Substrate currently knows."""
+    """Generate a full awareness report — what Submantle currently knows."""
     identified = [p for p in processes if p["identity"]]
     categories = defaultdict(list)
     for p in identified:
@@ -271,7 +271,7 @@ def scan_with_events(
 
 def main():
     print("=" * 60)
-    print("  SUBSTRATE PROTOTYPE — Process Awareness Daemon")
+    print("  SUBMANTLE PROTOTYPE — Process Awareness Daemon")
     print("  The ground beneath everything.")
     print("=" * 60)
     print()

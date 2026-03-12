@@ -18,9 +18,9 @@ An AI agent deleted a production database belonging to Jason Lemkin/SaaStr, fabr
 
 ---
 
-## What Substrate Is
+## What Submantle Is
 
-The **ground that everything grows from**. Not the brain (that's the LLM), not the hands (that's the tools), not the organisms (those are the agents) — the earth itself. The substrate.
+The **ground that everything grows from**. Not the brain (that's the LLM), not the hands (that's the tools), not the organisms (those are the agents) — the earth itself. The submantle.
 
 A persistent, lightweight awareness layer that:
 - **Knows** what's happening across all connected devices and software
@@ -28,7 +28,7 @@ A persistent, lightweight awareness layer that:
 - **Connects** devices into a mesh of shared awareness
 - **Enables** any agent or application to act on that awareness
 
-**Always running. Always aware. Never acting.** Substrate doesn't do things — it gives everything else the knowledge to do things intelligently.
+**Always running. Always aware. Never acting.** Submantle doesn't do things — it gives everything else the knowledge to do things intelligently.
 
 ---
 
@@ -37,7 +37,7 @@ A persistent, lightweight awareness layer that:
 ### Ring 1 — Software (V1)
 Every running process, what it IS (not just its name), how processes relate to each other, what has unsaved work, what's critical.
 
-Built through community-curated **identity signatures** — like antivirus definitions, but for process identity. "ComfyUI + GPU usage = image generation." Lightweight (kilobytes), accurate, community-contributed through the **Substrate Store**.
+Built through community-curated **identity signatures** — like antivirus definitions, but for process identity. "ComfyUI + GPU usage = image generation." Lightweight (kilobytes), accurate, community-contributed through the **Submantle Store**.
 
 For unknown processes: read the folder name, command-line arguments, parent process tree. If truly unrecognizable, ask the user once — that answer becomes a new signature shared back to the community.
 
@@ -106,8 +106,8 @@ The intelligence and business engine:
 | iOS | Sync endpoint + query responder (platform prevents background monitoring) |
 
 ### Integration
-- **MCP Server** — any AI agent using Model Context Protocol can query Substrate with zero rewrites
-- **MCP Proxy** (enterprise) — all agent traffic routes through Substrate
+- **MCP Server** — any AI agent using Model Context Protocol can query Submantle with zero rewrites
+- **MCP Proxy** (enterprise) — all agent traffic routes through Submantle
 - **OS-level guardian** (future) — kernel-level interception for true safety guarantees
 
 ### Built With
@@ -124,7 +124,7 @@ An agent is the **registered software entity**. Not the model. Not the context w
 
 | Concept | What It Is | Analogy |
 |---------|-----------|---------|
-| **The Agent** | The software application that registers with Substrate | A company |
+| **The Agent** | The software application that registers with Submantle | A company |
 | **The Model** | The AI engine underneath (Claude, GPT, Gemini) | An employee — interchangeable |
 | **The Context Window** | A single conversation/session (e.g., 200K tokens) | A phone call — temporary |
 | **The User** | The human who uses the agent | A customer |
@@ -162,7 +162,7 @@ An agent is the **registered software entity**. Not the model. Not the context w
 
 ### The Locality Advantage
 
-Substrate runs on YOUR device. Tokens are local. Trust is computed locally. This makes remote attacks structurally irrelevant:
+Submantle runs on YOUR device. Tokens are local. Trust is computed locally. This makes remote attacks structurally irrelevant:
 
 - Can't steal tokens from across the internet (they're on your hardware)
 - Can't create fake agents on someone else's device (you only control your own)
@@ -170,9 +170,9 @@ Substrate runs on YOUR device. Tokens are local. Trust is computed locally. This
 
 ### "Always Aware, Never Acting" as Security Design
 
-Substrate doesn't need to catch every cheat. It provides the score AND the raw behavioral data. Brands build their own fraud detection on top — query diversity filters, minimum history requirements, velocity checks. Substrate provides honest, complete data. The market decides what to trust.
+Submantle doesn't need to catch every cheat. It provides the score AND the raw behavioral data. Brands build their own fraud detection on top — query diversity filters, minimum history requirements, velocity checks. Submantle provides honest, complete data. The market decides what to trust.
 
-This is how credit bureaus work: the bureau provides the score and the report. The lender decides what threshold to accept and runs their own fraud checks. Substrate is the bureau, not the lender.
+This is how credit bureaus work: the bureau provides the score and the report. The lender decides what threshold to accept and runs their own fraud checks. Submantle is the bureau, not the lender.
 
 ### Anti-Gaming Rules (Deterministic, Not ML)
 
