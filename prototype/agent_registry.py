@@ -437,26 +437,19 @@ class AgentRegistry:
         reporter: str,
         incident_type: str,
         description: str = "",
-    ) -> bool:
+        severity: str = "standard",
+    ) -> dict | bool:
         """
         Record an incident report against an agent.
 
-        Credit bureau model: Submantle records third-party reports.
-        It does not detect incidents itself. The bank reports the missed
-        payment — the bureau stores it.
-
-        Increments the agent's incident counter and stores the full report
-        for audit trail.
-
-        Args:
-            agent_name: The agent the incident is about.
-            reporter: Who is reporting (business name, identifier).
-            incident_type: Category of incident (e.g., "unauthorized_access",
-                           "data_exfiltration", "policy_violation").
-            description: Free-text description of what happened.
+        Credit bureau model: third parties report. Pipeline:
+        1. Self-ping check: reporter == agent_name → auto-REJECTED
+        2. Dedup check: same reporter + agent + type within 24h → DUPLICATE
+        3. Standard incidents → auto-ACCEPTED (V1), counter incremented
 
         Returns:
-            True if the report was recorded, False if agent not found.
+            dict with incident details including status, or False if agent not found
+            or validation failed.
         """
         if self._db is None:
             return False
@@ -468,8 +461,17 @@ class AgentRegistry:
         if not incident_type or not incident_type.strip():
             return False
 
+        agent_name = agent_name.strip()
+        reporter_clean = reporter.strip()
+        incident_type_clean = incident_type.strip()
+        description_clean = description.strip() if description else ""
+
+        # Validate severity
+        if severity not in ("critical", "standard"):
+            severity = "standard"
+
         try:
-            record = self._db.get_agent_by_name(agent_name.strip())
+            record = self._db.get_agent_by_name(agent_name)
         except Exception as exc:
             logger.error("DB error looking up agent for incident: %s", exc)
             return False
@@ -479,33 +481,130 @@ class AgentRegistry:
 
         agent_id = record["id"]
 
+        # ── Pipeline ──────────────────────────────────────────────────────
+
+        # Step 1: Self-ping detection
+        if reporter_clean.lower() == agent_name.lower():
+            try:
+                incident_id = self._db.save_incident_report(
+                    agent_id=agent_id,
+                    agent_name=agent_name,
+                    reporter=reporter_clean,
+                    incident_type=incident_type_clean,
+                    description=description_clean,
+                    status="rejected",
+                    severity=severity,
+                )
+            except Exception as exc:
+                logger.error("Failed to save self-ping incident: %s", exc)
+                return False
+
+            logger.info(
+                "Incident auto-rejected (self-ping): agent=%s reporter=%s",
+                agent_name, reporter_clean,
+            )
+            self._emit("INCIDENT_REPORTED", {
+                "agent_name": agent_name,
+                "reporter": reporter_clean,
+                "incident_type": incident_type_clean,
+                "status": "rejected",
+                "reason": "self-ping",
+            })
+            return {"recorded": True, "status": "rejected", "reason": "self-ping", "incident_id": incident_id}
+
+        # Step 2: Dedup detection (same reporter + agent + type within 24h)
         try:
-            self._db.increment_agent_incidents(agent_id)
-            self._db.save_incident_report(
+            existing = self._db.find_duplicate_incident(agent_id, reporter_clean, incident_type_clean)
+        except Exception:
+            existing = None
+
+        if existing is not None:
+            try:
+                incident_id = self._db.save_incident_report(
+                    agent_id=agent_id,
+                    agent_name=agent_name,
+                    reporter=reporter_clean,
+                    incident_type=incident_type_clean,
+                    description=description_clean,
+                    status="duplicate",
+                    severity=severity,
+                    duplicate_of=existing["id"],
+                )
+            except Exception as exc:
+                logger.error("Failed to save duplicate incident: %s", exc)
+                return False
+
+            logger.info(
+                "Incident marked duplicate: agent=%s reporter=%s duplicate_of=%s",
+                agent_name, reporter_clean, existing["id"],
+            )
+            self._emit("INCIDENT_REPORTED", {
+                "agent_name": agent_name,
+                "reporter": reporter_clean,
+                "incident_type": incident_type_clean,
+                "status": "duplicate",
+                "duplicate_of": existing["id"],
+            })
+            return {"recorded": True, "status": "duplicate", "duplicate_of": existing["id"], "incident_id": incident_id}
+
+        # Step 3: Standard processing — auto-accept for V1
+        try:
+            incident_id = self._db.save_incident_report(
                 agent_id=agent_id,
-                agent_name=agent_name.strip(),
-                reporter=reporter.strip(),
-                incident_type=incident_type.strip(),
-                description=description.strip() if description else "",
+                agent_name=agent_name,
+                reporter=reporter_clean,
+                incident_type=incident_type_clean,
+                description=description_clean,
+                status="accepted",
+                severity=severity,
             )
+            # Increment counter for backward compatibility (Wave 4 removes this dependency)
+            self._db.increment_agent_incidents(agent_id)
         except Exception as exc:
-            logger.error(
-                "Failed to record incident for agent '%s': %s",
-                agent_name, exc,
-            )
+            logger.error("Failed to record incident for agent '%s': %s", agent_name, exc)
             return False
 
         logger.info(
-            "Incident recorded: agent=%s reporter=%s type=%s",
-            agent_name, reporter, incident_type,
+            "Incident accepted: agent=%s reporter=%s type=%s severity=%s",
+            agent_name, reporter_clean, incident_type_clean, severity,
         )
 
         self._emit("INCIDENT_REPORTED", {
-            "agent_name": agent_name.strip(),
-            "reporter": reporter.strip(),
-            "incident_type": incident_type.strip(),
+            "agent_name": agent_name,
+            "reporter": reporter_clean,
+            "incident_type": incident_type_clean,
+            "status": "accepted",
+            "severity": severity,
         })
+        return {"recorded": True, "status": "accepted", "severity": severity, "incident_id": incident_id}
 
+    def review_incident(self, incident_id: int, new_status: str) -> bool:
+        """
+        Manually review a pending incident. Changes status to accepted or rejected.
+        If accepting, also increments the agent's incident counter.
+
+        Returns True if the incident was found and updated.
+        """
+        if self._db is None:
+            return False
+        if new_status not in ("accepted", "rejected"):
+            return False
+
+        target = self._db.get_incident_by_id(incident_id)
+        if target is None:
+            return False
+        if target.get("status") != "pending":
+            return False  # Can only review pending incidents
+
+        try:
+            self._db.update_incident_status(incident_id, new_status)
+            if new_status == "accepted":
+                self._db.increment_agent_incidents(target["agent_id"])
+        except Exception as exc:
+            logger.error("Failed to review incident %s: %s", incident_id, exc)
+            return False
+
+        logger.info("Incident %s reviewed: %s", incident_id, new_status)
         return True
 
     # ── Internals ──────────────────────────────────────────────────────────────

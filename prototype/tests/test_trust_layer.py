@@ -580,6 +580,168 @@ class TestWave2SoftDelete(unittest.TestCase):
         self.assertIn("public-record-agent", all_names)
 
 
+# ── TestWave3IncidentPipeline ──────────────────────────────────────────────────
+
+class TestWave3IncidentPipeline(unittest.TestCase):
+    """Wave 3: Pending state, severity classification, and deduplication."""
+
+    def test_self_ping_auto_rejected(self):
+        """Reporter == agent_name → incident auto-rejected, counter NOT incremented."""
+        registry, db = _make_registry()
+        _register(registry, "self-ping-agent")
+        result = registry.record_incident(
+            agent_name="self-ping-agent",
+            reporter="self-ping-agent",
+            incident_type="policy_violation",
+        )
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["reason"], "self-ping")
+        record = db.get_agent_by_name("self-ping-agent")
+        self.assertEqual(record["incidents"], 0)
+
+    def test_self_ping_case_insensitive(self):
+        """Self-ping detection is case-insensitive."""
+        registry, db = _make_registry()
+        _register(registry, "CasedAgent")
+        result = registry.record_incident(
+            agent_name="CasedAgent",
+            reporter="casedagent",
+            incident_type="policy_violation",
+        )
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result["status"], "rejected")
+
+    def test_duplicate_detection(self):
+        """Same reporter + agent + type within 24h → duplicate."""
+        registry, db = _make_registry()
+        _register(registry, "dup-agent")
+        result1 = registry.record_incident(
+            agent_name="dup-agent",
+            reporter="brand-x",
+            incident_type="policy_violation",
+        )
+        self.assertIsInstance(result1, dict)
+        self.assertEqual(result1["status"], "accepted")
+        result2 = registry.record_incident(
+            agent_name="dup-agent",
+            reporter="brand-x",
+            incident_type="policy_violation",
+        )
+        self.assertIsInstance(result2, dict)
+        self.assertEqual(result2["status"], "duplicate")
+        self.assertIn("duplicate_of", result2)
+
+    def test_duplicate_does_not_increment_counter(self):
+        """Duplicate incidents don't affect the incident counter."""
+        registry, db = _make_registry()
+        _register(registry, "dup-count-agent")
+        registry.record_incident("dup-count-agent", "brand-x", "type-a")
+        registry.record_incident("dup-count-agent", "brand-x", "type-a")  # duplicate
+        record = db.get_agent_by_name("dup-count-agent")
+        self.assertEqual(record["incidents"], 1)
+
+    def test_different_type_not_duplicate(self):
+        """Same reporter + agent but different type → NOT duplicate."""
+        registry, db = _make_registry()
+        _register(registry, "diff-type-agent")
+        result1 = registry.record_incident("diff-type-agent", "brand-x", "type-a")
+        result2 = registry.record_incident("diff-type-agent", "brand-x", "type-b")
+        self.assertEqual(result1["status"], "accepted")
+        self.assertEqual(result2["status"], "accepted")
+        record = db.get_agent_by_name("diff-type-agent")
+        self.assertEqual(record["incidents"], 2)
+
+    def test_different_reporter_not_duplicate(self):
+        """Same agent + type but different reporter → NOT duplicate."""
+        registry, db = _make_registry()
+        _register(registry, "diff-reporter-agent")
+        result1 = registry.record_incident("diff-reporter-agent", "brand-x", "type-a")
+        result2 = registry.record_incident("diff-reporter-agent", "brand-y", "type-a")
+        self.assertEqual(result1["status"], "accepted")
+        self.assertEqual(result2["status"], "accepted")
+
+    def test_accepted_incident_increments_counter(self):
+        """Standard accepted incidents still increment the counter."""
+        registry, db = _make_registry()
+        _register(registry, "accept-agent")
+        registry.record_incident("accept-agent", "brand-x", "type-a")
+        record = db.get_agent_by_name("accept-agent")
+        self.assertEqual(record["incidents"], 1)
+
+    def test_incident_status_in_report(self):
+        """Saved incident report includes status field."""
+        registry, db = _make_registry()
+        _register(registry, "status-agent")
+        registry.record_incident("status-agent", "brand-x", "type-a")
+        reports = db.get_incident_reports()
+        self.assertEqual(len(reports), 1)
+        self.assertEqual(reports[0]["status"], "accepted")
+
+    def test_severity_defaults_to_standard(self):
+        """Severity defaults to 'standard' when not specified."""
+        registry, db = _make_registry()
+        _register(registry, "sev-agent")
+        registry.record_incident("sev-agent", "brand-x", "type-a")
+        reports = db.get_incident_reports()
+        self.assertEqual(reports[0]["severity"], "standard")
+
+    def test_severity_critical_passed_through(self):
+        """Severity 'critical' is stored correctly."""
+        registry, db = _make_registry()
+        _register(registry, "crit-agent")
+        registry.record_incident("crit-agent", "brand-x", "type-a", severity="critical")
+        reports = db.get_incident_reports()
+        self.assertEqual(reports[0]["severity"], "critical")
+
+    def test_rejected_incident_stored_for_audit(self):
+        """Rejected self-ping incidents are still stored in the database."""
+        registry, db = _make_registry()
+        _register(registry, "audit-agent")
+        registry.record_incident("audit-agent", "audit-agent", "type-a")
+        reports = db.get_incident_reports()
+        self.assertEqual(len(reports), 1)
+        self.assertEqual(reports[0]["status"], "rejected")
+
+    def test_review_incident_accept(self):
+        """review_incident() can accept a pending incident and increment counter."""
+        registry, db = _make_registry()
+        _register(registry, "review-agent")
+        agent = db.get_agent_by_name("review-agent")
+        incident_id = db.save_incident_report(
+            agent_id=agent["id"],
+            agent_name="review-agent",
+            reporter="brand-x",
+            incident_type="type-a",
+            status="pending",
+        )
+        result = registry.review_incident(incident_id, "accepted")
+        self.assertTrue(result)
+        record = db.get_agent_by_name("review-agent")
+        self.assertEqual(record["incidents"], 1)
+        reports = db.get_incident_reports(agent_id=agent["id"])
+        accepted = [r for r in reports if r["id"] == incident_id]
+        self.assertEqual(accepted[0]["status"], "accepted")
+        self.assertIsNotNone(accepted[0]["reviewed_at"])
+
+    def test_review_incident_reject(self):
+        """review_incident() can reject a pending incident without incrementing counter."""
+        registry, db = _make_registry()
+        _register(registry, "reject-review-agent")
+        agent = db.get_agent_by_name("reject-review-agent")
+        incident_id = db.save_incident_report(
+            agent_id=agent["id"],
+            agent_name="reject-review-agent",
+            reporter="brand-x",
+            incident_type="type-a",
+            status="pending",
+        )
+        result = registry.review_incident(incident_id, "rejected")
+        self.assertTrue(result)
+        record = db.get_agent_by_name("reject-review-agent")
+        self.assertEqual(record["incidents"], 0)
+
+
 # ── Entry point ────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

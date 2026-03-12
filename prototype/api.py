@@ -579,17 +579,23 @@ def report_incident(body: IncidentReportRequest):
     if not body.incident_type.strip():
         raise HTTPException(status_code=422, detail="incident_type is required")
 
-    success = _registry.record_incident(
+    result = _registry.record_incident(
         agent_name=body.agent_name,
         reporter=body.reporter,
         incident_type=body.incident_type,
         description=body.description,
     )
-    if not success:
+    if not result:
         raise HTTPException(
             status_code=404,
             detail=f"Agent '{body.agent_name}' not found",
         )
+
+    # result is a dict with status details
+    if isinstance(result, dict):
+        return result
+
+    # Backward compat fallback
     return {"reported": True, "agent_name": body.agent_name}
 
 
