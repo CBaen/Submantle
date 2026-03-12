@@ -508,6 +508,24 @@ CREATE TABLE IF NOT EXISTS agent_registry (
 CREATE INDEX IF NOT EXISTS idx_agent_registry_token_hash
     ON agent_registry(token_hash);
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_registry_name
+    ON agent_registry(agent_name);
+
+
+CREATE TABLE IF NOT EXISTS incident_reports (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    agent_id        INTEGER NOT NULL,
+    agent_name      TEXT    NOT NULL,
+    reporter        TEXT    NOT NULL,
+    incident_type   TEXT    NOT NULL,
+    description     TEXT    NOT NULL DEFAULT '',
+    timestamp       REAL    NOT NULL,
+    FOREIGN KEY (agent_id) REFERENCES agent_registry(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_incident_reports_agent
+    ON incident_reports(agent_id, timestamp DESC);
+
 
 CREATE TABLE IF NOT EXISTS events (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,

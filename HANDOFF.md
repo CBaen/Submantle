@@ -12,7 +12,34 @@ The credit bureau for AI agents. Agents register, earn trust scores through inte
 
 ## What Just Happened (2026-03-11)
 
-### Protocol Architecture Expedition — Complete (LATEST)
+### STRATEGIC PIVOT SESSION — Most Consequential Session to Date (LATEST)
+GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
+
+**Key Decisions Made:**
+- **Trust bureau + MCP server is the V1 wedge.** Dashboard follows when customers demand it. Every successful infra platform (Stripe, Twilio, AWS) started with one sharp thing.
+- **Scores change ONLY through interaction, never through time.** Last interaction date is visible metadata. No expiry, no degradation.
+- **Interactions automatically generate trust data.** No manual reporting needed for core loop.
+- **Businesses pay to check scores. Agents register free.** Experian model. Supply side (agents) is free. Demand side (brands) pays.
+- **Submantle runs a verification service.** Brands query it directly. No complex credential-carrying for V1.
+- **Awareness layer and trust layer are inside/outside views of one product.** Not two products. Inside = your machine. Outside = your agents in the world. Data flows one direction: trust scores INTO local display. Local data NEVER flows out.
+- **Don't split into multiple companies.** Be the ONE standard. Let the ecosystem build on top.
+
+**New Competitors Found:**
+- **Signet** (agentsignet.com) — Closest trust competitor. Composite 0-1000 score, portable identity. BUT: no OS-level observation, scores based on reported data not behavioral evidence. Registry without bank statements.
+- **Gen Digital Agent Trust Hub** — Launched Feb 2026, Vercel partnership, 500M devices. Pre-install scanning only, not runtime behavioral scoring. Sleeping giant confirmed awake but facing the wrong direction.
+- **Microsoft Agent 365** — GA May 1, 2026, $15/user/mo. Full lifecycle management but Microsoft-scoped, not neutral.
+- **Galileo Agent Control** — Open-sourced March 11, 2026. Policy-as-code control plane. Enforcement, not scoring.
+
+**Visa/Mastercard Opportunity (Billion-Dollar Path):**
+- Visa TAP (open-source) + Mastercard Verifiable Intent (open-sourced March 5) both handle transaction authorization but explicitly do NOT handle behavioral trust history.
+- A Submantle trust score could be a field inside Mastercard's Verifiable Intent record (supports Selective Disclosure).
+- Neither payment network can build neutral behavioral trust without favoring their own network.
+- This is the moonshot: become the behavioral trust layer for agent commerce infrastructure.
+
+**Acceleration Stack Identified:**
+- OpenSaaS (Wasp) for SaaS skeleton, Supabase for DB + realtime, Tremor for dashboard components, Clerk for auth, Zuplo for API gateway with billing. Saves weeks of boilerplate.
+
+### Protocol Architecture Expedition — Complete
 5 research teams (Opus) + 9 validators (Opus). All files in `research/expedition-protocol-architecture/`.
 
 **Key Findings (validated):**
@@ -98,31 +125,31 @@ The credit bureau for AI agents. Agents register, earn trust scores through inte
 - `research/expedition-submantle-deep-dive/` — First expedition
 - `research/future-expeditions.md` — Agent reviews, privacy UX, payment processor
 
-## What to Build Next
+## What to Build Next (REVISED 2026-03-11 — Strategic Pivot)
 
-### Priority 1: Dashboard Depth (Guiding Light's direct request)
-- Clickable device rows that expand to show everything Submantle knows
-- Process categories with nested detail views
-- "Ask Submantle" results with full dependency chains
-- Every field that shows a count should be expandable
+### Priority 1: Trust Layer Wiring (the wedge product)
+1. Wire record_query() — every API call from registered agent generates trust data automatically
+2. Agent name uniqueness enforcement
+3. compute_trust() — Beta formula on real data, trust score in API responses
+4. Auth middleware on /api/query (token-based)
+5. Verification endpoint — businesses query agent trust scores (this is where revenue starts)
+6. Interaction metadata schema — success, timing, patterns (not content — privacy-first)
 
-### Priority 2: Trust Layer Wiring (MVTL — 5 sessions)
-1. Auth middleware on /api/query (token-based, wired to agent registry)
-2. Incident reporting format (credit bureau model — third parties report, Submantle records)
-3. record_query() wired to endpoints (every interaction becomes trust data)
-4. Agent name uniqueness enforcement
-5. compute_trust() using pure Beta formula, trust score in API responses
+### Priority 2: MCP Server (how agents connect)
+- Agent registration via MCP protocol (every connecting agent is automatically a registrant)
+- Trust score query tools (agents and brands check scores)
+- Wire into event bus
+- This is the "seven lines of code" moment — one integration, one outcome
 
-### Priority 3: MCP Server
-- Ambient awareness stream (agents subscribe, receive events without asking)
-- Deep query tools (agents ask specific questions on demand)
-- Agent registration via MCP protocol
-- Wire into the event bus (wildcard subscription → MCP stream)
+### Priority 3: Dogfood Agents (prove the loop)
+- Build simple test agents that register, interact with public APIs, accumulate real scores
+- Analyze interaction data, refine scoring
+- First entries in the trust registry — seed data
 
-### Priority 4: Dashboard Polish
-- Mobile-responsive (phone visits laptop-ip:8421 over WiFi)
-- Lock CORS to localhost
-- Agent registration passphrase
+### Priority 4: Dashboard (second product, built when customers ask)
+- Clickable device rows, process categories, nested detail views
+- Agent trust score display (awareness layer CONSUMES trust data, doesn't produce it)
+- Mobile-responsive, lock CORS, registration passphrase
 
 ## Architecture
 - **Prototype**: Python (FastAPI, psutil, SQLite, stdlib crypto)
