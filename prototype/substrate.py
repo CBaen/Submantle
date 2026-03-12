@@ -237,7 +237,7 @@ def scan_with_events(
                         "name": proc["name"],
                         "identity": proc["identity"],
                     },
-                    source="substrate",
+                    source="submantle",
                 )
 
         # Dead processes — present before, absent now.
@@ -263,7 +263,7 @@ def scan_with_events(
             "process_count": len(current_processes),
             "identified_count": len(identified),
         },
-        source="substrate",
+        source="submantle",
     )
 
     return current_processes
@@ -309,7 +309,7 @@ def main():
     result = query_what_would_break("node", processes, tree)
     print(json.dumps(result, indent=2))
 
-    # State is now persisted to SQLite (substrate.db) by api.py on each
+    # State is now persisted to SQLite (submantle.db) by api.py on each
     # scan cycle. The JSON file is no longer written. See database.py.
 
 

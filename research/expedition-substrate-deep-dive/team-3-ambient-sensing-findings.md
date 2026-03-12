@@ -6,7 +6,7 @@
 
 ## Summary
 
-The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, audio classification, sensor fusion, and public data APIs — is more mature and more accessible than most engineers assume. Multiple technologies have crossed from research into commercial products in the last 12 months. The key finding: **a viable outer-ring implementation can be built today, on consumer hardware, without OS vendor cooperation, without surveillance architecture, and without proprietary hardware**. The harder problem is not the sensing itself — it is the consent architecture and the data broker that aggregates it all meaningfully.
+The outer ring of Submantle's awareness model — WiFi sensing, on-device CV, audio classification, sensor fusion, and public data APIs — is more mature and more accessible than most engineers assume. Multiple technologies have crossed from research into commercial products in the last 12 months. The key finding: **a viable outer-ring implementation can be built today, on consumer hardware, without OS vendor cooperation, without surveillance architecture, and without proprietary hardware**. The harder problem is not the sensing itself — it is the consent architecture and the data broker that aggregates it all meaningfully.
 
 ---
 
@@ -32,7 +32,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 
 - **ESP32-based CSI sensing (Pulse-Fi / open research)**
   - **What**: Using $5–10 ESP32 chips to capture WiFi CSI signals and detect breathing rate and heart rate. Runs entirely on-device (under 600KB RAM). Accepted at IEEE DCOSS-IoT 2025.
-  - **Why interesting**: Enables DIY ambient sensing for ~$10/room with no router modification. Could be a first-party Substrate sensor node.
+  - **Why interesting**: Enables DIY ambient sensing for ~$10/room with no router modification. Could be a first-party Submantle sensor node.
   - **Evidence**: Pulse-Fi achieves 0.08 BPM mean absolute error on single-antenna amplitude; runs on ESP32 in real-time. [UCSC i-NRG Lab](https://inrg.engineering.ucsc.edu/2025/05/30/pulse-fi-a-low-cost-system-for-accurate-heart-rate-monitoring-using-wi-fi-channel-state-information/)
   - **Source**: [Pulse-Fi IEEE DCOSS-IoT 2025](https://inrg.engineering.ucsc.edu/2025/05/30/pulse-fi-a-low-cost-system-for-accurate-heart-rate-monitoring-using-wi-fi-channel-state-information/); [WiFi CSI Human Pose GitHub](https://github.com/euaziel/WiFi-CSI-Human-Pose-Detection)
   - **Fits our case**: High fit — cheap, local, privacy-preserving, no vendor cooperation needed.
@@ -50,7 +50,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
   - **What**: Official WiFi sensing standard published September 26, 2025. Defines bistatic/multistatic sensing in 2.4, 5, and 6 GHz bands. Enables presence detection, environment monitoring, and remote wellness monitoring as standardized WiFi features.
   - **Momentum**: 802.11bf passed IEEE ballot with 98% approval. North American WiFi sensing CPE installations projected to reach 112 million by 2030 (51.6% CAGR from 2024). Qualcomm, Intel, Huawei contributing.
   - **Source**: [IEEE SA 802.11bf-2025](https://standards.ieee.org/ieee/802.11bf/11574/); [ABI Research](https://www.abiresearch.com/press/north-american-wifi-sensing-cpe-installations-to-surge-to-112-million-by-2030); [NIST](https://www.nist.gov/publications/ieee-80211bf-enabling-widespread-adoption-wi-fi-sensing)
-  - **Fits our case**: Future-proofs the architecture. As 802.11bf routers ship (2026+), Substrate's WiFi sensing module can switch from CSI hacks to standardized APIs.
+  - **Fits our case**: Future-proofs the architecture. As 802.11bf routers ship (2026+), Submantle's WiFi sensing module can switch from CSI hacks to standardized APIs.
   - **Maturity risk**: No consumer routers with certified 802.11bf sensing available as of March 2026. Standard is fresh.
 
 ---
@@ -69,7 +69,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **Apple Vision Framework (visionOS/iOS/macOS)**
   - **What**: Apple's on-device CV framework. Supports person detection, body/hand pose tracking, trajectory analysis, scene understanding. All processing on-device — no cloud. Updated at WWDC25 with smaller, faster hand pose model.
   - **Evidence**: Available across iOS, iPadOS, macOS, tvOS, visionOS. [Apple Vision Docs](https://developer.apple.com/documentation/vision); [WWDC25 Vision Session](https://developer.apple.com/videos/play/wwdc2025/272/)
-  - **Fits our case**: Excellent for macOS/iOS Substrate clients. Privacy-preserving by Apple's architecture. Can detect person presence without sending data anywhere.
+  - **Fits our case**: Excellent for macOS/iOS Submantle clients. Privacy-preserving by Apple's architecture. Can detect person presence without sending data anywhere.
   - **Tradeoffs**: Apple-only. Cannot be used on Windows or Android.
 
 - **MOLO: MobileNet + YOLO Hybrid**
@@ -92,7 +92,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **On-device LLM + sensor fusion for intent inference**
   - **What**: Pairing lightweight LLMs (Llama 3.1 8B, Qwen2.5-VL-7B) with sensor inputs for context-aware agents. RAG-based sensor prompts feeding real-time state to the model.
   - **Momentum**: "2026 will be the year of Hybrid AI" with local LLMs handling simple context, cloud for heavy reasoning. [Edge AI Vision Alliance](https://www.edge-ai-vision.com/2026/01/on-device-llms-in-2026-what-changed-what-matters-whats-next/); [SiliconFlow Guide](https://www.siliconflow.com/articles/en/best-llms-for-edge-ai-devices-2025)
-  - **Fits our case**: This is exactly Substrate's Agent API layer — sensor data → local context model → broker decision. On-device LLMs mean Substrate doesn't need cloud for the interpretation layer.
+  - **Fits our case**: This is exactly Submantle's Agent API layer — sensor data → local context model → broker decision. On-device LLMs mean Submantle doesn't need cloud for the interpretation layer.
   - **Maturity risk**: 7–8B models still need 8–16GB RAM. Viable on developer machines, not on minimal edge nodes yet.
 
 ---
@@ -104,13 +104,13 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **TensorFlow Lite + YAMNet (Google)**
   - **What**: YAMNet classifies 521 audio event classes (speech, alarms, doorbells, typing, music, silence, etc.) from raw audio waveforms. Runs on-device via TFLite. Pre-trained model available with TFLite metadata for direct mobile integration.
   - **Evidence**: [TFLite Audio Classification](https://www.tensorflow.org/lite/examples/audio_classification/overview); [TFLite Task Library](https://www.tensorflow.org/lite/inference_with_metadata/task_library/audio_classifier). Google Codelab for Android audio classification: [developers.google.com](https://developers.google.com/codelabs/tflite-audio-classification-basic-android)
-  - **Fits our case**: Cross-platform (Android, iOS, Windows, Linux, Raspberry Pi). Pre-trained on 521 classes covers nearly all ambient events Substrate would care about. Real-time inference on consumer hardware.
+  - **Fits our case**: Cross-platform (Android, iOS, Windows, Linux, Raspberry Pi). Pre-trained on 521 classes covers nearly all ambient events Submantle would care about. Real-time inference on consumer hardware.
   - **Tradeoffs**: 521 classes is broad — custom fine-tuning needed for domain-specific events (specific alarm types, specific voices). TFLite Model Maker enables transfer learning with minimal training data.
 
 - **Apple Sound Analysis Framework (macOS/iOS)**
   - **What**: Apple's on-device audio classification using Core ML. Classify ambient sounds in real-time. Fully on-device, privacy-preserving by architecture.
   - **Evidence**: Available as part of the Apple ML stack alongside Core ML. WWDC sessions confirm continued investment.
-  - **Fits our case**: Excellent for macOS Substrate client. Classifies environmental sounds without any network calls.
+  - **Fits our case**: Excellent for macOS Submantle client. Classifies environmental sounds without any network calls.
   - **Tradeoffs**: Apple-only. Cannot be the cross-platform solution.
 
 ### Novel Approaches
@@ -118,8 +118,8 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **Custom TFLite Model Maker for domain-specific events**
   - **What**: Transfer learning on top of YAMNet for detecting specific events relevant to the user's environment (specific device sounds, their doorbell model, their smoke detector brand).
   - **Evidence**: [Google AI Edge Model Maker](https://ai.google.dev/edge/litert/libraries/modify/audio_classification)
-  - **Fits our case**: Substrate's learning engine (Core Capability 3: User Intent Model) could build personalized audio classifiers over time. The user trains their model without data leaving the device.
-  - **Risks**: Requires a training pipeline in Substrate. Adds complexity.
+  - **Fits our case**: Submantle's learning engine (Core Capability 3: User Intent Model) could build personalized audio classifiers over time. The user trains their model without data leaving the device.
+  - **Risks**: Requires a training pipeline in Submantle. Adds complexity.
 
 ---
 
@@ -130,19 +130,19 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **Extended Kalman Filter (EKF) fusion of WiFi/IMU/LiDAR**
   - **What**: Filter-based fusion for indoor localization. Proven in autonomous vehicles and robotics. Achieving sub-5ms latency on KITTI dataset; 99.3% fusion accuracy on nuScenes.
   - **Evidence**: [arXiv EKF WiFi/LiDAR/IMU](https://arxiv.org/pdf/2509.23118); [Uplatz multi-sensor fusion analysis](https://uplatz.com/blog/real-time-multi-sensor-fusion-architectures-for-autonomous-perception-a-comprehensive-analysis-of-lidar-camera-radar-and-imu-integration/)
-  - **Fits our case**: Substrate's middle-ring (hardware sensors) + outer-ring (WiFi, audio) fusion needs this class of algorithm to produce unified spatial awareness.
+  - **Fits our case**: Submantle's middle-ring (hardware sensors) + outer-ring (WiFi, audio) fusion needs this class of algorithm to produce unified spatial awareness.
   - **Tradeoffs**: EKF assumes Gaussian noise. Deep learning fusion (below) handles non-linearity better but requires training.
 
 - **Multimodal audio/video/RFID fusion for activity recognition**
   - **What**: Fusing audio, video, and RFID substantially improves classification accuracy for activity recognition over any single modality.
   - **Evidence**: [Springer multimodal survey](https://link.springer.com/chapter/10.1007/978-3-642-14883-5_39); [PMC multimodal healthcare](https://pmc.ncbi.nlm.nih.gov/articles/PMC9375645/)
-  - **Fits our case**: Substrate's outer ring can fuse WiFi motion data + audio events + camera presence into a single "is the user working/sleeping/away/in a call" signal.
-  - **Tradeoffs**: More modalities = more processing overhead. Substrate needs to be lightweight by design.
+  - **Fits our case**: Submantle's outer ring can fuse WiFi motion data + audio events + camera presence into a single "is the user working/sleeping/away/in a call" signal.
+  - **Tradeoffs**: More modalities = more processing overhead. Submantle needs to be lightweight by design.
 
 - **Home Assistant as existing sensor fusion hub**
   - **What**: Home Assistant aggregates Matter, Zigbee, Z-Wave, WiFi, Bluetooth, and hundreds of third-party integrations into a unified REST API. Millions of active installations. ESPHome adds custom sensor nodes (WiFi CSI, environmental, mmWave presence).
   - **Evidence**: [Home Assistant REST API](https://developers.home-assistant.io/docs/api/rest/); [ESPHome integration](https://www.home-assistant.io/integrations/esphome/)
-  - **Fits our case**: **This is the most pragmatic path for Substrate's outer ring.** Rather than building a sensor fusion layer from scratch, Substrate can treat a local Home Assistant instance as an already-fused environmental data source via its REST API. Optional integration, not required.
+  - **Fits our case**: **This is the most pragmatic path for Submantle's outer ring.** Rather than building a sensor fusion layer from scratch, Submantle can treat a local Home Assistant instance as an already-fused environmental data source via its REST API. Optional integration, not required.
   - **Tradeoffs**: Requires user to have Home Assistant installed. Not zero-setup. Adds a dependency.
 
 ### Emerging Approaches
@@ -151,7 +151,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
   - **What**: Replacing filter-based fusion with learned representations. Better handles nonlinear sensor relationships and missing modalities.
   - **Momentum**: Active research direction; increasingly practical on NPU-equipped consumer hardware.
   - **Source**: [Springer sensor fusion DL overview](https://link.springer.com/article/10.1007/978-3-642-14883-5_39); [Emergent Mind survey](https://www.emergentmind.com/topics/sensor-fusion-framework)
-  - **Fits our case**: Future direction for Substrate's learning engine. Not needed in v1.
+  - **Fits our case**: Future direction for Submantle's learning engine. Not needed in v1.
   - **Maturity risk**: Training data collection for the user's specific environment remains unsolved.
 
 ---
@@ -163,7 +163,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **GTFS Realtime (transit)**
   - **What**: Open standard. Real-time trip updates, service alerts, vehicle positions from transit agencies worldwide. Mobility Database catalogs 6000+ feeds in 99+ countries.
   - **Source**: [GTFS.org](https://gtfs.org/); [Mobility Database](https://transitfeeds.com/); [Google GTFS Realtime](https://developers.google.com/transit/gtfs-realtime)
-  - **Fits our case**: Free, open, standardized. Substrate can pull "user's commute route is disrupted" as outer-ring context.
+  - **Fits our case**: Free, open, standardized. Submantle can pull "user's commute route is disrupted" as outer-ring context.
   - **Tradeoffs**: Transit only. Not road traffic.
 
 - **511 SF Bay / regional 511 systems**
@@ -174,7 +174,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **Google Maps Directions/Traffic API**
   - **What**: Real-time traffic conditions, travel time estimates. Pay-as-you-go pricing. Waze data is NOT directly accessible via API (Google doesn't expose it). Waze Transport SDK is restricted to transportation companies via partnership.
   - **Source**: [Google Maps Pricing](https://mapsplatform.google.com/pricing/); [Waze for Developers](https://developers.google.com/waze)
-  - **Fits our case**: Reliable but paid. Appropriate for premium Substrate tier.
+  - **Fits our case**: Reliable but paid. Appropriate for premium Submantle tier.
   - **Tradeoffs**: Cost. Privacy implication of sending location to Google to get traffic.
 
 ### Battle-Tested: Environmental
@@ -201,7 +201,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 - **Data.gov / Socrata**
   - **What**: Catalogs raw government data APIs (U.S.). Socrata Open Data API is the standard for city/state open data portals.
   - **Source**: [Data.gov](https://data.gov/developers/apis/); [Socrata](https://dev.socrata.com/)
-  - **Fits our case**: Substrate can query 311 incident reports, permit activity, infrastructure closures.
+  - **Fits our case**: Submantle can query 311 incident reports, permit activity, infrastructure closures.
 
 ### Gaps: Safety Data
 
@@ -223,18 +223,18 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
   - **What**: Published November 20, 2025. Matter is an application-layer standard (not a radio protocol) that works over WiFi, Thread, and Ethernet. Supported by Apple Home, Google Home, Amazon Alexa, Samsung SmartThings.
   - **Sensor types exposed**: Occupancy (PIR, radar, vision, ambient), temperature, humidity, pressure, illuminance, air quality (PM2.5, VOC, CO2), door/window contact, water leak, smoke, CO. Matter 1.4 added customizable sensitivity + event-based reporting for occupancy sensing. Matter 1.5 added cameras and soil moisture.
   - **Evidence**: [CSA Matter 1.4 announcement](https://csa-iot.org/newsroom/matter-1-4-enables-more-capable-smart-homes/); [Matter 1.5 status review](https://matter-smarthome.de/en/development/the-matter-standard-in-2026-a-status-review/); [Matter Wikipedia](https://en.wikipedia.org/wiki/Matter_(standard))
-  - **Fits our case**: Matter SDK is open-source (github.com/project-chip/connectedhomeip). Substrate can implement a Matter controller to read all sensor data from any Matter device on the local network — without OS vendor cooperation.
-  - **Tradeoffs**: Matter controller role requires a Thread Border Router for Thread devices. WiFi-based Matter devices work without it. Matter 1.4/1.5 adds radar and vision presence sensing which directly maps to Substrate's outer ring.
+  - **Fits our case**: Matter SDK is open-source (github.com/project-chip/connectedhomeip). Submantle can implement a Matter controller to read all sensor data from any Matter device on the local network — without OS vendor cooperation.
+  - **Tradeoffs**: Matter controller role requires a Thread Border Router for Thread devices. WiFi-based Matter devices work without it. Matter 1.4/1.5 adds radar and vision presence sensing which directly maps to Submantle's outer ring.
 
 - **Thread Mesh**
   - **What**: IPv6 mesh protocol for battery-powered sensors. Self-healing, low-power. As of January 1, 2026, Thread 1.3 devices are no longer accepted (Thread 1.4 required).
   - **Source**: [Matter & Thread Explained 2026](https://datawiresolutions.com/blog/matter-thread-explained-2026)
-  - **Fits our case**: Thread sensors (occupancy, temperature, air quality) are directly readable by a Matter controller Substrate implements.
+  - **Fits our case**: Thread sensors (occupancy, temperature, air quality) are directly readable by a Matter controller Submantle implements.
 
 - **mmWave Radar Presence Sensors (consumer, 2025–2026)**
   - **What**: 60GHz mmWave sensors (Aqara FP300, SwitchBot Presence Sensor) detect presence including stillness, breathing, heartbeat. Consumer prices: ~$30–70. Matter/Zigbee/WiFi connectivity. Home Assistant integration available.
   - **Evidence**: [Seeed Studio mmWave Guide 2026](https://www.seeedstudio.com/blog/2025/02/25/best-presence-sensors-for-home-assistant/); [SmartHomeScene Best Presence Sensors 2026](https://smarthomescene.com/blog/best-and-worst-presence-sensors-for-home-assistant/). Infineon XENSIV 60GHz: [Infineon](https://www.infineon.com/products/sensor/radar-sensors/radar-sensors-for-iot/60ghz-radar)
-  - **Fits our case**: Off-the-shelf hardware that integrates with Home Assistant AND Matter. Substrate reads them via Matter SDK or HA API.
+  - **Fits our case**: Off-the-shelf hardware that integrates with Home Assistant AND Matter. Submantle reads them via Matter SDK or HA API.
   - **Tradeoffs**: Requires user to purchase hardware. But ~$30/room and no subscription.
 
 ---
@@ -288,11 +288,11 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 
 2. **Ring Neighbors / Citizen safety feeds**: No API access. The creator's vision of "neighbor's Ring camera" data is architecturally possible as a consent-gated pull (user connects their own Ring account) but not as passive ambient sensing of public safety events.
 
-3. **UWB as spatial awareness on Windows/macOS**: Neither platform exposes UWB to third-party apps. iOS/Android have APIs but require foreground app. This limits UWB's utility for an always-running Substrate daemon.
+3. **UWB as spatial awareness on Windows/macOS**: Neither platform exposes UWB to third-party apps. iOS/Android have APIs but require foreground app. This limits UWB's utility for an always-running Submantle daemon.
 
 4. **Matter controller complexity**: Running a full Matter controller (to read all local Matter sensors) requires implementing the Matter SDK, which is non-trivial. Home Assistant already does this — the pragmatic path is HA integration.
 
-5. **Consent architecture for external data** (Ring consent, traffic consent, public data opt-in): No established standard exists. This is a design problem Substrate must solve — the technology is available but the consent layer has to be built from scratch.
+5. **Consent architecture for external data** (Ring consent, traffic consent, public data opt-in): No established standard exists. This is a design problem Submantle must solve — the technology is available but the consent layer has to be built from scratch.
 
 6. **Multi-person vs. single presence disambiguation in WiFi sensing**: Current consumer solutions detect presence/motion but do not reliably distinguish between 1 person and 3 people in a room at low cost.
 
@@ -302,7 +302,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 
 ### What is real and accessible today (March 2026)
 
-| Technology | Status | Path for Substrate |
+| Technology | Status | Path for Submantle |
 |---|---|---|
 | WiFi presence sensing | Commercial (partner model) | ESP32 DIY nodes OR HA integration with CSI sensors |
 | mmWave presence sensors | Consumer products, $30–70 | Matter SDK or HA REST API |
@@ -325,7 +325,7 @@ The outer ring of Substrate's awareness model — WiFi sensing, on-device CV, au
 
 This delivers meaningful outer-ring awareness with zero new hardware requirements for the baseline user. Advanced sensing (WiFi CSI, camera CV) is additive for users who opt in.
 
-**The Home Assistant bridge** is the fastest path to reading WiFi sensing, mmWave presence, and dozens of other sensor types without Substrate needing to implement every protocol. HA is the de facto sensor fusion middleware that already exists in the market. Substrate integrates with it rather than competing with it.
+**The Home Assistant bridge** is the fastest path to reading WiFi sensing, mmWave presence, and dozens of other sensor types without Submantle needing to implement every protocol. HA is the de facto sensor fusion middleware that already exists in the market. Submantle integrates with it rather than competing with it.
 
 **The privacy architecture is the hard part.** The technology is solved. Consent-gated modules, on-device inference, and explicit external data authorization (Ring account connection, traffic API opt-in) are not technically novel but must be the design foundation, not an afterthought. Academic work on interactive consent for context-aware systems (Springer 2026: doi:10.1007/s10207-026-01228-y) and federated edge intelligence frameworks confirms this is an active and solvable design space.
 

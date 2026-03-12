@@ -36,8 +36,8 @@ Source: modelcontextprotocol.io/docs/concepts/architecture, verified 2026-03-11
 
 | Primitive | Description | Submantle Example |
 |-----------|-------------|-------------------|
-| Tools | Executable functions the LLM invokes | substrate_get_trust(agent_id) |
-| Resources | Data sources providing context | substrate://ambient-stream |
+| Tools | Executable functions the LLM invokes | submantle_get_trust(agent_id) |
+| Resources | Data sources providing context | submantle://ambient-stream |
 | Prompts | Reusable interaction templates | "Analyze this agent behavioral history" |
 
 Tools are model-controlled (LLM decides when to call them). Resources are application-driven (host decides when to include them as context). Resources support subscriptions -- clients subscribe to a URI and receive push notifications when data changes. This is the ambient stream model Submantle needs.
@@ -52,11 +52,11 @@ Discovery request from client:
 
 Discovery response from server:
 
-    {"result":{"tools":[{"name":"substrate_get_trust","description":"...","inputSchema":{"type":"object","properties":{"agent_id":{"type":"string"}},"required":["agent_id"]}}]}}
+    {"result":{"tools":[{"name":"submantle_get_trust","description":"...","inputSchema":{"type":"object","properties":{"agent_id":{"type":"string"}},"required":["agent_id"]}}]}}
 
 Invocation request from client:
 
-    {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"substrate_get_trust","arguments":{"agent_id":"email-bot-by-acme"}}}
+    {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"submantle_get_trust","arguments":{"agent_id":"email-bot-by-acme"}}}
 
 Invocation response from server (with outputSchema):
 
@@ -219,13 +219,13 @@ Today (REST API):
   Response: token (HMAC-SHA256 bearer credential), agent_name
 
 Future (MCP tool):
-  tools/call substrate_register with {agent_name, version, author, capabilities}
+  tools/call submantle_register with {agent_name, version, author, capabilities}
   Response structuredContent: {token, agent_name, tier: "registered"}
 
 ### Step B: Query Another Agent's Trust Score
 
 Via MCP Tool call:
-  tools/call substrate_get_trust with {agent_id: "email-bot-by-acme"}
+  tools/call submantle_get_trust with {agent_id: "email-bot-by-acme"}
   Response structuredContent: {trust_score: 0.87, total_queries: 1243, incidents: 0, tier: "trusted", registered_days_ago: 142}
 
 The outputSchema on the tool definition guarantees this structure -- no parsing required, LLMs can reliably consume it.
@@ -233,7 +233,7 @@ The outputSchema on the tool definition guarantees this structure -- no parsing 
 ### Step C: Present Its Own Trust Attestation
 
 Via MCP Tool call:
-  tools/call substrate_get_attestation with {agent_token: "bearer-token", format: "sd-jwt"}
+  tools/call submantle_get_attestation with {agent_token: "bearer-token", format: "sd-jwt"}
   Response: W3C VC 2.0 + SD-JWT credential the agent presents to brands and platforms as proof of trust tier. Portable, verifiable, carries the agent's behavioral history.
 
 ### What No-SDK Integration Looks Like
@@ -367,16 +367,16 @@ A LangChain agent, a Claude Desktop user, a CrewAI crew, and a Semantic Kernel e
 ### What the Submantle MCP Server Exposes
 
 Tools (active queries, model-controlled -- LLM decides when to call):
-- substrate_register: register this agent with Submantle, receive HMAC bearer token
-- substrate_get_trust: query trust score for any registered agent by agent_id
-- substrate_get_attestation: get W3C VC trust credential for this agent (portable proof of tier)
-- substrate_query_process: what is this process and what does it mean for the system?
-- substrate_what_would_break: given a proposed action, what is the blast radius?
+- submantle_register: register this agent with Submantle, receive HMAC bearer token
+- submantle_get_trust: query trust score for any registered agent by agent_id
+- submantle_get_attestation: get W3C VC trust credential for this agent (portable proof of tier)
+- submantle_query_process: what is this process and what does it mean for the system?
+- submantle_what_would_break: given a proposed action, what is the blast radius?
 
 Resources (passive context, application-driven -- host decides when to include):
-- substrate://ambient-stream: real-time process awareness, subscribable for push updates
-- substrate://device-list: connected devices and their current state
-- substrate://process-snapshot: current process awareness snapshot (non-subscribable, polling-safe)
+- submantle://ambient-stream: real-time process awareness, subscribable for push updates
+- submantle://device-list: connected devices and their current state
+- submantle://process-snapshot: current process awareness snapshot (non-subscribable, polling-safe)
 
 For anonymous agents (no registration): Awareness tools work; trust-specific tools return tier: "anonymous", trust_score: null.
 For registered agents: Bearer token in every request; trust accumulates via record_query() per the existing AgentRegistry design.
@@ -384,11 +384,11 @@ For registered agents: Bearer token in every request; trust accumulates via reco
 ### The Authorization Mapping
 
 Submantle's existing bearer token model maps directly to MCP HTTP transport auth:
-- Agent registers via substrate_register MCP tool, receives HMAC-SHA256 token
+- Agent registers via submantle_register MCP tool, receives HMAC-SHA256 token
 - Agent stores token; includes it as Authorization: Bearer token on every subsequent MCP HTTP request
 - Submantle MCP server validates via AgentRegistry.verify() (existing code, unchanged)
 - record_query() called on every valid authenticated request; trust score accumulates
-- Trust score updates reflected immediately in subsequent substrate_get_trust calls
+- Trust score updates reflected immediately in subsequent submantle_get_trust calls
 
 This is the existing auth model surfaced through MCP's standard HTTP transport layer. No new auth design required.
 
@@ -396,7 +396,7 @@ This is the existing auth model surfaced through MCP's standard HTTP transport l
 
 Phase 1 (Immediate): Wrap existing FastAPI REST routes as MCP Tools via Python MCP SDK (FastMCP, mcp package v1.2.0+). Enables MCP clients to reach Submantle within one session -- no Go migration required. Prototype validates the MCP integration surface before committing to the Go rewrite.
 
-Phase 2 (Trust Layer Wiring): As trust layer wires (record_query, compute_trust, issue_attestation), expose as new MCP tools: substrate_get_trust, substrate_get_attestation.
+Phase 2 (Trust Layer Wiring): As trust layer wires (record_query, compute_trust, issue_attestation), expose as new MCP tools: submantle_get_trust, submantle_get_attestation.
 
 Phase 3 (Resources and Subscriptions): Implement ambient stream as a subscribable MCP Resource. Requires Streamable HTTP transport with SSE for server-push notifications.
 

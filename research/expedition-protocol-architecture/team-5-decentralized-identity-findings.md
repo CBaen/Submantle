@@ -33,7 +33,7 @@ The decentralized identity ecosystem has reached a genuine inflection point in 2
 
 ### Battle-Tested (in web context): did:web
 
-**What:** DID documents hosted at well-known HTTPS paths on existing web infrastructure. A DID like `did:web:substrate.example.com:agents:claude-001` resolves by fetching `https://substrate.example.com/agents/claude-001/did.json`.
+**What:** DID documents hosted at well-known HTTPS paths on existing web infrastructure. A DID like `did:web:submantle.example.com:agents:claude-001` resolves by fetching `https://submantle.example.com/agents/claude-001/did.json`.
 
 **Evidence:** Used in production by enterprises, governments, and AI agent frameworks. The Cisco New Identity Framework for AI Agents (2025) recommends did:web as the foundational identity method for agents. The W3C DID Methods WG is drafting a standard for one web-based DID method — did:web is the primary candidate alongside did:webvh.
 
@@ -314,7 +314,7 @@ did:web is the right DID method for AI agent identity in Submantle's context. He
 
 **How Submantle agents could use did:web:**
 - Submantle daemon serves `/.well-known/did.json` locally at `localhost` or at an agent-specific path
-- For agents registered with Submantle: `did:web:substrate.local:agents:{agent-id}` — resolvable only within the device
+- For agents registered with Submantle: `did:web:submantle.local:agents:{agent-id}` — resolvable only within the device
 - For externally-visible agents: `did:web:{developer-domain}:agents:{agent-id}` — developer hosts it
 - Submantle handles key generation and rotation automatically — developers never touch key material
 
@@ -422,7 +422,7 @@ The spec allows `did:web:localhost` for development. For production on-device ag
 - Local only: did:key (no external resolution needed)
 - Externally verifiable: did:web at a Submantle-hosted or developer-hosted URL
 
-Submantle could optionally host agent DIDs (e.g., `did:web:substrate.io:agents:{device-hash}:{agent-id}`) as a service, providing external resolvability without requiring developers to host their own HTTPS endpoints.
+Submantle could optionally host agent DIDs (e.g., `did:web:submantle.io:agents:{device-hash}:{agent-id}`) as a service, providing external resolvability without requiring developers to host their own HTTPS endpoints.
 
 ---
 

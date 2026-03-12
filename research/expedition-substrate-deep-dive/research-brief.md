@@ -1,12 +1,12 @@
-# Research Brief: Substrate Deep Dive
+# Research Brief: Submantle Deep Dive
 ## Date: 2026-03-10
-## Project: Substrate
+## Project: Submantle
 
 ### Problem Statement
 Every AI agent today operates in a tunnel. They see their task and nothing else — no awareness of what's running on the machine, what the user is doing, what other agents are active, or what they'd destroy by acting. Beyond software, they have zero awareness of the physical environment. An agent killed hours of image generation work because it blindly terminated all Node processes. This isn't a bug in one agent — it's a missing layer in computing.
 
 ### Expected Outcome
-A complete understanding of the Substrate opportunity: what exists today that's close, what technology makes it buildable, how agents would integrate with it, what the legal landscape looks like for ambient sensing, who would pay for it, and how to price it. Walk away ready to make architectural and business decisions.
+A complete understanding of the Submantle opportunity: what exists today that's close, what technology makes it buildable, how agents would integrate with it, what the legal landscape looks like for ambient sensing, who would pay for it, and how to price it. Walk away ready to make architectural and business decisions.
 
 ### Current State
 A VISION.md document describing the concept. No code, no git repo, no prior attempts. The vision describes:
@@ -27,14 +27,14 @@ Exploring whether this is a viable product and company. Need to understand feasi
 - Proof of concept should be buildable with available tools (Claude Code, Python, Rust, etc.)
 
 ### Destructive Boundaries
-- Do not assume Apple/Google/Microsoft cooperation — Substrate must work independently
+- Do not assume Apple/Google/Microsoft cooperation — Submantle must work independently
 - Do not propose approaches that require root/kernel-level access on mobile (App Store rejection)
 - Do not recommend surveillance-first approaches — consent architecture is non-negotiable
 
 ### Research Angles
 
 **Team 1: Competitive Landscape & Prior Art**
-Investigate everything that exists today closest to Substrate — process monitors, ambient computing platforms, AI safety layers, agent coordination tools, contextual awareness systems. Map the gaps. Include both commercial products and research projects.
+Investigate everything that exists today closest to Submantle — process monitors, ambient computing platforms, AI safety layers, agent coordination tools, contextual awareness systems. Map the gaps. Include both commercial products and research projects.
 
 **Team 2: Cross-Platform Architecture**
 How to build an OS-agnostic daemon that monitors processes, builds a knowledge graph, and exposes an API. Evaluate languages (Rust, Go, C++), IPC mechanisms, OS-specific APIs (WMI, procfs, BSD APIs, ActivityManager). How do cross-platform tools like 1Password, Docker, or Tailscale solve this problem?

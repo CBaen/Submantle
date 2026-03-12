@@ -1,4 +1,4 @@
-# Expedition Validator Report — Substrate Deep Dive
+# Expedition Validator Report — Submantle Deep Dive
 ## Date: 2026-03-10
 ## Validator: Expedition Validator Instance 1
 
@@ -120,7 +120,7 @@ The ABI Research "112 million CPE installations by 2030" claim (cited by Team 3)
 
 The Mordor Intelligence URL for the "Agentic AI Governance" market report returned 404. The specific figures ($7.28B in 2025 → $38.94B by 2030, 39.85% CAGR) are not confirmed. Mordor Intelligence is a legitimate market research firm but their reports are paywalled — the specific URL cited does not exist as a public page.
 
-This is a consequential finding because Team 6 uses these figures as the foundation for positioning Substrate as entering a "$7.28B governance market." The market is real but the specific figures should be flagged as unverified analyst estimates from an inaccessible source.
+This is a consequential finding because Team 6 uses these figures as the foundation for positioning Submantle as entering a "$7.28B governance market." The market is real but the specific figures should be flagged as unverified analyst estimates from an inaccessible source.
 
 **Comparison check:** The AI Agents overall market figure ($7.84B in 2025 → $52.62B in 2030, 46.3% CAGR attributed to GM Insights) was not independently fetched. Both TAM figures are analyst estimates from paywalled reports. They are plausible directionally but should not be treated as confirmed numbers.
 
@@ -147,7 +147,7 @@ Team 5 states: "The EU AI Act is fully applicable August 2, 2026. General-purpos
 
 Team 5 also states: "High-risk AI system obligations for systems embedded in regulated products have an extended deadline to August 2027." This is also accurate — Article 6(1) applies from August 2027.
 
-Team 5's framing that Substrate may need to comply by August 2026 is correct if it qualifies as high-risk. The classification guidance note ("The Commission was required to publish classification guidelines by February 2, 2026 — those guidelines are either just published or imminent") was not independently verified but is consistent with the Act's timeline structure.
+Team 5's framing that Submantle may need to comply by August 2026 is correct if it qualifies as high-risk. The classification guidance note ("The Commission was required to publish classification guidelines by February 2, 2026 — those guidelines are either just published or imminent") was not independently verified but is consistent with the Act's timeline structure.
 
 ---
 
@@ -177,7 +177,7 @@ Confirmed facts:
 - Team 2 correctly states: "BGContinuedProcessingTask (new in iOS 26): Continues a task started by an explicit user action (button tap). Cannot run autonomously." Team 2 correctly concludes iOS cannot run a monitoring daemon.
 - Team 3 does not address this directly but also does not contradict it.
 
-No substantive contradiction here — but Team 3's ambient sensing section implicitly assumes iOS is viable as a sensing platform (camera, microphone, UWB sections all describe iOS capabilities) without acknowledging Team 2's finding that background monitoring is architecturally impossible. A reader of Team 3 in isolation might think iOS ambient sensing is viable for Substrate.
+No substantive contradiction here — but Team 3's ambient sensing section implicitly assumes iOS is viable as a sensing platform (camera, microphone, UWB sections all describe iOS capabilities) without acknowledging Team 2's finding that background monitoring is architecturally impossible. A reader of Team 3 in isolation might think iOS ambient sensing is viable for Submantle.
 
 **Resolution:** Team 2 is correct on the background monitoring constraint. Team 3's iOS sensing descriptions apply only to foreground use or are irrelevant for a daemon model.
 
@@ -188,12 +188,12 @@ No substantive contradiction here — but Team 3's ambient sensing section impli
 **Teams 1, 4, and 6 are in tension about MCP's role.**
 
 - Team 1 flags: "MCP security crisis of 2025. Over 13,000 MCP servers launched in 2025 with documented tenant isolation failures." This supports the urgency narrative but implies MCP itself is problematic.
-- Team 4 recommends MCP as Substrate's primary integration surface ("Tier 1 — Substrate as MCP Server").
-- Team 6 cites "97M SDK downloads" as evidence MCP is the standard, then recommends Substrate position itself as complementary to MCP.
+- Team 4 recommends MCP as Submantle's primary integration surface ("Tier 1 — Submantle as MCP Server").
+- Team 6 cites "97M SDK downloads" as evidence MCP is the standard, then recommends Submantle position itself as complementary to MCP.
 
-The tension: Teams 4 and 6 want to ride MCP's momentum, but MCP's documented security issues (30+ CVEs, tenant isolation failures) are the *problem Substrate is solving*. Building Substrate *on top of* a protocol with known security issues is a legitimate architectural concern that none of the teams reconcile. Team 4 acknowledges "30+ CVEs documented in MCP implementations as of 2025" but proceeds to recommend MCP as the integration path anyway, without resolving the tension.
+The tension: Teams 4 and 6 want to ride MCP's momentum, but MCP's documented security issues (30+ CVEs, tenant isolation failures) are the *problem Submantle is solving*. Building Submantle *on top of* a protocol with known security issues is a legitimate architectural concern that none of the teams reconcile. Team 4 acknowledges "30+ CVEs documented in MCP implementations as of 2025" but proceeds to recommend MCP as the integration path anyway, without resolving the tension.
 
-**This is a genuine strategic gap.** Substrate positioned as the safety layer for MCP risks becoming associated with MCP's security failures rather than solving them.
+**This is a genuine strategic gap.** Submantle positioned as the safety layer for MCP risks becoming associated with MCP's security failures rather than solving them.
 
 ---
 
@@ -204,7 +204,7 @@ The tension: Teams 4 and 6 want to ride MCP's momentum, but MCP's documented sec
 - Team 5 states: "The moment data crosses devices over a network, GDPR, ECPA, ePrivacy Directive protections all reactivate." Cross-device sync "requires its own legal architecture."
 - Team 6 recommends "Pro tier ($15/month): Cross-device sync" as a key monetization feature and treats it as a relatively straightforward product milestone.
 
-Team 5's legal analysis reveals cross-device sync is not a minor feature addition — it fundamentally changes Substrate's legal posture under GDPR, ePrivacy, and potentially ECPA. Team 6 does not acknowledge this complexity at all. The business model relies on a feature that the legal team flags as a significant compliance undertaking.
+Team 5's legal analysis reveals cross-device sync is not a minor feature addition — it fundamentally changes Submantle's legal posture under GDPR, ePrivacy, and potentially ECPA. Team 6 does not acknowledge this complexity at all. The business model relies on a feature that the legal team flags as a significant compliance undertaking.
 
 **Resolution needed:** The product roadmap should treat cross-device sync as a compliance project, not just an engineering project. Teams 5 and 6 need to reconcile before the roadmap is finalized.
 
@@ -212,7 +212,7 @@ Team 5's legal analysis reveals cross-device sync is not a minor feature additio
 
 ### Contradiction 4: "No Direct Competitor" vs. Adjacent Players
 
-Teams 1, 4, and 6 all independently conclude "no direct competitor exists at Substrate's layer." This convergence is reassuring but creates a risk of groupthink. All three teams found the same gap, which either validates the finding or reflects shared research assumptions. Team 1 does the most rigorous competitive mapping and is the most credible basis for this conclusion.
+Teams 1, 4, and 6 all independently conclude "no direct competitor exists at Submantle's layer." This convergence is reassuring but creates a risk of groupthink. All three teams found the same gap, which either validates the finding or reflects shared research assumptions. Team 1 does the most rigorous competitive mapping and is the most credible basis for this conclusion.
 
 ---
 
@@ -220,11 +220,11 @@ Teams 1, 4, and 6 all independently conclude "no direct competitor exists at Sub
 
 ### Drift 1: Outer Ring Given Disproportionate Depth (Team 3)
 
-The Research Brief states Substrate is "buildable incrementally" and the explicit constraint is "OS-agnostic, privacy-first, buildable incrementally." The brief specifically names the "inner ring first" approach.
+The Research Brief states Submantle is "buildable incrementally" and the explicit constraint is "OS-agnostic, privacy-first, buildable incrementally." The brief specifically names the "inner ring first" approach.
 
-Team 3's findings are heavily focused on the outer ring (WiFi sensing, CV, audio classification, Matter, mmWave sensors) — the parts of Substrate that require additional hardware or complex platform integrations. While the research is thorough and valuable, it could give the impression that the outer ring is the primary near-term work. The brief's "inner ring first" constraint is mentioned in Team 3's synthesis but is not the organizing principle of the findings.
+Team 3's findings are heavily focused on the outer ring (WiFi sensing, CV, audio classification, Matter, mmWave sensors) — the parts of Submantle that require additional hardware or complex platform integrations. While the research is thorough and valuable, it could give the impression that the outer ring is the primary near-term work. The brief's "inner ring first" constraint is mentioned in Team 3's synthesis but is not the organizing principle of the findings.
 
-**The risk:** Guiding Light reads the 300-line sensor section and concludes Substrate needs Home Assistant, Matter SDK, mmWave hardware, and WiFi CSI nodes before it's viable. None of these are true for inner-ring MVP.
+**The risk:** Guiding Light reads the 300-line sensor section and concludes Submantle needs Home Assistant, Matter SDK, mmWave hardware, and WiFi CSI nodes before it's viable. None of these are true for inner-ring MVP.
 
 ---
 
@@ -232,13 +232,13 @@ Team 3's findings are heavily focused on the outer ring (WiFi sensing, CV, audio
 
 The Research Brief asks for market and business model research. Team 6 provides specific pricing tiers ($10-20/month, $12/user/month, $50k-$500k/year enterprise) with tables and a recommended go-to-market sequence. This is useful but it outpaces the evidence — Team 6 explicitly acknowledges "no direct comp exists" and "first segment to target is unclear." The confidence of the pricing recommendations does not match the uncertainty acknowledged elsewhere in the same document.
 
-The Tailscale, 1Password, and Datadog analogies are reasonable proxies, but none of them precisely matches Substrate's model (a pre-action broker for AI agents). The pricing structure should be treated as a starting hypothesis, not a finding.
+The Tailscale, 1Password, and Datadog analogies are reasonable proxies, but none of them precisely matches Submantle's model (a pre-action broker for AI agents). The pricing structure should be treated as a starting hypothesis, not a finding.
 
 ---
 
 ### Drift 3: Team 4 Does Not Fully Address "Must Work Without Agent Rewriting"
 
-The Research Brief's concept of Substrate as a "universal" broker implies it should work regardless of how an agent is built. Team 4 maps three tiers (MCP server, MCP proxy, OS-level) but acknowledges in the Gaps section: "CrewAI has no native tool-execution hook. AutoGen has no documented pre-action hook. LangChain declined to add before_tool hooks."
+The Research Brief's concept of Submantle as a "universal" broker implies it should work regardless of how an agent is built. Team 4 maps three tiers (MCP server, MCP proxy, OS-level) but acknowledges in the Gaps section: "CrewAI has no native tool-execution hook. AutoGen has no documented pre-action hook. LangChain declined to add before_tool hooks."
 
 This means Tiers 1 and 2 don't cover all agents — only MCP-compliant ones or those on frameworks with hooks. The "universal" claim in the Research Brief is not achievable at Tier 1 or 2. Only Tier 3 (OS-level kernel enforcement) achieves universality, and Team 4 correctly identifies this as "the hardest to ship." The synthesis understates how incomplete the non-OS-level tiers are for the universality claim.
 
@@ -248,15 +248,15 @@ This means Tiers 1 and 2 don't cover all agents — only MCP-compliant ones or t
 
 ### Missing: Competitive Response Timing
 
-No team modeled how quickly Runlayer, Sage, or Microsoft could extend into Substrate's layer. Runlayer has $11M and is enterprise-focused; how long before they add local process awareness? Sage launched yesterday by a company (Gen Digital) with substantial security engineering resources — what is their likely roadmap? The competitive analysis describes the current state but not the competitive velocity.
+No team modeled how quickly Runlayer, Sage, or Microsoft could extend into Submantle's layer. Runlayer has $11M and is enterprise-focused; how long before they add local process awareness? Sage launched yesterday by a company (Gen Digital) with substantial security engineering resources — what is their likely roadmap? The competitive analysis describes the current state but not the competitive velocity.
 
 ### Missing: Developer Adoption Friction
 
-Team 4 describes Substrate's integration tiers (MCP server, proxy, OS-level) but no team evaluated the actual friction of adding a pre-action query to an agent workflow. The Auth0 analogy in Team 6 works because auth is synchronous and fast. Substrate's process graph query adds latency to every action an agent wants to take. No team measured or estimated what that latency would be, or whether developers would accept it.
+Team 4 describes Submantle's integration tiers (MCP server, proxy, OS-level) but no team evaluated the actual friction of adding a pre-action query to an agent workflow. The Auth0 analogy in Team 6 works because auth is synchronous and fast. Submantle's process graph query adds latency to every action an agent wants to take. No team measured or estimated what that latency would be, or whether developers would accept it.
 
 ### Missing: The Consent UX Problem
 
-Team 5 correctly identifies consent architecture as the hard problem. Team 3 acknowledges "consent architecture is the hard part." But no team did primary research on how users actually respond to ambient sensing consent flows. The AirTag architecture is cited as a model but AirTag is a single-purpose device; Substrate is monitoring everything. The gap between "consent is required" and "here is how you design consent that users will actually engage with" is completely unresearched.
+Team 5 correctly identifies consent architecture as the hard problem. Team 3 acknowledges "consent architecture is the hard part." But no team did primary research on how users actually respond to ambient sensing consent flows. The AirTag architecture is cited as a model but AirTag is a single-purpose device; Submantle is monitoring everything. The gap between "consent is required" and "here is how you design consent that users will actually engage with" is completely unresearched.
 
 ### Missing: Open Source Sustainability
 
@@ -264,7 +264,7 @@ Team 6 recommends open-sourcing the daemon. No team evaluated the sustainability
 
 ### Missing: The False Positive Problem
 
-Substrate's value is preventing harmful agent actions. But what happens when Substrate blocks a safe action? If an agent can't complete a task because Substrate flagged it incorrectly, user trust in agents — and Substrate — erodes. No team researched false positive rates in comparable systems (EDRs, guardrail frameworks) or how Substrate would handle appeals/overrides.
+Submantle's value is preventing harmful agent actions. But what happens when Submantle blocks a safe action? If an agent can't complete a task because Submantle flagged it incorrectly, user trust in agents — and Submantle — erodes. No team researched false positive rates in comparable systems (EDRs, guardrail frameworks) or how Submantle would handle appeals/overrides.
 
 ### Missing: Verification of the $7.28B Market Figure
 
@@ -282,7 +282,7 @@ These convergences across teams that researched different things increase credib
 
 3. **MCP is the right integration surface for now.** Teams 1, 4, and 6 all point to MCP's dominance. Combined with the verified 97M monthly downloads, this is a strong finding.
 
-4. **SQLite/Go for the POC is correct.** Team 2's architecture recommendation is consistent with what Teams 1, 4, and 6 describe as the competitive landscape — Substrate needs to ship fast. The architecture recommendation aligns with the strategic urgency finding.
+4. **SQLite/Go for the POC is correct.** Team 2's architecture recommendation is consistent with what Teams 1, 4, and 6 describe as the competitive landscape — Submantle needs to ship fast. The architecture recommendation aligns with the strategic urgency finding.
 
 5. **Privacy-first is both a legal requirement and a competitive differentiator.** Teams 3, 5, and 6 all reach this conclusion from different starting points (sensing design, legal analysis, market positioning).
 
@@ -330,7 +330,7 @@ The "112 million WiFi sensing CPE installations by 2030" figure is cited as a ke
 3. **The Joffe v. Google settlement date should be corrected** to December 2021 (final court approval) in any document that cites it.
 4. **The ABI Research 112M WiFi CPE figure needs a working URL** or should be dropped from the ambient sensing synthesis.
 5. **Team 6's pricing tables should be labeled "working hypothesis" not "findings."** They are informed speculation based on analog companies, not evidence.
-6. **The MCP-as-integration-surface vs. MCP-security-crisis tension needs explicit resolution** before the architecture brief is written. Building Substrate on MCP while positioning it as the solution to MCP's security problems requires a clear narrative.
+6. **The MCP-as-integration-surface vs. MCP-security-crisis tension needs explicit resolution** before the architecture brief is written. Building Submantle on MCP while positioning it as the solution to MCP's security problems requires a clear narrative.
 7. **Cross-device sync must be treated as a compliance project,** not a product feature, for any EU market consideration. Team 5 and Team 6 need to reconcile this explicitly.
 
 ---

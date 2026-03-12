@@ -18,7 +18,7 @@ This covers seven angles: language choice for the daemon, OS-specific process AP
 - **What:** Go produces a single statically-linked binary that runs on all target platforms with minimal FFI complexity, a garbage collector tuned for low-latency, and a rich ecosystem for system-level work.
 - **Evidence:** Tailscale's daemon (`tailscaled`) is written in Go and runs on Windows, macOS, Linux, FreeBSD, and OpenBSD. Docker's daemon is Go. Kubernetes is Go. HashiCorp's entire tool suite (Terraform, Vault, Nomad) is Go. This is the most proven language for "cross-platform daemon that must ship as a binary."
 - **Source:** https://github.com/tailscale/tailscale (accessed 2026-03-10); https://blog.jetbrains.com/rust/2025/06/12/rust-vs-go/ (accessed 2026-03-10)
-- **Fits our case because:** Substrate is a daemon, not a hot path. Development velocity matters enormously at POC stage. Cross-platform service management is well-solved in Go. The goroutine model makes concurrent event handling from multiple OS sources natural.
+- **Fits our case because:** Submantle is a daemon, not a hot path. Development velocity matters enormously at POC stage. Cross-platform service management is well-solved in Go. The goroutine model makes concurrent event handling from multiple OS sources natural.
 - **Tradeoffs:** Go's GC adds ~10% memory overhead and occasional pauses. Binary size is larger than Rust before optimization (typically 10-20MB vs 2-5MB). Memory consumption for equivalent Go services runs 100-320 MB vs Rust's 50-80 MB. Not ideal if memory is the hard constraint.
 
 ### Novel Approaches
@@ -28,7 +28,7 @@ This covers seven angles: language choice for the daemon, OS-specific process AP
 - **Why interesting:** For a daemon that must run 24/7 at minimal CPU/memory cost, Rust's 50-80 MB vs Go's 100-320 MB matters. On mobile (Android), where the OS will kill background processes based on memory pressure, this gap is meaningful.
 - **Evidence:** Cloudflare uses Rust for system-critical components. Discord migrated to Rust/Actix-web and cut latency by 50%. Rust Actix-web runs ~1.5x faster than Go Fiber with 20% lower memory usage (TechEmpower Round 23 benchmarks). The `service-manager` crate provides unified Windows SCM / macOS launchd / Linux systemd service registration.
 - **Source:** https://byteiota.com/rust-vs-go-2026-backend-performance-benchmarks/ (accessed 2026-03-10); https://crates.io/crates/uni_service_manager (accessed 2026-03-10)
-- **Fits our case because:** If Substrate ever needs to run on Android or resource-constrained devices, Rust's memory discipline becomes critical. Also, a process-monitoring daemon is exactly the kind of system-adjacent code where Rust's memory safety prevents a class of bugs that would be embarrassing for a product selling "awareness."
+- **Fits our case because:** If Submantle ever needs to run on Android or resource-constrained devices, Rust's memory discipline becomes critical. Also, a process-monitoring daemon is exactly the kind of system-adjacent code where Rust's memory safety prevents a class of bugs that would be embarrassing for a product selling "awareness."
 - **Risks:** Rust has a steep learning curve. Development velocity is significantly slower. For a solo or small team at POC stage, this is a real cost. Cross-platform service registration is less battle-tested than Go equivalents (though `uni_service_manager` and `service-manager` crates exist).
 
 **C++ — not recommended**
@@ -79,7 +79,7 @@ The entire community of comparable tools (Tailscale, Docker, Kubernetes, HashiCo
 - **`ActivityManager.RunningAppProcessInfo`** — provides importance level: `IMPORTANCE_FOREGROUND`, `IMPORTANCE_VISIBLE`, `IMPORTANCE_SERVICE`, `IMPORTANCE_CACHED`. Sufficient to know "what is active right now."
 - **Evidence:** Android 15 added `ProfilingManager` and `ApplicationStartInfo` for process diagnostics. Android 16 continues tightening background restrictions.
 - **Source:** https://developer.android.com/reference/android/app/ActivityManager (accessed 2026-03-10); https://softices.com/blogs/android-foreground-services-types-permissions-use-cases-limitations (accessed 2026-03-10)
-- **Tradeoffs:** You cannot enumerate all processes on Android as a third-party app. The platform intentionally limits this. The realistic scope for Substrate on Android is "what apps are in use" (via UsageStats) rather than "what processes are running."
+- **Tradeoffs:** You cannot enumerate all processes on Android as a third-party app. The platform intentionally limits this. The realistic scope for Submantle on Android is "what apps are in use" (via UsageStats) rather than "what processes are running."
 
 ### iOS
 
@@ -88,7 +88,7 @@ The entire community of comparable tools (Tailscale, Docker, Kubernetes, HashiCo
 - What IS accessible: `BGAppRefreshTask` (periodic, system-scheduled, ~30 seconds), `BGProcessingTask` (longer, up to several minutes, requires charging + Wi-Fi typically), and the new iOS 26 `BGContinuedProcessingTask` (user-initiated only, continues a task started in foreground).
 - iOS 26 `BGContinuedProcessingTask` explicitly requires "a button tap or gesture, never automatic." It is not a mechanism for background monitoring.
 - **Evidence:** https://developer.apple.com/documentation/backgroundtasks/bgcontinuedprocessingtask (accessed 2026-03-10); https://dev.to/arshtechpro/wwdc-2025-ios-26-background-apis-explained-bgcontinuedprocessingtask-changes-everything-9b5 (accessed 2026-03-10)
-- **Honest assessment:** Substrate cannot be a process-monitoring daemon on iOS. The platform's sandboxing and background execution model makes this architecturally impossible without OS vendor cooperation — which the project constraints explicitly exclude. The iOS surface for Substrate is limited to: receiving sync data from other platforms, providing a query interface for AI agents running on iOS, and surfacing context that was built on other devices.
+- **Honest assessment:** Submantle cannot be a process-monitoring daemon on iOS. The platform's sandboxing and background execution model makes this architecturally impossible without OS vendor cooperation — which the project constraints explicitly exclude. The iOS surface for Submantle is limited to: receiving sync data from other platforms, providing a query interface for AI agents running on iOS, and surfacing context that was built on other devices.
 
 ---
 
@@ -107,7 +107,7 @@ The entire community of comparable tools (Tailscale, Docker, Kubernetes, HashiCo
 - **What:** DuckDB is an in-process analytical database. The DuckPGQ extension implements SQL/PGQ (the graph query syntax from SQL:2023), enabling Cypher-like graph queries over DuckDB tables.
 - **Evidence:** DuckPGQ is a community extension, actively maintained. DuckDB itself is production-proven (Motherduck, many analytics teams). The extension supports graph algorithms and path queries.
 - **Source:** https://duckdb.org/community_extensions/extensions/duckpgq (accessed 2026-03-10); https://thedataquarry.com/blog/embedded-db-1/ (accessed 2026-03-10)
-- **Fits our case because:** If Substrate needs to answer analytical queries ("show me workflow patterns over the last 30 days"), DuckDB's columnar storage is faster than row-oriented SQLite. DuckPGQ adds graph query syntax without a separate graph database.
+- **Fits our case because:** If Submantle needs to answer analytical queries ("show me workflow patterns over the last 30 days"), DuckDB's columnar storage is faster than row-oriented SQLite. DuckPGQ adds graph query syntax without a separate graph database.
 - **Tradeoffs:** DuckPGQ is still a community extension, not a core feature — maturity risk. DuckDB's binary size is larger (~35MB). It is optimized for read-heavy analytics, not write-heavy event ingestion.
 
 ### Novel Approaches
@@ -117,7 +117,7 @@ The entire community of comparable tools (Tailscale, Docker, Kubernetes, HashiCo
 - **Evidence:** Available as a Python library. Uses sparse matrices (GraphBLAS) for adjacency representation, which is memory-efficient for sparse graphs. Announced as an alternative after KuzuDB's archival in October 2025.
 - **Source:** https://www.falkordb.com/blog/falkordblite-embedded-python-graph-database/ (accessed 2026-03-10)
 - **Fits our case because:** Provides full Cypher query support. The subprocess isolation model means a crash in the graph engine doesn't crash the daemon.
-- **Risks:** Currently Python-only and Linux/macOS only (no Windows). This is a hard blocker for Substrate's Windows requirement. Not suitable as the primary store without a cross-platform implementation.
+- **Risks:** Currently Python-only and Linux/macOS only (no Windows). This is a hard blocker for Submantle's Windows requirement. Not suitable as the primary store without a cross-platform implementation.
 
 **KuzuDB forks (Ladybug, Bighorn, RyuGraph)**
 - **What:** After KuzuDB was archived in October 2025, three community forks emerged: Ladybug (by ex-Facebook/Google engineers), Bighorn (by Kineviz), and RyuGraph (by Predictable Labs). KuzuDB was the leading embedded property graph database with Cypher support and C/Rust/Python bindings.
@@ -142,7 +142,7 @@ The process relationship graph for a single machine is small — hundreds to low
 - **What:** gRPC transports over local sockets instead of TCP. On Linux/macOS, Unix domain sockets (`unix:///path/to/socket`). On Windows, Named Pipes. This is exactly how Docker's daemon (`dockerd`) exposes its API — via `unix:///var/run/docker.sock` on Linux/macOS and `npipe:////./pipe/docker_engine` on Windows.
 - **Evidence:** Docker daemon uses this architecture. gRPC over Unix socket adds ~100µs latency overhead for local IPC (measured), which is negligible for a context broker. Benchmarks show Unix domain sockets and Named Pipes outperform TCP/IP for local communication by avoiding networking overhead. Microsoft's ASP.NET Core documentation explicitly covers gRPC over Named Pipes for Windows IPC.
 - **Source:** https://learn.microsoft.com/en-us/aspnet/core/grpc/interprocess-uds (accessed 2026-03-10); https://learn.microsoft.com/en-us/aspnet/core/grpc/interprocess-namedpipes (accessed 2026-03-10); https://www.mpi-hd.mpg.de/personalhomes/fwerner/research/2021/09/grpc-for-ipc/ (accessed 2026-03-10)
-- **Fits our case because:** Strongly-typed, versioned interfaces via Protobuf — critical when agents from different vendors query Substrate. Language-agnostic (any language with gRPC bindings can be an agent). Streaming support for real-time event subscriptions. Docker's use of this exact pattern for daemon-to-client communication is the closest real-world precedent.
+- **Fits our case because:** Strongly-typed, versioned interfaces via Protobuf — critical when agents from different vendors query Submantle. Language-agnostic (any language with gRPC bindings can be an agent). Streaming support for real-time event subscriptions. Docker's use of this exact pattern for daemon-to-client communication is the closest real-world precedent.
 - **Tradeoffs:** More setup than a simple REST API. Proto definitions add overhead. Requires gRPC library in every client. Raw gRPC over UDS is ~10x slower than blocking I/O over the same socket, but still fast enough (sub-millisecond) for this use case.
 
 **REST over HTTP/local socket**
@@ -156,7 +156,7 @@ The process relationship graph for a single machine is small — hundreds to low
 
 **Recommendation: gRPC over Unix socket (Linux/macOS) and Named Pipe (Windows), with a REST/HTTP fallback for simple queries.**
 
-This mirrors Docker's architecture exactly. Protobuf definitions create the contract between Substrate and agents — important when Substrate becomes the broker for multiple competing agent vendors. The streaming capability handles event subscriptions natively. The REST fallback lowers the bar for integrating simple agents.
+This mirrors Docker's architecture exactly. Protobuf definitions create the contract between Submantle and agents — important when Submantle becomes the broker for multiple competing agent vendors. The streaming capability handles event subscriptions natively. The REST fallback lowers the bar for integrating simple agents.
 
 ---
 
@@ -168,7 +168,7 @@ This mirrors Docker's architecture exactly. Protobuf definitions create the cont
 - **What:** Plugins are separate executables launched as subprocesses. The host and plugin communicate via gRPC over a local socket. The protocol is negotiated on startup. Plugins crash without crashing the host.
 - **Evidence:** Used by Terraform, Vault, Nomad, Waypoint for 4+ years in production. Terraform Plugin Protocol v6 is the current version, using Protocol Buffers + gRPC as the canonical transport. This system supports plugins written in any language with gRPC bindings.
 - **Source:** https://github.com/hashicorp/go-plugin (accessed 2026-03-10); https://developer.hashicorp.com/terraform/plugin/terraform-plugin-protocol (accessed 2026-03-10)
-- **Fits our case because:** Data source plugins for Substrate (e.g., "read calendar to infer intent," "read IDE state to understand what's being worked on") are exactly the kind of optional, potentially third-party, potentially crash-prone extensions that benefit from process isolation. A plugin crash should not bring down the core daemon.
+- **Fits our case because:** Data source plugins for Submantle (e.g., "read calendar to infer intent," "read IDE state to understand what's being worked on") are exactly the kind of optional, potentially third-party, potentially crash-prone extensions that benefit from process isolation. A plugin crash should not bring down the core daemon.
 - **Tradeoffs:** Each plugin is a separate process, which has startup time and memory overhead. Subprocess communication adds latency versus in-process plugins. Go-specific convention for the host (though plugins can be any language).
 
 **Grafana Backend Plugins: standalone Go binary + gRPC**
@@ -182,8 +182,8 @@ This mirrors Docker's architecture exactly. Protobuf definitions create the cont
 - **What:** VS Code runs all extensions in a separate Extension Host process (Node.js). Extensions communicate with VS Code via a stable API surface (JSON-RPC over IPC). Extensions cannot crash the editor itself.
 - **Evidence:** This model has supported thousands of extensions in production since VS Code's launch. Language servers are further isolated as subprocesses of extensions.
 - **Source:** https://code.visualstudio.com/api/language-extensions/language-server-extension-guide (accessed 2026-03-10)
-- **Fits our case because:** The isolation model (editor survives extension crashes) is exactly what Substrate needs. The "stable API surface" concept maps to Substrate's plugin interface.
-- **Tradeoffs:** VS Code's model is TypeScript/Node.js specific. The general architectural pattern applies, but the implementation would need to be language-agnostic for Substrate.
+- **Fits our case because:** The isolation model (editor survives extension crashes) is exactly what Submantle needs. The "stable API surface" concept maps to Submantle's plugin interface.
+- **Tradeoffs:** VS Code's model is TypeScript/Node.js specific. The general architectural pattern applies, but the implementation would need to be language-agnostic for Submantle.
 
 ### Synthesis: Plugin Decision
 
@@ -201,21 +201,21 @@ The Terraform/HashiCorp ecosystem has proven this is the right answer for "exten
 - **What:** All data is encrypted client-side before transmission. The server stores only ciphertext. A Secret Key (separate from the master password) is combined with the password for decryption, ensuring the server can never decrypt data even with a compromised password database.
 - **Evidence:** 1Password's security model uses AES-GCM-256 with PBKDF2-HMAC-SHA256 key derivation. All encryption/decryption is local. The server is a relay and storage layer, not a trust boundary. 1Password passed all external security audits for 2025 (AppSec, Cure53, Trail of Bits).
 - **Source:** https://support.1password.com/1password-security/ (accessed 2026-03-10); https://support.1password.com/authentication-encryption/ (accessed 2026-03-10)
-- **Fits our case because:** Substrate handles sensitive data (what processes are running, what the user is doing, behavioral patterns). The 1Password model — where the vendor literally cannot read user data — is the right privacy posture for a product claiming "consent foundational." This also makes regulatory compliance simpler.
+- **Fits our case because:** Submantle handles sensitive data (what processes are running, what the user is doing, behavioral patterns). The 1Password model — where the vendor literally cannot read user data — is the right privacy posture for a product claiming "consent foundational." This also makes regulatory compliance simpler.
 - **Tradeoffs:** If a user loses their password AND their secret key, their cross-device sync data is unrecoverable. Server-side search/indexing is impossible on encrypted data.
 
 **CRDT-based local-first sync (Automerge model)**
 - **What:** CRDTs (Conflict-Free Replicated Data Types) allow concurrent edits on multiple devices to merge automatically without a central arbiter. Automerge 3 (Rust core, multi-language bindings) achieves ~10x lower memory usage than v1. Automerge-repo handles the sync protocol between peers.
 - **Evidence:** Yjs and Automerge are both production-ready as of 2025. Obsidian's community-built LocalSync uses Yjs (CRDT) for multi-device vault sync. Linear, Figma, and Notion use CRDT-adjacent approaches for collaborative editing.
 - **Source:** https://automerge.org/ (accessed 2026-03-10); https://github.com/elcomtik/obsidian-local-sync (accessed 2026-03-10); https://velt.dev/blog/best-crdt-libraries-real-time-data-sync (accessed 2026-03-10)
-- **Fits our case because:** Substrate's state (process graph, workflow history, intent model) is updated on multiple devices simultaneously. CRDTs eliminate merge conflicts without a conflict resolution server. Automerge's Rust core means it can be used from a Rust or Go daemon.
+- **Fits our case because:** Submantle's state (process graph, workflow history, intent model) is updated on multiple devices simultaneously. CRDTs eliminate merge conflicts without a conflict resolution server. Automerge's Rust core means it can be used from a Rust or Go daemon.
 - **Tradeoffs:** CRDTs add metadata overhead to every object (tombstones for deletions accumulate). Automerge's JSON data model may not map cleanly to a typed process graph. One production team (Cinapse, via PowerSync) documented moving away from CRDTs because the overhead and complexity exceeded the benefit for their use case — worth reading before committing.
 
 ### Synthesis: Sync Decision
 
 **Recommendation: E2E encrypted server relay (1Password model) for transport, with CRDT semantics for the data structures that need conflict resolution.**
 
-These are not mutually exclusive. The 1Password model is about the encryption/trust model. CRDTs are about conflict resolution. Substrate should: encrypt all data client-side before sync, use a relay server (or peer-to-peer relay) that cannot read the data, and use CRDT structures for the subset of state that can be edited on multiple devices simultaneously (e.g., user-defined labels, intent markers). The process graph itself is device-local (each device knows its own processes) and can be synced as append-only event logs, which are simpler than full CRDT documents.
+These are not mutually exclusive. The 1Password model is about the encryption/trust model. CRDTs are about conflict resolution. Submantle should: encrypt all data client-side before sync, use a relay server (or peer-to-peer relay) that cannot read the data, and use CRDT structures for the subset of state that can be edited on multiple devices simultaneously (e.g., user-defined labels, intent markers). The process graph itself is device-local (each device knows its own processes) and can be synced as append-only event logs, which are simpler than full CRDT documents.
 
 ---
 
@@ -229,10 +229,10 @@ These are not mutually exclusive. The 1Password model is about the encryption/tr
 - `BGContinuedProcessingTask` (new in iOS 26): Continues a task started by an explicit user action (button tap). Cannot run autonomously. Has visible system progress UI. The OS can kill it.
 - None of these support persistent background monitoring.
 
-**What Substrate can actually do on iOS:**
+**What Submantle can actually do on iOS:**
 1. **Receive sync data** from other devices when the app is in foreground or during a BGProcessingTask window.
-2. **Answer queries** from AI agents running on iOS — the agent sends a query, the app wakes if needed, Substrate replies with cached context.
-3. **Surface context built on other platforms** — if the user's Mac built the workflow graph, iOS Substrate can display and query it.
+2. **Answer queries** from AI agents running on iOS — the agent sends a query, the app wakes if needed, Submantle replies with cached context.
+3. **Surface context built on other platforms** — if the user's Mac built the workflow graph, iOS Submantle can display and query it.
 4. **No process monitoring** — iOS sandboxing makes this architecturally impossible without Apple cooperation.
 
 - **Source:** https://developer.apple.com/documentation/backgroundtasks/bgcontinuedprocessingtask (accessed 2026-03-10); https://dev.to/arshtechpro/wwdc-2025-ios-26-background-apis-explained-bgcontinuedprocessingtask-changes-everything-9b5 (accessed 2026-03-10)
@@ -245,7 +245,7 @@ These are not mutually exclusive. The 1Password model is about the encryption/tr
 - `Foreground Service`: A persistent service that shows a notification. Can run indefinitely. This is the mechanism for a background monitoring daemon on Android.
 - `WorkManager`: For deferred and periodic tasks. Background apps face CPU restrictions under Android 15's `dataSync`/`mediaProcessing` foreground service timeouts (6 hours per 24-hour window).
 
-**What Substrate can actually do on Android:**
+**What Submantle can actually do on Android:**
 1. A **Foreground Service** with a persistent notification can monitor app usage in near-real-time via `UsageStatsManager`.
 2. Build a local usage graph (which apps, when, for how long) as a proxy for the workflow graph.
 3. Participate fully in cross-device sync.
@@ -255,19 +255,19 @@ These are not mutually exclusive. The 1Password model is about the encryption/tr
 
 ### Synthesis: Mobile Decision
 
-**The MVP skips iOS process monitoring entirely.** iOS Substrate is a sync endpoint and query responder, not a monitor. Android Substrate is viable as a lightweight monitor using Foreground Service + UsageStatsManager, with the understanding that "process awareness" on Android means "app usage awareness" — less granular but genuinely useful.
+**The MVP skips iOS process monitoring entirely.** iOS Submantle is a sync endpoint and query responder, not a monitor. Android Submantle is viable as a lightweight monitor using Foreground Service + UsageStatsManager, with the understanding that "process awareness" on Android means "app usage awareness" — less granular but genuinely useful.
 
 ---
 
 ## Gaps and Unknowns
 
-1. **eBPF on Linux**: For high-fidelity process monitoring on Linux (especially in the container-heavy environment where Substrate might run), eBPF is the emerging best practice. It was not fully evaluated here. It requires kernel 4.18+ and root, but provides process event streams without the load-sensitivity issues of Netlink. Worth a separate research pass.
+1. **eBPF on Linux**: For high-fidelity process monitoring on Linux (especially in the container-heavy environment where Submantle might run), eBPF is the emerging best practice. It was not fully evaluated here. It requires kernel 4.18+ and root, but provides process event streams without the load-sensitivity issues of Netlink. Worth a separate research pass.
 
 2. **macOS System Extension vs. libproc tradeoffs**: Endpoint Security Framework on macOS provides richer events (file access, network connections, process launches) than libproc alone, but requires notarization, a System Extension, and user approval. The friction vs. capability tradeoff needs product-level input to resolve.
 
-3. **Windows ETW privilege model**: ETW consumers require administrative privileges or specific user rights. How Substrate requests and maintains these privileges across user contexts (standard user vs. admin) needs design work.
+3. **Windows ETW privilege model**: ETW consumers require administrative privileges or specific user rights. How Submantle requests and maintains these privileges across user contexts (standard user vs. admin) needs design work.
 
-4. **Cross-platform service installer**: The daemon must be registered with Windows SCM, macOS launchd, and Linux systemd. The Go `service` package and Rust `service-manager` crate both handle this, but the exact UX of "install Substrate as a system service" needs user experience design, especially around privilege escalation prompts.
+4. **Cross-platform service installer**: The daemon must be registered with Windows SCM, macOS launchd, and Linux systemd. The Go `service` package and Rust `service-manager` crate both handle this, but the exact UX of "install Submantle as a system service" needs user experience design, especially around privilege escalation prompts.
 
 5. **KuzuDB fork trajectory**: The three forks (Ladybug, Bighorn, RyuGraph) are months old. If one stabilizes with cross-platform support (especially Windows), it becomes a viable alternative to SQLite for the graph layer. This is worth monitoring quarterly.
 
@@ -305,7 +305,7 @@ The vision's "inner ring first" principle maps cleanly to architecture:
 
 ### The Decisive Risk
 
-The highest architectural risk is the iOS gap. Substrate's value proposition is "cross-device awareness," but iOS — the platform a significant portion of users run on their phone — cannot run a monitoring daemon. The product must be designed from the start to be useful without iOS monitoring, not to promise it and fail to deliver.
+The highest architectural risk is the iOS gap. Submantle's value proposition is "cross-device awareness," but iOS — the platform a significant portion of users run on their phone — cannot run a monitoring daemon. The product must be designed from the start to be useful without iOS monitoring, not to promise it and fail to deliver.
 
 ---
 

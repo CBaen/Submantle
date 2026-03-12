@@ -176,7 +176,7 @@ This is how credit bureaus work: the bureau provides the score and the report. T
 
 ### Anti-Gaming Rules (Deterministic, Not ML)
 
-These are transparent mathematical rules, not AI inference. Keeps Substrate outside EU AI Act scope.
+These are transparent mathematical rules, not AI inference. Keeps Submantle outside EU AI Act scope.
 
 - **Velocity caps:** More than X queries per minute? Queries beyond the cap don't count toward trust.
 - **Query diversity:** If 90%+ of queries are identical, they don't accumulate trust.
@@ -187,44 +187,44 @@ These are transparent mathematical rules, not AI inference. Keeps Substrate outs
 
 ## The Behavioral Trust Layer
 
-Substrate isn't just awareness — it's the **behavioral trust infrastructure** for the agent economy.
+Submantle isn't just awareness — it's the **behavioral trust infrastructure** for the agent economy.
 
-Every agent that interacts with Substrate accumulates a trust score based on observed behavior. Not opinions. Not self-reported credentials. What they actually do.
+Every agent that interacts with Submantle accumulates a trust score based on observed behavior. Not opinions. Not self-reported credentials. What they actually do.
 
 **Trust = total_queries / (total_queries + incidents)** — the Beta Reputation formula, mathematically proven in P2P networks, IoT systems, and marketplace economics.
 
 ### How It Works
 
-1. **Open Access** — Any agent can query Substrate without registering. No barriers to entry.
-2. **Registration = Identity** — Agents that register get a cryptographic token and "Substrate Verified" status. Their interactions start building a trust history.
+1. **Open Access** — Any agent can query Submantle without registering. No barriers to entry.
+2. **Registration = Identity** — Agents that register get a cryptographic token and "Submantle Verified" status. Their interactions start building a trust history.
 3. **Trust Accumulates** — Every query, every interaction is recorded. Trust scores rise with consistent, incident-free behavior.
 4. **Portable Credentials** — Agents can request a W3C Verifiable Credential (SD-JWT format) that proves their trust tier to any brand or platform. The credential travels with them.
 
-### What Substrate Does NOT Do
+### What Submantle Does NOT Do
 
-**Substrate never blocks, gates, or throttles.** It provides trust scores. Brands decide their own thresholds. Platforms set their own policies. This is the "always aware, never acting" principle applied to trust.
+**Submantle never blocks, gates, or throttles.** It provides trust scores. Brands decide their own thresholds. Platforms set their own policies. This is the "always aware, never acting" principle applied to trust.
 
-- A brand says "only give discounts to agents with trust > 0.8" — **the brand enforces, not Substrate**
-- A platform says "require trust 0.6 for premium features" — **the platform enforces, not Substrate**
-- Substrate only answers: "This agent has trust score X, based on Y interactions over Z time"
+- A brand says "only give discounts to agents with trust > 0.8" — **the brand enforces, not Submantle**
+- A platform says "require trust 0.6 for premium features" — **the platform enforces, not Submantle**
+- Submantle only answers: "This agent has trust score X, based on Y interactions over Z time"
 
-This makes Substrate infrastructure, not a gatekeeper. **Visa doesn't decide whether you can buy something — the merchant does. Visa provides the trust signal.** Substrate is the Visa of the agent economy.
+This makes Submantle infrastructure, not a gatekeeper. **Visa doesn't decide whether you can buy something — the merchant does. Visa provides the trust signal.** Submantle is the Visa of the agent economy.
 
 ### Trust Tiers
 
 | Tier | Status | Access | Rate |
 |------|--------|--------|------|
 | Anonymous | No registration | Full API, standard rates | Base pricing |
-| Registered | Substrate Verified | Full API, better rates | Volume discount |
+| Registered | Submantle Verified | Full API, better rates | Volume discount |
 | Trusted | High trust score | Full API, best rates | Premium discount |
 
-Tiers affect Substrate's own API pricing — higher trust = volume discounts. This is a business model (like bulk pricing), not enforcement.
+Tiers affect Submantle's own API pricing — higher trust = volume discounts. This is a business model (like bulk pricing), not enforcement.
 
 ---
 
 ## Customers & Revenue
 
-### Who Pays Substrate
+### Who Pays Submantle
 
 **Customer 1: Agent Developers** — the agents themselves
 - **What they pay for:** Registration, trust attestation credentials, API query volume
