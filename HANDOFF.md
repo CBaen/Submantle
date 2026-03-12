@@ -78,22 +78,53 @@ MCP server can be built IN PARALLEL — it's a thin Python wrapper over existing
 
 Billing can be nearly zero code — Stripe Payment Links for first ~10 customers.
 
-### PENDING: Trust Lifecycle Expedition — NOT YET DISPATCHED
+### EXPEDITION: Trust Lifecycle Design — IN PROGRESS (Phase 2 Complete)
 
-GL approved a 5-team expedition on Trust Lifecycle Design. Context ran out before dispatch. **The next instance MUST run this expedition.**
+5-team expedition on Trust Lifecycle Design. All research and cross-validation done. Synthesis pending.
 
 **Topic:** `expedition-trust-lifecycle`
-**Teams:** 5 (Status Labels, Sandbox/Testing, Review Tiers, Fairness/Recovery, Interaction Metadata)
+**All files in `research/expedition-trust-lifecycle/`:**
+- `research-brief.md` — Approved brief with settled decisions as NON-CHALLENGEABLE
+- `team-1-status-labels-findings.md` — 9 analog systems, 5 lifecycle labels, anti-gaming per label
+- `team-2-sandbox-testing-findings.md` — Stripe sandbox architecture, Valorant unrated mode
+- `team-3-review-tiers-findings.md` — 5 incident states, severity classification, dedup rules
+- `team-4-fairness-recovery-findings.md` — FCRA 7-year rule, Beta formula early-incident vulnerability
+- `team-5-interaction-metadata-findings.md` — 5 metadata categories, denied interactions, dual interpretation
+- `validation-1.md` — Team 3 breaks settled rule (skip pending), fractional weights unimplemented, 3 contradictions
+- `validation-2.md` — Patient attacker vector unaddressed, fractional weight blocker, interaction_id MCP dependency
+- `validation-3.md` — Solo-founder feasibility (20 artifacts = 8-12 weeks), math errors in Team 4, formula discrepancy
 
-**CRITICAL: The full approved expedition brief is in the conversation that produced this handoff. The next instance should:**
-1. Read `research/council-product-market-fit-v2/plan-deepen-notes.md` for implementation context
-2. Read `submantle-decisions.md` (search for 2026-03-12 entries) for ALL settled decisions
-3. Read VISION.md for the current product vision (updated 2026-03-12 with bidirectional trust, Experian model)
-4. Write the expedition research brief to `research/expedition-trust-lifecycle/research-brief.md`
-5. Dispatch 5 Opus teams using `/expedition` skill
-6. Include settled decisions as NON-CHALLENGEABLE constraints in the brief
+**Key Validator Findings:**
+1. **Fractional weights blocker**: Teams proposed 0.5 formula_weight but Beta formula expects integers — no one solved this
+2. **Reporter credibility bootstrapping**: First brands have no accuracy history — chicken-and-egg problem
+3. **EU AI Act fragility**: Behavioral-data-derived weights may not qualify for "rules defined solely by natural persons" exemption
+4. **Patient attacker vector**: Slow, sophisticated attacker building legitimate history — no deterministic defense exists
+5. **Formula discrepancy**: CLAUDE.md shows `total_queries / (total_queries + incidents)` but codebase uses `(total_queries + 1) / (total_queries + incidents + 2)`
+6. **Team 4 math errors**: Recovery formula should be `q ≥ 4i + 3` not `4i + 6`. 10 incidents needs ~43 queries for 0.8, not 78.
 
-**WARNING: Prior research agents got opinionated over stale VISION.md data. The VISION.md was updated 2026-03-12 to reflect the strategic pivot. Ensure all agents read the CURRENT VISION.md, not cached content.**
+**NEXT STEP: Phase 3 — Orchestrator writes synthesis.md, vetting all findings against validators.**
+
+### RESEARCH COUNCIL V2: Scoring Model (Weights & Measures) — IN PROGRESS (Phase 1 Complete)
+
+3 agents researched independently. Challenge round pending.
+
+**All files in `research/council-scoring-model-v2/`:**
+- `research-brief.md` — Approved brief: what interactions change a score, data exchange, two-way grading, enforcement boundary
+- `codebase-analyst-findings.md` — trust_metadata never written, formula is 3 lines, 10-step dependency chain
+- `external-researcher-findings.md` — FICO 5-category composition, D&B PAYDEX, PeerTrust, SecurityScorecard recalibration
+- `devils-advocate-findings.md` — 5 risks: dual source of truth, float breaks Beta, reporter bootstrapping, FICO fragmentation, EU AI Act fragility
+
+**NEXT STEP: Phase 2 — Dispatch 3 agents to read each other's findings and write structured challenges.**
+
+### CONTESTED DECISIONS — Awaiting GL's Ruling
+
+Three design questions surfaced across both workstreams that require GL's input:
+
+1. **Can Submantle apply a "Suspended" label?** — Teams proposed it as the most severe status. But "always aware, never acting" means Submantle labels, never enforces. Is "Suspended" a label (information: "this agent has unresolved critical incidents") or enforcement (preventing interactions)? If it's just a label, brands decide whether to honor it.
+
+2. **Dispute timeout: auto-accept or auto-withdraw?** — When an incident is disputed and the reporter doesn't respond within the review window, does the incident auto-accept (default: reporter was right) or auto-withdraw (default: benefit of the doubt to the agent)? Credit bureaus auto-withdraw. Some teams proposed auto-accept.
+
+3. **Minimum interaction threshold: 10 or 25?** — Below this number, trust scores are statistically unreliable. Teams disagreed on whether 10 or 25 interactions is the right floor for "meaningful" scores. Lower = faster onboarding, higher = more reliable scores.
 
 ## What Just Happened (2026-03-11)
 
@@ -147,6 +178,8 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 | Research | Location | Key Finding |
 |----------|----------|-------------|
 | Council V2: Product-Market Fit | `research/council-product-market-fit-v2/` | Business confidence 4.5/10. Zero customer conversations is critical risk. |
+| Council V2: Scoring Model | `research/council-scoring-model-v2/` | Phase 1 complete. FICO/PAYDEX/PeerTrust analysis. 5 risks identified by DA. |
+| Expedition: Trust Lifecycle | `research/expedition-trust-lifecycle/` | Phase 2 complete. 5 labels, sandbox design, review tiers, recovery math, interaction metadata. |
 | Plan-Deepen Notes | `research/council-product-market-fit-v2/plan-deepen-notes.md` | Reporter auth is 5 subtasks. MCP is simpler than expected. |
 | Tension Report | `research/council-product-market-fit-v2/tension-report.md` | MCP urgency vs sequencing tension. Anchor brand has no mechanism. |
 | Council V1: Scoring Model | `research/council-scoring-model/` | Formula sound. Single score correct for V1. |
@@ -157,5 +190,7 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 
 1. **How to acquire an anchor brand without supply?** Council's biggest unresolved question.
 2. **Should Mastercard VI integration be pursued now?** Most actionable external finding but requires W3C VC layer.
-3. **Trust lifecycle labels, sandbox, review tiers** — pending expedition results.
-4. **SDK version:** CLAUDE.md says "MCP Go SDK v1.4.0" but context7 found v0.4.0-v1.2. Verify before Go build.
+3. **3 contested decisions need GL's ruling** — Suspended label, dispute timeout, interaction threshold. See section above.
+4. **Fractional weights blocker** — Teams want severity weights (0.5, 1.0, 2.0) but Beta formula expects integer counts. Needs design resolution.
+5. **Reporter credibility bootstrapping** — First brands have no accuracy history. Chicken-and-egg.
+6. **SDK version:** CLAUDE.md says "MCP Go SDK v1.4.0" but context7 found v0.4.0-v1.2. Verify before Go build.
