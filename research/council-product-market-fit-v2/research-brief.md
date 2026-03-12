@@ -68,6 +68,7 @@ A clear answer to:
 - **Agent-to-agent trust building** — agents interact, both get scored, talk about it on social media, organic growth
 - **Businesses proving trustworthiness TO agents** — agents shouldn't blindly trust any API; businesses register to prove they're reliable
 - **Data ownership as competitive advantage** — registered entities control their trust data and interaction history
+- **Trust directory / marketplace** — registered entities should be discoverable. A directory where agents and businesses can find each other, see trust scores, find the highest-scoring entities in each category, understand what services are available and at what trust level. Like a Yellow Pages for the agent economy, ranked by trust. A leaderboard of trusted entities. Discovery mechanism: "find me a trusted agent that does X."
 
 ### Constraints
 - No ML. Deterministic scoring only.
