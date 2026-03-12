@@ -1,7 +1,94 @@
-# Validation Report — Validator 3
-## Expedition: Protocol Architecture
+# Validation Report: Protocol Architecture — CLUSTER C
 ## Date: 2026-03-11
-## Special Focus: Product-first vs. protocol-first path; founder usability as a compass; standards body realism for AAIF
+## Validator Focus: Architecture model validity (C1–C4)
+
+---
+
+### Evidence Challenges
+
+**C2 — Tailscale split-plane analogy is oversimplified and partially misleading.**
+
+Team 1 characterizes the Tailscale control plane as "thin" and implies it is essentially just a signing key plus policy distribution. This understates what Tailscale's coordination server actually does. Per Tailscale's own documentation, the control plane: (1) manages and distributes security policies ("your company's security policy is stored on the Tailscale coordination server, all in one place, and automatically distributed to each node"), (2) integrates with OAuth2/OIDC/SAML identity providers for authentication and access control decisions, (3) operates DERP relay servers for networks that block UDP, and (4) provides audit logging for compliance. The control plane is essential for ongoing orchestration and governance — not merely for bootstrapping key exchange.
+
+Team 1's report describes the coordination server in several places as essentially "a signing key." This is reductive. Tailscale itself runs a multi-server, always-on infrastructure service with identity provider integrations. When Team 1 maps this to Substrate and states "a thin Substrate coordination server" needs only to handle "agent registration, credential issuance, and trust score attestation," they are glossing over the full operational surface that their own reference architecture actually requires.
+
+The analogy is directionally useful — the conceptual split between on-device computation and off-device coordination is sound — but it should not be used to justify a "minimal infrastructure" claim, and describing the control plane as merely a "signing key" will mislead anyone who reads it.
+
+**C3 — CT gossip protocol is not standardized, not in production, and is a poor reference for trust score propagation.**
+
+This is the weakest claim in Cluster C. The Certificate Transparency gossip protocol was never standardized. RFC 6962 explicitly deferred gossip to "a separate document" and called for "a variety of gossip mechanisms to emerge." The IETF trans working group draft (draft-ietf-trans-gossip-05) was filed as "Expired (IESG: Dead)" — last updated January 2018, formally archived by February 2020. No RFC was ever published from this work.
+
+CT v2 (RFC 9162), which superseded RFC 6962, also explicitly excludes gossip: it acknowledges that a misbehaving log could serve different views to different clients, then states that solutions to this problem are "outside the scope of this document." CT gossip was not standardized in v1 or v2.
+
+Furthermore, the broader CT ecosystem has moved away from gossip entirely. Sigstore's Rekor (the closest production transparency log for signing events) is migrating to tile-based logs (Trillian-Tessera) in its v2 redesign — not gossip-based cross-log consistency.
+
+Team 1 cites CT gossip as a "battle-tested" pattern for "distributed verification without centralization." It is not. It is an abandoned IETF draft for a narrow certificate audit problem that was never deployed at scale. Applying it to trust score propagation is a doubly-stretched analogy: once because the gossip spec never shipped, and again because trust score distribution is a meaningfully different problem from certificate log cross-consistency.
+
+**C4 — "Signing key + HTTPS endpoint + daemon" materially understates the minimum viable infrastructure.**
+
+The report's own Section 6 (Gaps and Unknowns) acknowledges: "The thin coordination server [...] holds the signing key for all Substrate trust attestations. If that key is compromised, all issued credentials are suspect. Key management for an attestation service is non-trivial — HSMs, key rotation, split custody." This self-contradiction is significant: the report names a minimum that it simultaneously identifies as under-analyzed and potentially catastrophic if wrong.
+
+OWASP key management standards require for a production signing service: a FIPS 140-2/140-3 compliant cryptographic module, an HSM for key storage (hardware cryptographic modules are explicitly preferred over software), access controls with accountability tracking, and a compromise-recovery plan including re-key procedures. The Sigstore project — a production signing and transparency infrastructure solving a comparable problem — requires three distinct components (Cosign, Fulcio, Rekor) plus a 24/7 on-call rotation and a 99.5% SLO on core endpoints.
+
+For Substrate specifically, the infrastructure not named in C4 includes: the revocation endpoint (Bitstring Status List, CDN-delivered), a database for tracking issued credential indices and revocation status, rate limiting and anti-gaming logic for attestation requests, monitoring and alerting for the signing service, and the agent registration database. None of these are the signing key or the HTTPS endpoint — they are the surrounding operational infrastructure without which the signing key and endpoint are not "viable."
+
+C4 is not wrong about the logical minimum components. The problem is the word "minimum viable," which implies operational readiness that the three named components alone do not provide.
+
+---
+
+### Verified Claims
+
+**C1 — RATS RFC 9334 exists and the Passport Model maps accurately to Substrate's architecture.**
+
+RFC 9334 was published by the IETF in January 2023 as an informational document. The three roles (Attester, Verifier, Relying Party) exist exactly as described. The Passport Model is defined as: the Attester obtains an Attestation Result from the Verifier, then presents it directly to Relying Parties who apply their own appraisal policy. The agent carries the credential and presents it anywhere — this maps precisely to Substrate's W3C VC model where an on-device daemon generates evidence, Substrate's attestation server signs and issues a VC, and brands validate it locally without calling back to Substrate.
+
+RFC 9334 also explicitly addresses freshness (via synchronized timestamps, nonces, and epoch markers), which confirms that the re-attestation concern Team 1 flags in Section 6 is architecturally grounded and has standard vocabulary. This claim holds up in full.
+
+One nuance worth noting: RFC 9334 is classified as "Informational," not a protocol standard. It defines vocabulary and conceptual models, not a wire protocol. Substrate can correctly cite it as the architectural framework, but should not imply it specifies an implementable protocol that other systems will already speak.
+
+**C2 (partial) — The conceptual split between on-device computation and off-device coordination is the correct model.**
+
+Despite the oversimplification noted above, the core architectural insight is valid: separating trust computation (on-device) from attestation issuance (server-side) is the right structural approach for Substrate's privacy-by-architecture constraint, and Tailscale demonstrates this pattern works at production scale. The claim that actual data flows never touch the coordination server is accurate — Tailscale's coordination server handles only key distribution and policy, not actual traffic. Applying this to Substrate (behavioral data never leaves the device; only the signed attestation result crosses to the server) is a sound analogy. The problem is exclusively with the characterization of the control plane as operationally "thin" or reducible to "a signing key."
+
+**C4 (partial) — The three logical components are correctly identified.**
+
+A signing key, an HTTPS endpoint, and an on-device daemon are the three correct logical primitives. The claim is accurate as a description of Substrate's architectural structure. The challenge is only with framing these three primitives as "minimum viable" when operational readiness requires substantially more.
+
+---
+
+### Missing Angles
+
+**Sigstore as the correct production reference — not CT gossip.**
+
+Team 1 proposes CT gossip as a novel approach for Substrate's attestation audit layer. The better reference is Sigstore, which Team 1 does not mention. Sigstore's Rekor is a deployed, maintained, immutable transparency log for software signing events with a public API, SLO targets, and Linux Foundation governance. Rekor solves the same "who watches the watchman" problem for a signing authority that Team 1 wants CT gossip to solve for Substrate. If Substrate ever builds a transparency log for attestation issuance, Rekor's architecture (or Trillian-Tessera, its v2 backend) is the reference to study. CT gossip is an abandoned draft; Rekor is a running system.
+
+**ACME / Let's Encrypt as a reference for attestation service design.**
+
+Team 1 mentions Let's Encrypt in the context of HTTPS adoption statistics but does not analyze ACME (RFC 8555) as an architectural reference for Substrate's attestation service. ACME defines a protocol for automated certificate issuance from a CA, including account registration, domain validation challenges, and certificate lifecycle management. The ACME model is structurally closer to Substrate's agent registration and attestation issuance flow than TLS itself is. Let's Encrypt's operational experience with rate limits, abuse prevention, CT integration, and key rotation is directly applicable to Substrate's attestation service design.
+
+**The RATS Background-Check Model deserves acknowledgment for the brand API use case.**
+
+Team 1 recommends the Passport Model exclusively, but RFC 9334 defines the Background-Check Model for a reason: when a Relying Party needs fresh, non-cached attestation (e.g., a high-stakes financial transaction), the Passport Model's credential staleness problem is significant. Substrate's brand API — where a brand queries Substrate in real-time for a trust score before permitting an agent to transact — is arguably a Background-Check Model interaction, not a Passport Model interaction. The report presents both RATS models and correctly selects Passport for the agent-carries-credential flow, but does not acknowledge that the brand query API may require Background-Check semantics. Both models may coexist in Substrate's final architecture, and this distinction should be explicit.
+
+**Notary v2 (CNCF) as a minimum-viable signing reference.**
+
+The report does not address Notary v2, which is a CNCF production signing infrastructure for container images with explicit design guidance for minimum viable deployment. Notary v2's reference implementation (notation-go) demonstrates what a signing service requires at operational minimum, with explicit key management tiers (local file system, cloud KMS, HSM). This is directly useful for scoping Substrate's V1 signing service before the operational requirements are under-estimated by a "signing key + endpoint" framing.
+
+---
+
+### Overall Assessment
+
+Cluster C's most important claim — C1, that RATS RFC 9334 Passport Model precisely names Substrate's architecture — is verified and accurate. RFC 9334 provides stable, IETF-standard vocabulary for what Substrate is building, which is a genuine contribution: "Attester, Verifier, Relying Party" is more credible in standards-body and enterprise contexts than custom framing. The Tailscale split-plane analogy (C2) is directionally correct as a conceptual model but is presented with more operational precision than it deserves — the control plane is meaningfully more complex than the report implies, and describing it as a "signing key" in multiple places will mislead anyone who uses these findings to plan actual infrastructure. The CT gossip reference (C3) does not hold: the CT gossip protocol was abandoned by IETF, never deployed, and CT v2 explicitly excludes it; Sigstore/Rekor is the production equivalent Team 1 should have cited. The minimum viable infrastructure claim (C4) correctly names the three logical components but the framing as "minimum viable" is unjustified given the key management, revocation, and operational infrastructure the report itself acknowledges is required but not analyzed. The most actionable correction for the orchestrator: replace the CT gossip reference with Sigstore/Rekor, qualify the Tailscale analogy explicitly as a conceptual model rather than an operational blueprint, and treat C4 as a three-component architectural description rather than an infrastructure sizing claim.
+
+---
+
+*Validation complete: 2026-03-11*
+*Validator: Architecture Model Validity — Cluster C only*
+
+---
+
+## PRIOR CONTENT — Validation Report: Validator 3 (Original)
+## Original Focus: Product-first vs. protocol-first path; founder usability as a compass; standards body realism for AAIF
 
 ---
 
