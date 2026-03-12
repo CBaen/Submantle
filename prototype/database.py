@@ -581,7 +581,8 @@ CREATE TABLE IF NOT EXISTS agent_registry (
     last_seen           REAL    NOT NULL,
     total_queries       INTEGER NOT NULL DEFAULT 0,
     incidents           INTEGER NOT NULL DEFAULT 0,
-    trust_metadata      TEXT    DEFAULT NULL            -- JSON: future trust scoring data
+    trust_metadata      TEXT    DEFAULT NULL,           -- JSON: future trust scoring data
+    deregistered_at     REAL    DEFAULT NULL            -- Unix epoch when deregistered. NULL = active.
 );
 
 CREATE INDEX IF NOT EXISTS idx_agent_registry_token_hash

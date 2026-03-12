@@ -92,8 +92,8 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 | 2 | SQLite persistence | DONE | Data survives restarts |
 | 3 | Event bus | DONE | Internal pub/sub for all modules |
 | 4 | Agent identity | DONE | Cryptographic registration |
-| 5 | Trust layer wiring | DONE (uncommitted) | record_query(), compute_trust(), anti-gaming stubs |
-| 6 | Wave 1: trust_metadata + score_version + has_history | NEXT | Enriches API immediately, no dependencies |
+| 5 | Trust layer wiring | DONE | record_query(), compute_trust(), anti-gaming stubs |
+| 6 | Wave 1: trust_metadata + score_version + has_history | DONE | score_version, has_history, reporter_diversity in API |
 | 7 | Wave 2: Soft-delete deregistration | NEXT | Credit bureau model — permanent records |
 | 8 | Wave 3: Pending state + severity classification + dedup | NEXT | Prerequisite for formula change |
 | 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. Core scoring evolution. |
@@ -108,7 +108,7 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 - **Production code** (future): Go, in `cmd/` and `internal/`
 - **Research**: `research/expedition-{topic}/`
 - **Identity signatures**: `prototype/signatures.json` — community-curated, lightweight pattern matching
-- **Tests**: `prototype/tests/` — 160 passing across 4 test files. Don't break them.
+- **Tests**: `prototype/tests/` — 193 passing across 4 test files. Don't break them.
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
 
 ## Document Parity

@@ -4,10 +4,10 @@
 The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. It labels. Brands decide their own thresholds.
 
 ## Current State
-- **Phase**: RESEARCH COMPLETE — Ready to build. All design decisions settled. Implementation sequence defined.
-- **Git**: github.com/CBaen/SUBMANTLE (main branch, ~42 commits ahead of origin)
+- **Phase**: BUILDING — Wave 1 complete, Wave 2 next. Implementation sequence executing.
+- **Git**: github.com/CBaen/SUBMANTLE (main branch, in sync with origin)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
-- **Tests**: 160 passing across 4 test files (trust layer code from prior session still uncommitted — 187 tests with those changes)
+- **Tests**: 193 passing across 4 test files
 - **Research**: ALL COMPLETE. 5 expeditions + 6 follow-ups + 3 research councils. Files in `research/`. DO NOT re-research settled topics — read this file and build.
 
 ## FOR NEW INSTANCES — READ THIS FIRST
