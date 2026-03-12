@@ -69,6 +69,7 @@ class MockDB:
             "total_queries": 0,
             "incidents": 0,
             "trust_metadata": None,
+            "deregistered_at": None,
         }
         return agent_id
 
@@ -78,12 +79,22 @@ class MockDB:
                 return dict(record)
         return None
 
-    def list_agents(self) -> list[dict]:
+    def get_agent_by_name(self, agent_name: str, include_deregistered: bool = True) -> dict | None:
+        for record in self._agents.values():
+            if record["agent_name"] == agent_name:
+                if include_deregistered or record.get("deregistered_at") is None:
+                    return dict(record)
+        return None
+
+    def list_agents(self, active_only: bool = True) -> list[dict]:
+        if active_only:
+            return [dict(r) for r in self._agents.values() if r.get("deregistered_at") is None]
         return [dict(r) for r in self._agents.values()]
 
     def deregister_agent(self, agent_id: int) -> bool:
-        if agent_id in self._agents:
-            del self._agents[agent_id]
+        import time as _time
+        if agent_id in self._agents and self._agents[agent_id].get("deregistered_at") is None:
+            self._agents[agent_id]["deregistered_at"] = _time.time()
             return True
         return False
 

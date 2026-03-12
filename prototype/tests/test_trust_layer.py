@@ -279,16 +279,16 @@ class TestAgentNameUniqueness(unittest.TestCase):
         self.assertIn("bot-1", names)
         self.assertIn("bot-2", names)
 
-    def test_deregister_then_reregister_same_name(self):
-        """After deregistering, the same name can be registered again."""
+    def test_deregister_then_reregister_same_name_rejected(self):
+        """After deregistering, the same name CANNOT be registered again — permanent record."""
         registry, db = _make_registry()
         token = _register(registry, "recycled-bot")
         deregistered = registry.deregister(token)
         self.assertTrue(deregistered)
-        # Name should now be free — re-registration must not raise
-        new_token = _register(registry, "recycled-bot")
-        self.assertIsNotNone(new_token)
-        self.assertNotEqual(new_token, token)
+        # Name is permanently reserved — re-registration must raise
+        with self.assertRaises(ValueError) as ctx:
+            _register(registry, "recycled-bot")
+        self.assertIn("permanent", str(ctx.exception).lower())
 
 
 # ── TestDatabaseIncidentReports ───────────────────────────────────────────────
@@ -488,7 +488,7 @@ class TestWave1TrustMetadata(unittest.TestCase):
         self.assertEqual(result["reporter_diversity"], 2)
 
     def test_compute_trust_returns_wave1_fields(self):
-        """compute_trust result contains all expected keys including Wave 1 fields."""
+        """compute_trust result contains all expected keys including Wave 1 and Wave 2 fields."""
         registry, db = _make_registry()
         _register(registry, "wave1-agent", version="3.0.0", author="Wave Corp")
         result = registry.compute_trust(agent_name="wave1-agent")
@@ -496,12 +496,88 @@ class TestWave1TrustMetadata(unittest.TestCase):
         required_keys = {
             "agent_name", "trust_score", "total_queries", "incidents",
             "registration_time", "last_seen", "version", "author",
-            "score_version", "has_history", "reporter_diversity",
+            "score_version", "has_history", "reporter_diversity", "is_active",
         }
         self.assertEqual(required_keys, set(result.keys()))
         self.assertEqual(result["score_version"], "v1.0")
         self.assertIsInstance(result["has_history"], bool)
         self.assertIsInstance(result["reporter_diversity"], int)
+
+
+# ── TestWave2SoftDelete ────────────────────────────────────────────────────────
+
+class TestWave2SoftDelete(unittest.TestCase):
+    """Wave 2: Soft-delete deregistration — permanent records, credit bureau model."""
+
+    def test_deregister_is_soft_delete(self):
+        """After deregistering, agent still exists in DB with deregistered_at set."""
+        registry, db = _make_registry()
+        token = _register(registry, "soft-deleted-agent")
+        registry.deregister(token)
+        record = db.get_agent_by_name("soft-deleted-agent")
+        self.assertIsNotNone(record)
+        self.assertIsNotNone(record["deregistered_at"])
+        self.assertIsInstance(record["deregistered_at"], float)
+
+    def test_deregistered_agent_excluded_from_active_list(self):
+        """list_agents(active_only=True) excludes deregistered; active_only=False includes."""
+        registry, db = _make_registry()
+        token = _register(registry, "gone-agent")
+        _register(registry, "still-here-agent")
+        registry.deregister(token)
+
+        active = registry.list_agents(active_only=True)
+        active_names = {a["agent_name"] for a in active}
+        self.assertNotIn("gone-agent", active_names)
+        self.assertIn("still-here-agent", active_names)
+
+        all_agents = registry.list_agents(active_only=False)
+        all_names = {a["agent_name"] for a in all_agents}
+        self.assertIn("gone-agent", all_names)
+        self.assertIn("still-here-agent", all_names)
+
+    def test_deregistered_agent_trust_still_queryable(self):
+        """compute_trust() still returns score for deregistered agent with is_active=False."""
+        registry, db = _make_registry()
+        token = _register(registry, "scored-gone-agent")
+        registry.deregister(token)
+        result = registry.compute_trust(agent_name="scored-gone-agent")
+        self.assertIsNotNone(result)
+        self.assertFalse(result["is_active"])
+        self.assertIn("trust_score", result)
+
+    def test_deregistered_agent_token_invalidated(self):
+        """verify() returns None for a deregistered agent's token."""
+        registry, db = _make_registry()
+        token = _register(registry, "invalid-token-agent")
+        registry.deregister(token)
+        result = registry.verify(token)
+        self.assertIsNone(result)
+
+    def test_deregistered_agent_queries_rejected(self):
+        """record_query() returns False for a deregistered agent's token."""
+        registry, db = _make_registry()
+        token = _register(registry, "no-query-agent")
+        registry.deregister(token)
+        result = registry.record_query(token)
+        self.assertFalse(result)
+
+    def test_is_active_true_for_active_agent(self):
+        """compute_trust() returns is_active=True for an agent that is still active."""
+        registry, db = _make_registry()
+        _register(registry, "active-agent")
+        result = registry.compute_trust(agent_name="active-agent")
+        self.assertIsNotNone(result)
+        self.assertTrue(result["is_active"])
+
+    def test_verify_directory_includes_deregistered(self):
+        """list_agents(active_only=False) includes deregistered agents in the public record."""
+        registry, db = _make_registry()
+        token = _register(registry, "public-record-agent")
+        registry.deregister(token)
+        all_agents = registry.list_agents(active_only=False)
+        all_names = {a["agent_name"] for a in all_agents}
+        self.assertIn("public-record-agent", all_names)
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────
