@@ -24,7 +24,7 @@
 
 - **Research Council V2: Product-Market Fit** (2026-03-12): Full 5-phase council — 3 agents + challenge round + synthesis + tension report + plan-deepen. Business confidence 4.5/10. Zero customer conversations is #1 risk. Reporter auth is 5 subtasks. Mastercard VI opportunity. Details: `research/council-product-market-fit-v2/synthesis.md`
 
-- **Research Council V2: Scoring Model (Weights & Measures)** (2026-03-12): Phase 1 complete (3 agents). What interactions change scores, data exchange specs, two-way grading, enforcement boundary, anti-gaming. FICO/PAYDEX/PeerTrust analysis. 5 risks from Devil's Advocate. Phase 2 (challenge round) pending. Details: `research/council-scoring-model-v2/`
+- **Research Council V2: Scoring Model (Weights & Measures)** (2026-03-12): Full council — 3 agents + challenge round + synthesis + tension report. V1 formula keeps integer counts (no float weights). Severity determines processing path, not formula impact. Reporter credibility deferred to V2. 5-wave implementation sequence. FICO version fork for score versioning. 9 triple-convergence findings. Details: `research/council-scoring-model-v2/synthesis.md`
 
 - **Expedition: Trust Lifecycle Design** (2026-03-12): 5-team expedition + 3 validators. Status labels, sandbox/testing, review tiers, fairness/recovery, interaction metadata. Phase 2 (cross-validation) complete. Synthesis pending. Key blockers: fractional weights, reporter bootstrapping, patient attacker vector. Details: `research/expedition-trust-lifecycle/`
 

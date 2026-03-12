@@ -136,15 +136,13 @@ Full deliberation: 3 agents (Codebase Analyst, External Researcher, Devil's Advo
 - Wave 4: Formula reads accepted incidents from table (not counter) + API response update
 - Wave 5: MCP server (parallel with Waves 3-4)
 
-### CONTESTED DECISIONS — Awaiting GL's Ruling
+### CONTESTED DECISIONS — RESOLVED (GL rulings 2026-03-12)
 
-Three design questions surfaced across both workstreams that require GL's input:
+1. **"Suspended" label → renamed.** GL ruled the word implies enforcement power Submantle doesn't have. Replace with neutral informational label. Agents can voluntarily self-identify issues; interaction logs prove honesty. Exact label TBD (candidates: "Flagged," "Under Review" already exists).
 
-1. **Can Submantle apply a "Suspended" label?** — Teams proposed it as the most severe status. But "always aware, never acting" means Submantle labels, never enforces. Is "Suspended" a label (information: "this agent has unresolved critical incidents") or enforcement (preventing interactions)? If it's just a label, brands decide whether to honor it.
+2. **Dispute timeout: auto-withdraw.** Confirmed. Matches FCRA model — unsubstantiated claims drop. Benefit of the doubt to the agent.
 
-2. **Dispute timeout: auto-accept or auto-withdraw?** — When an incident is disputed and the reporter doesn't respond within the review window, does the incident auto-accept (default: reporter was right) or auto-withdraw (default: benefit of the doubt to the agent)? Credit bureaus auto-withdraw. Some teams proposed auto-accept.
-
-3. **Minimum interaction threshold: 10 or 25?** — Below this number, trust scores are statistically unreliable. Teams disagreed on whether 10 or 25 interactions is the right floor for "meaningful" scores. Lower = faster onboarding, higher = more reliable scores.
+3. **Minimum interaction threshold: needs math, not arbitrary number.** GL ruled: must determine what types of interactions count, mathematical basis for the number, and that refusal-of-exchange counts as an interaction. Scoring Model Council produced Beta credible interval framework (see synthesis) but the specific number requires validation against commercial context. V1 approach: surface `has_history`, `total_queries`, `reporter_diversity` — let brands set their own floors.
 
 ## What Just Happened (2026-03-11)
 
@@ -198,7 +196,7 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 | Research | Location | Key Finding |
 |----------|----------|-------------|
 | Council V2: Product-Market Fit | `research/council-product-market-fit-v2/` | Business confidence 4.5/10. Zero customer conversations is critical risk. |
-| Council V2: Scoring Model | `research/council-scoring-model-v2/` | Phase 1 complete. FICO/PAYDEX/PeerTrust analysis. 5 risks identified by DA. |
+| Council V2: Scoring Model | `research/council-scoring-model-v2/` | Phase 4 complete, Phase 5 pending. Severity = routing not formula weight. Incidents counted not weighted for V1. 5-wave build sequence. |
 | Expedition: Trust Lifecycle | `research/expedition-trust-lifecycle/` | Phase 2 complete. 5 labels, sandbox design, review tiers, recovery math, interaction metadata. |
 | Plan-Deepen Notes | `research/council-product-market-fit-v2/plan-deepen-notes.md` | Reporter auth is 5 subtasks. MCP is simpler than expected. |
 | Tension Report | `research/council-product-market-fit-v2/tension-report.md` | MCP urgency vs sequencing tension. Anchor brand has no mechanism. |
@@ -210,7 +208,14 @@ GL and Opus 4.6 conducted full product audit + 10-agent competitive expedition.
 
 1. **How to acquire an anchor brand without supply?** Council's biggest unresolved question.
 2. **Should Mastercard VI integration be pursued now?** Most actionable external finding but requires W3C VC layer.
-3. **3 contested decisions need GL's ruling** — Suspended label, dispute timeout, interaction threshold. See section above.
-4. **Fractional weights blocker** — Teams want severity weights (0.5, 1.0, 2.0) but Beta formula expects integer counts. Needs design resolution.
-5. **Reporter credibility bootstrapping** — First brands have no accuracy history. Chicken-and-egg.
-6. **SDK version:** CLAUDE.md says "MCP Go SDK v1.4.0" but context7 found v0.4.0-v1.2. Verify before Go build.
+3. **Neutral label for severe status** — GL rejected "Suspended." Candidates: "Flagged," possibly merge with "Under Review." Needs design.
+4. **Self-identification mechanism** — GL raised: agents/users can voluntarily self-identify issues. How does this surface in API? Affects formula differently?
+5. **Minimum interaction threshold math** — Beta credible interval framework provided but needs validation against commercial context.
+6. **Score inertia for compromised high-history agents** — 5000-query agent barely affected by 50 incidents. V2 recency-weighting needed.
+7. **SDK version:** CLAUDE.md says "MCP Go SDK v1.4.0" but context7 found v0.4.0-v1.2. Verify before Go build.
+
+## Resolved Questions (this session)
+
+- **Fractional weights blocker** — RESOLVED: V1 counts incidents (integers), doesn't weight them. formula_weight column exists in schema at 1.0 default for V2 readiness.
+- **Reporter credibility bootstrapping** — RESOLVED for V1: deferred to V2. D&B reporter_diversity in API metadata lets brands set their own threshold.
+- **3 contested decisions** — ALL RULED by GL. See "Contested Decisions — RESOLVED" section above.
