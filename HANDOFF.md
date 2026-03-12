@@ -1,10 +1,10 @@
 # Submantle — Handoff
 
 ## What This Is
-The ground beneath everything. A persistent awareness layer AND behavioral trust infrastructure for computing. Your devices know what's going on, and the agents on them earn their place.
+The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. Brands decide their own thresholds.
 
 ## Current State
-- **Phase**: V1 Foundation built, 4 expeditions complete, trust layer wiring next
+- **Phase**: STRATEGIC PIVOT — Trust bureau + MCP server is the V1 wedge. Dashboard follows when customers demand it.
 - **Git**: github.com/CBaen/SUBMANTLE (main branch)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
 - **Tests**: 160 passing across 4 test files
