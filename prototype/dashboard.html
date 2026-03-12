@@ -402,7 +402,7 @@
         <!-- Privacy overlay — shown instead of process data when PRIVATE -->
         <div class="privacy-overlay" id="privacyOverlay">
           <div class="privacy-overlay-icon">&#128274;</div>
-          <div class="privacy-overlay-title">Substrate is not watching</div>
+          <div class="privacy-overlay-title">Submantle is not watching</div>
           <div class="privacy-overlay-desc">Privacy mode is active. No process data is being collected or stored.</div>
         </div>
 
@@ -413,7 +413,7 @@
           </div>
         </div>
         <div class="query-card" id="querySection">
-          <div class="query-title">Ask Substrate</div>
+          <div class="query-title">Ask Submantle</div>
           <div class="query-subtitle">The ground knows what's happening. Ask it anything.</div>
           <div class="query-input-wrap">
             <span class="query-icon">&#128269;</span>
@@ -515,7 +515,7 @@
     // ── Theme ─────────────────────────────────────────────────────────────────
     var themeToggle = document.getElementById('themeToggle');
     var themeIconSvg = document.getElementById('themeIcon');
-    var saved = localStorage.getItem('substrate-theme');
+    var saved = localStorage.getItem('submantle-theme');
     if (saved) document.documentElement.setAttribute('data-theme', saved);
 
     function updateThemeIcon(theme) {
@@ -534,7 +534,7 @@
       var current = document.documentElement.getAttribute('data-theme');
       var next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('substrate-theme', next);
+      localStorage.setItem('submantle-theme', next);
       document.querySelector('meta[name="theme-color"]').content = next === 'dark' ? '#141413' : '#faf9f5';
       updateThemeIcon(next);
     });
@@ -727,7 +727,7 @@
         renderQuery(data);
       } catch (e) {
         clearNode(queryResults);
-        queryResults.appendChild(el('div', { class: 'query-empty', text: 'Failed to query Substrate' }));
+        queryResults.appendChild(el('div', { class: 'query-empty', text: 'Failed to query Submantle' }));
       }
     }
 

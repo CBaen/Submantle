@@ -22,7 +22,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from events import EventBus, EventType, Event, _PROCESS_EVENTS
-from database import SubstrateDB
+from database import SubmantleDB
 
 
 # ── Fixtures ───────────────────────────────────────────────────────────────────
@@ -35,7 +35,7 @@ def bus():
 
 @pytest.fixture
 def db():
-    return SubstrateDB(":memory:")
+    return SubmantleDB(":memory:")
 
 
 @pytest.fixture

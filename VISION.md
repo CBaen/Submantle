@@ -228,7 +228,7 @@ Tiers affect Submantle's own API pricing — higher trust = volume discounts. Th
 
 **Customer 1: Agent Developers** — the agents themselves
 - **What they pay for:** Registration, trust attestation credentials, API query volume
-- **Why they pay:** Higher trust score = better rates everywhere. "Substrate Verified" badge is the trust signal brands look for. Trust credentials are portable — earn trust on one platform, carry it to all of them.
+- **Why they pay:** Higher trust score = better rates everywhere. "Submantle Verified" badge is the trust signal brands look for. Trust credentials are portable — earn trust on one platform, carry it to all of them.
 - **Model:** Usage-based API pricing + attestation issuance fees
 - **Analogy:** Like credit check fees — you pay to prove you're trustworthy
 
@@ -250,9 +250,9 @@ Tiers affect Submantle's own API pricing — higher trust = volume discounts. Th
 - **Model:** Annual contracts ($50k-$500k/yr)
 - **Analogy:** Like enterprise security suites
 
-**Customer 5: Data Buyers** — Substrate Insights
+**Customer 5: Data Buyers** — Submantle Insights
 - **What they pay for:** Anonymized, aggregated intelligence about what software people actually use, what hardware combos exist, what agent patterns emerge, what products get used together
-- **Why they pay:** Nobody else has this data. Google knows what people search for. Substrate knows what people actually use.
+- **Why they pay:** Nobody else has this data. Google knows what people search for. Submantle knows what people actually use.
 - **Model:** Data licensing, analytics dashboards, custom reports
 - **Analogy:** Like how credit bureaus sell anonymized trend data to financial institutions
 
@@ -262,33 +262,33 @@ Tiers affect Submantle's own API pricing — higher trust = volume discounts. Th
 |---|--------|------|--------|
 | 1 | **Pro Subscriptions** | V1 launch | Device owners paying for multi-device mesh |
 | 2 | **Agent API Fees** | MCP server live | Per-query microtransactions from agent developers |
-| 3 | **Substrate Store** | Community grows | Identity packs, data plugins, premium signatures (marketplace commission) |
+| 3 | **Submantle Store** | Community grows | Identity packs, data plugins, premium signatures (marketplace commission) |
 | 4 | **Trust Attestation Fees** | Trust layer wired | Agents paying for portable W3C VC trust credentials |
 | 5 | **Brand Trust API** | Brand partnerships | Brands paying to query trust scores for their own enforcement |
 | 6 | **Enterprise Contracts** | Market traction | Managed policies, compliance, dedicated support |
-| 7 | **Substrate Insights** | Scale (100K+ devices) | Anonymized aggregate intelligence licensing |
-| 8 | **"Substrate Safe" Certification** | Ecosystem maturity | Agent developers paying for compatibility/trust certification |
+| 7 | **Submantle Insights** | Scale (100K+ devices) | Anonymized aggregate intelligence licensing |
+| 8 | **"Submantle Safe" Certification** | Ecosystem maturity | Agent developers paying for compatibility/trust certification |
 
 ### The Flywheel
 
 More devices → better awareness → more agents register → trust data accumulates → brands want access → brands offer trust-based incentives → more agents want high trust → more devices needed → **repeat**.
 
-This is the Visa flywheel: merchants need verified customers, customers need accepted cards. Neither side can leave without losing access to the other. Substrate sits in the middle.
+This is the Visa flywheel: merchants need verified customers, customers need accepted cards. Neither side can leave without losing access to the other. Submantle sits in the middle.
 
 ### Go-to-Market
 1. Open-source the daemon core
 2. Target AI agent framework developers (LangChain, CrewAI) via MCP
 3. Free tier adoption → bottom-up enterprise expansion
-4. The store creates network effects: more users = better signatures = smarter Substrate
-5. Trust attestations create lock-in: agents carry Substrate credentials everywhere
+4. The store creates network effects: more users = better signatures = smarter Submantle
+5. Trust attestations create lock-in: agents carry Submantle credentials everywhere
 
 ### Competitive Moat
 1. **The trust data itself** — behavioral trust history can't be replicated. It accumulates over time.
 2. **Community knowledge** — crowdsourced identity signatures can't be built overnight
-3. **Integration lock-in** — once agents carry Substrate trust credentials, switching means losing their history
+3. **Integration lock-in** — once agents carry Submantle trust credentials, switching means losing their history
 4. **Network effects** — more devices = better awareness, more agents = better trust signals, more brands = stronger incentives
 5. **Standards position** — first to define behavioral trust attestation in W3C VC format
-6. **Regulatory clarity** — deterministic scoring (not ML) keeps Substrate outside EU AI Act scope permanently
+6. **Regulatory clarity** — deterministic scoring (not ML) keeps Submantle outside EU AI Act scope permanently
 
 ---
 

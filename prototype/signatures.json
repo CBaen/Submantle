@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "0.1.0",
-    "description": "Substrate identity signatures — community-curated process recognition",
+    "description": "Submantle identity signatures — community-curated process recognition",
     "format": "Each signature matches processes by executable name, parent hints, file patterns, and command-line patterns"
   },
   "signatures": [
