@@ -6,7 +6,7 @@
 
 - **Submantle Deep Dive Expedition** (2026-03-09): First expedition — what Submantle is, competitive landscape, MCP integration strategy, process identity architecture. Details: `research/expedition-submantle-deep-dive/synthesis.md`
 
-- **Submantle Infrastructure Expedition** (2026-03-09): Second expedition — Go vs Rust vs Python, SQLite architecture, daemon design, gRPC vs REST, plugin isolation. Details: `research/expedition-substrate-infrastructure/synthesis.md`
+- **Submantle Infrastructure Expedition** (2026-03-09): Second expedition — Go vs Rust vs Python, SQLite architecture, daemon design, gRPC vs REST, plugin isolation. Details: `research/expedition-submantle-infrastructure/synthesis.md`
 
 - **Trust Layer Expedition** (2026-03-11): Third expedition — behavioral trust as internet protocol layer. 5 teams (historical precedents, protocol architecture, behavioral trust science, marketplace competitors, gap analysis) + 3 validators + 1 synthesis. Details: `research/expedition-trust-layer/synthesis.md`
 
