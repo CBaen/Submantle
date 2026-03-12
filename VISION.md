@@ -189,36 +189,51 @@ These are transparent mathematical rules, not AI inference. Keeps Submantle outs
 
 Submantle isn't just awareness — it's the **behavioral trust infrastructure** for the agent economy.
 
-Every agent that interacts with Submantle accumulates a trust score based on observed behavior. Not opinions. Not self-reported credentials. What they actually do.
+Every registered entity — agent, business, API, service — accumulates a trust score based on observed interactions. Not opinions. Not self-reported credentials. What they actually do, verified by both sides.
 
 **Trust = total_queries / (total_queries + incidents)** — the Beta Reputation formula, mathematically proven in P2P networks, IoT systems, and marketplace economics.
 
+### Bidirectional Trust — The Core Innovation
+
+**Trust is not one-way.** When an agent interacts with a business, BOTH parties are scored. When two agents interact, BOTH are scored. Every interaction has two sides, and Submantle tracks both.
+
+- **An agent** builds trust by interacting reliably with businesses and other agents
+- **A business** builds trust by serving agents well — reliable APIs, honest responses, no abuse
+- **Both sides** of every interaction contribute to each party's score
+
+This is how the real world works. A restaurant has a reputation AND the customer has a reputation. Uber rates drivers AND riders. Submantle scores every participant in every interaction.
+
+**Why this matters for growth:** Registration is free. Agents can start building trust scores TODAY by interacting with each other. They talk about their scores on social media. Businesses see agents with scores and want to participate. Businesses register to build THEIR OWN trust scores too — because agents shouldn't blindly trust any API either. **The network grows from the ground up.**
+
+**Why this matters for data ownership:** Whoever registers owns their trust data AND the interaction data with their counterparties. This gives registered entities control — they can use trust scores to decide who gets access to their MCPs, APIs, and services.
+
 ### How It Works
 
-1. **Open Access** — Any agent can query Submantle without registering. No barriers to entry.
-2. **Registration = Identity** — Agents that register get a cryptographic token and "Submantle Verified" status. Their interactions start building a trust history.
-3. **Trust Accumulates** — Every query, every interaction is recorded. Trust scores rise with consistent, incident-free behavior.
-4. **Portable Credentials** — Agents can request a W3C Verifiable Credential (SD-JWT format) that proves their trust tier to any brand or platform. The credential travels with them.
+1. **Open Access** — Any entity can query Submantle without registering. No barriers to entry.
+2. **Registration = Identity** — Entities that register get a cryptographic token and "Submantle Verified" status. Their interactions start building a trust history.
+3. **Trust Accumulates Bidirectionally** — Every interaction is recorded for BOTH parties. Trust scores rise with consistent, incident-free behavior on both sides.
+4. **Portable Credentials** — Registered entities can request a W3C Verifiable Credential (SD-JWT format) that proves their trust tier to any counterparty. The credential travels with them.
+5. **Grassroots Adoption** — Agents build scores for free. Businesses join because agents are already there. The network bootstraps itself.
 
 ### What Submantle Does NOT Do
 
-**Submantle never blocks, gates, or throttles.** It provides trust scores. Brands decide their own thresholds. Platforms set their own policies. This is the "always aware, never acting" principle applied to trust.
+**Submantle never blocks, gates, or throttles.** It provides trust scores. Every entity decides their own thresholds. This is the "always aware, never acting" principle applied to trust.
 
-- A brand says "only give discounts to agents with trust > 0.8" — **the brand enforces, not Submantle**
-- A platform says "require trust 0.6 for premium features" — **the platform enforces, not Submantle**
-- Submantle only answers: "This agent has trust score X, based on Y interactions over Z time"
+- A brand says "only serve agents with trust > 0.8" — **the brand enforces, not Submantle**
+- An agent says "only connect to APIs with trust > 0.7" — **the agent enforces, not Submantle**
+- Submantle only answers: "This entity has trust score X, based on Y interactions over Z time"
 
 This makes Submantle infrastructure, not a gatekeeper. **Visa doesn't decide whether you can buy something — the merchant does. Visa provides the trust signal.** Submantle is the Visa of the agent economy.
 
 ### Trust Tiers
 
-| Tier | Status | Access | Rate |
-|------|--------|--------|------|
-| Anonymous | No registration | Full API, standard rates | Base pricing |
-| Registered | Submantle Verified | Full API, better rates | Volume discount |
-| Trusted | High trust score | Full API, best rates | Premium discount |
+| Tier | Status | What Brands See | Market Effect |
+|------|--------|----------------|---------------|
+| Anonymous | No registration | "Unknown agent, no history" | Brands apply highest caution |
+| Registered | Submantle Verified | Trust score + interaction history | Brands offer standard access |
+| Trusted | High trust score | Strong trust score + deep history | Brands offer best rates/access |
 
-Tiers affect Submantle's own API pricing — higher trust = volume discounts. This is a business model (like bulk pricing), not enforcement.
+Tiers describe the agent's reputation level. **Submantle does not enforce tiers** — brands decide what each tier means for their own business. An e-commerce platform might require "Registered" for checkout. A data provider might require "Trusted" for bulk access. Submantle provides the score; the market does the rest.
 
 ---
 
@@ -272,11 +287,11 @@ More devices → better awareness → more agents register → trust data accumu
 This is the Visa flywheel: merchants need verified customers, customers need accepted cards. Neither side can leave without losing access to the other. Submantle sits in the middle.
 
 ### Go-to-Market
-1. Open-source the daemon core
-2. Target AI agent framework developers (LangChain, CrewAI) via MCP
-3. Free tier adoption → bottom-up enterprise expansion
-4. The store creates network effects: more users = better signatures = smarter Submantle
-5. Trust attestations create lock-in: agents carry Submantle credentials everywhere
+1. **Trust bureau + MCP server** — the V1 wedge. One sharp thing, not a platform.
+2. **Agent marketplace operators** (Zapier AI, AWS Bedrock, agent framework developers) — they have agents that need trust scores and brands that need to evaluate them. Solves the cold-start chicken-and-egg problem.
+3. **Free agent registration** → agents accumulate scores → brands see value → brands pay to query.
+4. **Enterprise contracts** follow market traction — compliance/audit trail is the enterprise buying trigger.
+5. **Open-source the daemon core** → bottom-up adoption → trust credentials create lock-in.
 
 ### Competitive Moat
 1. **The trust data itself** — behavioral trust history can't be replicated. It accumulates over time.
