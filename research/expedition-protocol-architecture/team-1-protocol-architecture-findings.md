@@ -297,4 +297,181 @@ This is structurally identical to the TLS model applied to behavioral trust:
 
 ---
 
-*Research conducted 2026-03-11. All web sources accessed on this date. IETF drafts cited by draft name are active unless noted as expired.*
+---
+
+## Section 8: Supplementary Research — Additional Verification and Extensions
+## Researcher: Team Member 1 (Second Pass, 2026-03-11)
+
+This section supplements the findings above with additional source verification and architectural patterns not covered in the initial pass.
+
+### 8.1 RATS Architecture (RFC 9334) — The Precise Technical Name for What Substrate Is
+
+The IETF RATS working group (Remote ATtestation ProcedureS) has produced RFC 9334, finalized as an Internet Standard. This RFC defines the exact architectural vocabulary for what Substrate is building.
+
+**The three RATS roles map directly to Substrate:**
+
+| RATS Role | What It Does | Substrate Equivalent |
+|-----------|-------------|---------------------|
+| **Attester** | Produces evidence about its own state | The on-device Substrate daemon — it computes the trust score locally and generates evidence |
+| **Verifier** | Appraises evidence using reference values, produces attestation results | Substrate's attestation server — receives the computed score + cryptographic evidence, signs and issues a VC |
+| **Relying Party** | Receives attestation results, applies its own policy | Brands and platforms — receive the VC, validate the signature, apply their own thresholds |
+
+**The two RATS topology models:**
+
+1. **Passport Model:** The Attester gets an attestation result from the Verifier, then presents it directly to Relying Parties. This is exactly Substrate's W3C VC model — the agent carries its credential and presents it anywhere.
+2. **Background-Check Model:** The Relying Party forwards evidence directly to the Verifier. This is the alternative model (brand calls Substrate API in real-time).
+
+**Why this matters:** Substrate should use the Passport Model. Agents carry credentials. Brands validate locally. Substrate's attestation server is only in the path at issuance time, not at verification time. This is what the prior findings call "stateless verification" — RATS gives it a standard name.
+
+The RATS WG has active drafts for Attestation Results for Secure Interactions (ar4si), Endorsed Attestation Results (ear), and Epoch Markers. These are evolving toward exactly the vocabulary Substrate needs.
+
+- **Source:** RFC 9334 (IETF RATS Architecture), accessed via IETF datatracker 2026-03-11
+- **Source:** IETF RATS WG active drafts list, accessed 2026-03-11
+
+### 8.2 Bitstring Status List — Revocation Confirmed, Privacy Tradeoffs Documented
+
+The prior findings note Bitstring Status List for revocation but don't detail the mechanism. Verification reveals:
+
+- **Mechanism:** Each issued VC gets a position index in a large bitstring (minimum 16KB uncompressed). A single bit indicates revocation status. The bitstring is published as a VC itself, GZIP-compressed (typically a few hundred bytes when few credentials are revoked).
+- **Infrastructure needed:** An HTTPS endpoint serving the status list VC. Can be served via CDN — the spec explicitly recommends CDN delivery or Oblivious HTTP to prevent the issuer from tracking who checks revocation status.
+- **Privacy preserving:** Grouping thousands of credentials in one list prevents targeted correlation. Issuers are explicitly warned against creating unique per-credential lists (defeats the group privacy).
+- **Certificate stapling analog:** Holders can provide a cached copy of the status list VC directly to verifiers ("stapling"), further insulating from Substrate tracking who requests revocation checks.
+
+**For Substrate:** The revocation infrastructure is a CDN-hosted VC — low operational cost, privacy-preserving by design. The "who watches the watchman" risk is mitigated by the holder-stapling mechanism. This is a solved problem. The prior expedition's Risk #2 (VC revocation unsolved) can be downgraded — the mechanism exists and the privacy tradeoffs are acceptable.
+
+- **Source:** W3C Bitstring Status List specification, accessed 2026-03-11
+
+### 8.3 SD-JWT Confirmed as RFC 9901 — Standards Track, November 2025
+
+SD-JWT (Selective Disclosure for JWTs) was published as RFC 9901 in November 2025 as an Internet Standards Track document. This is the highest IETF designation. It is not a draft, a candidate recommendation, or a proposed standard — it is a full Internet Standard.
+
+**Structural components of an SD-JWT:**
+- **Issuer-signed JWT:** Contains SHA-256 hashes of selectively disclosable claims (not the claims themselves)
+- **Disclosures:** Base64url-encoded arrays of (salt, claim name, claim value) — sent alongside the JWT for claims the holder chooses to reveal
+- **Key Binding JWT (optional):** Proves the holder controls the private key associated with the credential
+
+**Compact format:** `<JWT>~<Disclosure1>~<Disclosure2>~...~<KB-JWT>`
+
+**Minimum infrastructure to issue and verify:**
+- Issuer: A signing key pair + CSPRNG for salts + SHA-256 + base64url
+- Verifier: Issuer's public key + SHA-256 + base64url
+
+No network calls required at verification time. This confirms the stateless verification model.
+
+- **Source:** IETF datatracker draft-ietf-oauth-selective-disclosure-jwt → RFC 9901, accessed 2026-03-11
+
+### 8.4 W3C VC 2.0 — Topology Confirmed as Three-Party, No Required Central Registry
+
+The W3C VC 2.0 specification defines a three-party ecosystem: Issuer → Holder → Verifier. The Verifiable Data Registry (the fifth actor in the spec) "may be" a trusted database, a decentralized database, a government ID database, or a distributed ledger. No specific technology is required. **Blockchain is not required.** A simple HTTPS endpoint serving a DID document qualifies.
+
+**Credential flow:**
+1. Issuer signs and delivers VC to Holder (Substrate attestation server → Agent's local storage)
+2. Holder presents VC or derived VP to Verifier (Agent → Brand's API)
+3. Verifier validates signature against Issuer's public key (Brand checks Substrate's public key — can be hardcoded or resolved via DID document)
+
+This confirms the prior findings. Adding the explicit confirmation that Step 3 requires no callback to Substrate — brands can cache Substrate's public key and verify entirely offline.
+
+- **Source:** W3C Verifiable Credentials Data Model v2.0 specification, accessed 2026-03-11
+
+### 8.5 NOSTR — A Novel Topology Pattern Worth Watching
+
+NOSTR (Notes and Other Stuff Transmitted by Relays) is a minimalist federated protocol not covered in the prior findings. It introduces a pattern that may be relevant to Substrate's trust attestation distribution:
+
+**How it works:** Clients publish cryptographically signed events. Relays store and forward events. Users connect to multiple relays simultaneously — if a relay goes down, the user reconnects elsewhere. Relays cannot forge content (cryptographic signatures). Relays can choose what to store.
+
+**Why relevant to Substrate:**
+- Trust attestation VCs could be distributed via a NOSTR-like relay network. An agent's trust credential could be published to multiple Substrate-compatible relays. Brands query any relay. No single relay is critical.
+- Operational cost is minimal — a relay runs on a $5/month server. This is a meaningful data point for Substrate's future infrastructure scaling.
+- The NOSTR model separates identity (the cryptographic key) from hosting (the relay). This mirrors Substrate's DID-based identity model.
+
+**Fit assessment:** This is a V3+ consideration for distributing trust attestations in a resilient, decentralized way. It does not replace the control plane (attestation issuance requires Substrate's signing key). But it reduces the reliance on Substrate's attestation distribution infrastructure long-term.
+
+**Maturity:** NOSTR is small but growing. The protocol is simple (a significant advantage). No Go SDK is mature enough for production use in 2026.
+
+- **Source:** NOSTR.com protocol description, accessed 2026-03-11
+
+### 8.6 Local-First Architecture — The 7 Ideals as a Design Checklist
+
+Ink & Switch's local-first software principles (2019, with active follow-up work through 2025) define seven ideals that directly map to Substrate's design. Verifying these against Substrate's current architecture:
+
+| Ideal | Substrate Status |
+|-------|-----------------|
+| No spinners (instant local response) | MET — local daemon, SQLite, no network for queries |
+| Multi-device (sync across devices) | PLANNED — E2E encrypted sync, 1Password model |
+| Optional network (works offline) | MET — on-device computation, no network required |
+| Seamless collaboration (multi-user) | N/A — single device owner model |
+| Longevity (survives company death) | PARTIAL — local SQLite survives, but attestation server death breaks VC issuance |
+| Privacy by default (E2E encrypted) | MET — privacy mode, no telemetry |
+| User ownership (control, backup) | MET — data on device, user controls export |
+
+**Key finding:** Local-first's recommended synchronization mechanism is CRDTs (Conflict-free Replicated Data Types). For Substrate's multi-device trust score aggregation problem (Gap #2 in Section 6: what happens to trust scores when devices change), CRDTs provide a mathematically proven merge mechanism. The Beta Reputation formula applied independently on each device, then CRDT-merged across devices, could solve the multi-device accumulation problem. This is architecturally compatible with local-first principles.
+
+- **Source:** Ink & Switch local-first essay (inkandswitch.com), accessed 2026-03-11
+
+### 8.7 AT Protocol's Speech/Reach Separation — A Design Principle Substrate Should Adopt
+
+AT Protocol (Bluesky) makes an explicit architectural decision: separate the **speech layer** (base layer — permissive, stores raw data, cannot be censored) from the **reach layer** (aggregation layer — decides what to amplify, can apply policies). This separation is what makes the network open at the base and governable at the applications layer.
+
+**Why this maps to Substrate's "always aware, never acting" principle:**
+
+Substrate's trust computation is the speech layer — it observes and scores without enforcement. Brands and platforms are the reach layer — they decide what to do with the signal. The AT Protocol model shows this isn't just a design choice Substrate made; it's an architectural pattern that a well-funded (if not yet profitable) decentralized protocol team independently converged on.
+
+The direct analogy: AT Protocol's PDS (Personal Data Server) is like Substrate's on-device daemon. AT Protocol's Relay is like Substrate's attestation aggregation (thin, handles distribution). AT Protocol's AppView is like each brand's trust enforcement layer.
+
+- **Source:** AT Protocol overview documentation (atproto.com), accessed 2026-03-11
+
+### 8.8 MCP Topology — Confirmed Client-Server, No Central Registry
+
+MCP's architecture (verified against current docs, 2026-03-11) is:
+
+- **Host:** The AI application (Claude Desktop, VS Code, etc.) — coordinates MCP clients
+- **Client:** One per MCP server, created by the host — maintains a dedicated connection
+- **Server:** Exposes tools, resources, and prompts — can run locally (STDIO) or remotely (Streamable HTTP)
+
+**Critical finding:** There is no MCP discovery registry. Clients connect to servers by explicit configuration (URL or local path). This is currently a gap in the MCP ecosystem — users must manually add server URLs. Several community projects are building informal registries, but none is authoritative.
+
+**For Substrate:** Substrate's MCP server needs to be configured explicitly in each agent's client configuration. The "ambient stream" (agents feel the ground without asking) vision requires agents to discover and connect to Substrate automatically. This is not possible under the current MCP spec — there is no auto-discovery mechanism.
+
+**Implication:** Substrate may need to develop or advocate for an MCP server auto-discovery standard. In the near term, the Substrate daemon could auto-inject itself into local MCP client configurations on installation — analogous to how antivirus software installs system-level hooks without user configuration. This is architecturally feasible but requires platform-specific implementation (Windows registry, macOS LaunchDaemon config injection).
+
+- **Source:** MCP architecture documentation (modelcontextprotocol.io), accessed 2026-03-11
+
+### 8.9 PGP Web of Trust — Failure Analysis Confirmed
+
+PGP's Web of Trust failed for three verified reasons, all relevant as design anti-patterns:
+
+1. **Required human judgment at scale:** Users had to evaluate key signing parties, understand fingerprints, and make trust decisions they weren't equipped to make. Mass adoption requires zero human judgment in the trust path.
+2. **Social graph exposure:** Key servers published relationship graphs publicly. Privacy was structurally incompatible with the trust model.
+3. **No forward secrecy:** Long-lived keys with no automatic rotation. Once compromised, all past encrypted content was exposed.
+
+The 2019 SKS keyserver crisis added a fourth failure mode: the keyserver infrastructure itself was vulnerable to a certificate spamming attack that made GnuPG go quadratic in key parsing, effectively DoS-ing the ecosystem.
+
+**Substrate anti-patterns derived from PGP's failure:**
+- Trust must accumulate passively — agents should not need to attend "trust signing parties"
+- Behavioral data must never be published on the network — the score is published, not the data
+- Attestation credentials should be short-lived (90 days, like Let's Encrypt certs) — forward secrecy for trust
+- The trust infrastructure must not have a single point of failure for the entire ecosystem (distributed CT-log approach for attestation distribution)
+
+- **Source:** Latacora "The PGP Problem" (2019, accessed via redirect 2026-03-11); cryptographyengineering.com PGP analysis (accessed 2026-03-11)
+
+### 8.10 Minimum Infrastructure Comparison Table
+
+| Protocol | Minimum Infrastructure | Central Authority? | Where Trust Lives |
+|----------|----------------------|-------------------|------------------|
+| DNS | Root servers + TLD servers + authoritative NS | Yes (ICANN for root) | Distributed cache |
+| TLS/HTTPS | ~150 root CAs (pre-configured in OS/browser) | Yes (browser vendors decide) | Certificate signatures |
+| OAuth 2.0 | Authorization server (IdP) + resource servers | Yes (each IdP is its own hub) | Signed tokens |
+| SMTP | Any MX server + DNS | No central authority | DNS records (SPF/DKIM) |
+| ActivityPub | Any HTTP server with ActivityPub endpoints | No | Each server's database |
+| Matrix | Homeservers + federation | No | Replicated event graph |
+| PGP Web of Trust | Keyservers (any) | No (failed) | Key signatures (social graph) |
+| Certificate Transparency | Multiple log servers + monitors | No (Chrome enforces) | Merkle tree logs |
+| W3C VC + SD-JWT | Issuer key pair + HTTPS endpoint | No (per-issuer) | Signed credentials |
+| RATS (RFC 9334) | Verifier + trust anchors + Attester | Verifier is trusted third party | Attestation results |
+| **Substrate (proposed)** | **On-device daemon + thin attestation server + public key** | **Yes, for attestation issuance only** | **On-device (computation) + signed VCs (portability)** |
+
+The table confirms: Substrate's minimum infrastructure is among the lightest of any trust protocol. A single signing key, an HTTPS endpoint for attestation, and the on-device daemon. Everything else (brand validation, agent registration, multi-device sync) can be layered on incrementally.
+
+---
+
+*Supplementary research conducted 2026-03-11. Sources verified by direct WebFetch. All IETF document citations reference documents accessible as of this date.*
