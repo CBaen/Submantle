@@ -1,4 +1,4 @@
-# Substrate — Project Rules
+# Submantle — Project Rules
 
 ## What This Is
 
