@@ -84,7 +84,7 @@ class TestEventDataclass:
         )
         assert e.event_type == EventType.SCAN_COMPLETE
         assert e.data["process_count"] == 10
-        assert e.source == "substrate"
+        assert e.source == "submantle"
         assert isinstance(e.timestamp, float)
         assert e.timestamp > 0
 

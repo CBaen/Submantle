@@ -12,7 +12,7 @@ Design decisions:
 - Token = HMAC(secret, agent_name + ":" + iso_timestamp) encoded as hex.
   The separator ":" prevents concatenation ambiguity (e.g. "foo" + "bar:time"
   vs "foobar" + ":time").
-- Token verification: Substrate re-derives the expected HMAC from stored data
+- Token verification: Submantle re-derives the expected HMAC from stored data
   and uses hmac.compare_digest for timing-safe comparison.
 - Trust scoring schema is captured but algorithm is deferred (future work).
 - Agent registry works in BOTH privacy states — identity is not sensitive,

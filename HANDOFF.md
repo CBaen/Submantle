@@ -1,11 +1,11 @@
-# Substrate — Handoff
+# Submantle — Handoff
 
 ## What This Is
 The ground beneath everything. A persistent awareness layer AND behavioral trust infrastructure for computing. Your devices know what's going on, and the agents on them earn their place.
 
 ## Current State
 - **Phase**: V1 Foundation built, 4 expeditions complete, trust layer wiring next
-- **Git**: github.com/CBaen/SUBSTRATE (main branch)
+- **Git**: github.com/CBaen/SUBMANTLE (main branch)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
 - **Tests**: 160 passing across 4 test files
 - **Research**: 4 expeditions complete (deep-dive, infrastructure, trust-layer, protocol-architecture) + 6 targeted follow-ups

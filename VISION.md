@@ -328,7 +328,7 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 - **Three active IETF drafts** (Huawei, AWS/Zscaler/Ping) cover agent identity — NONE cover behavioral trust
 - **NIST AI Agent Standards Initiative** (February 2026) — could define behavioral trust. Monitor actively.
 - **AAIF** — no behavioral trust working group. Corporate-weighted membership.
-- **IETF RATS Working Group** — already has the vocabulary (RFC 9334). Better first venue for Substrate.
+- **IETF RATS Working Group** — already has the vocabulary (RFC 9334). Better first venue for Submantle.
 
 **The precise gap**: No company combines all four of: (1) OS-level observation, (2) deterministic scoring, (3) on-device computation, (4) portable W3C VC attestation. Individual pieces exist in isolation. The combination is unoccupied.
 
@@ -353,12 +353,12 @@ This is the Visa flywheel: merchants need verified customers, customers need acc
 - **Ring/Citizen/Nextdoor** are walled gardens with no public API — user connects their own account
 
 ### Regulatory (researched March 2026)
-- **EU AI Act**: Substrate's Beta trust formula is deterministic arithmetic, not machine learning. EU Commission guidance (April 2025) explicitly excludes "systems based on rules defined solely by natural persons to execute operations automatically." Substrate likely falls **outside the Act entirely**. Social scoring prohibition covers natural persons only — scoring software agents is categorically outside scope.
+- **EU AI Act**: Submantle's Beta trust formula is deterministic arithmetic, not machine learning. EU Commission guidance (April 2025) explicitly excludes "systems based on rules defined solely by natural persons to execute operations automatically." Submantle likely falls **outside the Act entirely**. Social scoring prohibition covers natural persons only — scoring software agents is categorically outside scope.
 - **GDPR**: On-device processing eliminates highest-risk scenarios. Minimal documentation (privacy policy, lawful basis) sufficient pre-EU-launch.
 - **US FCRA**: Does not apply to scoring software agents. FCRA covers human consumers for credit/employment/housing.
 - **Compliance before August 2026**: Three steps — (1) document "not an AI system" self-assessment, (2) privacy policy, (3) data flow documentation.
-- **Critical design principle**: Keep scoring as pure math (deterministic formulas). The moment Substrate adds ML-based anomaly detection, it potentially enters EU AI Act scope. Stay deterministic, stay exempt.
+- **Critical design principle**: Keep scoring as pure math (deterministic formulas). The moment Submantle adds ML-based anomaly detection, it potentially enters EU AI Act scope. Stay deterministic, stay exempt.
 
 ---
 
-*Substrate was born from watching an AI agent destroy work because it couldn't see beyond its own task. It grew into something larger: the missing layer in computing that gives everything — agents, devices, applications — the awareness to act intelligently.*
+*Submantle was born from watching an AI agent destroy work because it couldn't see beyond its own task. It grew into something larger: the missing layer in computing that gives everything — agents, devices, applications — the awareness to act intelligently.*

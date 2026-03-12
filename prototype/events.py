@@ -75,7 +75,7 @@ class Event:
     Fields:
         event_type: The EventType value.
         data: Arbitrary payload dict. Callers own the content.
-        source: String identifying the emitting component ("substrate", "api", etc.)
+        source: String identifying the emitting component ("submantle", "api", etc.)
         timestamp: Unix epoch float. Set automatically at emit time.
     """
 
@@ -217,7 +217,7 @@ class EventBus:
         self,
         event_type: EventType | str,
         data: dict,
-        source: str = "substrate",
+        source: str = "submantle",
     ) -> Event | None:
         """
         Emit an event. Dispatches to subscribers and logs to SQLite.

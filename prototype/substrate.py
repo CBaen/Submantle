@@ -252,7 +252,7 @@ def scan_with_events(
                     "name": proc["name"],
                     "identity": proc["identity"],
                 },
-                source="substrate",
+                source="submantle",
             )
 
     # Emit SCAN_COMPLETE with summary statistics.

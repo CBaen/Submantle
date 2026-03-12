@@ -29,7 +29,7 @@ from agent_registry import AgentRegistry, _now_iso, _token_hash, _SECRET_SETTING
 
 class MockDB:
     """
-    In-memory mock of SubstrateDB that faithfully implements the agent registry
+    In-memory mock of SubmantleDB that faithfully implements the agent registry
     interface. Cleaner than MagicMock for stateful behaviour.
     """
 
