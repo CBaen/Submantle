@@ -1,6 +1,6 @@
 """
-Substrate Event Bus — Internal pub/sub system.
-Everything that changes in Substrate announces itself here.
+Submantle Event Bus — Internal pub/sub system.
+Everything that changes in Submantle announces itself here.
 
 The event bus does two jobs:
   1. Routes events synchronously to in-process subscribers.

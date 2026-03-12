@@ -1,9 +1,9 @@
 """
-Substrate Agent Registry — Identity and lifecycle management for registered agents.
+Submantle Agent Registry — Identity and lifecycle management for registered agents.
 
 Agents are external programs (AI assistants, automation scripts, monitoring
-tools) that want to query Substrate. Registration gives them a verifiable token.
-Substrate uses that token to know who is asking, track query patterns, and
+tools) that want to query Submantle. Registration gives them a verifiable token.
+Submantle uses that token to know who is asking, track query patterns, and
 (in future) build trust scores.
 
 Design decisions:

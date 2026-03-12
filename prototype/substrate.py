@@ -1,5 +1,5 @@
 """
-Substrate Prototype — Process Awareness Daemon
+Submantle Prototype — Process Awareness Daemon
 The ground beneath everything.
 
 Monitors running processes, identifies what they ARE (not just their names),

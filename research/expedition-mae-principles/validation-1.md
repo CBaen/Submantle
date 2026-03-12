@@ -6,7 +6,7 @@
 
 ## Methodology Note
 
-All four findings documents were read in full. The actual Substrate source code was read directly (events.py, agent_registry.py, substrate.py, api.py, database.py) to verify factual claims about current implementation state. External sources were not independently fetched — time and context constraints make that impractical, but source attribution is assessed for plausibility and specificity. Claims about Mae/MIDGE internals were treated as credible (teams had direct read access) unless contradicted by internal consistency.
+All four findings documents were read in full. The actual Submantle source code was read directly (events.py, agent_registry.py, substrate.py, api.py, database.py) to verify factual claims about current implementation state. External sources were not independently fetched — time and context constraints make that impractical, but source attribution is assessed for plausibility and specificity. Claims about Mae/MIDGE internals were treated as credible (teams had direct read access) unless contradicted by internal consistency.
 
 ---
 
@@ -18,9 +18,9 @@ Team 1 states: "there is no code that calls `increment_agent_incidents()`" and f
 
 **Verdict:** Accurate. Not overstated.
 
-### 1.2 Team 1: The "Bare Dyad" Characterization of Substrate's Current Trust Model — ACCURATE
+### 1.2 Team 1: The "Bare Dyad" Characterization of Submantle's Current Trust Model — ACCURATE
 
-Team 1 claims Substrate's current model is a "bare dyad: agent claims ↔ Substrate accepts." Reading agent_registry.py confirms this exactly: `verify()` re-derives the HMAC and compares with `hmac.compare_digest`. No behavioral signals are consulted. A valid token with 1 query and a valid token with 10,000 queries are treated identically. The characterization holds.
+Team 1 claims Submantle's current model is a "bare dyad: agent claims ↔ Submantle accepts." Reading agent_registry.py confirms this exactly: `verify()` re-derives the HMAC and compares with `hmac.compare_digest`. No behavioral signals are consulted. A valid token with 1 query and a valid token with 10,000 queries are treated identically. The characterization holds.
 
 ### 1.3 Team 1: Beta Reputation System "Production-Validated for 20+ Years" Claim — PLAUSIBLE, SOURCE QUALITY UNEVEN
 
@@ -34,13 +34,13 @@ The formula at section 6.1 uses `registration_time` and `last_seen` as raw times
 
 **Verdict:** The principle is sound; the code sketch requires one correction before use.
 
-### 1.5 Team 2: "Substrate has no mixin pattern today" — VERIFIED ACCURATE
+### 1.5 Team 2: "Submantle has no mixin pattern today" — VERIFIED ACCURATE
 
 The prototype files are standalone modules wired in api.py via direct imports and instantiation. There is no class hierarchy and no mixin composition. The claim is accurate.
 
 ### 1.6 Team 2: Selective Holon Protocol (4 of 10 Capabilities) — PARTIALLY VERIFIED
 
-Team 2 claims the current Substrate has `know_self` implemented via `/api/health` and `/api/status`. Reading api.py confirms `/api/health` returns only `{"status": "alive", "version": VERSION}` and `/api/status` returns process stats. Neither reports on internal module health (scanner thread alive? DB writable? event bus queue depth?). The "know_self" claim is partially true — Substrate knows its version and whether it's in privacy mode, but it does not know the health of its own components. Team 2 notes this gap indirectly in its gaps section, but the table (row: `know_self / know_down` — "Yes — critical for health monitoring and startup validation") implies more implementation than exists.
+Team 2 claims the current Submantle has `know_self` implemented via `/api/health` and `/api/status`. Reading api.py confirms `/api/health` returns only `{"status": "alive", "version": VERSION}` and `/api/status` returns process stats. Neither reports on internal module health (scanner thread alive? DB writable? event bus queue depth?). The "know_self" claim is partially true — Submantle knows its version and whether it's in privacy mode, but it does not know the health of its own components. Team 2 notes this gap indirectly in its gaps section, but the table (row: `know_self / know_down` — "Yes — critical for health monitoring and startup validation") implies more implementation than exists.
 
 **Verdict:** Partially accurate. The table column "Transfer? Yes" is misleading for the current state; it conflates what should be implemented with what is implemented.
 
@@ -52,21 +52,21 @@ Team 2 (section 5) states: "The scan loop (`_get_state()` in api.py) runs on eve
 
 ### 1.8 Team 3: "Mae EventBus Stream Layer" Gap — VERIFIED
 
-Team 3 identifies that Substrate's EventBus has no stream layer (no `deque(maxlen=...)` in events.py). Reading events.py directly confirms: `_subscribers` is a `defaultdict(list)` of callbacks only. There is no circular buffer, no event history in memory, no `write_to_stream` method. The gap is real and correctly identified.
+Team 3 identifies that Submantle's EventBus has no stream layer (no `deque(maxlen=...)` in events.py). Reading events.py directly confirms: `_subscribers` is a `defaultdict(list)` of callbacks only. There is no circular buffer, no event history in memory, no `write_to_stream` method. The gap is real and correctly identified.
 
 ### 1.9 Team 3: Granger Causality Claims — PLAUSIBLE BUT EVIDENCE CHAIN IS INDIRECT
 
-The IBM Research (2021) citation for Granger causality applied to cloud microservices is specific enough to be credible. However, the team states "The machinery is lightweight (bivariate F-test, first-differenced series)" and recommends implementing this against Substrate's SQLite events. Gap 3 in Team 3's own findings acknowledges that MIDGE's `GrangerAnalyzer` requires `min_observations=40` and was designed for daily time series, while Substrate generates sub-second events. The team's "Not for prototype" conclusion is correct, but the framing of the machinery as "lightweight" undersells the calibration work required to adapt daily-frequency statistics to a 5-second scan interval.
+The IBM Research (2021) citation for Granger causality applied to cloud microservices is specific enough to be credible. However, the team states "The machinery is lightweight (bivariate F-test, first-differenced series)" and recommends implementing this against Submantle's SQLite events. Gap 3 in Team 3's own findings acknowledges that MIDGE's `GrangerAnalyzer` requires `min_observations=40` and was designed for daily time series, while Submantle generates sub-second events. The team's "Not for prototype" conclusion is correct, but the framing of the machinery as "lightweight" undersells the calibration work required to adapt daily-frequency statistics to a 5-second scan interval.
 
 **Verdict:** The concept transfers but the implementation complexity is understated.
 
 ### 1.10 Team 4: Privacy Two-Layer Sync Claim — VERIFIED AS CORRECT
 
-Team 4 states Substrate correctly syncs PrivacyManager and EventBus before emitting the PRIVACY_TOGGLED event. Reading privacy.py was not in scope for direct code access in this validation, but the claim aligns with the events.py `set_privacy_mode()` method and the api.py initialization order (PrivacyManager receives both db and event_bus). The architectural pattern is confirmed by the module docstring in events.py, which states privacy mode is "a mirror of the authoritative state in PrivacyManager." Team 4's validation of this correct behavior is a legitimate finding.
+Team 4 states Submantle correctly syncs PrivacyManager and EventBus before emitting the PRIVACY_TOGGLED event. Reading privacy.py was not in scope for direct code access in this validation, but the claim aligns with the events.py `set_privacy_mode()` method and the api.py initialization order (PrivacyManager receives both db and event_bus). The architectural pattern is confirmed by the module docstring in events.py, which states privacy mode is "a mirror of the authoritative state in PrivacyManager." Team 4's validation of this correct behavior is a legitimate finding.
 
-### 1.11 Team 4: "Substrate Does Not Include Itself in Scan Results" — VERIFIED AS ACCURATE
+### 1.11 Team 4: "Submantle Does Not Include Itself in Scan Results" — VERIFIED AS ACCURATE
 
-Team 4 claims Substrate returns itself as an unidentified process. Reading substrate.py confirms: `scan_processes()` iterates `psutil.process_iter(...)` without filtering itself out, and `match_signature()` only matches against signatures.json. There is no Substrate self-signature in the 15-signature set (confirmed by CLAUDE.md: "prototype/signatures.json — community-curated, lightweight pattern matching" and the signatures count of 15). The gap is real.
+Team 4 claims Submantle returns itself as an unidentified process. Reading substrate.py confirms: `scan_processes()` iterates `psutil.process_iter(...)` without filtering itself out, and `match_signature()` only matches against signatures.json. There is no Submantle self-signature in the 15-signature set (confirmed by CLAUDE.md: "prototype/signatures.json — community-curated, lightweight pattern matching" and the signatures count of 15). The gap is real.
 
 ### 1.12 Team 4: Circadian Scheduling via Windows `GetLastInputInfo()` — PERMISSION COST UNVERIFIED
 
@@ -92,7 +92,7 @@ These are architecturally incompatible. Team 1 proposes computing trust scores f
 
 Team 1 also arrives at the same "floor of 2.0 on alpha and beta" insight (section 4.3) that Team 3 describes from MIDGE. Neither team references the other's treatment of this.
 
-**Resolution:** Team 1's approach is more immediately actionable (no new storage infrastructure, uses what exists) and should be implemented first. Team 3's per-capability tracking is a valid extension for when Substrate needs to trust individual agent capabilities differently — that is a V2+ concern. Both teams are correct; they are solving the same problem at different granularities. The synthesis document must reconcile these explicitly or the implementation will duplicate effort.
+**Resolution:** Team 1's approach is more immediately actionable (no new storage infrastructure, uses what exists) and should be implemented first. Team 3's per-capability tracking is a valid extension for when Submantle needs to trust individual agent capabilities differently — that is a V2+ concern. Both teams are correct; they are solving the same problem at different granularities. The synthesis document must reconcile these explicitly or the implementation will duplicate effort.
 
 ### 2.2 Teams 2 and 4 Have Conflicting Signals on Autopoiesis
 
@@ -128,7 +128,7 @@ Team 3's Action 3 recommends: "Add a `beta_distributions.json` file (same patter
 
 Team 1 proposes a decay formula requiring a new DB column (`last_incident_time`, section 6.2). The brief states "Don't suggest restructuring what's already built." Adding a column is not restructuring, but it is schema evolution — a non-trivial change for a prototype. Team 1 does flag this as "optional enhancement," which is appropriate. However, the full trust architecture (enforcement mode ladder, three phases, decay) read together represents a substantial body of work. The brief asks for inspiration, not an implementation plan.
 
-Team 2 proposes five concrete transfers, including mixin decomposition with specific method naming conventions (`_init_{name}()`, `_serialize_{name}()`, `get_{name}_health()`). This is architectural planning, not pure inspiration. The brief permits this ("What did we learn building Mae that we should carry into Substrate's DNA?") but the level of specificity in Team 2's structural prescriptions crosses from principle into blueprint.
+Team 2 proposes five concrete transfers, including mixin decomposition with specific method naming conventions (`_init_{name}()`, `_serialize_{name}()`, `get_{name}_health()`). This is architectural planning, not pure inspiration. The brief permits this ("What did we learn building Mae that we should carry into Submantle's DNA?") but the level of specificity in Team 2's structural prescriptions crosses from principle into blueprint.
 
 **Verdict:** These findings exceed "inspiration" and enter "design spec" territory in places. This is not necessarily harmful — the depth is useful — but Guiding Light should be aware that the findings are more prescriptive than the brief requested.
 
@@ -138,7 +138,7 @@ The brief asks for a comprehensive map. Across four teams, 30+ principles are ex
 
 ### 3.4 Constraint: "Always aware, never acting" — Correctly Applied
 
-Multiple teams correctly identify that Substrate's "never acting" principle eliminates Mae's `decide` and `act` holon capabilities. Team 2 makes this the governing insight of its entire report. No team violates this constraint by recommending agent-like behavior for Substrate.
+Multiple teams correctly identify that Submantle's "never acting" principle eliminates Mae's `decide` and `act` holon capabilities. Team 2 makes this the governing insight of its entire report. No team violates this constraint by recommending agent-like behavior for Submantle.
 
 ---
 
@@ -146,23 +146,23 @@ Multiple teams correctly identify that Substrate's "never acting" principle elim
 
 ### 4.1 No Team Investigated What Mae's 160-Test Suite Looked Like Before It Had 2,583 Tests
 
-The brief notes Mae's current state: 2,583 tests. Substrate is at 160 tests. Team 4 correctly observes that unit tests did not surface Mae's endurance failures (missing EventBus channels, key mismatches, self-healing loops). But no team investigated: at what point in Mae's development did these endurance patterns emerge? What did Mae's testing architecture look like when it was at Substrate's current scale? This would have been the most actionable research for Substrate's test strategy.
+The brief notes Mae's current state: 2,583 tests. Submantle is at 160 tests. Team 4 correctly observes that unit tests did not surface Mae's endurance failures (missing EventBus channels, key mismatches, self-healing loops). But no team investigated: at what point in Mae's development did these endurance patterns emerge? What did Mae's testing architecture look like when it was at Submantle's current scale? This would have been the most actionable research for Submantle's test strategy.
 
 ### 4.2 No Team Evaluated the EventType Enum Pattern
 
-Substrate uses a hardcoded `EventType` enum (7 types). Team 4 recommends a `register_channels()` call pattern to prevent warning floods. But no team investigated whether Mae's EventBus uses an enum, a string registry, or something else — and what the tradeoffs were. This is a concrete, answerable question that would directly inform whether Substrate should keep the enum or switch to a registry pattern before event types multiply.
+Submantle uses a hardcoded `EventType` enum (7 types). Team 4 recommends a `register_channels()` call pattern to prevent warning floods. But no team investigated whether Mae's EventBus uses an enum, a string registry, or something else — and what the tradeoffs were. This is a concrete, answerable question that would directly inform whether Submantle should keep the enum or switch to a registry pattern before event types multiply.
 
 ### 4.3 No Team Verified the "5 Organs" Fractal Break in Mae
 
-Team 2 cites MAES-MATHEMATICAL-IDENTITY.md noting "the fractal structure breaks at the organism level (5 organs, not 3)." No team checked whether this has been resolved in Mae since that document was written, or whether it remains a documented exception. This matters because it would calibrate how faithfully Substrate should expect the fractal pattern to hold at its own Ring level (Inner/Middle/Outer = 3, which is triadically sound).
+Team 2 cites MAES-MATHEMATICAL-IDENTITY.md noting "the fractal structure breaks at the organism level (5 organs, not 3)." No team checked whether this has been resolved in Mae since that document was written, or whether it remains a documented exception. This matters because it would calibrate how faithfully Submantle should expect the fractal pattern to hold at its own Ring level (Inner/Middle/Outer = 3, which is triadically sound).
 
 ### 4.4 Dashboard Depth — The Named Next Step — Is Not Addressed
 
 The research brief explicitly states the next step is "dashboard depth (nested data, clickable detail views)." None of the four teams connected their findings to the dashboard UI. The health pulse pattern (Team 2), the stream layer (Team 3), and the self-identification signature (Team 4) all have direct dashboard implications — but no team drew the line from principle to "here is what this enables in the dashboard." This is a missed opportunity to make the research immediately actionable for the next sprint.
 
-### 4.5 No Examination of MIDGE's `OutcomeCollector` Pattern for Substrate
+### 4.5 No Examination of MIDGE's `OutcomeCollector` Pattern for Submantle
 
-Team 3 names the outcome feedback loop as Gap 1 and correctly identifies that Thompson trust scoring requires an `OutcomeCollector` to close the loop. But no team investigated what Mae/MIDGE's OutcomeCollector actually looked like, whether it was lightweight, and what Substrate's equivalent outcome signal would be. Without this, the trust scoring recommendations (Teams 1 and 3) are incomplete — they describe how to build the numerator but not how to validate it.
+Team 3 names the outcome feedback loop as Gap 1 and correctly identifies that Thompson trust scoring requires an `OutcomeCollector` to close the loop. But no team investigated what Mae/MIDGE's OutcomeCollector actually looked like, whether it was lightweight, and what Submantle's equivalent outcome signal would be. Without this, the trust scoring recommendations (Teams 1 and 3) are incomplete — they describe how to build the numerator but not how to validate it.
 
 ---
 
@@ -182,9 +182,9 @@ Teams 1, 2, and 3 all arrive at the same structural conclusion: trust scoring mu
 
 **Confidence: Very High.** The math (Byzantine consensus, Beta distributions), the Mae precedent (TriadEnforcer), and MIDGE's convergence engine all support this independently.
 
-### 5.3 Substrate Self-Awareness Gap — Teams 2 and 4
+### 5.3 Submantle Self-Awareness Gap — Teams 2 and 4
 
-Both Team 2 (know_self/know_down in the Holon Protocol) and Team 4 (autopoietic closure, Gap 1) independently identify the same gap: Substrate does not report its own health with the same depth it reports system health. Team 4 provides the most concrete fix (add Substrate to signatures.json, add scanner heartbeat, add rich health endpoint). Team 2 provides the architectural framing (know_self/know_down as a four-method health interface).
+Both Team 2 (know_self/know_down in the Holon Protocol) and Team 4 (autopoietic closure, Gap 1) independently identify the same gap: Submantle does not report its own health with the same depth it reports system health. Team 4 provides the most concrete fix (add Submantle to signatures.json, add scanner heartbeat, add rich health endpoint). Team 2 provides the architectural framing (know_self/know_down as a four-method health interface).
 
 **Confidence: High.** Both teams saw this from different starting points. It is real.
 
@@ -196,7 +196,7 @@ Team 3 recommends it for MCP ambient stream access. Team 4 identifies backpressu
 
 ### 5.5 Event Payload Contracts Are Informal — Teams 1 and 4
 
-Team 1 notes the EventBus has no subscriber-to-agent index (channel index pattern from ConnectionRegistry). Team 4 explicitly warns about key mismatches (Mae's `node_id` vs `nodes` bug category). Both point to the same underlying gap: Substrate's event payloads are plain dicts with no schema enforcement or documentation of expected shape.
+Team 1 notes the EventBus has no subscriber-to-agent index (channel index pattern from ConnectionRegistry). Team 4 explicitly warns about key mismatches (Mae's `node_id` vs `nodes` bug category). Both point to the same underlying gap: Submantle's event payloads are plain dicts with no schema enforcement or documentation of expected shape.
 
 **Confidence: High.** The risk is real and will compound as event types multiply.
 
@@ -206,7 +206,7 @@ Team 1 notes the EventBus has no subscriber-to-agent index (channel index patter
 
 ### 6.1 The Endurance Testing Findings (Team 4) Are the Most Immediately Actionable
 
-Going in, this expedition was framed as "inspiration from Mae's foundational principles." The most useful material turned out to be Mae's failure log — the six categories of failure (trust floor decay, missing channel registration, self-healing loops, key mismatches, zero replenishment, cooldown absence) that were invisible in unit tests and only appeared after 25,000 simulation steps. These are not inspirational principles; they are a checklist of failure modes that any long-running daemon will eventually hit. Substrate should treat this as a production regression test suite specification, not as architectural inspiration.
+Going in, this expedition was framed as "inspiration from Mae's foundational principles." The most useful material turned out to be Mae's failure log — the six categories of failure (trust floor decay, missing channel registration, self-healing loops, key mismatches, zero replenishment, cooldown absence) that were invisible in unit tests and only appeared after 25,000 simulation steps. These are not inspirational principles; they are a checklist of failure modes that any long-running daemon will eventually hit. Submantle should treat this as a production regression test suite specification, not as architectural inspiration.
 
 This reframes the expedition's value: not just "what philosophy should we adopt" but "what bugs are we guaranteed to hit unless we act now."
 
@@ -216,7 +216,7 @@ The most surprising code finding: `increment_agent_incidents()` is fully impleme
 
 ### 6.3 Team 2's Fractal Naming Insight Is Architecturally More Valuable Than It First Appears
 
-The suggestion to explicitly name Substrate's three rings in code (not just in vision documents) and create a queryable `AwarenessHierarchy` registry seems lightweight and obvious. But the deeper insight is that Substrate's ring structure currently exists only in documentation — the code has no awareness of its own architectural rings. An agent querying Substrate today has no way to ask "what awareness domains do you know about?" This is a self-description gap with real MCP implications: the MCP server cannot advertise its capabilities to agents if those capabilities are not programmatically enumerable.
+The suggestion to explicitly name Submantle's three rings in code (not just in vision documents) and create a queryable `AwarenessHierarchy` registry seems lightweight and obvious. But the deeper insight is that Submantle's ring structure currently exists only in documentation — the code has no awareness of its own architectural rings. An agent querying Submantle today has no way to ask "what awareness domains do you know about?" This is a self-description gap with real MCP implications: the MCP server cannot advertise its capabilities to agents if those capabilities are not programmatically enumerable.
 
 ---
 
@@ -231,13 +231,13 @@ The highest-value findings are:
 1. **The enforcement mode ladder** (Teams 1, 3, 4) — actionable today, zero cost, prevents trust-gate accidents
 2. **Trust scoring is one function away** (Team 1 formula + the existing schema) — corrected for the ISO/float timestamp mismatch, this is trivial to implement
 3. **EventBus stream layer** (Teams 3, 4) — ~50 lines, unlocks MCP ambient stream, adds backpressure
-4. **Substrate self-signature** (Team 4) — 1 hour, closes the autopoietic loop
+4. **Submantle self-signature** (Team 4) — 1 hour, closes the autopoietic loop
 5. **Endurance failure checklist** (Team 4) — treat as a preventive test specification
 
 ### What the Expedition Missed
 
 1. How trust scoring interacts with the dashboard (the stated next step)
-2. What Mae's test architecture looked like at Substrate's scale
+2. What Mae's test architecture looked like at Submantle's scale
 3. The outcome feedback loop (how trust scores get validated, not just accumulated)
 4. The Teams 1/3 conflict on trust storage architecture — needs explicit resolution before any implementation begins
 

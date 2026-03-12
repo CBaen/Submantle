@@ -1,11 +1,11 @@
 """
-Substrate API — FastAPI server wrapping the process awareness daemon.
+Submantle API — FastAPI server wrapping the process awareness daemon.
 Serves the dashboard and exposes JSON endpoints.
 
 Run: uvicorn api:app --reload --port 8421
 
 Module initialization order (critical — do not reorder):
-  1. SubstrateDB      — SQLite layer must exist before anything else
+  1. SubmantleDB      — SQLite layer must exist before anything else
   2. EventBus(db=db)  — persists events; needs DB
   3. PrivacyManager   — loads persisted state from DB, syncs bus on toggle
   4. AgentRegistry    — loads HMAC secret from DB, emits events on bus
@@ -23,7 +23,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
-from substrate import (
+from submantle import (
     awareness_report,
     build_process_tree,
     load_signatures,
@@ -31,7 +31,7 @@ from substrate import (
     scan_processes,
     scan_with_events,
 )
-from database import SubstrateDB
+from database import SubmantleDB
 from events import EventBus, EventType
 from privacy import PrivacyManager
 from agent_registry import AgentRegistry
@@ -41,14 +41,14 @@ VERSION = "0.1.0"
 # ── Module initialization ───────────────────────────────────────────────────
 # Order matters: DB first, then bus (needs DB), then privacy and registry (need both).
 
-_db = SubstrateDB()
+_db = SubmantleDB()
 _bus = EventBus(db=_db)
 _privacy = PrivacyManager(db=_db, event_bus=_bus)
 _registry = AgentRegistry(db=_db, event_bus=_bus)
 
 # ── FastAPI setup ────────────────────────────────────────────────────────────
 
-app = FastAPI(title="Substrate", version=VERSION, docs_url=None, redoc_url=None)
+app = FastAPI(title="Submantle", version=VERSION, docs_url=None, redoc_url=None)
 
 app.add_middleware(
     CORSMiddleware,
@@ -344,7 +344,7 @@ def status():
     if state.get("privacy_mode"):
         return {
             "privacy_mode": True,
-            "status": "Substrate is running in privacy mode. No process data is being collected.",
+            "status": "Submantle is running in privacy mode. No process data is being collected.",
         }
 
     report = state["report"]
@@ -376,7 +376,7 @@ def query(process: str = ""):
         return JSONResponse(
             status_code=403,
             content={
-                "error": "Privacy mode is active. Substrate is not watching.",
+                "error": "Privacy mode is active. Submantle is not watching.",
                 "privacy_mode": True,
             },
         )

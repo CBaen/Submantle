@@ -1,5 +1,5 @@
 """
-Substrate Database Layer — SQLite persistence.
+Submantle Database Layer — SQLite persistence.
 The ground beneath everything needs memory.
 
 All state that survives a restart lives here:

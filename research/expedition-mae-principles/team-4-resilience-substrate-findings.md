@@ -1,4 +1,4 @@
-# Team 4 Findings: Resilience, Health Monitoring & The Substrate Metaphor
+# Team 4 Findings: Resilience, Health Monitoring & The Submantle Metaphor
 ## Date: 2026-03-10
 ## Researcher: Team Member 4
 
@@ -16,7 +16,7 @@ Mae's AutoHealer implements a biological wound-response cycle directly derived f
 
 **Evidence of production-testing**: The 50-round endurance run (25,000 steps, 18 agents) brought starvation events from 5,088/round to 182 total after fixes. The pipeline has been stress-tested under real load.
 
-**What this means for Substrate**: Substrate does not yet have a health repair loop. It has health state (AWARE/PRIVATE) but no self-repair. If a scan cycle hangs, if SQLite locks, if the API stops responding — nothing catches it. The three-phase pattern translates directly: (1) detect the hang, (2) identify cause (locked DB? crashed thread?), (3) restart the component. The pattern does not require complexity; even a lightweight watchdog loop applying these three phases in order is more than Substrate currently has.
+**What this means for Submantle**: Submantle does not yet have a health repair loop. It has health state (AWARE/PRIVATE) but no self-repair. If a scan cycle hangs, if SQLite locks, if the API stops responding — nothing catches it. The three-phase pattern translates directly: (1) detect the hang, (2) identify cause (locked DB? crashed thread?), (3) restart the component. The pattern does not require complexity; even a lightweight watchdog loop applying these three phases in order is more than Submantle currently has.
 
 ---
 
@@ -32,7 +32,7 @@ if system_id == "auto_healer":
 
 This one line is architecturally significant. Any monitoring system that monitors itself must explicitly exclude itself from the remediation loop. The healer observes its own health through a separate self-monitor triad (`_self_monitor()`) that runs on a different cadence from the main scan, with different indicators (scan staleness, queue overflow, detection blindness) and different recovery actions (reset scan counter, prune history, widen detection threshold). The self-monitor is a peer, not a subordinate.
 
-**What this means for Substrate**: If Substrate adds a health monitor, it must not attempt to restart itself from within itself. The monitor and the monitored must be different execution contexts. This is a concrete safety pattern, not theory.
+**What this means for Submantle**: If Submantle adds a health monitor, it must not attempt to restart itself from within itself. The monitor and the monitored must be different execution contexts. This is a concrete safety pattern, not theory.
 
 ---
 
@@ -54,7 +54,7 @@ This is the most concretely measurable lesson from Mae's endurance hardening.
 
 **The formula**: If `replenishment_rate < decay_rate`, the system trends toward depletion. The question is: how long until it starves, and is that acceptable? Mae made it explicit by choosing 0.008 < 0.01 intentionally, accepting ~3.6 starvation events/round as background noise rather than crisis.
 
-**What this means for Substrate**: Substrate scans every 5 seconds. Every scan costs CPU and memory. The "resource budget" is implicit — Substrate does not track its own resource consumption or set a policy about what proportion of a device's CPU it is allowed to consume. Mae's lesson: make the decay/replenishment balance explicit and intentional. For Substrate: the "decay" is the CPU/memory cost per scan, the "replenishment" is the idle capacity the device has. When the device is under load, the balance should shift — scans should back off. When the device is idle, they can be more aggressive. This is currently not implemented.
+**What this means for Submantle**: Submantle scans every 5 seconds. Every scan costs CPU and memory. The "resource budget" is implicit — Submantle does not track its own resource consumption or set a policy about what proportion of a device's CPU it is allowed to consume. Mae's lesson: make the decay/replenishment balance explicit and intentional. For Submantle: the "decay" is the CPU/memory cost per scan, the "replenishment" is the idle capacity the device has. When the device is under load, the balance should shift — scans should back off. When the device is idle, they can be more aggressive. This is currently not implemented.
 
 ---
 
@@ -79,7 +79,7 @@ Mae's 30,000+ warning flood (eliminated in Commit 1 of endurance hardening) came
 
 **The pattern**: Every component that publishes to the bus must register its channels at initialization time. This is not optional — it's part of startup correctness. Mae learned this the hard way at 50 rounds × 500 steps.
 
-**What this means for Substrate**: Substrate's EventBus (events.py) currently has 7 event types hardcoded in the `EventType` enum. There is no registration step — events just go into the enum. This works fine at current scale. But as Substrate grows (MCP events, agent health events, device-level events), missing registrations will cause exactly the same warning floods Mae experienced. Consider building a `register_channels()` call pattern before those problems occur.
+**What this means for Submantle**: Submantle's EventBus (events.py) currently has 7 event types hardcoded in the `EventType` enum. There is no registration step — events just go into the enum. This works fine at current scale. But as Submantle grows (MCP events, agent health events, device-level events), missing registrations will cause exactly the same warning floods Mae experienced. Consider building a `register_channels()` call pattern before those problems occur.
 
 ---
 
@@ -95,9 +95,9 @@ Where D is edge conductance, Q is flow through the edge, and gamma is natural de
 
 This is Hebbian learning applied to network structure: "use it or lose it" at the edge level, not just the synapse level.
 
-**Novel translation for Substrate**: Substrate builds a process tree (`build_process_tree()`) representing parent-child process relationships. It also has a `query_what_would_break()` function that follows child relationships. But the relationship graph is static — it does not track which relationships are active (parent-child communication happening) versus dormant (child exists but is forked and idle).
+**Novel translation for Submantle**: Submantle builds a process tree (`build_process_tree()`) representing parent-child process relationships. It also has a `query_what_would_break()` function that follows child relationships. But the relationship graph is static — it does not track which relationships are active (parent-child communication happening) versus dormant (child exists but is forked and idle).
 
-A lightweight Physarum-inspired pattern could track: which process relationships generate events (process started/died events that reference parent PIDs). Frequently-used relationships strengthen; dormant ones decay. Over time, Substrate would develop a weighted relationship model that distinguishes "this process always has children that matter" from "this parent sometimes has children but they're usually noise." This would make `query_what_would_break()` more accurate without requiring LLM inference — it's structural signal from observed behavior.
+A lightweight Physarum-inspired pattern could track: which process relationships generate events (process started/died events that reference parent PIDs). Frequently-used relationships strengthen; dormant ones decay. Over time, Submantle would develop a weighted relationship model that distinguishes "this process always has children that matter" from "this parent sometimes has children but they're usually noise." This would make `query_what_would_break()` more accurate without requiring LLM inference — it's structural signal from observed behavior.
 
 **Tradeoffs**: Adds state (relationship weights) and computation (weight update per scan). Must be configurable to disable. Not appropriate for the prototype — this is a V2+ concept.
 
@@ -107,11 +107,11 @@ A lightweight Physarum-inspired pattern could track: which process relationships
 
 Mae's Law 6 (Autopoietic Closure) states: the system must include itself as an object of its own awareness. The AutoHealer must know its own health. The SomaticMap must include itself as a tracked system.
 
-Substrate is an awareness layer for computing. By this same principle: Substrate must be part of the computing awareness it provides. When an agent queries Substrate about what processes are running and what's important, Substrate itself should appear in that list — with its own health status, resource consumption, uptime, and last scan time.
+Submantle is an awareness layer for computing. By this same principle: Submantle must be part of the computing awareness it provides. When an agent queries Submantle about what processes are running and what's important, Submantle itself should appear in that list — with its own health status, resource consumption, uptime, and last scan time.
 
-Currently, Substrate does not include itself in the process scan results. `scan_processes()` returns all processes including the Python process running Substrate, but it has no identity signature for itself, so it returns as an unidentified process.
+Currently, Submantle does not include itself in the process scan results. `scan_processes()` returns all processes including the Python process running Submantle, but it has no identity signature for itself, so it returns as an unidentified process.
 
-**The fix**: Add a Substrate identity signature to `signatures.json` for the Substrate daemon process. Give it importance: "critical". Add a health status endpoint that reports not just "is Substrate running" but "when did it last successfully scan, what is its SQLite lag, what is the event bus queue depth." This closes the autopoietic loop — Substrate knows what it is and where it stands.
+**The fix**: Add a Submantle identity signature to `signatures.json` for the Submantle daemon process. Give it importance: "critical". Add a health status endpoint that reports not just "is Submantle running" but "when did it last successfully scan, what is its SQLite lag, what is the event bus queue depth." This closes the autopoietic loop — Submantle knows what it is and where it stands.
 
 ---
 
@@ -119,9 +119,9 @@ Currently, Substrate does not include itself in the process scan results. `scan_
 
 Mae's endurance hardening revealed that privacy state management requires two layers to be synchronized, not one. Mae had `PrivacyManager` (the gate) and `EventBus` (the filter), and they had to be told separately.
 
-Substrate has implemented this correctly — `PrivacyManager._emit_toggle_event()` calls `self._event_bus.set_privacy_mode(new_state == PrivacyState.PRIVATE)` before emitting the `PRIVACY_TOGGLED` event. This is the right order: sync the filter before broadcasting the state change, so no process event leaks through between the state write and the filter update.
+Submantle has implemented this correctly — `PrivacyManager._emit_toggle_event()` calls `self._event_bus.set_privacy_mode(new_state == PrivacyState.PRIVATE)` before emitting the `PRIVACY_TOGGLED` event. This is the right order: sync the filter before broadcasting the state change, so no process event leaks through between the state write and the filter update.
 
-**This is already a solved pattern in Substrate** — noting it here as a validation that Substrate got this right independently.
+**This is already a solved pattern in Submantle** — noting it here as a validation that Submantle got this right independently.
 
 ---
 
@@ -131,11 +131,11 @@ Substrate has implemented this correctly — `PrivacyManager._emit_toggle_event(
 
 Mae's `CircadianRhythm` uses three phases (ACTIVE / CONSOLIDATION / REST) driven by simulation steps. Importantly, it notes in its docstring: "Unlike real organisms, Mae's cycle is not tied to wall-clock time."
 
-For Substrate, wall-clock time IS the right signal. Substrate runs on a real device with a real user. The user's sleep/wake pattern creates genuine circadian variation in device usage. Windows already implements this: the user is considered absent after 4 minutes of no keyboard/mouse input; Microsoft Defender shifts from 10-minute verification intervals (user present) to 30-second intervals (user away).
+For Submantle, wall-clock time IS the right signal. Submantle runs on a real device with a real user. The user's sleep/wake pattern creates genuine circadian variation in device usage. Windows already implements this: the user is considered absent after 4 minutes of no keyboard/mouse input; Microsoft Defender shifts from 10-minute verification intervals (user present) to 30-second intervals (user away).
 
-**The principle**: Substrate's scan frequency and depth should be modulated by user presence state. Three natural phases:
+**The principle**: Submantle's scan frequency and depth should be modulated by user presence state. Three natural phases:
 
-| Phase | Trigger | Substrate Behavior |
+| Phase | Trigger | Submantle Behavior |
 |-------|---------|-------------------|
 | ACTIVE | User present (input in last 4 min) | Minimal scan (5s interval, identity only, no heavy queries) |
 | CONSOLIDATION | User idle (10–60 min) | Moderate scan (30s interval, full awareness, signature updates) |
@@ -153,14 +153,14 @@ Windows provides idle detection via `GetLastInputInfo()` (Win32) and the Task Sc
 
 #### 11. Topology Health as a System Health Metric
 
-Mae's `get_health_report()` in `MycelialSubstrate` returns a rich topology health snapshot:
+Mae's `get_health_report()` in `MycelialSubmantle` returns a rich topology health snapshot:
 - `connectivity_ratio`: fraction of nodes reachable from any starting node (1.0 = fully connected; < 1.0 = fragmented)
 - `clustering_coefficient`: how much nodes cluster (high = strong local neighborhoods)
 - `avg_degree`: average connections per node
 - `isolated_nodes`: count of nodes with zero connections
 - `empty_nodes`: count of positions without agents
 
-For Mae, a drop in `connectivity_ratio` means agents are being cut off from communication. For Substrate, an analogous "topology health" concept applies to the process relationship graph. Current metrics in Substrate are flat counts (total_processes, identified_count). There is no measurement of graph health — whether the process relationship tree is as connected as it should be, whether critical hubs (PID 1 equivalent, init processes) retain their expected children.
+For Mae, a drop in `connectivity_ratio` means agents are being cut off from communication. For Submantle, an analogous "topology health" concept applies to the process relationship graph. Current metrics in Submantle are flat counts (total_processes, identified_count). There is no measurement of graph health — whether the process relationship tree is as connected as it should be, whether critical hubs (PID 1 equivalent, init processes) retain their expected children.
 
 **Translation**: A "process graph health" metric: does the observed process tree match expected topology? Missing expected children of a critical parent process could indicate that important processes have died without being noticed.
 
@@ -174,31 +174,31 @@ Mae's `CirculatorySystem` distributes compute, memory, and attention resources p
 
 The heart rate increases under high total demand (sympathetic response) and decreases when demand is low (parasympathetic). Supply regenerates each step at 15% of max — autopoietic closure applied to resource management.
 
-**Translation for Substrate**: When multiple agents query Substrate simultaneously, there is no prioritization — queries are handled in arrival order. A demand-proportional approach would prioritize queries from agents with higher trust scores and more critical declared capabilities. This is a natural extension of the existing agent trust schema. An agent with `importance: critical` querying about a critical process gets faster service than an unknown agent querying for diagnostics.
+**Translation for Submantle**: When multiple agents query Submantle simultaneously, there is no prioritization — queries are handled in arrival order. A demand-proportional approach would prioritize queries from agents with higher trust scores and more critical declared capabilities. This is a natural extension of the existing agent trust schema. An agent with `importance: critical` querying about a critical process gets faster service than an unknown agent querying for diagnostics.
 
-**Status**: Emerging, not yet needed. Relevant when Substrate has 10+ registered agents making concurrent queries.
+**Status**: Emerging, not yet needed. Relevant when Submantle has 10+ registered agents making concurrent queries.
 
 ---
 
 ### Gaps and Unknowns
 
-**Gap 1: Substrate has no self-health reporting**
-The most significant gap is that Substrate does not report its own health to any internal system. There is no equivalent of Mae's SomaticMap heartbeat for Substrate's own components (scanner thread, SQLite writer, API, event bus). A Substrate instance could be functioning partially (API up, scanner dead) with no way to detect this.
+**Gap 1: Submantle has no self-health reporting**
+The most significant gap is that Submantle does not report its own health to any internal system. There is no equivalent of Mae's SomaticMap heartbeat for Submantle's own components (scanner thread, SQLite writer, API, event bus). A Submantle instance could be functioning partially (API up, scanner dead) with no way to detect this.
 
-**Gap 2: The decay/replenishment balance for Substrate's own resources is implicit**
-Substrate's scan loop in `api.py` runs at a fixed interval regardless of device load. There is no mechanism to back off when the device is under CPU pressure, disk pressure, or memory pressure. Mae's endurance run taught that zero replenishment leads to starvation. The analog here is: running at full scan rate during peak device load causes the device to resent Substrate rather than trust it. "Lightweight first" (Substrate's own principle #1) requires measuring and adapting, not just hoping the fixed interval is small enough.
+**Gap 2: The decay/replenishment balance for Submantle's own resources is implicit**
+Submantle's scan loop in `api.py` runs at a fixed interval regardless of device load. There is no mechanism to back off when the device is under CPU pressure, disk pressure, or memory pressure. Mae's endurance run taught that zero replenishment leads to starvation. The analog here is: running at full scan rate during peak device load causes the device to resent Submantle rather than trust it. "Lightweight first" (Submantle's own principle #1) requires measuring and adapting, not just hoping the fixed interval is small enough.
 
-**Gap 3: Region isolation has no Substrate equivalent**
-Mae can call `isolate_region()` to surgically remove a failing component from the network while keeping the rest healthy. Substrate has no equivalent. If the SQLite writer deadlocks, the entire system halts. Isolation would mean: the scanner continues writing to an in-memory buffer, the API continues serving the last known state, and the DB writer is restarted independently. The components are not currently isolated enough for this.
+**Gap 3: Region isolation has no Submantle equivalent**
+Mae can call `isolate_region()` to surgically remove a failing component from the network while keeping the rest healthy. Submantle has no equivalent. If the SQLite writer deadlocks, the entire system halts. Isolation would mean: the scanner continues writing to an in-memory buffer, the API continues serving the last known state, and the DB writer is restarted independently. The components are not currently isolated enough for this.
 
 **Gap 4: The EventBus has no backpressure mechanism**
-Mae's EventBus and Substrate's EventBus share this gap. If a subscriber is slow, it blocks the dispatcher. If events flood in faster than they can be processed, there is no shedding mechanism. Mae learned about this indirectly through the starvation event flood (before the replenishment fix). Substrate could face the same issue if process churn is high (many processes starting/dying per scan).
+Mae's EventBus and Submantle's EventBus share this gap. If a subscriber is slow, it blocks the dispatcher. If events flood in faster than they can be processed, there is no shedding mechanism. Mae learned about this indirectly through the starvation event flood (before the replenishment fix). Submantle could face the same issue if process churn is high (many processes starting/dying per scan).
 
 **Gap 5: Unknown — how much does Windows idle detection cost?**
 The circadian-aware scheduling proposal relies on calling `GetLastInputInfo()` or similar to detect user presence. The cost of this call is unknown from research — it may be negligible, or it may require elevated permissions on some Windows configurations. This needs a 30-minute validation before being built.
 
 **Gap 6: Key mismatch pattern**
-Mae's HANDOFF.md documents that `_on_starvation()` read `message.get("node_id")` but the substrate published `{"nodes": [...]}` — a key mismatch that caused the starvation handler to silently do nothing for weeks. This is a category of bug that unit tests often miss because they test the handler or the publisher in isolation, not the message contract between them. Substrate's current event payload contracts are informal (plain dicts). This gap will grow as event types multiply.
+Mae's HANDOFF.md documents that `_on_starvation()` read `message.get("node_id")` but the substrate published `{"nodes": [...]}` — a key mismatch that caused the starvation handler to silently do nothing for weeks. This is a category of bug that unit tests often miss because they test the handler or the publisher in isolation, not the message contract between them. Submantle's current event payload contracts are informal (plain dicts). This gap will grow as event types multiply.
 
 ---
 
@@ -206,15 +206,15 @@ Mae's HANDOFF.md documents that `_on_starvation()` read `message.get("node_id")`
 
 #### The Shared Metaphor Is Architecturally Generative
 
-Both Mae's `MycelialSubstrate` and Substrate (the product) are defined by the same metaphor: the soil that everything grows in. The metaphor is not decoration — it drove concrete architectural decisions in Mae that translate directly:
+Both Mae's `MycelialSubmantle` and Submantle (the product) are defined by the same metaphor: the soil that everything grows in. The metaphor is not decoration — it drove concrete architectural decisions in Mae that translate directly:
 
-1. **The soil is aware of its own health.** `get_health_report()` is a first-class method on `MycelialSubstrate`. Substrate should have an equivalent — not just "is the daemon running" but a rich health snapshot including scanner timing, DB lag, event bus depth, and self-identification.
+1. **The soil is aware of its own health.** `get_health_report()` is a first-class method on `MycelialSubmantle`. Submantle should have an equivalent — not just "is the daemon running" but a rich health snapshot including scanner timing, DB lag, event bus depth, and self-identification.
 
-2. **The soil manages its own resource flow.** `NutrientFlowEngine` tracks decay and replenishment explicitly. Substrate's resource management is implicit (hope the fixed scan interval is light enough). Making it explicit — measuring CPU per scan, adapting interval to device load — is the same transition Mae made from zero replenishment to intentional mild scarcity.
+2. **The soil manages its own resource flow.** `NutrientFlowEngine` tracks decay and replenishment explicitly. Submantle's resource management is implicit (hope the fixed scan interval is light enough). Making it explicit — measuring CPU per scan, adapting interval to device load — is the same transition Mae made from zero replenishment to intentional mild scarcity.
 
-3. **The soil heals itself.** Mae's AutoHealer is wired directly to substrate events. Substrate has no healing loop. The three-phase pattern (isolate, assess, restore) is simple enough to implement at prototype scale without introducing architectural complexity.
+3. **The soil heals itself.** Mae's AutoHealer is wired directly to substrate events. Submantle has no healing loop. The three-phase pattern (isolate, assess, restore) is simple enough to implement at prototype scale without introducing architectural complexity.
 
-4. **The soil responds to circadian phases.** Mae's substrate flow rates modulate based on phase (REST = half decay, half flow). Substrate's computing environment has real circadian variation driven by user presence. Adapting scan frequency to idle state is the same principle applied to wall-clock time rather than simulation steps.
+4. **The soil responds to circadian phases.** Mae's substrate flow rates modulate based on phase (REST = half decay, half flow). Submantle's computing environment has real circadian variation driven by user presence. Adapting scan frequency to idle state is the same principle applied to wall-clock time rather than simulation steps.
 
 #### What Endurance Testing Taught
 
@@ -227,13 +227,13 @@ Mae's 50-round, 25,000-step endurance run surfaced six categories of failure tha
 5. **Zero replenishment**: All nodes starved after ~350 steps. Fix: explicit replenishment rate.
 6. **Cooldown absence**: Re-healed same system every scan. Fix: per-system cooldown windows.
 
-For a daemon that runs 24/7, these are exactly the failure modes that matter. Substrate's 160 tests cover unit behavior; they do not cover what happens at 72 hours of continuous operation, what happens when the device wakes from sleep mid-scan, or what happens when process churn spikes during an update storm. Mae's endurance approach — run for thousands of steps, watch the metrics, find what drifts — is directly applicable to Substrate.
+For a daemon that runs 24/7, these are exactly the failure modes that matter. Submantle's 160 tests cover unit behavior; they do not cover what happens at 72 hours of continuous operation, what happens when the device wakes from sleep mid-scan, or what happens when process churn spikes during an update storm. Mae's endurance approach — run for thousands of steps, watch the metrics, find what drifts — is directly applicable to Submantle.
 
-#### Priority Stack for Substrate
+#### Priority Stack for Submantle
 
-Ranked by leverage vs. implementation cost, given Substrate's current state and design principles:
+Ranked by leverage vs. implementation cost, given Submantle's current state and design principles:
 
-1. **Add Substrate's own identity signature** (1 hour): Closes the autopoietic loop. Substrate appears in its own awareness report as a critical process. High leverage, trivial cost.
+1. **Add Submantle's own identity signature** (1 hour): Closes the autopoietic loop. Submantle appears in its own awareness report as a critical process. High leverage, trivial cost.
 
 2. **Explicit resource budget with idle-adaptive scan rate** (1–2 days): Replace fixed 5-second scan with idle-aware scheduling. ACTIVE phase: back off. REST phase: more aggressive maintenance. This directly serves "lightweight first" and turns the device from a passive target to an active collaborator.
 
@@ -243,11 +243,11 @@ Ranked by leverage vs. implementation cost, given Substrate's current state and 
 
 5. **Formalize event payload contracts** (ongoing): The key mismatch pattern (node_id vs nodes) is a maintenance tax that compounds with system growth. Even informal documentation of expected payload shape per EventType — in the docstring of each `emit()` call — would catch these before they hit a 50-round endurance run equivalent.
 
-Items 4 and 5 from Mae's endurance list (cooldown windows and per-system circuit breakers) are not yet relevant for Substrate since there is nothing to cool down. They become relevant when the healing loop is built.
+Items 4 and 5 from Mae's endurance list (cooldown windows and per-system circuit breakers) are not yet relevant for Submantle since there is nothing to cool down. They become relevant when the healing loop is built.
 
 ---
 
-*Research sourced from: mae-core source files (mycelial_substrate.py, nutrient_flow.py, topology.py, auto_healer.py, circadian_rhythm.py, MAES_BIOLOGY.md, HANDOFF.md, substrate/CONNECTIONS.md), Substrate prototype files (substrate.py, events.py, privacy.py, database.py), external sources below.*
+*Research sourced from: mae-core source files (mycelial_substrate.py, nutrient_flow.py, topology.py, auto_healer.py, circadian_rhythm.py, MAES_BIOLOGY.md, HANDOFF.md, substrate/CONNECTIONS.md), Submantle prototype files (substrate.py, events.py, privacy.py, database.py), external sources below.*
 
 **External Sources Referenced:**
 - [Self-Healing Systems - GeeksforGeeks](https://www.geeksforgeeks.org/system-design/self-healing-systems-system-design/)

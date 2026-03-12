@@ -1,4 +1,4 @@
-# Expedition Synthesis: Mae/MIDGE Architectural Principles for Substrate
+# Expedition Synthesis: Mae/MIDGE Architectural Principles for Submantle
 ## Date: 2026-03-10
 ## Vetted by: Orchestrator
 ## Alignment: Checked against Research Brief
@@ -20,22 +20,22 @@ Derived from Mae's ConnectionRegistry (PERMISSIVE → ADVISORY → BLOCKING) and
 ### 2. Three Independent Trust Signals, Not One
 **Source:** Teams 1, 2, 3 converged. Validators confirmed the math.
 
-Trust scoring must use multiple independent signals (Mae's Law 7: Rule of 3/5). The three signals map to Substrate's existing schema:
+Trust scoring must use multiple independent signals (Mae's Law 7: Rule of 3/5). The three signals map to Submantle's existing schema:
 - **TEMPORAL (Longevity):** registration_time, last_seen
 - **BEHAVIORAL (Activity):** total_queries / time elapsed
 - **OPERATIONAL (Incidents):** incidents / total_queries (Beta Reputation System)
 
 The Beta Reputation System (Jøsang 2002) is the right algorithm. It maps directly to `total_queries` (alpha) and `incidents` (beta). MIDGE validates this in production via ThompsonSampler. Formula is O(1) arithmetic, pure Python, no dependencies.
 
-### 3. Substrate Must Know Itself
+### 3. Submantle Must Know Itself
 **Source:** Teams 2 and 4 converged. All validators confirmed.
 
-Substrate does not appear in its own awareness report. Add a Substrate identity signature to `signatures.json` (importance: "critical"). This closes the autopoietic loop — the awareness layer knows it exists. ~15 minutes of work.
+Submantle does not appear in its own awareness report. Add a Submantle identity signature to `signatures.json` (importance: "critical"). This closes the autopoietic loop — the awareness layer knows it exists. ~15 minutes of work.
 
 ### 4. Event Payload Contracts Are Fragile
 **Source:** Teams 1 and 4 converged. Validators confirmed with Mae evidence.
 
-Mae's endurance run revealed silent failures from key mismatches in event payloads (`node_id` vs `{"nodes": [...]}`). Substrate's events are plain dicts with no schema enforcement. As event types multiply, this will cause the same class of silent bug. Formalizing expected payload shapes per EventType — even just in docstrings — prevents this.
+Mae's endurance run revealed silent failures from key mismatches in event payloads (`node_id` vs `{"nodes": [...]}`). Submantle's events are plain dicts with no schema enforcement. As event types multiply, this will cause the same class of silent bug. Formalizing expected payload shapes per EventType — even just in docstrings — prevents this.
 
 ---
 
@@ -73,7 +73,7 @@ Six categories of failure invisible to unit tests, surfaced only after 25,000 si
 5. Zero replenishment (all nodes starved after ~350 steps)
 6. Cooldown absence (re-healed same system every scan)
 
-**For Substrate:** Run the daemon for 72 hours and watch what drifts. Unit tests won't find these.
+**For Submantle:** Run the daemon for 72 hours and watch what drifts. Unit tests won't find these.
 
 ---
 
@@ -96,7 +96,7 @@ Validators correctly noted this is essentially "add a `get_health()` method to e
 ### 10. Configuration Over Code for Future Collectors
 **Source:** Team 2, aligned with existing `signatures.json` pattern.
 
-Substrate's signatures.json already embodies the Stem Cell Principle (Law 5): same scanner, different configuration. When adding hardware sensors, network scanners, etc., use the same pattern — one `AwarenessCollector` base, specialization via configuration profiles, not bespoke classes.
+Submantle's signatures.json already embodies the Stem Cell Principle (Law 5): same scanner, different configuration. When adding hardware sensors, network scanners, etc., use the same pattern — one `AwarenessCollector` base, specialization via configuration profiles, not bespoke classes.
 
 ---
 
@@ -120,7 +120,7 @@ Substrate's signatures.json already embodies the Stem Cell Principle (Law 5): sa
 ### Trust Scoring Architecture: Teams 1 vs 3
 - **Team 1:** Pure function over existing schema fields. No new files.
 - **Team 3:** Separate `beta_distributions.json` + `TrustScorer` class + feedback loop.
-- **Resolution:** Team 1's approach first (uses what exists, zero new infrastructure). Team 3's per-capability tracking is a valid V2 extension when Substrate needs to trust individual agent capabilities differently.
+- **Resolution:** Team 1's approach first (uses what exists, zero new infrastructure). Team 3's per-capability tracking is a valid V2 extension when Submantle needs to trust individual agent capabilities differently.
 
 ### EventBus Priority: Team 3 vs Validators
 - **Team 3:** Stream layer is "Action 1: highest priority."
@@ -148,12 +148,12 @@ Substrate's signatures.json already embodies the Stem Cell Principle (Law 5): sa
 Based on all research, all validation, and dependency analysis:
 
 **Immediate (before next build round):**
-1. Add Substrate identity signature to `signatures.json` (~15 min)
+1. Add Submantle identity signature to `signatures.json` (~15 min)
 2. Formalize event payload shapes in EventType docstrings (ongoing discipline)
 
 **Next build round (with dashboard depth):**
 3. Add auth middleware to query endpoints + wire `record_query()`
-4. Define incident types for Substrate agents
+4. Define incident types for Submantle agents
 5. Wire `increment_agent_incidents()` into incident detection
 6. Add `compute_trust()` pure function (Team 1's formula)
 7. Return trust_score in `/api/agents` responses (Phase 1 Advisory)

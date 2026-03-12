@@ -1,20 +1,20 @@
 """
-Substrate Privacy Mode — The real off switch.
+Submantle Privacy Mode — The real off switch.
 
-PrivacyManager controls whether Substrate is actively watching.
+PrivacyManager controls whether Submantle is actively watching.
 
 AWARE (default):
     Normal operation. Processes are scanned, events emitted, state written to
     SQLite scan tables. Everything works.
 
 PRIVATE:
-    Substrate stops watching. The guarantees:
+    Submantle stops watching. The guarantees:
     - No new process scans run
     - In-memory process cache is dropped immediately on toggle
     - Nothing written to SQLite scan tables
     - Process events (PROCESS_STARTED, PROCESS_DIED, SCAN_COMPLETE) are suppressed
     - PRIVACY_TOGGLED event still fires (so the dashboard knows)
-    - Health checks still respond ("Substrate is running")
+    - Health checks still respond ("Submantle is running")
     - Agent registry still works (identity is not sensitive — activity is)
 
 Privacy state is persisted to the SQLite settings table so it survives restarts.

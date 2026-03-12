@@ -4,18 +4,18 @@
 
 **The credit bureau for AI agents.** Every agent earns a trust score through observed behavior, carries it everywhere as a portable credential, and brands decide their own thresholds.
 
-Substrate is two things in one:
+Submantle is two things in one:
 1. **Awareness layer** — knows what's running on your devices, what it means, what would break
 2. **Behavioral trust infrastructure** — scores agents based on what they actually do, not what they claim
 
-Think of it like the ground beneath everything. Substrate isn't an agent, isn't a tool, isn't a security product. It's the earth that agents and tools grow from. It provides knowledge and trust scores. It never acts.
+Think of it like the ground beneath everything. Submantle isn't an agent, isn't a tool, isn't a security product. It's the earth that agents and tools grow from. It provides knowledge and trust scores. It never acts.
 
 **Read VISION.md** for the full product vision, business model, and competitive landscape.
 **Read HANDOFF.md** for current state and what was last built.
 
 ## Why This Matters — The Competitive Clock
 
-As of March 2026, **$450M+ in funding** has been poured into adjacent agent trust products. None of them occupy Substrate's specific position, but they're converging toward it:
+As of March 2026, **$450M+ in funding** has been poured into adjacent agent trust products. None of them occupy Submantle's specific position, but they're converging toward it:
 
 - **HUMAN Security** ($300M+, 469 employees) — behavioral trust at the web layer. Per-app, per-session. Trust doesn't travel.
 - **Zenity** ($55M, Microsoft M12) — enterprise agent governance. Scores don't leave the building.
@@ -28,9 +28,9 @@ As of March 2026, **$450M+ in funding** has been poured into adjacent agent trus
 
 **The window is 12-18 months.** The IETF has an informational draft on behavioral evidence but no protocol. NIST launched an agent standards initiative. The field is organizing. Ship production code and get one real customer loop before someone with $50M fills this exact gap.
 
-## The Edge — Why Substrate Wins
+## The Edge — Why Submantle Wins
 
-Substrate's defensible position is **structural neutrality**:
+Submantle's defensible position is **structural neutrality**:
 
 - Microsoft can't be neutral (favors Azure/Windows agents)
 - Anthropic can't be neutral (favors Claude agents)
@@ -38,7 +38,7 @@ Substrate's defensible position is **structural neutrality**:
 - HUMAN is per-application — trust resets at every site boundary
 - Mnemom requires agents to opt in and route through their gateway
 
-**Substrate is the only product positioned as neutral infrastructure** — open protocol, on-device computation, no enforcement. Platform vendors cannot build this without destroying their own business incentives. This is why Visa works: banks couldn't trust each other's payment systems, so they needed a neutral intermediary.
+**Submantle is the only product positioned as neutral infrastructure** — open protocol, on-device computation, no enforcement. Platform vendors cannot build this without destroying their own business incentives. This is why Visa works: banks couldn't trust each other's payment systems, so they needed a neutral intermediary.
 
 **Additional structural advantages:**
 - **OS-level observation without cooperation** — sees everything running, doesn't ask permission
@@ -48,13 +48,13 @@ Substrate's defensible position is **structural neutrality**:
 
 ## Design Principles — Inviolable
 
-1. **Lightweight first.** Substrate must be invisible in resource usage. No heavy models.
+1. **Lightweight first.** Submantle must be invisible in resource usage. No heavy models.
 2. **Community knowledge over AI inference.** Signatures, not LLMs, identify processes.
 3. **Privacy by architecture.** On-device processing. E2E encrypted sync. No telemetry.
-4. **Always aware, never acting.** Substrate provides knowledge and trust scores. It NEVER blocks, gates, or throttles agents. Brands and platforms enforce their own thresholds using Substrate's data. This applies to BOTH the awareness layer AND the trust layer. This is the Visa model — Visa doesn't decide whether you can buy something, the merchant does.
+4. **Always aware, never acting.** Submantle provides knowledge and trust scores. It NEVER blocks, gates, or throttles agents. Brands and platforms enforce their own thresholds using Submantle's data. This applies to BOTH the awareness layer AND the trust layer. This is the Visa model — Visa doesn't decide whether you can buy something, the merchant does.
 5. **Inner ring first.** Software awareness before hardware before environment.
-6. **Deterministic scoring only.** Trust formulas must be pure math (Beta Reputation), not ML. This keeps Substrate outside EU AI Act scope permanently. No ML-based anomaly detection, no pattern inference. Adding ML would be an existential regulatory mistake.
-7. **Credit bureau model.** Substrate records incident reports from third parties. It does NOT detect incidents itself. Banks report missed payments to the bureau; the bureau stores them. Same model.
+6. **Deterministic scoring only.** Trust formulas must be pure math (Beta Reputation), not ML. This keeps Submantle outside EU AI Act scope permanently. No ML-based anomaly detection, no pattern inference. Adding ML would be an existential regulatory mistake.
+7. **Credit bureau model.** Submantle records incident reports from third parties. It does NOT detect incidents itself. Banks report missed payments to the bureau; the bureau stores them. Same model.
 
 ## Trust Layer Architecture
 

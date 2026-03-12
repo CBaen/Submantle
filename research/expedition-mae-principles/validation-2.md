@@ -1,4 +1,4 @@
-# Expedition Validation Report: Mae/MIDGE Architectural Principles for Substrate
+# Expedition Validation Report: Mae/MIDGE Architectural Principles for Submantle
 ## Date: 2026-03-10
 ## Validator: Independent Review
 
@@ -16,13 +16,13 @@ This report follows divergence-first protocol. Evidence challenges, contradictio
 
 Team 3 cites "IBM Research 2021 demonstrated Granger causality on microservice log data" twice — once under the Convergence Quorum section and again under Granger Causality. The source listed is "IBM Research paper on cloud microservices" with no author, title, DOI, or arXiv ID. This is not a verifiable citation. A vague institutional name does not constitute a source. The claim may be true, but the evidence is not there to confirm it.
 
-More critically, the application is potentially misaligned: Granger causality for cloud microservices operates on log streams from services that are already architecturally defined and monitored with structured telemetry. Substrate's SQLite event table stores PROCESS_STARTED, PROCESS_DIED, and SCAN_COMPLETE events — a far sparser, less structured signal. The Granger transfer assumes the process event data has the statistical properties needed for the F-test, which Team 3 partially acknowledges in Gap 3 but does not fully resolve. The citation is used to support a novel claim without adequate grounding.
+More critically, the application is potentially misaligned: Granger causality for cloud microservices operates on log streams from services that are already architecturally defined and monitored with structured telemetry. Submantle's SQLite event table stores PROCESS_STARTED, PROCESS_DIED, and SCAN_COMPLETE events — a far sparser, less structured signal. The Granger transfer assumes the process event data has the statistical properties needed for the F-test, which Team 3 partially acknowledges in Gap 3 but does not fully resolve. The citation is used to support a novel claim without adequate grounding.
 
 ### 1.2 Team 3's Pearson Correlation Claim Has No Production Validation
 
-The Pearson correlation tracking claim is presented as "battle-tested" because MIDGE uses it. But the evidence given for Substrate's application — "after N process scan cycles, compute cross-domain correlations between process identity events and resource events" — has no prior art at the process-monitoring layer. MIDGE's CorrelationTracker is validated for financial signals that have daily observations and years of history. Process events on a desktop PC are ephemeral and non-stationary. The paper cited for "detect cross-domain anomalies" is MIDGE's own implementation documentation, not external production validation of this approach applied to OS-level process data.
+The Pearson correlation tracking claim is presented as "battle-tested" because MIDGE uses it. But the evidence given for Submantle's application — "after N process scan cycles, compute cross-domain correlations between process identity events and resource events" — has no prior art at the process-monitoring layer. MIDGE's CorrelationTracker is validated for financial signals that have daily observations and years of history. Process events on a desktop PC are ephemeral and non-stationary. The paper cited for "detect cross-domain anomalies" is MIDGE's own implementation documentation, not external production validation of this approach applied to OS-level process data.
 
-The finding should not be classified as battle-tested for Substrate's context. It is a novel idea with MIDGE inspiration and no independent validation at the process monitoring layer.
+The finding should not be classified as battle-tested for Submantle's context. It is a novel idea with MIDGE inspiration and no independent validation at the process monitoring layer.
 
 ### 1.3 Team 2's "Self-sustaining Software Systems (S4)" Citation Is Thin
 
@@ -69,7 +69,7 @@ Each team provides its own priority stack:
 - Team 1: Enforcement mode ladder (advisory → soft gate → hard gate), with no explicit timeline framing
 - Team 2: Mixin decomposition, fractal hierarchy naming, configuration over code, selective holon, autopoietic loop
 - Team 3: EventBus stream layer, convergence scoring for `query_what_would_break`, Thompson trust scoring
-- Team 4: Add Substrate signature (1 hour), idle-adaptive scan rate (1–2 days), watchdog heartbeat (half day), three-phase healing (2–3 days), formalize event payload contracts (ongoing)
+- Team 4: Add Submantle signature (1 hour), idle-adaptive scan rate (1–2 days), watchdog heartbeat (half day), three-phase healing (2–3 days), formalize event payload contracts (ongoing)
 
 There are 15+ distinct action items across four teams with no cross-team ranking. A builder attempting to execute these in parallel would face real architectural dependencies: Team 1's trust score formula requires the database schema to be unchanged; Team 3's stream layer touches the same `events.py` file that Team 4's event payload contracts discussion targets; Team 2's autopoietic loop and Team 4's watchdog heartbeat overlap significantly. This is a structural coordination gap the expedition as a whole has left unresolved.
 
@@ -81,7 +81,7 @@ There are 15+ distinct action items across four teams with no cross-team ranking
 
 The research brief is explicit: "Don't over-engineer the prototype — it's for proving concepts."
 
-Team 3 dedicates a substantial section to Granger causality analysis, including bidirectional Granger pair detection and weekly offline analysis against the SQLite events table. Team 3 does file this under "Emerging" and notes it requires weeks of data accumulation. But the framing still presents it as a design goal for Substrate — and the Granger section receives as much detail as the simpler, immediately applicable recommendations. The asymmetry in documentation depth implicitly elevates a "later, maybe" idea into the same tier as "do now."
+Team 3 dedicates a substantial section to Granger causality analysis, including bidirectional Granger pair detection and weekly offline analysis against the SQLite events table. Team 3 does file this under "Emerging" and notes it requires weeks of data accumulation. But the framing still presents it as a design goal for Submantle — and the Granger section receives as much detail as the simpler, immediately applicable recommendations. The asymmetry in documentation depth implicitly elevates a "later, maybe" idea into the same tier as "do now."
 
 The brief says: "pure inspiration, not integration planning." Granger causality crosses into integration planning territory given the depth it is discussed at.
 
@@ -95,9 +95,9 @@ This is a creative reinterpretation, not a clear constraint violation. But it is
 
 ### 3.3 Team 4's Circadian Scheduling Is a Feature Proposal, Not a Principle Transfer
 
-The research brief asks for principles from Mae/MIDGE that could inform Substrate's DNA — "pure inspiration." Circadian-aware resource scheduling is not a principle from Mae that transfers. Mae's CircadianRhythm module runs on simulation step counts; the team correctly notes it is "not tied to wall-clock time." The actual wall-clock circadian scheduling proposal in Team 4 is an independent product feature idea, not a transfer from Mae.
+The research brief asks for principles from Mae/MIDGE that could inform Submantle's DNA — "pure inspiration." Circadian-aware resource scheduling is not a principle from Mae that transfers. Mae's CircadianRhythm module runs on simulation step counts; the team correctly notes it is "not tied to wall-clock time." The actual wall-clock circadian scheduling proposal in Team 4 is an independent product feature idea, not a transfer from Mae.
 
-The finding is useful and well-reasoned on its own terms. But its presence in this expedition is technically off-angle. It answers "here is a feature Substrate should have" rather than "here is a principle Mae taught us that should be in Substrate's DNA."
+The finding is useful and well-reasoned on its own terms. But its presence in this expedition is technically off-angle. It answers "here is a feature Submantle should have" rather than "here is a principle Mae taught us that should be in Submantle's DNA."
 
 ### 3.4 Team 1's Trust Formula Adds a New Schema Column
 
@@ -109,7 +109,7 @@ Adding a new column is not restructuring, but it does require a schema migration
 
 ## 4. Missing Angles — What Research Was Not Done
 
-### 4.1 No Team Examined Substrate's `api.py` Load Patterns
+### 4.1 No Team Examined Submantle's `api.py` Load Patterns
 
 All four teams examined the prototype source code but none analyzed `api.py`'s `_get_state()` function in depth. This function is the critical path for every recommendation: it triggers scanning, manages the 5-second cache, writes to SQLite, and builds the tree. Every team's recommendation about scan loops, caching, and autopoiesis needs to engage with this function as the current implementation. Teams 2 and 4 reference the "pull-based scan triggered by API calls" as a gap, but neither examines what would need to change in `_get_state()` to make it push-based, or what cache invalidation behavior changes when a background thread is running.
 
@@ -135,7 +135,7 @@ Team 3 proposes adding a bounded in-memory deque stream layer to the EventBus (~
 
 ### 5.1 Strong Convergence: Trust Scoring Algorithm and Schema Alignment
 
-Teams 1 and 3 independently arrived at Beta distribution-based trust scoring, both tracing it through MIDGE's ThompsonSampler. Both independently observed that Substrate's existing schema (`total_queries`, `incidents`, `registration_time`, `last_seen`) already captures the inputs needed. Neither team knew the other's approach when writing. This convergence is meaningful — it is the same mathematical insight arrived at from different entry points (Mae's mathematical laws via Team 1, MIDGE's implementation via Team 3). The underlying model is sound.
+Teams 1 and 3 independently arrived at Beta distribution-based trust scoring, both tracing it through MIDGE's ThompsonSampler. Both independently observed that Submantle's existing schema (`total_queries`, `incidents`, `registration_time`, `last_seen`) already captures the inputs needed. Neither team knew the other's approach when writing. This convergence is meaningful — it is the same mathematical insight arrived at from different entry points (Mae's mathematical laws via Team 1, MIDGE's implementation via Team 3). The underlying model is sound.
 
 ### 5.2 Strong Convergence: Enforcement Mode Ladder
 
@@ -143,15 +143,15 @@ Team 1 (Section 5.2) and Team 4 (implicitly in the three-phase healing discussio
 
 ### 5.3 Moderate Convergence: Background Scan Loop Needed
 
-Teams 2, 3, and 4 all independently identified that Substrate's pull-based scan (triggered by API calls) is architecturally insufficient for a daemon that should be "always aware." Team 2 frames it as autopoietic closure. Team 3 frames it as a prerequisite for the ambient stream MCP server. Team 4 frames it as a watchdog heartbeat requirement. All three are pointing at the same gap: the scan loop must become push-based and self-sustaining. The convergence on this is genuine, even though the three teams frame the solution differently.
+Teams 2, 3, and 4 all independently identified that Submantle's pull-based scan (triggered by API calls) is architecturally insufficient for a daemon that should be "always aware." Team 2 frames it as autopoietic closure. Team 3 frames it as a prerequisite for the ambient stream MCP server. Team 4 frames it as a watchdog heartbeat requirement. All three are pointing at the same gap: the scan loop must become push-based and self-sustaining. The convergence on this is genuine, even though the three teams frame the solution differently.
 
 ### 5.4 Moderate Convergence: Event Payload Contracts Are Fragile
 
-Team 3 (Gap 6 in Mae's lessons) and Team 4 (Gap 6: Key mismatch pattern from Mae's HANDOFF.md) both flag that informal event payload contracts (plain dicts with no enforcement) are a maintenance liability. Mae's `node_id` vs `{"nodes": [...]}` mismatch silently failed for weeks. Substrate's EventBus passes plain dicts as `data` in every `emit()` call — the shape of each event type is documented only in docstrings and in the calling code, not in any enforced contract. Both teams flag this. It will become a real problem as event types multiply.
+Team 3 (Gap 6 in Mae's lessons) and Team 4 (Gap 6: Key mismatch pattern from Mae's HANDOFF.md) both flag that informal event payload contracts (plain dicts with no enforcement) are a maintenance liability. Mae's `node_id` vs `{"nodes": [...]}` mismatch silently failed for weeks. Submantle's EventBus passes plain dicts as `data` in every `emit()` call — the shape of each event type is documented only in docstrings and in the calling code, not in any enforced contract. Both teams flag this. It will become a real problem as event types multiply.
 
-### 5.5 Moderate Convergence: Substrate Must Know Itself
+### 5.5 Moderate Convergence: Submantle Must Know Itself
 
-Teams 2, 4, and (implicitly) 1 all independently arrive at the same principle: Substrate should include itself in its own awareness. Team 4 calls it autopoietic closure (Substrate appears in its own process scan as a critical process). Team 2 calls it `know_self` from the holon protocol (Substrate knows its own version, configuration, and health). Team 1 calls it the balance feedback pathway (agents get trust score signals). The meta-principle is the same: a system that monitors everything but knows nothing about itself is incomplete. The specific mechanisms differ but the insight converges.
+Teams 2, 4, and (implicitly) 1 all independently arrive at the same principle: Submantle should include itself in its own awareness. Team 4 calls it autopoietic closure (Submantle appears in its own process scan as a critical process). Team 2 calls it `know_self` from the holon protocol (Submantle knows its own version, configuration, and health). Team 1 calls it the balance feedback pathway (agents get trust score signals). The meta-principle is the same: a system that monitors everything but knows nothing about itself is incomplete. The specific mechanisms differ but the insight converges.
 
 ---
 
@@ -159,7 +159,7 @@ Teams 2, 4, and (implicitly) 1 all independently arrive at the same principle: S
 
 ### 6.1 The Code Reveals a Critical Gap All Teams Understated: `increment_agent_incidents()` Is Never Called
 
-All four teams build recommendations on top of the `incidents` field in the agent registry schema. Team 1 explicitly flags this as Gap 1: "The `incidents` field exists in Substrate's schema, but there is no code that calls `increment_agent_incidents()`." Team 3 does not flag this gap at all — it proceeds as if the incident counter is functional. Team 4 does not address it.
+All four teams build recommendations on top of the `incidents` field in the agent registry schema. Team 1 explicitly flags this as Gap 1: "The `incidents` field exists in Submantle's schema, but there is no code that calls `increment_agent_incidents()`." Team 3 does not flag this gap at all — it proceeds as if the incident counter is functional. Team 4 does not address it.
 
 Reading the actual code confirms Team 1's observation: `database.py` has `increment_agent_incidents()` implemented (line 309), and `agent_registry.py` has `record_query()` that increments `total_queries`, but there is no call path anywhere in the codebase from any observable behavior to `increment_agent_incidents()`. An agent can make malformed queries, trigger rate limits, or behave anomalously, and `incidents` stays zero forever.
 
@@ -173,7 +173,7 @@ Adding convergence scoring requires either: (a) passing additional arguments to 
 
 ### 6.3 Team 4's Highest-Priority Item Is Not in Any Other Team's Plan
 
-Team 4's top-priority recommendation is: "Add a Substrate identity signature to `signatures.json` for the Substrate daemon process." This is 1 hour of work, closes the autopoietic loop, and makes Substrate self-aware in its own reports. No other team mentions this. It does not appear in Team 1's trust architecture, Team 2's structural patterns, or Team 3's signal intelligence — even though all three teams discuss self-awareness as a principle.
+Team 4's top-priority recommendation is: "Add a Submantle identity signature to `signatures.json` for the Submantle daemon process." This is 1 hour of work, closes the autopoietic loop, and makes Submantle self-aware in its own reports. No other team mentions this. It does not appear in Team 1's trust architecture, Team 2's structural patterns, or Team 3's signal intelligence — even though all three teams discuss self-awareness as a principle.
 
 This is genuinely the simplest, most targeted action item in the entire expedition. A single JSON entry. The fact that three other teams discussing the same principle missed the obvious concrete implementation is a coordination gap. It would be easy to lose in a 15-item cross-team priority queue.
 
@@ -187,7 +187,7 @@ The expedition produced three findings that are well-evidenced, code-grounded, a
 
 1. **The enforcement mode ladder for trust scoring** (Team 1, corroborated by Team 3). Advisory before blocking. No new infrastructure. No schema changes required beyond adding a `compute_trust()` call.
 
-2. **Add Substrate's own identity signature to `signatures.json`** (Team 4). One JSON entry. Closes the autopoietic loop without touching any code.
+2. **Add Submantle's own identity signature to `signatures.json`** (Team 4). One JSON entry. Closes the autopoietic loop without touching any code.
 
 3. **The EventBus stream layer for the MCP ambient stream** (Team 3). Bounded in-memory deque. Genuinely low-friction and addresses a real gap that will be hit when the MCP server is built.
 
@@ -208,4 +208,4 @@ The expedition produced three findings that are well-evidenced, code-grounded, a
 
 ### Critical Action Before Any Build
 
-**Define what an "incident" is for Substrate agents, and wire `increment_agent_incidents()` into the code path where incidents occur.** Until this is done, every trust scoring recommendation across all four teams is building on an empty input. This is the single most important gap in the entire expedition, and it was adequately surfaced only by Team 1.
+**Define what an "incident" is for Submantle agents, and wire `increment_agent_incidents()` into the code path where incidents occur.** Until this is done, every trust scoring recommendation across all four teams is building on an empty input. This is the single most important gap in the entire expedition, and it was adequately surfaced only by Team 1.

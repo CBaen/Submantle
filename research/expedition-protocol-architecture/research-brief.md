@@ -1,12 +1,12 @@
-# Research Brief: Substrate Protocol Architecture
+# Research Brief: Submantle Protocol Architecture
 ## Date: 2026-03-11
-## Project: Substrate
+## Project: Submantle
 
 ### Problem Statement
 We've been building a local awareness prototype, but the real product is a protocol — "its own layer of the internet" for agent behavioral trust. We need to understand what that means technically, how agents actually plug into it, who the relevant players are, and how a protocol achieves global adoption. The founder cannot maintain direction if the architecture isn't clear in plain terms.
 
 ### Expected Outcome
-A clear architectural blueprint that answers: What IS Substrate technically? How do agents connect? How does it grow with AI? Who else is building adjacent infrastructure? How did other protocols go from idea to global adoption? — all explained so a non-technical founder can use it as a compass to keep the project on course.
+A clear architectural blueprint that answers: What IS Submantle technically? How do agents connect? How does it grow with AI? Who else is building adjacent infrastructure? How did other protocols go from idea to global adoption? — all explained so a non-technical founder can use it as a compass to keep the project on course.
 
 ### Current State
 - Working prototype: Python process scanner, agent registry (HMAC-SHA256), privacy mode, event bus, SQLite, 160 tests
@@ -16,17 +16,17 @@ A clear architectural blueprint that answers: What IS Substrate technically? How
 - Production language will be Go (validated, not yet implemented)
 
 ### Project Direction
-Substrate is evolving from a local device awareness tool into a protocol-level trust infrastructure for AI agents. Think DNS for trust — any agent can query it, any device can run a node, any platform can verify scores. The prototype proves the concept locally; the protocol makes it global.
+Submantle is evolving from a local device awareness tool into a protocol-level trust infrastructure for AI agents. Think DNS for trust — any agent can query it, any device can run a node, any platform can verify scores. The prototype proves the concept locally; the protocol makes it global.
 
 Key settled decisions:
 - Beta Reputation formula: trust = total_queries / (total_queries + incidents), initialize at (1,1) = 0.5
 - W3C VC 2.0 + SD-JWT (RFC 9901) for portable trust attestations
 - Agent = registered software entity (not model, not context window, not user)
-- Enforcement is NEVER done by Substrate — third parties enforce their own thresholds
+- Enforcement is NEVER done by Submantle — third parties enforce their own thresholds
 - EU AI Act compliance via deterministic-only scoring (no ML)
 
 ### Constraints (Non-Negotiable)
-1. **Always aware, never acting** — Substrate exposes scores, never enforces. Applies to entire system.
+1. **Always aware, never acting** — Submantle exposes scores, never enforces. Applies to entire system.
 2. **Deterministic scoring only** — Pure math (Beta Reputation), no ML. Keeps us outside EU AI Act.
 3. **Privacy by architecture** — On-device processing, E2E encrypted sync, no telemetry.
 4. **Lightweight first** — Invisible resource usage. No heavy models.
@@ -35,7 +35,7 @@ Key settled decisions:
 ### Destructive Boundaries
 - Do NOT recommend ML-based scoring or anomaly detection
 - Do NOT recommend centralized data collection architectures that violate privacy-by-architecture
-- Do NOT recommend Substrate making enforcement decisions (blocking, gating, throttling)
+- Do NOT recommend Submantle making enforcement decisions (blocking, gating, throttling)
 - Do NOT recommend blockchain-required architectures (Web3 compatible does not mean Web3 dependent)
 - The Beta Reputation formula, SD-JWT attestation format, and "always aware never acting" principle are SETTLED
 - Do NOT recommend abandoning the existing prototype — it's a valid reference implementation foundation

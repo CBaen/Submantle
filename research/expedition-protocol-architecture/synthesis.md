@@ -9,7 +9,7 @@
 ## High Confidence (teams converged, validators confirmed)
 
 ### 1. MCP Is the Right Integration Surface for V1
-**What:** Build Substrate as an MCP (Model Context Protocol) server. Agents connect to Substrate the same way they connect to any other tool — through a universal plug.
+**What:** Build Submantle as an MCP (Model Context Protocol) server. Agents connect to Submantle the same way they connect to any other tool — through a universal plug.
 
 **Evidence:** MCP Go SDK v1.4.0, 4.1k stars, maintained by Google under Anthropic's org. Native support in Claude, ChatGPT, VS Code, Cursor. Official adapters for LangChain (3.4k stars) and Semantic Kernel. One implementation serves the majority of production agents.
 
@@ -24,7 +24,7 @@
 **Confidence: HIGH.** Core recommendation verified. Precision details corrected.
 
 ### 2. The Behavioral Trust Gap Is Real — With Sharper Boundaries
-**What:** No company offers portable, OS-level, deterministic behavioral trust scoring for AI agents. This is the gap Substrate fills.
+**What:** No company offers portable, OS-level, deterministic behavioral trust scoring for AI agents. This is the gap Submantle fills.
 
 **Evidence confirmed by validators:**
 - Google UCP "does not solve which agents should be trusted" — confirmed
@@ -35,7 +35,7 @@
 - WEF $236B projection — confirmed (source is Precedence Research via WEF, not WEF original)
 
 **Validator corrections — the gap needs PRECISE framing:**
-- **Mnemom** is closer competition than originally assessed. Agent-layer behavioral trust with cryptographic attestation, drift detection, hash-chain-anchored scores. NOT just a web-layer BATMS vendor. Distinction: Mnemom wraps agent clients; Substrate observes OS-level processes.
+- **Mnemom** is closer competition than originally assessed. Agent-layer behavioral trust with cryptographic attestation, drift detection, hash-chain-anchored scores. NOT just a web-layer BATMS vendor. Distinction: Mnemom wraps agent clients; Submantle observes OS-level processes.
 - **Vouched/KnowThat.ai** ($17M, Feb 2026): Community reputation directory for agents. Same marketing vocabulary, different architecture.
 - **t54 Labs** ($5M, Feb 2026): Crypto-rails behavioral risk engine.
 - **Gen Agent Trust Hub**: Pre-install safety scanning from Gen Digital (Norton parent).
@@ -50,9 +50,9 @@
 **Confidence: HIGH for the architectural gap. MODERATE for market framing** — competitors occupy adjacent vocabulary even if the architecture differs.
 
 ### 3. RATS RFC 9334 Names the Architecture
-**What:** The IETF already has a standard vocabulary for exactly what Substrate is building. RFC 9334 (Remote ATtestation procedureS Architecture) defines: Attester (on-device daemon), Verifier (attestation server), Relying Party (brands/platforms). The "Passport Model" = agent carries credential, presents anywhere.
+**What:** The IETF already has a standard vocabulary for exactly what Submantle is building. RFC 9334 (Remote ATtestation procedureS Architecture) defines: Attester (on-device daemon), Verifier (attestation server), Relying Party (brands/platforms). The "Passport Model" = agent carries credential, presents anywhere.
 
-**Validator verified:** RFC 9334 exists (January 2023, Informational RFC) and maps precisely to Substrate's three-component architecture.
+**Validator verified:** RFC 9334 exists (January 2023, Informational RFC) and maps precisely to Submantle's three-component architecture.
 
 **Nuance:** RFC 9334 is Informational (defines vocabulary/concepts), not a protocol standard (defines wire format). It provides the language and the architecture model, not a drop-in implementation.
 
@@ -111,16 +111,16 @@
 ## New Risks (validators surfaced)
 
 ### 1. Android OS Sandboxing Blocks Process Awareness
-The "any device can run a node" vision has an unexamined mobile constraint. Android's sandboxing model prevents one app from observing another's processes. Substrate's process awareness — the core value proposition — cannot work on stock Android without system-level access. This limits the "inner ring first" strategy to desktop/laptop initially.
+The "any device can run a node" vision has an unexamined mobile constraint. Android's sandboxing model prevents one app from observing another's processes. Submantle's process awareness — the core value proposition — cannot work on stock Android without system-level access. This limits the "inner ring first" strategy to desktop/laptop initially.
 
 ### 2. On-Device Daemon Integrity Problem
 What stops a malicious on-device daemon from lying about its trust score? If trust computation happens on-device, the device owner controls the computation. Neither Team 1 nor Team 5 resolved this. This is the central integrity assumption of the entire attestation architecture.
 
 ### 3. EU AI Act — Indirect Liability Path
-EU AI Act August 2026 compliance deadline is 5 months away. Deterministic Beta formula likely keeps Substrate outside scope. BUT: if enterprise customers use Substrate scores to make decisions affecting human employees (hiring, access, performance), indirect liability may apply. Needs legal review before enterprise sales.
+EU AI Act August 2026 compliance deadline is 5 months away. Deterministic Beta formula likely keeps Submantle outside scope. BUT: if enterprise customers use Submantle scores to make decisions affecting human employees (hiring, access, performance), indirect liability may apply. Needs legal review before enterprise sales.
 
 ### 4. NIST AI Agent Standards Initiative (February 2026)
-Missed by all 5 teams. If NIST defines a behavioral trust standard, Substrate needs to align or explain why not. Monitor actively.
+Missed by all 5 teams. If NIST defines a behavioral trust standard, Submantle needs to align or explain why not. Monitor actively.
 
 ### 5. Protocol Fragmentation
 ACP merged with A2A under Linux Foundation in August 2025. The integration surface is MCP + A2A, not MCP alone. "MCP alone reaches most agents" may become less true as A2A grows.
@@ -187,7 +187,7 @@ Team 4 recommended AAIF. Validators challenged: AAIF is corporate-weighted, indi
 1. **Blockchain-anchored approaches** (ERC-8004, Mnemom on-chain): Filtered per destructive boundary — no blockchain dependency.
 2. **LLM-based trust analysis** (Mnemom AIP): Filtered per constraint — deterministic scoring only.
 3. **CT gossip protocol reference**: Filtered — the protocol was never standardized (Dead at IETF).
-4. **Team 3's transaction chain diagram**: Subtly frames Substrate as an active gatekeeper. Filtered for alignment with "always aware, never acting."
+4. **Team 3's transaction chain diagram**: Subtly frames Submantle as an active gatekeeper. Filtered for alignment with "always aware, never acting."
 
 ---
 
