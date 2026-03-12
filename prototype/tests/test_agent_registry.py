@@ -272,6 +272,7 @@ class TestRegister(unittest.TestCase):
         db = MagicMock()
         db.get_setting.return_value = None
         db.set_setting.return_value = None
+        db.get_agent_by_name.return_value = None
         db.register_agent.side_effect = Exception("disk full")
         registry = AgentRegistry(db=db)
         with self.assertRaises(RuntimeError):

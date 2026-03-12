@@ -52,7 +52,7 @@ class TestEventType:
         required = {
             "PROCESS_STARTED", "PROCESS_DIED", "SCAN_COMPLETE",
             "PRIVACY_TOGGLED", "AGENT_REGISTERED", "AGENT_DEREGISTERED",
-            "RESOURCE_WARNING",
+            "INCIDENT_REPORTED", "RESOURCE_WARNING",
         }
         actual = {e.value for e in EventType}
         assert required == actual

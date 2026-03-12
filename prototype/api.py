@@ -378,7 +378,7 @@ def status():
 
 
 @app.get("/api/query")
-def query(process: str = ""):
+def query(process: str = "", authorization: Optional[str] = Header(None)):
     if not process.strip():
         return JSONResponse(
             status_code=400,
@@ -394,6 +394,12 @@ def query(process: str = ""):
                 "privacy_mode": True,
             },
         )
+
+    # Record interaction if agent is authenticated.
+    # Anonymous access still works — trust data just doesn't accumulate.
+    token = _extract_token(authorization)
+    if token:
+        _registry.record_query(token)
 
     state = _get_state()
     result = query_what_would_break(
@@ -516,6 +522,75 @@ def agents_deregister(agent_id: int, authorization: Optional[str] = Header(None)
         raise HTTPException(status_code=404, detail="Agent not found")
 
     return {"deregistered": True, "agent_id": agent_id}
+
+
+# ── Trust Bureau — Verification (Door 2: for businesses) ──────────────────────
+
+@app.get("/api/verify")
+def verify_directory():
+    """
+    Public directory of all registered agents with trust scores.
+
+    This is the trust bureau's public face. Businesses browse this to see
+    which agents exist and what their scores are.
+    """
+    agents = _registry.list_agents()
+    scored = []
+    for agent in agents:
+        trust = _registry.compute_trust(agent_id=agent["id"])
+        if trust:
+            scored.append(trust)
+    return {"agents": scored, "total": len(scored)}
+
+
+@app.get("/api/verify/{agent_name}")
+def verify_agent(agent_name: str):
+    """
+    Check a specific agent's trust score.
+
+    This is the core product: a business asks "how trustworthy is this agent?"
+    and gets back a score with full metadata. No auth required for V1 —
+    billing comes later.
+    """
+    result = _registry.compute_trust(agent_name=agent_name)
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Agent '{agent_name}' not found",
+        )
+    return result
+
+
+# ── Trust Bureau — Incident Reporting (credit bureau intake) ──────────────────
+
+@app.post("/api/incidents/report")
+def report_incident(body: IncidentReportRequest):
+    """
+    Report an incident involving a registered agent.
+
+    Credit bureau model: third parties report problems. Submantle records
+    them. It does not detect incidents itself. The report increments the
+    agent's incident counter, which lowers their trust score.
+    """
+    if not body.agent_name.strip():
+        raise HTTPException(status_code=422, detail="agent_name is required")
+    if not body.reporter.strip():
+        raise HTTPException(status_code=422, detail="reporter is required")
+    if not body.incident_type.strip():
+        raise HTTPException(status_code=422, detail="incident_type is required")
+
+    success = _registry.record_incident(
+        agent_name=body.agent_name,
+        reporter=body.reporter,
+        incident_type=body.incident_type,
+        description=body.description,
+    )
+    if not success:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Agent '{body.agent_name}' not found",
+        )
+    return {"reported": True, "agent_name": body.agent_name}
 
 
 # ── Dashboard ──────────────────────────────────────────────────────────────────
