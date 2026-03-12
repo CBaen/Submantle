@@ -102,7 +102,9 @@ Billing can be nearly zero code — Stripe Payment Links for first ~10 customers
 5. **Formula discrepancy**: CLAUDE.md shows `total_queries / (total_queries + incidents)` but codebase uses `(total_queries + 1) / (total_queries + incidents + 2)`
 6. **Team 4 math errors**: Recovery formula should be `q ≥ 4i + 3` not `4i + 6`. 10 incidents needs ~43 queries for 0.8, not 78.
 
-**NEXT STEP: Phase 3 — Orchestrator writes synthesis.md, vetting all findings against validators.**
+**Phase 3 (Synthesis): COMPLETE** — `synthesis.md` written 2026-03-12. Vetted all findings against 3 validators. 7 high-confidence convergences, 3 contested decisions escalated to GL, 5 items filtered out, 6 risks documented. Phased implementation sequence provided.
+
+**NEXT STEP: GL rules on 3 contested decisions (see section below), then implementation begins.**
 
 ### RESEARCH COUNCIL V2: Scoring Model (Weights & Measures) — IN PROGRESS (Phase 1 Complete)
 

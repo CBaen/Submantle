@@ -30,6 +30,21 @@
 - **Rule**: CLAUDE.md must contain enough context that ANY new agent instance can build correctly without GL re-explaining. Include: what the product is, why it matters, competitive landscape, design principles, build priorities, what NOT to do. GL should never have to re-teach the same context twice.
 - **Why**: Solo founder + AI dev team means every session starts fresh. If CLAUDE.md doesn't carry the context, GL has to — and that doesn't scale.
 
+### Document Parity Includes Formulas
+- **Pattern**: CLAUDE.md, VISION.md, and submantle-index.md all showed the wrong Beta formula variant (`total_queries / (total_queries + incidents)` — division by zero at init). Codebase used the correct Laplace-smoothed version. Validator 3 caught it; no research team did.
+- **Rule**: When a formula or key technical detail appears in multiple documents, verify they all match the actual codebase implementation. Use Grep to find all occurrences and fix them in one pass.
+- **Why**: A solo founder implementing from CLAUDE.md rather than reading the code would get a broken formula. Document parity isn't just about tracking numbers — it's about technical accuracy.
+
+### Validators With Different Lenses Catch More Than Identical Ones
+- **Pattern**: Prior session dispatched 3 validators with identical instructions and they all ran out of context on the same files. This session gave each validator a different focus (general quality, anti-gaming, solo founder feasibility) and all 3 returned with unique, high-value findings.
+- **Rule**: When dispatching multiple validators, assign each a distinct analytical lens. They'll naturally cross-reference team findings through their own perspective rather than duplicating effort.
+- **Why**: Identical instructions produce correlated findings. Different lenses produce complementary coverage. The anti-gaming validator caught the patient attacker vector; the feasibility validator caught the math errors; the general validator caught the settled-decision violations.
+
+### Update Lessons Learned Without Being Asked (Again)
+- **Pattern**: GL had to remind me to update this file — the exact same correction from a prior session already documented in "Proactively Update Lessons Learned" above.
+- **Rule**: Check this file at session end. If you learned something, write it. The rule already exists. Follow it.
+- **Why**: Repeating a documented mistake is worse than making it the first time. It means the lessons-learned system failed at its one job.
+
 ### Rebrand Early, Rebrand Completely
 - **Pattern**: "Substrate" conflicted with Parity Technologies' blockchain framework. Caught before public launch but after 91 files existed.
 - **Rule**: Resolve naming conflicts before writing significant code. When rebranding, dispatch parallel agents by file zone (docs, code, research) and verify with grep afterward. Rename files AND folders, not just content.
