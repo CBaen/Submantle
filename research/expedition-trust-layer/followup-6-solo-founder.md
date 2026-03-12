@@ -27,15 +27,15 @@ As of March 2026, a genuine ecosystem of AI-first development tools exists for n
 
 This is not hype. Bhanu Teja built SiteGPT in a weekend using AI-assisted coding and reached $15,000 monthly recurring revenue as a one-person operation. The 2026 NxCode report documents the "one-person unicorn" pattern as mechanically real, driven by AI agent leverage and context engineering. Anthropic's own Claude Code hackathon selected 500 builders from 13,000 applicants; winners came from outside traditional engineering backgrounds.
 
-Claude Code specifically — which Substrate is using — sits at the most capable tier. It achieved a SWE-bench Verified score of 80.9% with Opus 4.5 in November 2025 and has since been upgraded to Opus 4.6. It can write tests, refactor across files, reason about architectural tradeoffs, and maintain context across sessions when the codebase is structured to support it. Substrate's 160-test foundation was built this way and passes.
+Claude Code specifically — which Submantle is using — sits at the most capable tier. It achieved a SWE-bench Verified score of 80.9% with Opus 4.5 in November 2025 and has since been upgraded to Opus 4.6. It can write tests, refactor across files, reason about architectural tradeoffs, and maintain context across sessions when the codebase is structured to support it. Submantle's 160-test foundation was built this way and passes.
 
-**Assessment for Substrate specifically:** The Substrate prototype represents a legitimate accomplishment. The schema is correct, the cryptographic primitives are sound (HMAC-SHA256), the event bus is functional, and the test coverage is real. This is not cosmetic — it is working infrastructure. Claude Code built it, and it is buildable.
+**Assessment for Submantle specifically:** The Submantle prototype represents a legitimate accomplishment. The schema is correct, the cryptographic primitives are sound (HMAC-SHA256), the event bus is functional, and the test coverage is real. This is not cosmetic — it is working infrastructure. Claude Code built it, and it is buildable.
 
 ### The build model has a name — and it has known failure modes
 
 The practice is called "vibe coding" in the industry — a term coined in early 2025. The distinction that matters is between vibe coding (accepting AI output without review, prompting toward a feeling) and AI-assisted engineering (AI as force multiplier with a human verifying architecture, security, and logic). These are not the same thing. The failure modes belong almost entirely to the former.
 
-The Substrate build, based on its structure and test coverage, sits closer to AI-assisted engineering than pure vibe coding. The CLAUDE.md conventions, the triadic review process, the explicit design principles — these are not vibe coding. They are the scaffolding that separates successful AI-assisted infrastructure from the ones that fail.
+The Submantle build, based on its structure and test coverage, sits closer to AI-assisted engineering than pure vibe coding. The CLAUDE.md conventions, the triadic review process, the explicit design principles — these are not vibe coding. They are the scaffolding that separates successful AI-assisted infrastructure from the ones that fail.
 
 ---
 
@@ -45,7 +45,7 @@ The Substrate build, based on its structure and test coverage, sits closer to AI
 
 - **Consumer SaaS and tools**: Non-technical founders have shipped production consumer apps, internal tools, and content platforms. The combination of Lovable/Bolt/Replit + Claude Code handles this reliably.
 - **Prototypes with real traction**: Working prototypes in finance, education, and productivity have been built solo. Peter Steinberger's OpenClaw became the fastest-growing open-source project on GitHub in 2025 — reportedly maintained by one developer with AI tooling.
-- **Infrastructure with bounded scope**: The Substrate V1 foundation itself. 160 tests, SQLite, HMAC auth, event bus. This is bounded, well-specified infrastructure built cleanly.
+- **Infrastructure with bounded scope**: The Submantle V1 foundation itself. 160 tests, SQLite, HMAC auth, event bus. This is bounded, well-specified infrastructure built cleanly.
 
 ### Where the ceiling appears
 
@@ -69,15 +69,15 @@ The question is not "can AI write the code?" Claude Code demonstrably can. The q
 
 The critical failure mode: the non-technical founder cannot tell the difference between code that looks right and code that is right. Claude Code will write secure code when asked to write secure code. But it may not volunteer that a particular design choice is exploitable, especially if the conversation is moving fast. The human reviewer — the one who would catch "this HMAC verification is timing-unsafe" or "this CORS wildcard allows credential exposure" — does not exist in the solo model.
 
-For Substrate specifically: the existing codebase already has a known security gap (CORS wildcard + open registration noted in the gap analysis). It is not exploited yet. But as trust infrastructure is added — authentication middleware, token issuance, trust score exposure — each new component is a new attack surface that cannot be validated by the founder.
+For Submantle specifically: the existing codebase already has a known security gap (CORS wildcard + open registration noted in the gap analysis). It is not exploited yet. But as trust infrastructure is added — authentication middleware, token issuance, trust score exposure — each new component is a new attack surface that cannot be validated by the founder.
 
-**Mitigation that exists:** Substrate uses structured processes (triadic review, validation passes). Claude Code can perform its own security review when explicitly asked. This partially compensates. It does not fully compensate.
+**Mitigation that exists:** Submantle uses structured processes (triadic review, validation passes). Claude Code can perform its own security review when explicitly asked. This partially compensates. It does not fully compensate.
 
 ### 3.2 Context degradation at scale
 
 AI coding agents lose coherence across sessions. LLMs forget project conventions, repeat known mistakes, and lose task state across context boundaries. Research from a 108,000-line C# project found that single-file context documents do not scale — a 1,000-line prototype can be fully described in one prompt, but a 100,000-line system cannot. "Context rot" is documented: as context length increases, accuracy decreases, even with 200K token windows.
 
-Substrate is currently small. The prototype directory has 9 files. This is fully within Claude Code's coherent operating range. The HANDOFF.md + CLAUDE.md structure is good context engineering — Anthropic's own engineering team has published on this as the critical lever for production AI agent work.
+Submantle is currently small. The prototype directory has 9 files. This is fully within Claude Code's coherent operating range. The HANDOFF.md + CLAUDE.md structure is good context engineering — Anthropic's own engineering team has published on this as the critical lever for production AI agent work.
 
 The risk: as the codebase grows from prototype to production-ready trust infrastructure, context management becomes a real engineering discipline. Who maintains the HANDOFF.md? Who decides when to rotate memory? Who notices when Claude Code starts producing code inconsistent with prior architectural decisions? In a technical team, this is a developer's daily work. In the solo model, it is the founder's responsibility — a responsibility that requires enough architectural memory to notice when something is wrong.
 
@@ -85,7 +85,7 @@ The risk: as the codebase grows from prototype to production-ready trust infrast
 
 GitClear's analysis of 211 million AI-generated lines identified an 8x increase in code blocks with 5+ duplicated lines and a 39.9% decrease in code refactoring. Technical debt accumulates faster with AI-assisted development than human development when there is no human enforcing architectural discipline.
 
-For Substrate: the schema and cryptographic primitives are correct today. The Go rewrite is deferred. Between now and the rewrite, architectural decisions made in Python will shape what the Go rewrite must accommodate. Specifically: the trust attestation credential format, the incident taxonomy, and the API surface. If these are defined incorrectly and then used by external agents, changing them later is a breaking change to a protocol — not a refactor of a private tool.
+For Submantle: the schema and cryptographic primitives are correct today. The Go rewrite is deferred. Between now and the rewrite, architectural decisions made in Python will shape what the Go rewrite must accommodate. Specifically: the trust attestation credential format, the incident taxonomy, and the API surface. If these are defined incorrectly and then used by external agents, changing them later is a breaking change to a protocol — not a refactor of a private tool.
 
 This is the structural risk for a non-technical solo founder: not "can AI build it" but "who validates that the architecture committed to today is the right architecture for what this becomes?"
 
@@ -151,7 +151,7 @@ Risk: high for the cryptographic and revocation components. Medium if cheqd inte
 
 The "one-person unicorn" narrative is not pure marketing. The NxCode 2026 report, Fast Company, and Wedbush Research all document genuine structural change: AI agents handling tasks that previously required teams. Context engineering (structuring information so AI agents have everything they need, when they need it) is the key skill — and it is a skill a non-technical founder can develop.
 
-For infrastructure specifically: managed cloud services (Cloudflare Workers, Vercel, Railway, Fly.io) handle scaling, deployment, and DevOps automatically. The Substrate architecture's "lightweight first" constraint fits naturally here — if Substrate remains a daemon process rather than a cloud service, the scaling complexity is deferred.
+For infrastructure specifically: managed cloud services (Cloudflare Workers, Vercel, Railway, Fly.io) handle scaling, deployment, and DevOps automatically. The Submantle architecture's "lightweight first" constraint fits naturally here — if Submantle remains a daemon process rather than a cloud service, the scaling complexity is deferred.
 
 ### The honest case
 
@@ -159,7 +159,7 @@ TechCrunch's February 2025 analysis of the one-person unicorn model states direc
 
 For protocol-layer infrastructure used by hundreds of thousands of agents: the solo model has not been demonstrated at this scale. The examples that work are SaaS products and tools — not protocols. HTTPS, TCP/IP, OAuth 2.0 — the protocols that run the internet — were not built by solo non-technical founders. They were built by engineers who could participate in standards bodies, review each other's cryptographic designs, and defend technical decisions under expert scrutiny.
 
-**The critical distinction for Substrate:** There is a difference between Substrate as a product (a daemon on your device that gives you awareness) and Substrate as a protocol (a trust standard that agents and brands build against). The product can likely be built and maintained in the solo model for a long time. The protocol requires credibility with technical audiences — standards bodies, enterprise security teams, cryptographers — that the solo model alone cannot provide.
+**The critical distinction for Submantle:** There is a difference between Submantle as a product (a daemon on your device that gives you awareness) and Submantle as a protocol (a trust standard that agents and brands build against). The product can likely be built and maintained in the solo model for a long time. The protocol requires credibility with technical audiences — standards bodies, enterprise security teams, cryptographers — that the solo model alone cannot provide.
 
 ### What actually happens at scale in open-source infrastructure
 
@@ -167,7 +167,7 @@ The Open Source Security Foundation's 2025 statement is clear: open infrastructu
 
 The founding maintainer does not need to write the code. But the project needs technical contributors who do. The governance models that work — do-ocracy, steering committees, contributor ladders — are all documented. The Linux Foundation guide explicitly notes: "a maintainer doesn't necessarily have to be someone who writes code — it could be someone who's done a lot of work evangelizing the project."
 
-**Implication for Substrate:** The solo model is not a permanent ceiling — it is the appropriate model for the prototype and early product phase. The ceiling appears when Substrate needs external technical contributors: security reviewers, cryptographers, standards participants. The founder's job at that stage is not to learn cryptography — it is to build a community of contributors who can do what Claude Code cannot: vouch for the protocol's security with human credibility.
+**Implication for Submantle:** The solo model is not a permanent ceiling — it is the appropriate model for the prototype and early product phase. The ceiling appears when Submantle needs external technical contributors: security reviewers, cryptographers, standards participants. The founder's job at that stage is not to learn cryptography — it is to build a community of contributors who can do what Claude Code cannot: vouch for the protocol's security with human credibility.
 
 ---
 
@@ -258,19 +258,19 @@ The boundary is clear: Claude Code is an expert implementer with broad knowledge
 
 ## 10. Honest Summary
 
-**The solo non-technical founder + Claude Code model has already proven itself at the Substrate prototype stage.** The current foundation is sound. The methods (structured handoffs, explicit design principles, triadic review, test coverage) are the right practices. This is not vibe coding — it is disciplined AI-assisted engineering.
+**The solo non-technical founder + Claude Code model has already proven itself at the Submantle prototype stage.** The current foundation is sound. The methods (structured handoffs, explicit design principles, triadic review, test coverage) are the right practices. This is not vibe coding — it is disciplined AI-assisted engineering.
 
 **The MVTL's first three components (auth middleware, incident taxonomy, pure Beta scoring) are fully achievable in this model.** They are bounded, well-specified, and within the demonstrated capability range. Building them is a matter of sessions, not a leap of faith.
 
 **W3C VC integration is the risk boundary.** It is technically achievable but architecturally consequential. The cryptographic design decisions made here will be hard to change in production. This component specifically benefits from external technical review before implementation — a collaborator, an adviser, or at minimum explicit external validation of the design before any code is written.
 
-**Scale requires community, not just a better AI model.** A one-person + AI model can carry Substrate through its product phase: working daemon, trust scoring, agent identity, dashboard, MCP server. The protocol phase — where external agents rely on Substrate's trust attestations, where brands build against the API, where the credential format needs to survive expert scrutiny — requires technical contributors the founder must recruit, not build. The founder's job at that stage is vision, culture, and community-building. Claude Code's job is implementation. A community of technical contributors handles the credibility gap.
+**Scale requires community, not just a better AI model.** A one-person + AI model can carry Submantle through its product phase: working daemon, trust scoring, agent identity, dashboard, MCP server. The protocol phase — where external agents rely on Submantle's trust attestations, where brands build against the API, where the credential format needs to survive expert scrutiny — requires technical contributors the founder must recruit, not build. The founder's job at that stage is vision, culture, and community-building. Claude Code's job is implementation. A community of technical contributors handles the credibility gap.
 
 **The biggest realistic risk is not code quality.** It is the invisible gap between code that passes tests and code that survives adversarial real-world use, regulatory review, and expert cryptographic analysis. These are not problems Claude Code solves. They are problems that require humans who understand the domain — whether employees, advisers, or open-source contributors — to be in the loop before external deployment.
 
 **The path forward is clear:** Build the MVTL's first components now. Treat W3C VC as a design-first problem, not a code-first problem. Recruit a technical collaborator for the trust attestation and revocation design before committing it. Be explicit that the solo model is appropriate for the current phase and plan for its evolution before reaching the protocol phase.
 
-Substrate's vision — infrastructure at internet scale — is genuinely achievable. The solo model is not the constraint that prevents it. The solo model is the correct approach for this phase of the build.
+Submantle's vision — infrastructure at internet scale — is genuinely achievable. The solo model is not the constraint that prevents it. The solo model is the correct approach for this phase of the build.
 
 ---
 

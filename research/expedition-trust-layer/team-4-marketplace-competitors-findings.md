@@ -13,7 +13,7 @@
 #### Anthropic MCP (Model Context Protocol)
 
 **What they actually sell/do:**
-An open standard (not a product) for connecting AI systems to external data sources and tools. Defines a client-server protocol where AI apps are "hosts," data/service providers are "servers," and a protocol layer standardizes communication. Substrate already plans to expose an MCP server, making this an integration target, not a competitor.
+An open standard (not a product) for connecting AI systems to external data sources and tools. Defines a client-server protocol where AI apps are "hosts," data/service providers are "servers," and a protocol layer standardizes communication. Submantle already plans to expose an MCP server, making this an integration target, not a competitor.
 
 **How big:**
 - Launched November 2024
@@ -23,11 +23,11 @@ An open standard (not a product) for connecting AI systems to external data sour
 - Anthropic donated MCP to the Linux Foundation's new Agentic AI Foundation (alongside goose by Block and AGENTS.md by OpenAI) — governance now industry-wide
 - Source: [Anthropic announcement](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation), [The New Stack](https://thenewstack.io/why-the-model-context-protocol-won/), [Pento Year Review](https://www.pento.ai/blog/a-year-of-mcp-2025-review) — accessed March 2026
 
-**Relationship to Substrate:** Pure ally. MCP defines how agents call tools. Substrate builds the MCP server that gives agents awareness. MCP is the pipe; Substrate is the water. Every agent using MCP is a potential Substrate query.
+**Relationship to Submantle:** Pure ally. MCP defines how agents call tools. Submantle builds the MCP server that gives agents awareness. MCP is the pipe; Submantle is the water. Every agent using MCP is a potential Submantle query.
 
-**Behavioral trust features:** None. MCP has no concept of agent trust, reputation, or behavioral history. This is the exact gap Substrate fills.
+**Behavioral trust features:** None. MCP has no concept of agent trust, reputation, or behavioral history. This is the exact gap Submantle fills.
 
-**What Substrate should adopt:** MCP is the right integration surface — this decision is already validated by industry adoption. The donation to Linux Foundation means MCP will be permanent infrastructure, not abandoned.
+**What Submantle should adopt:** MCP is the right integration surface — this decision is already validated by industry adoption. The donation to Linux Foundation means MCP will be permanent infrastructure, not abandoned.
 
 ---
 
@@ -42,11 +42,11 @@ Two protocols that merged in mid-2025. A2A (Agent-to-Agent, from Google) defines
 - "Quickly becoming the de facto standard for how agents should talk to one another" — but MCP has larger ecosystem as of early 2026
 - Source: [Linux Foundation announcement](https://www.linuxfoundation.org/press/linux-foundation-launches-the-agent2agent-protocol-project-to-enable-secure-intelligent-communication-between-ai-agents), [LFAI blog](https://lfaidata.foundation/communityblog/2025/08/29/acp-joins-forces-with-a2a-under-the-linux-foundations-lf-ai-data/), [The Register](https://www.theregister.com/2026/01/30/agnetic_ai_protocols_mcp_utcp_a2a_etc/) — accessed March 2026
 
-**Relationship to Substrate:** Complementary at a different level. A2A handles agent-to-agent messaging. Substrate handles the awareness layer that gives agents context. An agent discovering another agent via A2A still needs Substrate to understand what that agent is doing, its trust history, and what it's accessing.
+**Relationship to Submantle:** Complementary at a different level. A2A handles agent-to-agent messaging. Submantle handles the awareness layer that gives agents context. An agent discovering another agent via A2A still needs Submantle to understand what that agent is doing, its trust history, and what it's accessing.
 
 **Behavioral trust features:** None. A2A establishes communication channels, not trust hierarchies. A2A defines that agents can talk; it says nothing about whether they should be trusted.
 
-**What Substrate should adopt:** Monitor A2A for the "agent discovery" use case — agents registering on the A2A network could be enriched with Substrate trust scores.
+**What Submantle should adopt:** Monitor A2A for the "agent discovery" use case — agents registering on the A2A network could be enriched with Submantle trust scores.
 
 ---
 
@@ -61,7 +61,7 @@ An open-source protocol using W3C DID (Decentralized Identifiers) to give agents
 - No known commercial deployment, no funding disclosed
 - Source: [ANP GitHub](https://github.com/agent-network-protocol/AgentNetworkProtocol), [ANP arxiv paper](https://arxiv.org/html/2508.00007v1), [protocol comparison survey](https://arxiv.org/html/2505.02279v1) — accessed March 2026
 
-**Relationship to Substrate:** More ally than threat — ANP solves agent identity, Substrate solves agent trust. ANP answers "who is this agent?" cryptographically; Substrate answers "should I trust this agent?" behaviorally. They are adjacent layers. Substrate could accept ANP-verified identities as input to its trust scoring.
+**Relationship to Submantle:** More ally than threat — ANP solves agent identity, Submantle solves agent trust. ANP answers "who is this agent?" cryptographically; Submantle answers "should I trust this agent?" behaviorally. They are adjacent layers. Submantle could accept ANP-verified identities as input to its trust scoring.
 
 **Behavioral trust features:** None. ANP is purely identity/authentication. No behavioral history, no trust scoring, no reputation decay.
 
@@ -84,11 +84,11 @@ An integration and authentication layer for AI agents. Manages OAuth flows, stor
 - $2M ARR as of June 2025 (per Latka data)
 - Source: [SiliconANGLE](https://siliconangle.com/2025/07/22/composio-raises-25m-funding-ease-ai-agent-development/), [Latka](https://getlatka.com/companies/composio.dev), [Crunchbase](https://www.crunchbase.com/organization/composio-b822) — accessed March 2026
 
-**Relationship to Substrate:** Complementary, not competitive. Composio handles auth/credentials (what the agent is allowed to DO). Substrate handles awareness and trust (what the agent IS and has DONE). A high-trust Substrate score could eventually unlock reduced Composio credential friction — they're adjacent, not overlapping.
+**Relationship to Submantle:** Complementary, not competitive. Composio handles auth/credentials (what the agent is allowed to DO). Submantle handles awareness and trust (what the agent IS and has DONE). A high-trust Submantle score could eventually unlock reduced Composio credential friction — they're adjacent, not overlapping.
 
 **Behavioral trust features:** None. Composio manages auth tokens, not behavioral history. No reputation scoring, no trust tiers, no behavioral decay.
 
-**What to learn:** Composio's "brokered credentials" model is analogous to Substrate's trust brokerage. Just as Composio holds credentials so agents don't need to, Substrate holds behavioral history so apps don't need to build their own. Same pattern, different domain.
+**What to learn:** Composio's "brokered credentials" model is analogous to Submantle's trust brokerage. Just as Composio holds credentials so agents don't need to, Submantle holds behavioral history so apps don't need to build their own. Same pattern, different domain.
 
 ---
 
@@ -103,11 +103,11 @@ LangChain is the dominant agent framework for building LLM-powered applications.
 - Langflow: lacks RBAC and built-in observability, exposes workflows over REST and MCP
 - Source: [LangChain State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering), [Analytics Vidhya comparison](https://www.analyticsvidhya.com/blog/2026/01/langchain-vs-langgraph-vs-langsmith-vs-langflow/) — accessed March 2026
 
-**Relationship to Substrate:** Major integration opportunity, not competition. LangChain/LangGraph agents are exactly the kind of agents that need Substrate awareness. Once Substrate has an MCP server, LangChain agents can query it directly. LangSmith handles observability within a single agent's lifecycle; Substrate handles cross-agent, cross-session behavioral trust across the whole ecosystem.
+**Relationship to Submantle:** Major integration opportunity, not competition. LangChain/LangGraph agents are exactly the kind of agents that need Submantle awareness. Once Submantle has an MCP server, LangChain agents can query it directly. LangSmith handles observability within a single agent's lifecycle; Submantle handles cross-agent, cross-session behavioral trust across the whole ecosystem.
 
 **Behavioral trust features:** LangSmith provides execution traces and monitoring, but this is debug-oriented, not trust-scoring. No reputation system, no cross-session behavioral history, no trust portability.
 
-**What to learn:** LangSmith's adoption proves developers want visibility into agent behavior. Substrate's trust layer is what happens AFTER that visibility is aggregated over time into reputational signal.
+**What to learn:** LangSmith's adoption proves developers want visibility into agent behavior. Submantle's trust layer is what happens AFTER that visibility is aggregated over time into reputational signal.
 
 ---
 
@@ -120,7 +120,7 @@ LangChain is the dominant agent framework for building LLM-powered applications.
 - **Northflank**: Processes 2M+ isolated workloads monthly
 - Source: [Northflank sandbox guide](https://northflank.com/blog/best-code-execution-sandbox-for-ai-agents), [Daytona customer story](https://www.daytona.io/customers/laude), [sandbox comparison](https://lifo.sh/blog/ai-sandbox-comparison-2026) — accessed March 2026
 
-**Relationship to Substrate:** Different layer entirely. Sandboxes isolate agent execution. Substrate tracks what agents DO, not where they run. Substrate's awareness of what's running could integrate with sandbox execution — e.g., knowing which sandboxed agent is running which task.
+**Relationship to Submantle:** Different layer entirely. Sandboxes isolate agent execution. Submantle tracks what agents DO, not where they run. Submantle's awareness of what's running could integrate with sandbox execution — e.g., knowing which sandboxed agent is running which task.
 
 **Behavioral trust features:** None. Isolation is about containment, not reputation.
 
@@ -145,13 +145,13 @@ The name "Sential/Sentrial" from the original brief likely refers to SentinelOne
 - AI Red Teaming based on OWASP Top 10 for LLMs
 - Source: [SentinelOne blog](https://www.sentinelone.com/blog/how-sentinelone-secures-the-ai-tools-that-act-like-users/), [TechCrunch VC analysis](https://techcrunch.com/2026/01/19/rogue-agents-and-shadow-ai-why-vcs-are-betting-big-on-ai-security/) — accessed March 2026
 
-**Relationship to Substrate:** Zenity is the closest competitor identified in this research. Zenity does behavioral monitoring of agents inside enterprises. Substrate does behavioral awareness of agents at the device/OS level.
+**Relationship to Submantle:** Zenity is the closest competitor identified in this research. Zenity does behavioral monitoring of agents inside enterprises. Submantle does behavioral awareness of agents at the device/OS level.
 
-Key distinction: Zenity is enterprise security — it's sold to IT teams to govern agents they've deployed. Substrate is device infrastructure — it operates below the application layer and tracks what's actually happening on the machine. Zenity looks down from the security layer. Substrate looks up from the OS layer.
+Key distinction: Zenity is enterprise security — it's sold to IT teams to govern agents they've deployed. Submantle is device infrastructure — it operates below the application layer and tracks what's actually happening on the machine. Zenity looks down from the security layer. Submantle looks up from the OS layer.
 
 **Does Zenity have universal behavioral trust?** No. Zenity detects threats and anomalies within an enterprise deployment. It does not build portable, cross-ecosystem behavioral trust scores. It doesn't offer trust portability. It doesn't create an economy around trust reputation. It's a security product, not a trust infrastructure.
 
-**What to learn:** Zenity's $55M in funding at Gartner Cool Vendor status validates that enterprise buyers will pay for agent behavioral monitoring. Substrate's design is more ambitious — not just monitoring, but a trust protocol layer — but Zenity demonstrates the market exists.
+**What to learn:** Zenity's $55M in funding at Gartner Cool Vendor status validates that enterprise buyers will pay for agent behavioral monitoring. Submantle's design is more ambitious — not just monitoring, but a trust protocol layer — but Zenity demonstrates the market exists.
 
 ---
 
@@ -169,11 +169,11 @@ Low-code platform for building autonomous agents within the Microsoft 365 ecosys
 - Microsoft is the dominant enterprise software provider globally
 - Source: [Microsoft 365 Blog March 2026](https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/), [Microsoft Security Blog](https://www.microsoft.com/en-us/security/blog/2026/03/09/secure-agentic-ai-for-your-frontier-transformation/) — accessed March 2026
 
-**Relationship to Substrate:** Operating at a different level — but with overlap risk. Copilot Studio builds agents FOR enterprises. Substrate provides awareness UNDER all agents. Microsoft is explicitly moving toward open standards (MCP support, open agent SDK). If Substrate builds the OS-level trust layer, Microsoft enterprise agents become Substrate's customers, not competitors.
+**Relationship to Submantle:** Operating at a different level — but with overlap risk. Copilot Studio builds agents FOR enterprises. Submantle provides awareness UNDER all agents. Microsoft is explicitly moving toward open standards (MCP support, open agent SDK). If Submantle builds the OS-level trust layer, Microsoft enterprise agents become Submantle's customers, not competitors.
 
 **Behavioral trust features:** Microsoft Agent 365 provides governance dashboards and policy enforcement, but this is within the Microsoft ecosystem only. No portable trust scores, no cross-ecosystem reputation.
 
-**Risk:** Microsoft has resources to build Substrate-like features into Windows if they see the opportunity. However, their trust is enterprise-scoped (tied to Azure AD / Entra), not universal.
+**Risk:** Microsoft has resources to build Submantle-like features into Windows if they see the opportunity. However, their trust is enterprise-scoped (tied to Azure AD / Entra), not universal.
 
 ---
 
@@ -187,11 +187,11 @@ Enterprise agent platform for customer service, sales, and marketing workflows. 
 - CEO Marc Benioff claimed 93% agent accuracy (contested)
 - Source: [VentureBeat Salesforce research](https://venturebeat.com/security/salesforce-research-across-the-c-suite-trust-is-the-key-to-scaling-agentic), [Trailhead trust module](https://trailhead.salesforce.com/content/learn/modules/trusted-agentic-ai/discover-how-salesforce-builds-trusted-agentic-ai) — accessed March 2026
 
-**Relationship to Substrate:** Different level. Agentforce agents work within Salesforce data. Substrate works at the OS/device layer. Salesforce's Einstein Trust Layer is proprietary, scoped to their ecosystem, and not portable. A Salesforce agent interacting with a user's device still has no Substrate-level awareness of what's happening outside Salesforce.
+**Relationship to Submantle:** Different level. Agentforce agents work within Salesforce data. Submantle works at the OS/device layer. Salesforce's Einstein Trust Layer is proprietary, scoped to their ecosystem, and not portable. A Salesforce agent interacting with a user's device still has no Submantle-level awareness of what's happening outside Salesforce.
 
 **Behavioral trust features:** Yes — but siloed. Einstein Trust Layer includes quality data checks, behavioral guardrails, approval workflows, and performance monitoring. However, it is 100% proprietary to Salesforce and not portable across ecosystems.
 
-**What to learn:** Salesforce validated that enterprises will pay for trust-bounded agents. Their framework proves the commercial case for "trust as a product feature." Substrate's advantage is portability — Einstein Trust Layer only covers Salesforce agents; Substrate covers all agents.
+**What to learn:** Salesforce validated that enterprises will pay for trust-bounded agents. Their framework proves the commercial case for "trust as a product feature." Submantle's advantage is portability — Einstein Trust Layer only covers Salesforce agents; Submantle covers all agents.
 
 ---
 
@@ -204,7 +204,7 @@ NEC subsidiary building agentic AI solutions specifically for telecom operators.
 - NEC subsidiary — enterprise telecom vendor
 - Source: [Netcracker press releases](https://www.netcracker.com/news/press-releases/juniper-research-presents-netcracker-with-distinguished-2026-platinum-award-for-ai-innovation-in-telco.html) — accessed March 2026
 
-**Relationship to Substrate:** Niche vertical player. Netcracker is telecom-specific. Irrelevant as a direct competitor. Interesting as a future partnership/integration target — telecoms that deploy Netcracker's agents would benefit from Substrate's OS-level awareness.
+**Relationship to Submantle:** Niche vertical player. Netcracker is telecom-specific. Irrelevant as a direct competitor. Interesting as a future partnership/integration target — telecoms that deploy Netcracker's agents would benefit from Submantle's OS-level awareness.
 
 **Behavioral trust features:** Netcracker mentions an "AI Trust & Control layer" in its platform description, but this appears to be internal to their telecom agent orchestration. Not a universal trust layer.
 
@@ -227,7 +227,7 @@ No-code platform for building "AI workforces" — teams of specialized agents th
 - Customers: Qualified, Activision, Safety Culture
 - Source: [TechCrunch Series B](https://techcrunch.com/2025/05/06/relevance-ai-raises-24m-series-b-to-help-anyone-build-teams-of-ai-agents/), [Relevance AI blog](https://relevanceai.com/blog/the-ai-workforce-revolution-24m-series-b-to-accelerate-our-mission) — accessed March 2026
 
-**Relationship to Substrate:** Agent builder, not trust infrastructure. Relevance AI creates agents; those agents need Substrate to understand their environment.
+**Relationship to Submantle:** Agent builder, not trust infrastructure. Relevance AI creates agents; those agents need Submantle to understand their environment.
 
 **Behavioral trust features:** None identified. Platform tracks what agents do within workflows, but no cross-ecosystem trust reputation.
 
@@ -243,7 +243,7 @@ No-code agent platform for work automation. Core loop: Agent Builder (workflows 
 - G2 reviews indicate growing adoption among non-technical users
 - Source: [Lindy reviews](https://www.g2.com/products/lindy-lindy/reviews), [Lindy AI review analysis](https://ucstrategies.com/news/lindy-ai-review-2026-pricing-features-and-real-productivity-gains/) — accessed March 2026
 
-**Relationship to Substrate:** Agent platform. Lindy's dashboard shows what agents did — Substrate shows what's happening at the OS level where those agents operate. Complementary, not competing. Lindy is the agent; Substrate is the ground.
+**Relationship to Submantle:** Agent platform. Lindy's dashboard shows what agents did — Submantle shows what's happening at the OS level where those agents operate. Complementary, not competing. Lindy is the agent; Submantle is the ground.
 
 **Behavioral trust features:** Lindy has basic monitoring (actions taken, escalations) but this is internal to its platform. No portable trust, no reputation scoring.
 
@@ -258,21 +258,21 @@ Both build enterprise AI agents for customer experience (customer support, sales
 - Decagon: $4.5B valuation (January 2026), $250M Series D, total funding $481M. Source: [Bloomberg](https://www.bloomberg.com/news/articles/2026-01-28/ai-customer-support-startup-decagon-valued-at-4-5-billion), [Decagon Series D](https://decagon.ai/resources/series-d-announcement) — accessed March 2026
 - Sierra: Well-funded enterprise AI agent company, exact round data not surfaced in this search
 
-**Relationship to Substrate:** These are the applications that need Substrate infrastructure. Decagon/Sierra agents running on user devices benefit from Substrate awareness. More importantly: a Medium analysis (February 2026) noted that "Decagon and Sierra CAN build trustworthy agents — the gap isn't technical, it's priority." Their AOPs and guardrails encode workflow logic but not behavioral trust. They are exactly the kind of platform that would query a universal Substrate trust layer rather than build their own.
+**Relationship to Submantle:** These are the applications that need Submantle infrastructure. Decagon/Sierra agents running on user devices benefit from Submantle awareness. More importantly: a Medium analysis (February 2026) noted that "Decagon and Sierra CAN build trustworthy agents — the gap isn't technical, it's priority." Their AOPs and guardrails encode workflow logic but not behavioral trust. They are exactly the kind of platform that would query a universal Submantle trust layer rather than build their own.
 
 **Behavioral trust features:** Internal guardrails only. Decagon's Trust Center and Sierra's guardrail framework constrain agent behavior but don't create portable trust scores or cross-ecosystem reputation. A user's trust history with Decagon agents is invisible to Sierra agents and vice versa.
 
-**What to learn:** Decagon's $4.5B valuation proves the market for agents that take real actions is enormous. The trust gap identified in the Medium analysis — trust is a priority gap, not a capability gap — is precisely where Substrate sits. Nobody is building the portable trust layer these platforms need.
+**What to learn:** Decagon's $4.5B valuation proves the market for agents that take real actions is enormous. The trust gap identified in the Medium analysis — trust is a priority gap, not a capability gap — is precisely where Submantle sits. Nobody is building the portable trust layer these platforms need.
 
 ---
 
-### Critical Question: Does Any Company Do What Substrate Proposes?
+### Critical Question: Does Any Company Do What Submantle Proposes?
 
 **Answer: No. Not one.**
 
 Here is what exists and the gap it leaves:
 
-| Company | What it does | What it leaves for Substrate |
+| Company | What it does | What it leaves for Submantle |
 |---------|-------------|------------------------------|
 | Zenity | Enterprise agent security monitoring | No portable trust, no cross-ecosystem reputation, enterprise-only |
 | HUMAN Security (AgenticTrust) | Behavioral bot/agent detection for websites | Defensive (detect malicious), not constructive (build reputation); no trust economy |
@@ -312,8 +312,8 @@ Bank of America created BankAmericard in 1958 and, critically, began *licensing 
 - Visa itself earns ~0.1% on total transaction volume — at $13T+ volume, this is ~$13B/year
 - Visa does NOT take credit risk. It is a pure network intermediary.
 
-**Substrate mapping:**
-Visa is the closest structural analogy to what Substrate wants to build. Visa does not make the purchases — it is the trusted intermediary that makes purchases possible. The key insight: **Visa's moat is not its technology — it's the fact that both merchants AND consumers depend on it simultaneously.** Substrate must create equivalent bilateral dependency: agents need trust scores to unlock features, platforms need trust data to serve their users better.
+**Submantle mapping:**
+Visa is the closest structural analogy to what Submantle wants to build. Visa does not make the purchases — it is the trusted intermediary that makes purchases possible. The key insight: **Visa's moat is not its technology — it's the fact that both merchants AND consumers depend on it simultaneously.** Submantle must create equivalent bilateral dependency: agents need trust scores to unlock features, platforms need trust data to serve their users better.
 
 **Source:** [Dividendmonk network effects analysis](https://www.dividendmonk.com/visa-mastercard-unbeatable-business-model/), [Federal Reserve History](https://www.federalreservehistory.org/essays/electronic-point-of-sale-payments), [Cascade Visa strategy study](https://www.cascade.app/studies/visa-strategy-study) — accessed March 2026
 
@@ -334,10 +334,10 @@ Apple App Store uses manual review (24-72 hours) creating a quality/safety guara
 **Why developers accept the 30% tax:**
 The distribution. Being in the App Store gives access to hundreds of millions of paying customers who trust the store's curation. The tax pays for trust. Developers who build outside the store reach fewer customers — the trust premium is worth more than the fee.
 
-**Substrate mapping:**
-The "Substrate Safe" certification described in VISION.md is structurally identical to App Store certification. Developers pay/invest in certification because certified access unlocks a trusted distribution channel. The Substrate Store is an App Store for agent capabilities, not apps.
+**Submantle mapping:**
+The "Submantle Safe" certification described in VISION.md is structurally identical to App Store certification. Developers pay/invest in certification because certified access unlocks a trusted distribution channel. The Submantle Store is an App Store for agent capabilities, not apps.
 
-**Critical difference:** App Store certification is one-time and binary (approved/rejected). Substrate certification is behavioral and continuous (trust accumulates, decays, varies by context). This is strictly more valuable — and more defensible.
+**Critical difference:** App Store certification is one-time and binary (approved/rejected). Submantle certification is behavioral and continuous (trust accumulates, decays, varies by context). This is strictly more valuable — and more defensible.
 
 **Source:** [Business of Apps revenue data](https://www.businessofapps.com/data/app-revenues/), [Pravaah comparison](https://www.pravaahconsulting.com/post/apple-app-store-vs-google-play-store) — accessed March 2026
 
@@ -365,8 +365,8 @@ Starbucks Rewards drives 60% of U.S. revenue from loyalty members. Key stats:
 - March 10, 2026: Starbucks just relaunched three-tier system (Green, Gold, Reserve)
 - The star currency works because redemption is FAST (you earn and use quickly, keeping engagement high vs. airline points which take years to accumulate)
 
-**Substrate mapping:**
-Substrate's trust tiers (Anonymous → Registered → Trusted) should create EXPERIENTIAL deltas, not just rate deltas. "Registered agents get faster responses" is less sticky than "Registered agents get access to premium awareness data streams" — the identity matters. Starbucks proves that behavioral data (purchase history, daypart, churn signals) used to personalize rewards creates addiction loops. Substrate has richer behavioral data than Starbucks ever will.
+**Submantle mapping:**
+Submantle's trust tiers (Anonymous → Registered → Trusted) should create EXPERIENTIAL deltas, not just rate deltas. "Registered agents get faster responses" is less sticky than "Registered agents get access to premium awareness data streams" — the identity matters. Starbucks proves that behavioral data (purchase history, daypart, churn signals) used to personalize rewards creates addiction loops. Submantle has richer behavioral data than Starbucks ever will.
 
 **Source:** [Medium loyalty economics analysis](https://medium.com/travel-marketing-insights/the-economics-and-psychology-of-airline-loyalty-programs-eddc5caa844d), [Startup Spells FFP analysis](https://startupspells.com/p/frequent-flyer-programs-airline-loyalty-economics), [GrowthHQ Starbucks 2026 analysis](https://www.growthhq.io/our-thinking/starbucks-digital-loyalty-2026-how-starbucks-rewards-drives-60-revenue-inspires-global-brands-and-sets-the-benchmark-for-mobile-first-custom), [CNBC Starbucks tier relaunch](https://www.cnbc.com/2026/01/29/starbucks-to-reintroduce-loyalty-program-tiers.html) — accessed March 2026
 
@@ -384,39 +384,39 @@ The key economics: AWS doesn't primarily earn from cert revenue — they earn fr
 - Recertification required every 3 years (recurring revenue)
 - AWS likely earns hundreds of millions from certifications, but the real payoff is cloud spend from certified customers
 
-**Substrate mapping:**
-"Substrate Safe" certification follows the same model. The cert fee is secondary. The primary value is:
-1. Certified developers build agents that work correctly with Substrate (reduces ecosystem fragmentation)
+**Submantle mapping:**
+"Submantle Safe" certification follows the same model. The cert fee is secondary. The primary value is:
+1. Certified developers build agents that work correctly with Submantle (reduces ecosystem fragmentation)
 2. Certified agents get access to premium trust tiers (creates developer incentive)
-3. Enterprises require Substrate certification for agent deployments (creates pull from the demand side)
+3. Enterprises require Submantle certification for agent deployments (creates pull from the demand side)
 
-AWS certifications work because cloud adoption creates urgency. Agent safety adoption will create urgency in the same way — eventually, enterprises will require proof that agent developers understand Substrate's trust model.
+AWS certifications work because cloud adoption creates urgency. Agent safety adoption will create urgency in the same way — eventually, enterprises will require proof that agent developers understand Submantle's trust model.
 
 **Source:** [CertWizard certification guide](https://certwizard.com/blog/aws-vs-azure-vs-google-cloud-certifications), [KodeKloud AWS cert value](https://kodekloud.com/blog/top-aws-certifications-in-2026-which-are-worth-your-investment/) — accessed March 2026
 
 ---
 
-### 5. The Substrate Store Vision — What "Setting Up a Store" Actually Looks Like
+### 5. The Submantle Store Vision — What "Setting Up a Store" Actually Looks Like
 
 **What the research reveals about Fortune 500 brand motivation:**
 
 The Google Universal Commerce Protocol (launched January 2026 with Shopify, Walmart, Target, Wayfair, Etsy, Mastercard, Visa, American Express, and 15+ others) reveals what Fortune 500 brands actually want from trust infrastructure: **verified intent at point of transaction.** UCP uses cryptographic proof of user consent for each authorization. What brands want is to know that the agent acting on behalf of a user actually has that user's permission, and that the user has a verified behavioral history.
 
-Substrate's trust score answers the question UCP can't: not just "did the user consent to this purchase?" but "has this agent's behavior over time demonstrated it should be trusted to act on this user's behalf?"
+Submantle's trust score answers the question UCP can't: not just "did the user consent to this purchase?" but "has this agent's behavior over time demonstrated it should be trusted to act on this user's behalf?"
 
-**The minimum viable Substrate marketplace:**
-Drawing from marketplace research on seeding strategies and the Visa/Starbucks models, the minimum viable marketplace for Substrate needs three things:
+**The minimum viable Submantle marketplace:**
+Drawing from marketplace research on seeding strategies and the Visa/Starbucks models, the minimum viable marketplace for Submantle needs three things:
 
-1. **Seeded supply before launch:** At least 20-30 agent integrations with verified Substrate trust scores before opening to brands. "Seed your marketplace with high-quality supply before you launch to customers" — without this, the store is empty and early visitors don't return.
+1. **Seeded supply before launch:** At least 20-30 agent integrations with verified Submantle trust scores before opening to brands. "Seed your marketplace with high-quality supply before you launch to customers" — without this, the store is empty and early visitors don't return.
 
-2. **One addiction anchor:** One brand offering a genuinely meaningful trust-gated benefit. Not "$5 off" — something experiential. Example: a developer tools company offering instant priority support to Substrate-verified agents (no queue, direct to expert). This creates FOMO for developers who are not verified.
+2. **One addiction anchor:** One brand offering a genuinely meaningful trust-gated benefit. Not "$5 off" — something experiential. Example: a developer tools company offering instant priority support to Submantle-verified agents (no queue, direct to expert). This creates FOMO for developers who are not verified.
 
-3. **The bilateral dependency:** Agents register with Substrate to build trust history. Brands access Substrate to offer trust-gated benefits. The value flows in both directions simultaneously — exactly like Visa needed both cardholders AND merchants.
+3. **The bilateral dependency:** Agents register with Submantle to build trust history. Brands access Submantle to offer trust-gated benefits. The value flows in both directions simultaneously — exactly like Visa needed both cardholders AND merchants.
 
 **What creates addiction:**
-Progressive Snapshot (behavioral telematics) proves the model works outside financial services. Drivers who enroll in Snapshot save an average of $322/year for safe behavior — 2/10 get rate increases for unsafe behavior. The psychological mechanism: real economic stakes tied to observable behavior create behavior change. Substrate's equivalent: agents that behave well earn trust that unlocks real economic benefits (lower API transaction fees, premium data access, brand discounts). Agents that behave badly see trust decay and lose access.
+Progressive Snapshot (behavioral telematics) proves the model works outside financial services. Drivers who enroll in Snapshot save an average of $322/year for safe behavior — 2/10 get rate increases for unsafe behavior. The psychological mechanism: real economic stakes tied to observable behavior create behavior change. Submantle's equivalent: agents that behave well earn trust that unlocks real economic benefits (lower API transaction fees, premium data access, brand discounts). Agents that behave badly see trust decay and lose access.
 
-The Progressive Snapshot model (discount for verified safe behavior) directly maps to Substrate: verified safe agents get cheaper access. This creates incentive for agent developers to build well-behaved agents, not just functional ones.
+The Progressive Snapshot model (discount for verified safe behavior) directly maps to Submantle: verified safe agents get cheaper access. This creates incentive for agent developers to build well-behaved agents, not just functional ones.
 
 **Source:** [UCP Google Developers Blog](https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/), [Progressive Snapshot review](https://www.autoinsurance.com/companies/progressive/snapshot/), [Sharetribe MVP marketplace guide](https://www.sharetribe.com/academy/how-to-build-a-minimum-viable-platform/), [NfX network effects construction guide](https://www.sciencedirect.com/science/article/pii/S2666954422000242) — accessed March 2026
 
@@ -432,21 +432,21 @@ The Progressive Snapshot model (discount for verified safe behavior) directly ma
 - Source: [Progressive Snapshot review 2026](https://www.autoinsurance.com/companies/progressive/snapshot/) — accessed March 2026
 
 **UBI (Usage-Based Insurance) as behavioral trust economy:**
-State Farm's Drive Safe & Save, Allstate's Drivewise, Progressive Snapshot — the entire UBI market is built on "we trust you more when we can see your behavior." The insurance industry arrived at exactly the same architecture Substrate is proposing: observation → scoring → economic benefit. Key difference: insurance UBI tracks driving behavior. Substrate tracks agent behavior. The mechanism is identical.
+State Farm's Drive Safe & Save, Allstate's Drivewise, Progressive Snapshot — the entire UBI market is built on "we trust you more when we can see your behavior." The insurance industry arrived at exactly the same architecture Submantle is proposing: observation → scoring → economic benefit. Key difference: insurance UBI tracks driving behavior. Submantle tracks agent behavior. The mechanism is identical.
 
 **The loyalty-trust bridge:**
-Modern loyalty programs are converging on behavioral trust. Open Loyalty's 2026 benchmark reports that "beyond-purchase behaviors" (reviews, referrals, app engagement, community participation) now unlock multiplier rewards. The shift from "buy more, earn more" to "behave well, earn more" is exactly Substrate's trust model applied to consumer loyalty.
+Modern loyalty programs are converging on behavioral trust. Open Loyalty's 2026 benchmark reports that "beyond-purchase behaviors" (reviews, referrals, app engagement, community participation) now unlock multiplier rewards. The shift from "buy more, earn more" to "behave well, earn more" is exactly Submantle's trust model applied to consumer loyalty.
 
 ---
 
 ## Gaps and Unknowns
 
-- **Zenity's exact behavioral scoring methodology** is not publicly disclosed. Whether they use Beta Reputation or proprietary algorithms is unknown. Closer research needed before Substrate finalizes its own scoring to avoid/leverage their approach.
-- **HUMAN Security's AgenticTrust funding** was not found. The product launched July 2025; current scale is unknown. If well-funded, they are the closest competitor to Substrate's trust layer concept (from the defensive/security side).
-- **Google UCP + Mastercard "new trust layer" partnership** — search results reference this specifically ("Mastercard and Google's new trust layer could reshape how AI buys for you") but details were not surfaced. This bears direct investigation — if Mastercard and Google are building an agentic transaction trust layer, this is either a direct competitor or a potential integration partner for Substrate.
-- **ANP's real traction:** ANP has a white paper and GitHub repo but no confirmed production deployments. The threat level is unclear. If ANP gets adopted as the standard for agent identity (the `did:wba` method), Substrate should plan to accept ANP-verified identities as inputs to its trust model.
-- **The revenue model for the Substrate Store at early scale** — the research shows that marketplace MVPs need seeded supply, but the specific pricing model (what does a Fortune 500 brand actually pay to access Substrate trust-segmented demand?) needs validation against real enterprise procurement data.
-- **Whether Salesforce or Microsoft will build a portable trust layer** — both have the resources and incentive. Currently they are building trust layers that are ecosystem-siloed. The risk is not that they build Substrate — it's that they achieve enough enterprise lock-in that their siloed trust layers become "good enough" for most buyers.
+- **Zenity's exact behavioral scoring methodology** is not publicly disclosed. Whether they use Beta Reputation or proprietary algorithms is unknown. Closer research needed before Submantle finalizes its own scoring to avoid/leverage their approach.
+- **HUMAN Security's AgenticTrust funding** was not found. The product launched July 2025; current scale is unknown. If well-funded, they are the closest competitor to Submantle's trust layer concept (from the defensive/security side).
+- **Google UCP + Mastercard "new trust layer" partnership** — search results reference this specifically ("Mastercard and Google's new trust layer could reshape how AI buys for you") but details were not surfaced. This bears direct investigation — if Mastercard and Google are building an agentic transaction trust layer, this is either a direct competitor or a potential integration partner for Submantle.
+- **ANP's real traction:** ANP has a white paper and GitHub repo but no confirmed production deployments. The threat level is unclear. If ANP gets adopted as the standard for agent identity (the `did:wba` method), Submantle should plan to accept ANP-verified identities as inputs to its trust model.
+- **The revenue model for the Submantle Store at early scale** — the research shows that marketplace MVPs need seeded supply, but the specific pricing model (what does a Fortune 500 brand actually pay to access Submantle trust-segmented demand?) needs validation against real enterprise procurement data.
+- **Whether Salesforce or Microsoft will build a portable trust layer** — both have the resources and incentive. Currently they are building trust layers that are ecosystem-siloed. The risk is not that they build Submantle — it's that they achieve enough enterprise lock-in that their siloed trust layers become "good enough" for most buyers.
 
 ---
 
@@ -465,25 +465,25 @@ After reviewing 20+ companies, the answer to the critical question is clear: **N
 
 None of them are building the layer that sits underneath all of these and tracks behavioral trust over time, makes that trust portable, and creates an economy of trust-gated benefits.
 
-The closest parallel to what Substrate proposes — HUMAN Security's AgenticTrust — positions itself as a defensive security product (detect and stop malicious agents). Substrate's vision is constructive (build and reward trustworthy agents). These are the same problem from opposite directions. HUMAN Security answers "is this agent malicious?" Substrate answers "how much should this agent be trusted?"
+The closest parallel to what Submantle proposes — HUMAN Security's AgenticTrust — positions itself as a defensive security product (detect and stop malicious agents). Submantle's vision is constructive (build and reward trustworthy agents). These are the same problem from opposite directions. HUMAN Security answers "is this agent malicious?" Submantle answers "how much should this agent be trusted?"
 
-### The Strongest Network Effect Model for Substrate
+### The Strongest Network Effect Model for Submantle
 
 The Visa model is the right structural template:
 - Visa doesn't take credit risk; it's a network intermediary
-- Substrate shouldn't store behavioral data centrally; it's a trust protocol
-- Visa's moat is bilateral dependency; Substrate must create the same
-- Visa solved chicken-and-egg by licensing the network to banks; Substrate should seed the network by building trust scores for the most widely-deployed agents first (LangChain agents, Claude agents, GPT agents) before launching the marketplace
+- Submantle shouldn't store behavioral data centrally; it's a trust protocol
+- Visa's moat is bilateral dependency; Submantle must create the same
+- Visa solved chicken-and-egg by licensing the network to banks; Submantle should seed the network by building trust scores for the most widely-deployed agents first (LangChain agents, Claude agents, GPT agents) before launching the marketplace
 
 **The addiction loop:**
-Starbucks proves the model: behavioral data → personalized benefits → habit formation → dependency. Substrate's version: observable agent behavior → accumulating trust score → unlocking real economic benefits → agent developers prioritize good behavior → more good behavior → deeper trust data → richer benefits → more developers want in.
+Starbucks proves the model: behavioral data → personalized benefits → habit formation → dependency. Submantle's version: observable agent behavior → accumulating trust score → unlocking real economic benefits → agent developers prioritize good behavior → more good behavior → deeper trust data → richer benefits → more developers want in.
 
-The critical insight from the airline loyalty research: **the addiction is not to the points, it's to the identity of the tier.** Substrate must make "Substrate Verified" a badge developers want. Not because the discount is huge — but because the badge means something. "My agent is Substrate Verified" should feel like "my app is in the App Store" or "I'm United Platinum."
+The critical insight from the airline loyalty research: **the addiction is not to the points, it's to the identity of the tier.** Submantle must make "Submantle Verified" a badge developers want. Not because the discount is huge — but because the badge means something. "My agent is Submantle Verified" should feel like "my app is in the App Store" or "I'm United Platinum."
 
 ### What Combination Works Best
 
 **Phase 1 (Minimum Viable Trust Layer):**
-- MCP server gives agents access to Substrate awareness (already planned)
+- MCP server gives agents access to Submantle awareness (already planned)
 - Beta Reputation scoring (already designed)
 - Basic tier system with one meaningful experiential delta (Anonymous → Registered → Trusted)
 - Seed with top 30 agent signatures to demonstrate the trust model is real
@@ -491,19 +491,19 @@ The critical insight from the airline loyalty research: **the addiction is not t
 **Phase 2 (Minimum Viable Marketplace):**
 - Sign 3-5 developer tools brands to offer trust-gated benefits (priority support, free compute credits, premium docs access)
 - Make the trust-gated benefit genuinely meaningful — not a discount, an unlock
-- Open the Substrate Store for identity pack contributions (community seeding)
+- Open the Submantle Store for identity pack contributions (community seeding)
 
 **Phase 3 (Bilateral Dependency Lock):**
-- Agent developers depend on Substrate scores to access brand benefits
-- Brands depend on Substrate to reach trust-segmented agent developers
-- This is the Visa flywheel. Once both sides depend on Substrate simultaneously, the network effect compounds and switching cost becomes prohibitive.
+- Agent developers depend on Submantle scores to access brand benefits
+- Brands depend on Submantle to reach trust-segmented agent developers
+- This is the Visa flywheel. Once both sides depend on Submantle simultaneously, the network effect compounds and switching cost becomes prohibitive.
 
 ### What the Orchestrator Needs to Know
 
-The competitive landscape confirms that **2026 is exactly the right moment.** The protocol wars (MCP vs A2A vs ANP) are resolving — MCP has effectively won as the dominant standard, and Substrate should bet on MCP. Enterprise security players (Zenity, SentinelOne) are staking out the "threat detection" side of agent trust. Nobody has staked out the "constructive reputation" side.
+The competitive landscape confirms that **2026 is exactly the right moment.** The protocol wars (MCP vs A2A vs ANP) are resolving — MCP has effectively won as the dominant standard, and Submantle should bet on MCP. Enterprise security players (Zenity, SentinelOne) are staking out the "threat detection" side of agent trust. Nobody has staked out the "constructive reputation" side.
 
-The most dangerous scenario for Substrate is not a competitor building the same thing. It's Google, Microsoft, or Salesforce deciding to build a portable trust layer as a competitive weapon — using their existing enterprise distribution to make their siloed trust model "standard." Substrate's defense against this is speed and openness: become the community standard for behavioral agent trust before these players move.
+The most dangerous scenario for Submantle is not a competitor building the same thing. It's Google, Microsoft, or Salesforce deciding to build a portable trust layer as a competitive weapon — using their existing enterprise distribution to make their siloed trust model "standard." Submantle's defense against this is speed and openness: become the community standard for behavioral agent trust before these players move.
 
-The Google Universal Commerce Protocol launch (January 2026) is a signal, not a threat. UCP handles commerce transactions. It explicitly does NOT handle behavioral trust scoring (per the DataDome analysis — "protocols regulate HOW agents interact, not WHICH agents should be trusted"). UCP is infrastructure that NEEDS Substrate's trust layer sitting underneath it.
+The Google Universal Commerce Protocol launch (January 2026) is a signal, not a threat. UCP handles commerce transactions. It explicitly does NOT handle behavioral trust scoring (per the DataDome analysis — "protocols regulate HOW agents interact, not WHICH agents should be trusted"). UCP is infrastructure that NEEDS Submantle's trust layer sitting underneath it.
 
 The market is proving, right now, that trust is the central unsolved problem in agentic AI. The window to define the standard is open. It will not stay open.

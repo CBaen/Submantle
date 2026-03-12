@@ -22,21 +22,21 @@ Google Reviews for the agent economy. Instead of humans rating restaurants, AI a
 ### Research Questions
 1. What review/rating systems exist for APIs and developer tools? (ProgrammableWeb, G2, StackShare — but these are human reviews)
 2. How would agent reviews be structured? What metrics matter to an agent vs. a human?
-3. What's the trust model? How do you prevent fake agent reviews? (Substrate verification — the agent actually ran through Substrate when it used the service)
-4. How does this connect to the Substrate Store? (Reviewed services get listed, high-rated ones get featured)
+3. What's the trust model? How do you prevent fake agent reviews? (Submantle verification — the agent actually ran through Submantle when it used the service)
+4. How does this connect to the Submantle Store? (Reviewed services get listed, high-rated ones get featured)
 5. Is there a revenue model? (Featured listings, verified review badges, enterprise analytics on agent experience data)
 6. How do existing review platforms (Google, Yelp, G2) handle fraud? What translates to agent reviews?
-7. What does "ease of use" mean from an agent's perspective? Can Substrate define a standard agent experience score?
+7. What does "ease of use" mean from an agent's perspective? Can Submantle define a standard agent experience score?
 
-### Connection to Substrate Core
-- Substrate sees what agents do (the awareness layer)
-- Substrate sees when services fail or succeed (the observation layer)
+### Connection to Submantle Core
+- Submantle sees what agents do (the awareness layer)
+- Submantle sees when services fail or succeed (the observation layer)
 - Aggregating this into reviews is a natural extension of the knowledge graph
-- Reviews become a form of Substrate Insights — but about services, not users
-- "Substrate Reviewed" could become a trust badge like "Substrate Safe" but for service quality
+- Reviews become a form of Submantle Insights — but about services, not users
+- "Submantle Reviewed" could become a trust badge like "Submantle Safe" but for service quality
 
 ### Prerequisite
-V1 must exist first. You need Substrate running on real devices, with real agents querying it, generating real experience data. The reviews grow FROM the awareness layer — they can't be designed in a vacuum.
+V1 must exist first. You need Submantle running on real devices, with real agents querying it, generating real experience data. The reviews grow FROM the awareness layer — they can't be designed in a vacuum.
 
 ### Guiding Light's Words
 "Think about company reviews! The reviews would be more from AI and can be seen by AI but also humans. It could be the new Google Reviews but focused on the agent infrastructure and ease of use and experience."
@@ -63,13 +63,13 @@ Privacy mode isn't a compromise — it's a trust feature. The product should sti
 
 ---
 
-## Expedition: Substrate as Payment Processor for Agents
+## Expedition: Submantle as Payment Processor for Agents
 
 ### Origin
 Guiding Light, 2026-03-10, during post-expedition discussion.
 
 ### The Idea
-Substrate isn't just a product that uses Stripe for billing. Substrate IS the payment layer for agent transactions. Designed specifically for ease of agent transaction. Code designed to make agent usage "not only easier, but more attractive to use just from a design perspective."
+Submantle isn't just a product that uses Stripe for billing. Submantle IS the payment layer for agent transactions. Designed specifically for ease of agent transaction. Code designed to make agent usage "not only easier, but more attractive to use just from a design perspective."
 
 ### Research Questions
 1. What makes an agent "prefer" one payment rail over another? (API simplicity, speed, reliability, documentation quality)
@@ -79,4 +79,4 @@ Substrate isn't just a product that uses Stripe for billing. Substrate IS the pa
 5. What does "attractive to use from a design perspective" mean for an API? (DX research, developer satisfaction metrics)
 
 ### Guiding Light's Words
-"Substrate will also be a payment processor, it will be focused on agent payments and code will be designed to make their usage not only easier, but more attractive to use just from a design perspective — if that means anything for AI preference in payment processor other than sheer financials."
+"Submantle will also be a payment processor, it will be focused on agent payments and code will be designed to make their usage not only easier, but more attractive to use just from a design perspective — if that means anything for AI preference in payment processor other than sheer financials."

@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-cheqd has built a real, working, open-source MCP server for issuing verifiable credentials to AI agents. It is not vaporware. It is also not a behavioral trust system — it is purely a **credential issuance and accreditation infrastructure**. cheqd's work is directly relevant to Substrate's attestation design and presents both a reference implementation and a partial integration opportunity, but it does not overlap with Substrate's behavioral layer (runtime observation, process awareness, event-driven signatures). These are additive, not competitive.
+cheqd has built a real, working, open-source MCP server for issuing verifiable credentials to AI agents. It is not vaporware. It is also not a behavioral trust system — it is purely a **credential issuance and accreditation infrastructure**. cheqd's work is directly relevant to Submantle's attestation design and presents both a reference implementation and a partial integration opportunity, but it does not overlap with Submantle's behavioral layer (runtime observation, process awareness, event-driven signatures). These are additive, not competitive.
 
 ---
 
@@ -159,7 +159,7 @@ The DID serves as the cryptographic anchor for all credentials. An agent's walle
 
 ## 5. Behavioral Trust: None
 
-This is the critical finding for Substrate.
+This is the critical finding for Submantle.
 
 cheqd's system is **purely credential issuance and accreditation-based**. Trust is derived from:
 1. Who signed the credential (institutional authority)
@@ -199,7 +199,7 @@ cheqd implements **two revocation mechanisms**, both on-chain:
 - Verifiers can verify this proof without learning the credential holder's identity
 - Designed as migration path for organizations moving off deprecated Sovrin/Indy networks
 
-### Critical Note for Substrate
+### Critical Note for Submantle
 The revocation mechanism is **issuer-initiated only**. A credential can only be revoked by the entity that issued it (or an authorized delegatee). There is no mechanism for automated revocation based on behavioral violations. This is an architectural gap cheqd has not addressed.
 
 ---
@@ -224,7 +224,7 @@ The revocation mechanism is **issuer-initiated only**. A credential can only be 
 - MCP tool wrappers for all of the above
 - Hosted remote server (zero ops)
 
-### What cheqd Has Not Solved (Substrate's Territory)
+### What cheqd Has Not Solved (Submantle's Territory)
 - **Behavioral observation** — what is an agent actually doing at runtime?
 - **Process-level awareness** — what software is running, consuming resources?
 - **Event-driven trust signals** — detecting anomalies, pattern changes, deviations
@@ -233,11 +233,11 @@ The revocation mechanism is **issuer-initiated only**. A credential can only be 
 - **Lightweight local execution** — cheqd requires Node.js 20+, a full wallet agent, and blockchain connectivity
 
 ### Integration Feasibility
-Substrate could **extend** cheqd's work in a specific, targeted way:
+Submantle could **extend** cheqd's work in a specific, targeted way:
 
-**Scenario:** Substrate observes agent behavior for N hours/actions. If behavior is consistent with the agent's declared credential, Substrate generates a **behavioral attestation VC** and submits it via the cheqd MCP toolkit's `create-credential-offer-connectionless` tool. This would be the world's first behavioral trust layer feeding into a credential trust layer.
+**Scenario:** Submantle observes agent behavior for N hours/actions. If behavior is consistent with the agent's declared credential, Submantle generates a **behavioral attestation VC** and submits it via the cheqd MCP toolkit's `create-credential-offer-connectionless` tool. This would be the world's first behavioral trust layer feeding into a credential trust layer.
 
-This is additive, not duplicative. cheqd handles the credential infrastructure; Substrate handles the behavioral evidence. Neither can do what the other does.
+This is additive, not duplicative. cheqd handles the credential infrastructure; Submantle handles the behavioral evidence. Neither can do what the other does.
 
 ---
 
@@ -310,7 +310,7 @@ BBS+ is not on cheqd's public roadmap for 2025-2026. Their selective disclosure 
 
 **Assessment: Potential partner, not a competitor.**
 
-| Dimension | cheqd | Substrate |
+| Dimension | cheqd | Submantle |
 |-----------|-------|---------|
 | Core capability | Credential issuance + trust chain validation | Behavioral observation + runtime awareness |
 | Trust model | Institutional accreditation | Behavioral attestation |
@@ -321,23 +321,23 @@ BBS+ is not on cheqd's public roadmap for 2025-2026. Their selective disclosure 
 | Deployment | Node.js + wallet agent | Lightweight local daemon |
 | Target customer | Enterprises, credential platforms | All devices, all agents |
 
-The only overlap is the **end goal** (trusted agents), not the **mechanism**. cheqd answers "who authorized this agent"; Substrate answers "what is this agent doing."
+The only overlap is the **end goal** (trusted agents), not the **mechanism**. cheqd answers "who authorized this agent"; Submantle answers "what is this agent doing."
 
-A partnership makes conceptual sense: Substrate observes behavior and generates behavioral evidence; cheqd issues and manages the credentials that encode that evidence. This is not a product partnership to pursue now — but it is worth noting the architectural compatibility.
+A partnership makes conceptual sense: Submantle observes behavior and generates behavioral evidence; cheqd issues and manages the credentials that encode that evidence. This is not a product partnership to pursue now — but it is worth noting the architectural compatibility.
 
 ---
 
-## Key Findings for Substrate's Attestation Design
+## Key Findings for Submantle's Attestation Design
 
-1. **Revocation mechanism is solved** — Bitstring Status List on-chain is the standard. Substrate does not need to invent this. If Substrate issues attestation VCs, it should use the same W3C Bitstring Status List pattern, either via cheqd's infrastructure or its own implementation.
+1. **Revocation mechanism is solved** — Bitstring Status List on-chain is the standard. Submantle does not need to invent this. If Submantle issues attestation VCs, it should use the same W3C Bitstring Status List pattern, either via cheqd's infrastructure or its own implementation.
 
-2. **VC schema is flexible but not behavioral** — cheqd's `AIAgentAuthorization` schema encodes model metadata and safety ratings, not runtime behavior. Substrate would need a new credential type (e.g., `BehavioralAttestation`) with fields for: observed_pattern_hash, observation_window, deviation_score, last_observed_timestamp.
+2. **VC schema is flexible but not behavioral** — cheqd's `AIAgentAuthorization` schema encodes model metadata and safety ratings, not runtime behavior. Submantle would need a new credential type (e.g., `BehavioralAttestation`) with fields for: observed_pattern_hash, observation_window, deviation_score, last_observed_timestamp.
 
-3. **DID per agent is the right pattern** — Every agent should have its own DID. cheqd validates this. Substrate's agent identity module (already built) aligns with this.
+3. **DID per agent is the right pattern** — Every agent should have its own DID. cheqd validates this. Submantle's agent identity module (already built) aligns with this.
 
-4. **TRAIN is a reference for trust chain verification** — The recursive trust chain validation (credential → issuer accreditation → root DID → DNS anchor) is a mature pattern. Substrate's attestation verification could adopt the same recursive model.
+4. **TRAIN is a reference for trust chain verification** — The recursive trust chain validation (credential → issuer accreditation → root DID → DNS anchor) is a mature pattern. Submantle's attestation verification could adopt the same recursive model.
 
-5. **Apache-2.0 means Substrate can use cheqd's code directly** — If Substrate ever issues W3C-format VCs, the cheqd MCP toolkit can be dropped in as a credential management layer. No legal or licensing barrier.
+5. **Apache-2.0 means Submantle can use cheqd's code directly** — If Submantle ever issues W3C-format VCs, the cheqd MCP toolkit can be dropped in as a credential management layer. No legal or licensing barrier.
 
 6. **BBS+ is not the path** — Neither cheqd nor the broader MCP ecosystem has moved to BBS+. AnonCreds ZKPs are the privacy-preserving path for selective disclosure in this ecosystem.
 

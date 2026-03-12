@@ -1,8 +1,8 @@
 # Runtime output
-prototype/substrate_state.json
-prototype/substrate.db
-prototype/substrate.db-wal
-prototype/substrate.db-shm
+prototype/submantle_state.json
+prototype/submantle.db
+prototype/submantle.db-wal
+prototype/submantle.db-shm
 
 # Python
 __pycache__/

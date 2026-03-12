@@ -1,13 +1,13 @@
 # Follow-Up Research: BBS+ Cryptosuite Status
 ## Date: 2026-03-11
 ## Researcher: Expedition Follow-Up Agent
-## Assignment: Verify W3C BBS+ finalization status for Substrate Trust Attestations
+## Assignment: Verify W3C BBS+ finalization status for Submantle Trust Attestations
 
 ---
 
 ## Research Summary
 
-This report resolves the open question flagged in validation-2.md and synthesis.md: whether BBS+ cryptosuites are among the finalized W3C specifications or remain as Candidate Recommendations. All findings are externally verified via live web sources. The answer has direct implications for whether Substrate can use BBS+ for selective disclosure in V1 or must choose an alternative.
+This report resolves the open question flagged in validation-2.md and synthesis.md: whether BBS+ cryptosuites are among the finalized W3C specifications or remain as Candidate Recommendations. All findings are externally verified via live web sources. The answer has direct implications for whether Submantle can use BBS+ for selective disclosure in V1 or must choose an alternative.
 
 ---
 
@@ -47,7 +47,7 @@ Source: https://www.w3.org/groups/wg/vc/publications/
 
 This is definitively confirmed. The W3C VC Working Group publications page clearly separates the two Candidate Recommendation Drafts (BBS Cryptosuites and JSON Schema) from the seven W3C Recommendations published May 15, 2025.
 
-**This means:** Any Substrate architecture relying on BBS+ selective disclosure is building on a specification that has not achieved final W3C Recommendation status.
+**This means:** Any Submantle architecture relying on BBS+ selective disclosure is building on a specification that has not achieved final W3C Recommendation status.
 
 ---
 
@@ -105,7 +105,7 @@ This substantially exceeds the two-implementation threshold required to exit Can
 - SpruceID SSI library (Apache 2.0, Trail of Bits security audit March 2022, 645 commits). Confirmed as one of six registered W3C implementations.
 - `mattrglobal/pairing_crypto` — implements BBS Signatures draft-03. **Explicitly notes no independent audit.** Not production-ready.
 
-**Go (weak — the critical gap for Substrate's future):**
+**Go (weak — the critical gap for Submantle's future):**
 - `hyperledger/aries-bbs-go` — implements older BBS+ standard (not BBS-2023). No releases, 12 commits, pre-production.
 - `github.com/aniagut/msc-bbs-anonymous-credentials` — published June 2025, 0 imports. Research/academic, not production.
 - **No production-quality Go implementation of BBS-2023 (the current W3C cryptosuite) exists.**
@@ -114,11 +114,11 @@ This substantially exceeds the two-implementation threshold required to exit Can
 - No dedicated BBS-2023 Python library identified.
 
 ### Bottom line on implementations:
-BBS+ selective disclosure can be implemented today if using JavaScript or Rust. For Substrate's planned production language (Go), no production-quality BBS-2023 library exists. This is a material constraint for the Go rewrite phase.
+BBS+ selective disclosure can be implemented today if using JavaScript or Rust. For Submantle's planned production language (Go), no production-quality BBS-2023 library exists. This is a material constraint for the Go rewrite phase.
 
 ---
 
-## Question 6: What is the practical impact for Substrate? Can we build on BBS+ today, or should we use an alternative for V1?
+## Question 6: What is the practical impact for Submantle? Can we build on BBS+ today, or should we use an alternative for V1?
 
 **Answer: Do not use BBS+ for V1. Use SD-JWT selective disclosure instead. BBS+ is the right V2/V3 target when specification and Go library support mature.**
 
@@ -126,7 +126,7 @@ BBS+ selective disclosure can be implemented today if using JavaScript or Rust. 
 
 1. **Specification is not final.** Building on a Candidate Recommendation creates adoption risk — the spec can still change before Recommendation. The optional features risk-clause means some capabilities could be removed entirely if the IETF dependency doesn't resolve.
 
-2. **No production Go library.** Substrate's production language is Go. No production-quality Go implementation of BBS-2023 exists as of March 2026. The Python prototype phase could use JavaScript-binding workarounds, but this adds complexity.
+2. **No production Go library.** Submantle's production language is Go. No production-quality Go implementation of BBS-2023 exists as of March 2026. The Python prototype phase could use JavaScript-binding workarounds, but this adds complexity.
 
 3. **Complexity overhead.** BBS+ requires pairing-friendly elliptic curves (BLS12-381), RDF dataset canonicalization, and the BBS+ proof generation protocol. This is substantially more complex than SD-JWT to implement and debug.
 
@@ -134,13 +134,13 @@ BBS+ selective disclosure can be implemented today if using JavaScript or Rust. 
 
 ### Why BBS+ remains valuable for V2/V3:
 
-1. **Unlinkability.** BBS+ generates cryptographically unlinkable presentations — two proofs derived from the same credential cannot be correlated by verifiers. SD-JWT does NOT provide this property. For Substrate's use case (behavioral trust attestations shown to multiple parties), this matters: a verifier cannot tell if the same credential was shown to 10 other verifiers.
+1. **Unlinkability.** BBS+ generates cryptographically unlinkable presentations — two proofs derived from the same credential cannot be correlated by verifiers. SD-JWT does NOT provide this property. For Submantle's use case (behavioral trust attestations shown to multiple parties), this matters: a verifier cannot tell if the same credential was shown to 10 other verifiers.
 
 2. **Single credential, multiple selective disclosures.** BBS+ allows holder to generate any subset disclosure from a single signed credential without re-issuance. SD-JWT requires the issuer to pre-commit to which fields are disclosable.
 
 3. **Implementation trajectory is positive.** Six registered implementations, actively maintained spec, W3C Working Group charter through 2028. This will eventually become a final Recommendation.
 
-**Recommendation for Substrate build sequence:**
+**Recommendation for Submantle build sequence:**
 - **V1 (now):** Use SD-JWT (RFC 9901) for selective disclosure in Trust Attestations
 - **V2 (when Go library matures):** Add BBS+ support as an optional cryptosuite
 - **V3 (when W3C Recommendation finalized):** Make BBS+ the default for privacy-preserving disclosures
@@ -178,7 +178,7 @@ BBS+ selective disclosure can be implemented today if using JavaScript or Rust. 
 
 **Production ecosystem:** Used in production in several national identity systems (primarily European). Rust library (anoncreds-rs) at v0.2.3. No Go library.
 
-**Tradeoff vs BBS+:** More mature in production for the Indy/ACA-Py ecosystem, but not aligned with W3C VC 2.0 core standards. Tight ecosystem lock-in. **Not recommended for Substrate** — poor standards interoperability with the broader W3C VC ecosystem that Substrate needs to participate in.
+**Tradeoff vs BBS+:** More mature in production for the Indy/ACA-Py ecosystem, but not aligned with W3C VC 2.0 core standards. Tight ecosystem lock-in. **Not recommended for Submantle** — poor standards interoperability with the broader W3C VC ecosystem that Submantle needs to participate in.
 
 ### Alternative 3: JSON-LD + ECDSA/EdDSA (No selective disclosure)
 
@@ -186,9 +186,9 @@ BBS+ selective disclosure can be implemented today if using JavaScript or Rust. 
 
 **How it works:** Standard Data Integrity proofs over the full credential. No selective disclosure capability — the entire credential must be presented.
 
-**Relevance for Substrate V1:** If selective disclosure is deferred to V2, this is the simplest path — use finalized ECDSA or EdDSA cryptosuites with W3C VC 2.0, accept that the full trust attestation is always presented, add selective disclosure later. Excellent Go library support exists (multiple mature JWT/VC libraries).
+**Relevance for Submantle V1:** If selective disclosure is deferred to V2, this is the simplest path — use finalized ECDSA or EdDSA cryptosuites with W3C VC 2.0, accept that the full trust attestation is always presented, add selective disclosure later. Excellent Go library support exists (multiple mature JWT/VC libraries).
 
-**Tradeoff:** Simplest to implement but sacrifices privacy — a verifier sees the full trust score and all attestation fields. For Substrate's "prove your tier without revealing your data" design, this is insufficient.
+**Tradeoff:** Simplest to implement but sacrifices privacy — a verifier sees the full trust score and all attestation fields. For Submantle's "prove your tier without revealing your data" design, this is insufficient.
 
 ### Alternative 4: Zero-Knowledge Proofs (V3+)
 
@@ -208,7 +208,7 @@ As identified in the expedition synthesis, ZKPs (zk-SNARKs, PLONK, etc.) provide
 
 ---
 
-## Recommendation for Substrate
+## Recommendation for Submantle
 
 **For V1 Trust Attestations: Use SD-JWT (RFC 9901) with W3C VC 2.0.**
 
@@ -218,9 +218,9 @@ The combination of W3C VC Data Model v2.0 (May 2025 Recommendation) with SD-JWT-
 - Aligned with the real-world production ecosystem (EU Digital Identity, OID4VCI)
 - Buildable today without waiting for any additional specification work
 
-**The privacy tradeoff is acceptable for V1:** SD-JWT does not provide BBS+-style unlinkability, but for Substrate's V1 use case (agents presenting their trust tier to brand partners), the inability to correlate presentations across verifiers is a V2/V3 concern, not a V1 blocker. The behavioral trust scoring system itself is far more privacy-sensitive than the disclosure format at this stage.
+**The privacy tradeoff is acceptable for V1:** SD-JWT does not provide BBS+-style unlinkability, but for Submantle's V1 use case (agents presenting their trust tier to brand partners), the inability to correlate presentations across verifiers is a V2/V3 concern, not a V1 blocker. The behavioral trust scoring system itself is far more privacy-sensitive than the disclosure format at this stage.
 
-**Keep BBS+ on the V2 roadmap.** The specification is technically mature (six implementations, active maintenance, W3C Working Group through 2028). When the IRTF BBS Signatures RFC publishes (likely 2026) and a production Go library emerges, upgrade Substrate's attestation layer to support BBS-2023 as an optional cryptosuite for privacy-sensitive contexts.
+**Keep BBS+ on the V2 roadmap.** The specification is technically mature (six implementations, active maintenance, W3C Working Group through 2028). When the IRTF BBS Signatures RFC publishes (likely 2026) and a production Go library emerges, upgrade Submantle's attestation layer to support BBS-2023 as an optional cryptosuite for privacy-sensitive contexts.
 
 **Validate this decision before the Trust Attestation Layer build begins** — specifically, confirm that cheqd's existing MCP VC implementation (flagged in synthesis.md as a potential reference) uses SD-JWT or BBS+, since aligning with their format could save significant implementation time.
 

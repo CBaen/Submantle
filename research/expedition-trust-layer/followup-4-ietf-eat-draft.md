@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The Huang draft is **confirmed expired** with no revival, renewal, or supersession as of 2026-03-11. The RATS working group has not formally discussed agentic extensions. However, the broader IETF landscape is more active than prior teams reported — a parallel Huawei draft on EAT profiles for AI agents is **currently active**, two WIMSE-adjacent drafts are live, and NIST launched a formal AI Agent Standards Initiative in February 2026. The conditions for Substrate to submit its own individual draft are favorable and the process is accessible.
+The Huang draft is **confirmed expired** with no revival, renewal, or supersession as of 2026-03-11. The RATS working group has not formally discussed agentic extensions. However, the broader IETF landscape is more active than prior teams reported — a parallel Huawei draft on EAT profiles for AI agents is **currently active**, two WIMSE-adjacent drafts are live, and NIST launched a formal AI Agent Standards Initiative in February 2026. The conditions for Submantle to submit its own individual draft are favorable and the process is accessible.
 
 ---
 
@@ -102,7 +102,7 @@ These are functionally **the same process** — there is no special "revival" tr
 If targeting a specific WG for eventual adoption, the convention is:
 `draft-{authors}-{wgname}-{title}-00`
 
-Example for RATS: `draft-substrate-rats-behavioral-attestation-00`
+Example for RATS: `draft-submantle-rats-behavioral-attestation-00`
 Upon WG adoption, it would be renamed: `draft-ietf-rats-behavioral-attestation-00`
 
 ### WG Adoption Process
@@ -138,7 +138,7 @@ This is where prior research was incomplete. There is **more active work** than 
 - Stream: Individual submission — not WG-adopted
 - Relationship to RATS: Complements the RATS architecture
 - Notable: Includes optional 5G/6G extensions for ETSI ENI and 3GPP interoperability
-- This draft is CLOSER to Substrate's behavioral layer than the Huang draft — it includes training data provenance and inference constraints
+- This draft is CLOSER to Submantle's behavioral layer than the Huang draft — it includes training data provenance and inference constraints
 - **Source:** https://datatracker.ietf.org/doc/draft-messous-eat-ai/
 
 #### draft-ni-wimse-ai-agent-identity-02
@@ -199,7 +199,7 @@ https://datatracker.ietf.org/doc/charter-ietf-rats/
 
 ---
 
-## Question 7: What Would It Take for Substrate to Submit Its Own Individual Draft?
+## Question 7: What Would It Take for Submantle to Submit Its Own Individual Draft?
 
 ### Technical Requirements
 - Write the draft in RFCXML or plain text following IETF formatting guidelines
@@ -227,11 +227,11 @@ https://datatracker.ietf.org/doc/charter-ietf-rats/
 - WG adoption (if interest exists): 6-18 months post-first-discussion
 - RFC publication (if adopted): 2-5 years
 
-### Substrate-Specific Strategic Assessment
-Substrate's behavioral trust layer — the part that observes runtime agent behavior and generates attestation evidence — would be a **novel contribution** to the IETF landscape. No existing draft covers this. The gap is real and documented in prior expedition findings.
+### Submantle-Specific Strategic Assessment
+Submantle's behavioral trust layer — the part that observes runtime agent behavior and generates attestation evidence — would be a **novel contribution** to the IETF landscape. No existing draft covers this. The gap is real and documented in prior expedition findings.
 
 However: An IETF draft is a standards play, not a product play. The right sequencing is:
-1. Build the behavioral attestation capability in Substrate (product)
+1. Build the behavioral attestation capability in Submantle (product)
 2. Document the technical approach publicly (whitepaper or blog)
 3. Submit a draft once there is real-world data to reference
 4. Use the draft process to build relationships with cloud vendors who would co-author
@@ -258,7 +258,7 @@ https://authors.ietf.org/submitting-your-internet-draft
 - **Contributed projects:** MCP (Anthropic), goose (Block), AGENTS.md (OpenAI)
 - **Scope:** Interoperability, not attestation — making agents work together, not verifying their behavior
 - **Behavioral attestation:** Not in current scope; "security controls" mentioned for MCP but not defined
-- **Significance:** Anthropic is a founding member — this is directly relevant to Substrate's MCP integration angle
+- **Significance:** Anthropic is a founding member — this is directly relevant to Submantle's MCP integration angle
 - **Source:** https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation
 
 ### FIDO Alliance
@@ -298,14 +298,14 @@ Prior research teams overstated the Huang draft's significance (active standards
 
 3. **Behavioral attestation (runtime observation of agent behavior) has no formal IETF or W3C home.** It exists in CSA guidance documents and academic papers but not in standards-track protocol work. This is the genuine gap.
 
-4. **The agent-to-agent WG proposal (from IETF 124 side meeting, January 2026 blog post) is the most likely future home** for agent trust standards. If this WG is chartered, it would be the right target for Substrate's contribution.
+4. **The agent-to-agent WG proposal (from IETF 124 side meeting, January 2026 blog post) is the most likely future home** for agent trust standards. If this WG is chartered, it would be the right target for Submantle's contribution.
 
-5. **The behavioral trust layer Substrate is building has no standards-track competition.** That is both an opportunity (first-mover in standards) and a challenge (no existing WG to anchor to).
+5. **The behavioral trust layer Submantle is building has no standards-track competition.** That is both an opportunity (first-mover in standards) and a challenge (no existing WG to anchor to).
 
-**What this means for Substrate:**
+**What this means for Submantle:**
 - Monitoring the IETF agent-to-agent mailing list and proposed WG charter process is the right move
-- A Substrate individual draft should wait until (a) the behavioral trust layer is built and (b) the agent-to-agent WG is chartered — targeting the new WG rather than RATS
-- The CSA Agentic Trust Framework is worth engaging with now — it creates enterprise demand for exactly what Substrate provides, and CSA involvement would build credibility before an IETF submission
+- A Submantle individual draft should wait until (a) the behavioral trust layer is built and (b) the agent-to-agent WG is chartered — targeting the new WG rather than RATS
+- The CSA Agentic Trust Framework is worth engaging with now — it creates enterprise demand for exactly what Submantle provides, and CSA involvement would build credibility before an IETF submission
 
 ---
 

@@ -30,17 +30,17 @@ No challenge here. The claim is accurate.
 
 Team 2 states `draft-huang-rats-agentic-eat-cap-attest-00` is published on the IETF datatracker. **This is verified** — the draft exists and its contents match what Team 2 describes.
 
-**The challenge:** Team 2 presents this as a signal of institutional standards momentum: "Substrate could contribute to shaping them." But the draft has an expiration date of December 15, 2025 — meaning it expired without renewal before the date of this expedition (March 2026). An expired individual draft with no adopted working group status is not evidence of institutional momentum; it is evidence that one person submitted a document that has not attracted enough support to be renewed. Team 2 should have checked the expiration date. This does not invalidate the technical content of the draft, but it significantly weakens the "window is open for Substrate to contribute" framing. A draft that expired in December 2025 is not an active IETF process Substrate can join.
+**The challenge:** Team 2 presents this as a signal of institutional standards momentum: "Submantle could contribute to shaping them." But the draft has an expiration date of December 15, 2025 — meaning it expired without renewal before the date of this expedition (March 2026). An expired individual draft with no adopted working group status is not evidence of institutional momentum; it is evidence that one person submitted a document that has not attracted enough support to be renewed. Team 2 should have checked the expiration date. This does not invalidate the technical content of the draft, but it significantly weakens the "window is open for Submantle to contribute" framing. A draft that expired in December 2025 is not an active IETF process Submantle can join.
 
-**Impact on findings:** The EAT agentic extension concept is real and technically useful. The standards-track opportunity claim is overstated. Substrate cannot "contribute to shaping" a draft that has already expired.
+**Impact on findings:** The EAT agentic extension concept is real and technically useful. The standards-track opportunity claim is overstated. Submantle cannot "contribute to shaping" a draft that has already expired.
 
 ### Challenge 4: HUMAN Security AgenticTrust — CONFIRMED, and the competitive gap claim is WEAKENED
 
-Team 4 says HUMAN Security's AgenticTrust is "the closest in spirit" to Substrate but positions it as purely defensive. The search results show HUMAN's own language: "Trust is not a score, a label, or a rule; trust is a dynamic, ongoing decision." AgenticTrust "decisions evolve in real-time based on what the agent does, not just what it is."
+Team 4 says HUMAN Security's AgenticTrust is "the closest in spirit" to Submantle but positions it as purely defensive. The search results show HUMAN's own language: "Trust is not a score, a label, or a rule; trust is a dynamic, ongoing decision." AgenticTrust "decisions evolve in real-time based on what the agent does, not just what it is."
 
-**The challenge:** Team 4's characterization that HUMAN Security is "defensive (detect and block malicious agents)" while Substrate is "constructive (build and reward trustworthy agents)" is a framing choice, not a factual distinction. HUMAN Security's own marketing explicitly claims they are building behavioral, adaptive, dynamic trust — not just blocking. The gap between the two products is real but narrower than Team 4 admits. Specifically: HUMAN Security operates at the web application layer (protecting websites and APIs from AI agent traffic), while Substrate operates at the OS/device layer. That is the real distinction. The "defensive vs. constructive" framing understates HUMAN Security's behavioral sophistication and could lead to underestimating them as a competitor.
+**The challenge:** Team 4's characterization that HUMAN Security is "defensive (detect and block malicious agents)" while Submantle is "constructive (build and reward trustworthy agents)" is a framing choice, not a factual distinction. HUMAN Security's own marketing explicitly claims they are building behavioral, adaptive, dynamic trust — not just blocking. The gap between the two products is real but narrower than Team 4 admits. Specifically: HUMAN Security operates at the web application layer (protecting websites and APIs from AI agent traffic), while Submantle operates at the OS/device layer. That is the real distinction. The "defensive vs. constructive" framing understates HUMAN Security's behavioral sophistication and could lead to underestimating them as a competitor.
 
-**Impact on findings:** The "no one is doing what Substrate does" claim remains directionally correct for the OS-layer, portable, cross-ecosystem behavioral trust score specifically. But HUMAN Security is a more sophisticated near-competitor than Team 4 acknowledges.
+**Impact on findings:** The "no one is doing what Submantle does" claim remains directionally correct for the OS-layer, portable, cross-ecosystem behavioral trust score specifically. But HUMAN Security is a more sophisticated near-competitor than Team 4 acknowledges.
 
 ### Challenge 5: Zenity funding and characterization — CONFIRMED, minor error
 
@@ -56,7 +56,7 @@ Team 4 cites Decagon's $4.5B valuation at $250M Series D (January 2026), sourced
 
 ### Challenge 7: Team 3's EigenTrust "not recommended" — correct finding, but the reason given is partially wrong
 
-Team 3 correctly concludes EigenTrust is not suitable for Substrate and labels it "Not recommended for V1 or V2." The reasons given include: "Fundamentally designed for distributed P2P, not centralized infrastructure." This is accurate. However, Team 3 also says EigenTrust "does not scale to internet-scale (billions of nodes) using naive power iteration — the matrix becomes intractable." This is technically correct for naive implementation but misleading — EigenTrust's modern variants (including the version used in OpenRank) use distributed power iteration that scales well. The correct reason to reject EigenTrust is that it requires a pre-existing trust graph, which Substrate doesn't have and may never have in the form EigenTrust requires. The scalability claim is a red herring.
+Team 3 correctly concludes EigenTrust is not suitable for Submantle and labels it "Not recommended for V1 or V2." The reasons given include: "Fundamentally designed for distributed P2P, not centralized infrastructure." This is accurate. However, Team 3 also says EigenTrust "does not scale to internet-scale (billions of nodes) using naive power iteration — the matrix becomes intractable." This is technically correct for naive implementation but misleading — EigenTrust's modern variants (including the version used in OpenRank) use distributed power iteration that scales well. The correct reason to reject EigenTrust is that it requires a pre-existing trust graph, which Submantle doesn't have and may never have in the form EigenTrust requires. The scalability claim is a red herring.
 
 **Impact on findings:** The conclusion (don't use EigenTrust for V1-V2) is correct. The supporting argument is partially inaccurate.
 
@@ -90,7 +90,7 @@ Team 3 is more rigorous here. A 0/0 initialization produces undefined behavior i
 
 ### Contradiction 3: EAT agentic draft status
 
-Team 2 presents the draft as an active opportunity: "Substrate could contribute to shaping them."
+Team 2 presents the draft as an active opportunity: "Submantle could contribute to shaping them."
 Team 5 also cites the draft as evidence of a "first-mover opportunity at the standards level."
 
 Neither team checked the expiration date (December 15, 2025 — expired before this expedition). The contradiction is not between teams but between both teams and reality. This is the most consequential factual error in the expedition: the standards opportunity framing is based on a document that has already lapsed.
@@ -115,13 +115,13 @@ Neither team checked the expiration date (December 15, 2025 — expired before t
 
 Every team that mentions selective disclosure relies on BBS+ as the implementation. No team verified whether BBS cryptosuites were included in the May 2025 W3C finalization or are still Candidate Recommendations. This is not a theoretical gap — it determines whether the privacy-preserving attestation model is buildable today with a stable standard or requires waiting for a specification that is not yet finalized.
 
-### Missing Angle 2: HUMAN Security's actual behavioral model vs. Substrate's
+### Missing Angle 2: HUMAN Security's actual behavioral model vs. Submantle's
 
 Team 4 dismisses HUMAN Security as purely defensive without examining their behavioral trust methodology in depth. Given HUMAN Security's own language about "dynamic, ongoing decisions based on what the agent does," a deeper comparison — what signals they use, what their scoring model looks like, whether they have a portable trust credential — would have either validated or undermined the "gap is unoccupied" thesis more convincingly.
 
 ### Missing Angle 3: Mastercard + Google "new trust layer" for agentic commerce
 
-Team 4 explicitly flags this in their own gaps section: "search results reference this specifically ('Mastercard and Google's new trust layer could reshape how AI buys for you') but details were not surfaced." This was identified as potentially a direct competitor or integration partner and then not researched. This is the single highest-priority unresolved research question from this expedition. If Mastercard and Google are building a portable behavioral trust layer for agentic commerce, the "no one is doing what Substrate does" thesis requires significant qualification.
+Team 4 explicitly flags this in their own gaps section: "search results reference this specifically ('Mastercard and Google's new trust layer could reshape how AI buys for you') but details were not surfaced." This was identified as potentially a direct competitor or integration partner and then not researched. This is the single highest-priority unresolved research question from this expedition. If Mastercard and Google are building a portable behavioral trust layer for agentic commerce, the "no one is doing what Submantle does" thesis requires significant qualification.
 
 ### Missing Angle 4: OpenID Federation 1.0 finalization status
 
@@ -133,7 +133,7 @@ Both Teams 3 and 5 flag the incident definition as the most critical unresolved 
 
 ### Missing Angle 6: cheqd as a direct reference implementation
 
-Team 5 cites cheqd multiple times as having already built MCP servers for VC issuance for AI agents. No team examined cheqd's implementation in depth — what their VC schema looks like, how they handle revocation, what their agent identity model is. If cheqd has already built most of what Gap 4 requires, Substrate may be able to adopt or extend their work rather than designing from scratch. This is a potentially large time savings that was not investigated.
+Team 5 cites cheqd multiple times as having already built MCP servers for VC issuance for AI agents. No team examined cheqd's implementation in depth — what their VC schema looks like, how they handle revocation, what their agent identity model is. If cheqd has already built most of what Gap 4 requires, Submantle may be able to adopt or extend their work rather than designing from scratch. This is a potentially large time savings that was not investigated.
 
 ---
 
@@ -163,9 +163,9 @@ The following claims were reached independently by multiple teams and have exter
 
 **Surprise 1: The agentic EAT draft expired.** The standards-track narrative assumes this draft is active. It is not, as of the expedition date. This reframes the IETF opportunity from "join an active process" to "revive or submit anew." That is a different — harder — path than Teams 2 and 5 describe.
 
-**Surprise 2: HUMAN Security's behavioral framing is more sophisticated than Team 4 acknowledges.** The "trust is a dynamic, ongoing decision based on what the agent does" language from HUMAN Security's own product page is nearly identical to Substrate's design philosophy. The key distinction is layer (web application vs. OS) and portability (HUMAN's is per-website, not portable), but the behavioral model overlap is significant enough to warrant a deeper competitive analysis than Team 4 provided.
+**Surprise 2: HUMAN Security's behavioral framing is more sophisticated than Team 4 acknowledges.** The "trust is a dynamic, ongoing decision based on what the agent does" language from HUMAN Security's own product page is nearly identical to Submantle's design philosophy. The key distinction is layer (web application vs. OS) and portability (HUMAN's is per-website, not portable), but the behavioral model overlap is significant enough to warrant a deeper competitive analysis than Team 4 provided.
 
-**Surprise 3: cheqd appears to have already shipped VC issuance for AI agents via MCP.** Multiple sources in Teams 3 and 5 confirm this. No team investigated what cheqd actually built. If cheqd's implementation is production-quality and compatible with Substrate's model, Gap 4 may have a reference implementation available rather than requiring original design.
+**Surprise 3: cheqd appears to have already shipped VC issuance for AI agents via MCP.** Multiple sources in Teams 3 and 5 confirm this. No team investigated what cheqd actually built. If cheqd's implementation is production-quality and compatible with Submantle's model, Gap 4 may have a reference implementation available rather than requiring original design.
 
 **Surprise 4: Team 4's Google UCP analysis is stronger and more current than expected.** The January 2026 UCP launch with Shopify, Walmart, Target, Mastercard, and Visa is well-documented and the analysis that UCP handles commerce authorization while explicitly NOT handling behavioral trust scoring is a sharp observation. However, it creates the unresolved Mastercard/Google trust layer question (Missing Angle 3) that Team 4 identified but did not pursue.
 

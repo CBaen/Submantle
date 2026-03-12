@@ -6,7 +6,7 @@
 
 ## Preamble: The Central Question
 
-Six major attempts to build internet-scale trust. Each illuminates a different failure mode — or a different path. The question is not "what is the best trust system?" but "what does Substrate inherit, avoid, and build new?"
+Six major attempts to build internet-scale trust. Each illuminates a different failure mode — or a different path. The question is not "what is the best trust system?" but "what does Submantle inherit, avoid, and build new?"
 
 The pattern across all six: **behavioral trust systems outlast opinion-based ones. Mandatory centralization outlasts optional decentralization. Low-friction bootstrapping beats high-ceremony onboarding.** Every system that scaled had a compelling cold-start answer. Every system that failed did not.
 
@@ -38,12 +38,12 @@ The cryptographic core was sound. PGP demonstrated that strong encryption could 
 Specialized tools beat general-purpose trust protocols. Signal Protocol replaced PGP for messaging. Sigstore replaced PGP for software package signing. Sigstore's approach is instructive: instead of long-lived keys requiring Web of Trust attestation, Sigstore issues **ephemeral short-lived certificates** bound to OIDC identities (like GitHub Actions), then discards the private key. Trust comes from the certificate authority log (Fulcio) and an immutable transparency log (Rekor). No key management for users. No Web of Trust required.
 - **Source:** Sigstore documentation, docs.sigstore.dev/about/overview/ (accessed 2026-03-10); Sigstore GA announcement, blog.sigstore.dev (accessed 2026-03-10)
 
-### Lessons for Substrate
+### Lessons for Submantle
 
-1. **Behavioral trust > opinion trust, and machine trust > human trust in key management.** PGP asked humans to manage cryptographic keys and make trust judgments. Both were failure points. Substrate's HMAC-SHA256 agent identity tokens are machine-managed — this is architecturally sound.
-2. **The cold-start problem is fatal if not designed around.** PGP never solved it. Substrate's "open access is the design" principle handles cold start correctly: agents don't need to register to function, they register to *earn benefits*. This is the right inversion.
-3. **Decentralized trust without a critical mass becomes useless.** If Substrate's trust scores only matter within Substrate's ecosystem, they need a critical mass of registered agents and service providers to create value. The Store/marketplace is the network effect engine — not the trust score itself.
-4. **Transparency logs beat self-reported trust.** Sigstore's Rekor log (immutable, append-only, publicly auditable) is the modern answer to "how do you know this signature is real?" Substrate's event bus creating a behavioral audit trail follows the same principle.
+1. **Behavioral trust > opinion trust, and machine trust > human trust in key management.** PGP asked humans to manage cryptographic keys and make trust judgments. Both were failure points. Submantle's HMAC-SHA256 agent identity tokens are machine-managed — this is architecturally sound.
+2. **The cold-start problem is fatal if not designed around.** PGP never solved it. Submantle's "open access is the design" principle handles cold start correctly: agents don't need to register to function, they register to *earn benefits*. This is the right inversion.
+3. **Decentralized trust without a critical mass becomes useless.** If Submantle's trust scores only matter within Submantle's ecosystem, they need a critical mass of registered agents and service providers to create value. The Store/marketplace is the network effect engine — not the trust score itself.
+4. **Transparency logs beat self-reported trust.** Sigstore's Rekor log (immutable, append-only, publicly auditable) is the modern answer to "how do you know this signature is real?" Submantle's event bus creating a behavioral audit trail follows the same principle.
 
 ---
 
@@ -82,13 +82,13 @@ Google's Certificate Transparency (CT) is the most instructive evolution in this
 CT became mandatory: Chrome and Safari require at least 2 Signed Certificate Timestamps in all new certificates. Adoption was achieved by making it a browser requirement — not by asking CAs to voluntarily participate.
 - **Source:** Certificate Transparency documentation, certificate.transparency.dev/howctworks/ (accessed 2026-03-10)
 
-### Lessons for Substrate
+### Lessons for Submantle
 
-1. **Invisibility is the success condition.** The CA system won because it required nothing from users. Substrate's trust tiers work the same way — agents get open access without registration. Trust benefits emerge from observed behavior without agent developers having to do anything except use Substrate normally.
-2. **The cold-start solution was pre-installation + mandatory participation.** Browsers pre-installed root CAs and eventually required HTTPS. Substrate's equivalent: MCP server integration that agent frameworks pre-bundle. Once it's the default, cold start is solved.
-3. **Self-reporting is a fundamental design flaw for trust systems.** DigiNotar proved that a trust system that relies on participants to self-report bad behavior will fail. Substrate's behavioral observation model — watching what agents actually do rather than asking them to report — is architecturally superior.
-4. **Transparency logs are the correct behavioral audit mechanism.** CT's append-only logs are exactly what Substrate's trust system needs: immutable records of behavioral events that any party can verify. Substrate's SQLite event store is the prototype version of this.
-5. **Compromise one node, compromise the whole system.** CA trust is too binary. Either a CA is trusted or it isn't — there's no gradation. Substrate's tiered trust (Anonymous → Registered → Trusted) with behavioral scoring is more robust: a single bad actor doesn't collapse the system, they just lose their tier.
+1. **Invisibility is the success condition.** The CA system won because it required nothing from users. Submantle's trust tiers work the same way — agents get open access without registration. Trust benefits emerge from observed behavior without agent developers having to do anything except use Submantle normally.
+2. **The cold-start solution was pre-installation + mandatory participation.** Browsers pre-installed root CAs and eventually required HTTPS. Submantle's equivalent: MCP server integration that agent frameworks pre-bundle. Once it's the default, cold start is solved.
+3. **Self-reporting is a fundamental design flaw for trust systems.** DigiNotar proved that a trust system that relies on participants to self-report bad behavior will fail. Submantle's behavioral observation model — watching what agents actually do rather than asking them to report — is architecturally superior.
+4. **Transparency logs are the correct behavioral audit mechanism.** CT's append-only logs are exactly what Submantle's trust system needs: immutable records of behavioral events that any party can verify. Submantle's SQLite event store is the prototype version of this.
+5. **Compromise one node, compromise the whole system.** CA trust is too binary. Either a CA is trusted or it isn't — there's no gradation. Submantle's tiered trust (Anonymous → Registered → Trusted) with behavioral scoring is more robust: a single bad actor doesn't collapse the system, they just lose their tier.
 
 ---
 
@@ -133,14 +133,14 @@ Credit bureaus operate on behavioral data that consumers did not explicitly cons
 2. Regulatory capture ensured the framework permitted it
 3. Network effects made opting out economically unviable
 
-This is critical for Substrate: the credit bureau model *works* as behavioral trust infrastructure, but its privacy model is antithetical to Substrate's design principles. Substrate's on-device processing and no-telemetry architecture is a deliberate inversion of this model. The lesson is not "ignore privacy" — it is "behavioral trust can survive the system being hated if the network effects are strong enough." Substrate should aim for a model that achieves the same network effects without the privacy violations.
+This is critical for Submantle: the credit bureau model *works* as behavioral trust infrastructure, but its privacy model is antithetical to Submantle's design principles. Submantle's on-device processing and no-telemetry architecture is a deliberate inversion of this model. The lesson is not "ignore privacy" — it is "behavioral trust can survive the system being hated if the network effects are strong enough." Submantle should aim for a model that achieves the same network effects without the privacy violations.
 
-### Lessons for Substrate
+### Lessons for Submantle
 
 1. **Behavioral observation beats self-reporting at every scale.** FICO's dominance over alternatives (subjective banker judgment, self-reported creditworthiness) demonstrates that observed behavioral signals are more predictive and harder to game than any form of self-reporting or opinion.
-2. **Two-sided network effects are the flywheel.** More agents using Substrate → better behavioral profiles → better trust scores → more brands want access → more benefits for registered agents → more agents register. The loop is the same as credit bureau network effects.
-3. **Mandate vs. incentive.** Credit bureaus achieved adoption through mandate. Substrate's approach — open access, benefits for registration — is the incentive model. Both can work. The incentive model requires that the benefits be real enough to justify participation, which means the Substrate Store and brand discount ecosystem must be built before trust scores have value.
-4. **Trust tiers are the pricing mechanism.** Credit scores are fundamentally about pricing risk. Higher score = lower interest rate. Substrate's tiers (Anonymous = full rates, Registered = better rates, Trusted = best rates) is the same mechanism applied to agent transaction fees. This is proven.
+2. **Two-sided network effects are the flywheel.** More agents using Submantle → better behavioral profiles → better trust scores → more brands want access → more benefits for registered agents → more agents register. The loop is the same as credit bureau network effects.
+3. **Mandate vs. incentive.** Credit bureaus achieved adoption through mandate. Submantle's approach — open access, benefits for registration — is the incentive model. Both can work. The incentive model requires that the benefits be real enough to justify participation, which means the Submantle Store and brand discount ecosystem must be built before trust scores have value.
+4. **Trust tiers are the pricing mechanism.** Credit scores are fundamentally about pricing risk. Higher score = lower interest rate. Submantle's tiers (Anonymous = full rates, Registered = better rates, Trusted = best rates) is the same mechanism applied to agent transaction fees. This is proven.
 5. **"Credit invisible" is a design constraint to plan for.** New agents will have no history. The system must function with unscored agents (open access handles this) and must provide a clear path to accumulating trust. The trust decay mechanism (use it or lose it) mirrors how credit history ages.
 6. **Regulatory framework will come.** Any behavioral trust system that reaches scale will face regulation. FCRA-style requirements (accuracy obligations, dispute mechanisms, limited access permissions) are the minimum. Designing for this now — with transparent scoring formulas, explainable decisions, and correction mechanisms — is cheaper than retrofitting later.
 
@@ -180,13 +180,13 @@ Several attempts to build decentralized identity and reputation on blockchain:
 **From Vitalik's own analysis:**  "Having *some* technology that makes negative reputation possible in the first place is a prerequisite for unlocking this design space" — and all these systems have struggled with negative reputation precisely because blockchain transparency conflicts with privacy requirements.
 - **Source:** Vitalik Buterin, "Non-financial blockchain use cases," June 2022, vitalik.eth.limo (accessed 2026-03-10)
 
-### Lessons for Substrate
+### Lessons for Submantle
 
 1. **Don't gate participation behind a new technology adoption requirement.** The Research Brief's constraint says "no blockchain/crypto as the trust mechanism" — this research validates that constraint. The adoption ceiling is fatal.
-2. **Trust must have external leverage to be valuable.** Gitcoin Passport scores matter only within Gitcoin. Substrate's trust scores must matter outside Substrate — in the form of real discounts, real access, real agent capabilities. The Substrate Store creates external leverage; it must be built before the trust layer is valuable.
-3. **Composite trust signals from heterogeneous sources** (Gitcoin Passport's stamp model) is architecturally sound. Substrate's behavioral observations from multiple ring levels (software activity, hardware state, process identity) is the same principle applied to agent behavior.
-4. **Zero-knowledge proofs are the correct privacy mechanism for trust portability.** When Substrate eventually needs to share trust attestations across devices or with external services, ZK proofs allow proving "this agent has a trust score above X" without revealing the behavioral data that generated the score. This is the correct long-term privacy architecture.
-5. **Negative reputation requires careful design.** All these systems failed partly because they couldn't handle negative reputation cleanly. Substrate's Beta Reputation formula (trust = alpha/(alpha+beta) where beta counts incidents) is the right mathematical foundation — incidents reduce trust, not just absence of positive signals.
+2. **Trust must have external leverage to be valuable.** Gitcoin Passport scores matter only within Gitcoin. Submantle's trust scores must matter outside Submantle — in the form of real discounts, real access, real agent capabilities. The Submantle Store creates external leverage; it must be built before the trust layer is valuable.
+3. **Composite trust signals from heterogeneous sources** (Gitcoin Passport's stamp model) is architecturally sound. Submantle's behavioral observations from multiple ring levels (software activity, hardware state, process identity) is the same principle applied to agent behavior.
+4. **Zero-knowledge proofs are the correct privacy mechanism for trust portability.** When Submantle eventually needs to share trust attestations across devices or with external services, ZK proofs allow proving "this agent has a trust score above X" without revealing the behavioral data that generated the score. This is the correct long-term privacy architecture.
+5. **Negative reputation requires careful design.** All these systems failed partly because they couldn't handle negative reputation cleanly. Submantle's Beta Reputation formula (trust = alpha/(alpha+beta) where beta counts incidents) is the right mathematical foundation — incidents reduce trust, not just absence of positive signals.
 
 ---
 
@@ -236,13 +236,13 @@ Every platform review system demonstrates the same pattern:
 - **Behavioral trust is harder to game.** Google Play Integrity's binary verification, Amazon's behavioral purchase patterns, eBay's transaction-anchoring.
 - **The most robust systems layer both.** Not pure opinion (easily gamed) and not pure behavioral (loses human judgment) — but behavioral signals that validate or contextualize opinions.
 
-### Lessons for Substrate
+### Lessons for Submantle
 
-1. **eBay's inflation problem is the exact failure mode Substrate's Beta Reputation formula solves.** A score of 0.998 (9,989 successes, 2 incidents) is meaningless in the eBay model because the baseline is so high. Substrate's alpha/(alpha+beta) formula doesn't inflate the same way — incidents actively pull the score down, and the score is relative to actual distribution, not an absolute count.
-2. **Negative reputation must be structurally protected from retaliation.** eBay's retaliation dynamic destroyed the negative signal. Substrate's incident tracking is automated and behavioral — agents can't retaliate against the system for recording an incident. This is correct design.
-3. **Transaction-anchoring is the right model.** Trust signals should attach to actual behavioral events (agent queries, completed operations, observed anomalies) not subjective opinions. Substrate's observation model is exactly this.
-4. **Non-portability is fatal for trust at internet scale.** Every platform's walled reputation garden limits network effects. Substrate's cross-ecosystem portability (trust that works across all agents and all services plugged into Substrate) is the differentiator that none of these platforms achieved.
-5. **Behavioral attestation > binary certification.** Google Play Integrity's runtime behavioral verification is closer to what Substrate does than Apple's one-time app review. Continuous observation beats point-in-time certification.
+1. **eBay's inflation problem is the exact failure mode Submantle's Beta Reputation formula solves.** A score of 0.998 (9,989 successes, 2 incidents) is meaningless in the eBay model because the baseline is so high. Submantle's alpha/(alpha+beta) formula doesn't inflate the same way — incidents actively pull the score down, and the score is relative to actual distribution, not an absolute count.
+2. **Negative reputation must be structurally protected from retaliation.** eBay's retaliation dynamic destroyed the negative signal. Submantle's incident tracking is automated and behavioral — agents can't retaliate against the system for recording an incident. This is correct design.
+3. **Transaction-anchoring is the right model.** Trust signals should attach to actual behavioral events (agent queries, completed operations, observed anomalies) not subjective opinions. Submantle's observation model is exactly this.
+4. **Non-portability is fatal for trust at internet scale.** Every platform's walled reputation garden limits network effects. Submantle's cross-ecosystem portability (trust that works across all agents and all services plugged into Submantle) is the differentiator that none of these platforms achieved.
+5. **Behavioral attestation > binary certification.** Google Play Integrity's runtime behavioral verification is closer to what Submantle does than Apple's one-time app review. Continuous observation beats point-in-time certification.
 
 ---
 
@@ -275,12 +275,12 @@ Professional certifications create trust through demonstrated capability rather 
 
 ISO standards (ISO 27001 for security, ISO 9001 for quality) certify that an organization *has a process* for a given area. They do not certify that the process is effective or that outcomes are good. This is the distinction between process compliance and behavioral trust. An organization can be ISO 27001 certified and still get hacked. The certification certifies process existence, not behavioral outcomes.
 
-### Lessons for Substrate
+### Lessons for Submantle
 
-1. **Substrate certification must be behavioral, not exam-based.** "Substrate Safe" certification for agents should be earned through observed behavior in production, not by passing a test. An agent that has processed 10,000 queries with zero incidents has proven something. An agent that passed a certification exam has proven nothing about runtime behavior.
-2. **Portable digital credentials are the right UX.** AWS's verifiable badge model (issue date, verifier link, issuer) is the correct UX for trust attestation. When Substrate issues trust attestations, they should be cryptographically verifiable, portable, and carry metadata (score, evidence period, incident count).
-3. **Developer trust portfolios need external leverage.** If a developer's Substrate trust portfolio (good agent behavior, no incidents, high store ratings) can be shown to potential clients as verifiable behavioral evidence, it becomes valuable. Unlike eBay reputation, this would be portable across platforms.
-4. **Recertification / trust decay is correct.** AWS requires recertification every 3 years because technology changes. Substrate's trust decay mechanism (trust decreases without active use) is the continuous-observation equivalent. A trust score is only valid if the behavioral evidence is recent.
+1. **Submantle certification must be behavioral, not exam-based.** "Submantle Safe" certification for agents should be earned through observed behavior in production, not by passing a test. An agent that has processed 10,000 queries with zero incidents has proven something. An agent that passed a certification exam has proven nothing about runtime behavior.
+2. **Portable digital credentials are the right UX.** AWS's verifiable badge model (issue date, verifier link, issuer) is the correct UX for trust attestation. When Submantle issues trust attestations, they should be cryptographically verifiable, portable, and carry metadata (score, evidence period, incident count).
+3. **Developer trust portfolios need external leverage.** If a developer's Submantle trust portfolio (good agent behavior, no incidents, high store ratings) can be shown to potential clients as verifiable behavioral evidence, it becomes valuable. Unlike eBay reputation, this would be portable across platforms.
+4. **Recertification / trust decay is correct.** AWS requires recertification every 3 years because technology changes. Submantle's trust decay mechanism (trust decreases without active use) is the continuous-observation equivalent. A trust score is only valid if the behavioral evidence is recent.
 
 ---
 
@@ -298,7 +298,7 @@ ISO standards (ISO 27001 for security, ISO 9001 for quality) certify that an org
 
 6. **DigiNotar: how many certificates issued to Iran-targeted MitM operations?** The Mozilla report mentions 200+ certificates across 20+ domains, but the full scope of in-the-wild exploitation remains unclear from public sources.
 
-7. **Certificate Transparency log volume.** How many certificate events per day flow through CT logs? This would contextualize whether Substrate's event bus architecture is operating at a comparable behavioral observation scale.
+7. **Certificate Transparency log volume.** How many certificate events per day flow through CT logs? This would contextualize whether Submantle's event bus architecture is operating at a comparable behavioral observation scale.
 
 ---
 
@@ -310,33 +310,33 @@ Every trust system that reached internet scale shares one property: **the trust 
 
 Every trust system that failed or remained niche shares one property: **it required users to do extra work to participate in the trust model.** PGP requires key management. Gitcoin Passport requires crypto wallet + stamp collection. World ID requires an Orb visit. Soulbound tokens require on-chain activity. The ceremony was the failure.
 
-### The Strongest Approach for Substrate
+### The Strongest Approach for Submantle
 
-**The credit bureau model is Substrate's closest ancestor** — not as a surveillance system, but as a behavioral trust infrastructure that:
-- Observes behavior automatically (Substrate's event bus)
-- Aggregates observations into a portable score (Substrate's Beta Reputation formula)
+**The credit bureau model is Submantle's closest ancestor** — not as a surveillance system, but as a behavioral trust infrastructure that:
+- Observes behavior automatically (Submantle's event bus)
+- Aggregates observations into a portable score (Submantle's Beta Reputation formula)
 - Creates two-sided network effects (agents + brands)
 - Is mandatory-adjacent (agents must identify to get benefits, but the observation layer runs for everyone)
 - Has external leverage (the score unlocks real benefits, not just status)
 
-**The Certificate Transparency model is Substrate's architectural ancestor** for the logging layer:
+**The Certificate Transparency model is Submantle's architectural ancestor** for the logging layer:
 - Append-only behavioral logs
 - Publicly auditable (transparency without exposing private data)
 - Mandatory browser enforcement as the adoption mechanism
 - Transparency as the accountability mechanism, not just prevention
 
-**The eBay/Amazon lesson** is what Substrate must avoid: opinion-based trust that degrades. Substrate's behavioral observation model is the correct antidote. An agent cannot fake six months of reliable, low-incident behavior any more than a borrower can fake six months of on-time payments.
+**The eBay/Amazon lesson** is what Submantle must avoid: opinion-based trust that degrades. Submantle's behavioral observation model is the correct antidote. An agent cannot fake six months of reliable, low-incident behavior any more than a borrower can fake six months of on-time payments.
 
 ### What the Orchestrator Needs to Know
 
-1. **The cold-start solution is already correct.** Open access + behavioral accumulation over time is how credit bureaus, eBay, and every other behavioral trust system handled new entrants. Substrate's design matches the winning pattern.
+1. **The cold-start solution is already correct.** Open access + behavioral accumulation over time is how credit bureaus, eBay, and every other behavioral trust system handled new entrants. Submantle's design matches the winning pattern.
 
-2. **The network effect trigger is the Store, not the score.** Trust scores are only valuable if they unlock something. Brands setting up stores on Substrate and offering discounts to high-trust agents creates the leverage. Without the Store, trust scores are just numbers. The Store must be built concurrently with the trust layer, not after.
+2. **The network effect trigger is the Store, not the score.** Trust scores are only valuable if they unlock something. Brands setting up stores on Submantle and offering discounts to high-trust agents creates the leverage. Without the Store, trust scores are just numbers. The Store must be built concurrently with the trust layer, not after.
 
-3. **Portability is the category-defining capability.** Every trust system covered here is walled: eBay reputation is eBay-only, AWS certification is AWS-only, Gitcoin Passport is Web3-only. No system has achieved cross-ecosystem behavioral trust portability. This is Substrate's competitive gap to occupy.
+3. **Portability is the category-defining capability.** Every trust system covered here is walled: eBay reputation is eBay-only, AWS certification is AWS-only, Gitcoin Passport is Web3-only. No system has achieved cross-ecosystem behavioral trust portability. This is Submantle's competitive gap to occupy.
 
-4. **Privacy-preserving behavioral trust is an unsolved problem.** Credit bureaus solved behavioral trust without privacy. Blockchain systems tried to solve privacy without achieving behavioral trust. Nobody has solved both simultaneously at internet scale. Substrate's on-device processing + ZK-proof-capable attestation architecture is the plausible path to achieving what no prior system has.
+4. **Privacy-preserving behavioral trust is an unsolved problem.** Credit bureaus solved behavioral trust without privacy. Blockchain systems tried to solve privacy without achieving behavioral trust. Nobody has solved both simultaneously at internet scale. Submantle's on-device processing + ZK-proof-capable attestation architecture is the plausible path to achieving what no prior system has.
 
-5. **Regulatory framework is a when, not an if.** FCRA emerged 14 years after credit bureaus started operating. Any behavioral trust system that reaches scale will be regulated. Substrate's design should anticipate dispute mechanisms, scoring transparency, and data accuracy requirements from day one — not as retrofit obligations but as trust-building features.
+5. **Regulatory framework is a when, not an if.** FCRA emerged 14 years after credit bureaus started operating. Any behavioral trust system that reaches scale will be regulated. Submantle's design should anticipate dispute mechanisms, scoring transparency, and data accuracy requirements from day one — not as retrofit obligations but as trust-building features.
 
-6. **The trust decay mechanism is behaviorally validated.** Credit histories age (recent behavior weighted more heavily). AWS certifications expire. Active monitoring beats dormant credentials everywhere. Substrate's "use it or lose it" trust decay is aligned with every successful precedent.
+6. **The trust decay mechanism is behaviorally validated.** Credit histories age (recent behavior weighted more heavily). AWS certifications expire. Active monitoring beats dormant credentials everywhere. Submantle's "use it or lose it" trust decay is aligned with every successful precedent.

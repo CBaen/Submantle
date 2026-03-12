@@ -1,0 +1,1738 @@
+{
+  "awareness": {
+    "timestamp": "2026-03-10 03:10:00",
+    "total_processes": 342,
+    "identified_processes": 68,
+    "identification_rate": "19.9%",
+    "by_category": {
+      "ai.agent": [
+        {
+          "pid": 1184,
+          "name": "Claude Code (AI Agent)",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 622.2
+        },
+        {
+          "pid": 8496,
+          "name": "Claude Code (AI Agent)",
+          "importance": "medium",
+          "uptime": "1h 20m",
+          "memory_mb": 13.5
+        },
+        {
+          "pid": 11064,
+          "name": "Claude Code (AI Agent)",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 495.8
+        },
+        {
+          "pid": 25588,
+          "name": "Claude Code (AI Agent)",
+          "importance": "medium",
+          "uptime": "1h 0m",
+          "memory_mb": 789.7
+        },
+        {
+          "pid": 27124,
+          "name": "Claude Code (AI Agent)",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 4.8
+        }
+      ],
+      "ai.inference": [
+        {
+          "pid": 10748,
+          "name": "Ollama (Local LLM Server)",
+          "importance": "medium",
+          "uptime": "1h 20m",
+          "memory_mb": 7.0
+        },
+        {
+          "pid": 16424,
+          "name": "Ollama (Local LLM Server)",
+          "importance": "medium",
+          "uptime": "1h 20m",
+          "memory_mb": 27.6
+        }
+      ],
+      "browser": [
+        {
+          "pid": 2084,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 24m",
+          "memory_mb": 126.0
+        },
+        {
+          "pid": 2880,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 249.7
+        },
+        {
+          "pid": 3796,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 82.3
+        },
+        {
+          "pid": 9072,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 26m",
+          "memory_mb": 82.5
+        },
+        {
+          "pid": 9304,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 56.8
+        },
+        {
+          "pid": 9596,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 26m",
+          "memory_mb": 520.3
+        },
+        {
+          "pid": 13020,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 44m",
+          "memory_mb": 112.7
+        },
+        {
+          "pid": 20768,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 225.5
+        },
+        {
+          "pid": 21076,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 19.3
+        },
+        {
+          "pid": 21540,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 98.1
+        },
+        {
+          "pid": 21812,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 49.8
+        },
+        {
+          "pid": 22756,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 43.1
+        },
+        {
+          "pid": 22824,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 26m",
+          "memory_mb": 22.5
+        },
+        {
+          "pid": 24444,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 253.2
+        },
+        {
+          "pid": 24828,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 26m",
+          "memory_mb": 49.8
+        },
+        {
+          "pid": 27284,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 45m",
+          "memory_mb": 8.9
+        },
+        {
+          "pid": 27592,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 44m",
+          "memory_mb": 93.6
+        },
+        {
+          "pid": 28128,
+          "name": "Google Chrome",
+          "importance": "medium",
+          "uptime": "0h 22m",
+          "memory_mb": 30.6
+        }
+      ],
+      "creative.image-generation": [
+        {
+          "pid": 4132,
+          "name": "ComfyUI (Image Generation)",
+          "importance": "high",
+          "uptime": "1h 0m",
+          "memory_mb": 19.8
+        },
+        {
+          "pid": 4188,
+          "name": "ComfyUI (Image Generation)",
+          "importance": "high",
+          "uptime": "0h 0m",
+          "memory_mb": 19.9
+        },
+        {
+          "pid": 12872,
+          "name": "ComfyUI (Image Generation)",
+          "importance": "high",
+          "uptime": "1h 19m",
+          "memory_mb": 16.2
+        },
+        {
+          "pid": 20084,
+          "name": "ComfyUI (Image Generation)",
+          "importance": "high",
+          "uptime": "1h 19m",
+          "memory_mb": 15.2
+        },
+        {
+          "pid": 23100,
+          "name": "ComfyUI (Image Generation)",
+          "importance": "high",
+          "uptime": "0h 27m",
+          "memory_mb": 21740.8
+        }
+      ],
+      "development.server": [
+        {
+          "pid": 1588,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 92.1
+        },
+        {
+          "pid": 3064,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 63.5
+        },
+        {
+          "pid": 4936,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 668.2
+        },
+        {
+          "pid": 5992,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 18m",
+          "memory_mb": 19.0
+        },
+        {
+          "pid": 6832,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 1168.9
+        },
+        {
+          "pid": 7172,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 182.7
+        },
+        {
+          "pid": 8384,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 56.6
+        },
+        {
+          "pid": 8680,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 0m",
+          "memory_mb": 12.3
+        },
+        {
+          "pid": 9080,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 43.3
+        },
+        {
+          "pid": 10216,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 48.9
+        },
+        {
+          "pid": 10676,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 18m",
+          "memory_mb": 57.6
+        },
+        {
+          "pid": 11472,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 18m",
+          "memory_mb": 41.5
+        },
+        {
+          "pid": 12876,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 17.6
+        },
+        {
+          "pid": 13052,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 18m",
+          "memory_mb": 42.4
+        },
+        {
+          "pid": 15912,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 64.5
+        },
+        {
+          "pid": 17040,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 0m",
+          "memory_mb": 47.6
+        },
+        {
+          "pid": 18436,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 42.4
+        },
+        {
+          "pid": 18760,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 46.3
+        },
+        {
+          "pid": 19012,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 42.6
+        },
+        {
+          "pid": 19700,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 198.1
+        },
+        {
+          "pid": 19780,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 19m",
+          "memory_mb": 42.4
+        },
+        {
+          "pid": 23864,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 48.3
+        },
+        {
+          "pid": 24040,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 198.7
+        },
+        {
+          "pid": 24128,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 5m",
+          "memory_mb": 44.7
+        },
+        {
+          "pid": 25096,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "1h 0m",
+          "memory_mb": 49.4
+        },
+        {
+          "pid": 26064,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 136.8
+        },
+        {
+          "pid": 26244,
+          "name": "Node.js Development Server",
+          "importance": "medium",
+          "uptime": "0h 29m",
+          "memory_mb": 123.4
+        }
+      ],
+      "infrastructure.containers": [
+        {
+          "pid": 7520,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 19.7
+        },
+        {
+          "pid": 16576,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 33.9
+        },
+        {
+          "pid": 17256,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 56.4
+        },
+        {
+          "pid": 17352,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 158.5
+        },
+        {
+          "pid": 17536,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 13.8
+        },
+        {
+          "pid": 17740,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 109.8
+        },
+        {
+          "pid": 17768,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 46.3
+        },
+        {
+          "pid": 17900,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 113.4
+        },
+        {
+          "pid": 17968,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 38.5
+        },
+        {
+          "pid": 18132,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 115.2
+        },
+        {
+          "pid": 20196,
+          "name": "Docker Engine",
+          "importance": "high",
+          "uptime": "1h 20m",
+          "memory_mb": 19.9
+        }
+      ]
+    },
+    "critical_processes": [
+      {
+        "pid": 4132,
+        "name": "ComfyUI (Image Generation)",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      },
+      {
+        "pid": 4188,
+        "name": "ComfyUI (Image Generation)",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      },
+      {
+        "pid": 7520,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 12872,
+        "name": "ComfyUI (Image Generation)",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      },
+      {
+        "pid": 16576,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17256,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17352,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17536,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17740,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17768,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17900,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 17968,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 18132,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 20084,
+        "name": "ComfyUI (Image Generation)",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      },
+      {
+        "pid": 20196,
+        "name": "Docker Engine",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      },
+      {
+        "pid": 23100,
+        "name": "ComfyUI (Image Generation)",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "pid": 1184,
+      "ppid": 7412,
+      "name": "claude.exe",
+      "exe": "C:\\Users\\baenb\\.local\\bin\\claude.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 4795,
+      "memory_mb": 622.2,
+      "identity": {
+        "id": "claude-code",
+        "name": "Claude Code (AI Agent)",
+        "category": "ai.agent",
+        "importance": "medium",
+        "description": "AI coding agent \u00e2\u20ac\u201d may be mid-task with pending changes"
+      }
+    },
+    {
+      "pid": 1588,
+      "ppid": 19700,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1767,
+      "memory_mb": 92.1,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 2084,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1478,
+      "memory_mb": 126.0,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 2880,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2711,
+      "memory_mb": 249.7,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 3064,
+      "ppid": 2952,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1771,
+      "memory_mb": 63.5,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 3796,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2712,
+      "memory_mb": 82.3,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 4132,
+      "ppid": 25588,
+      "name": "python.exe",
+      "exe": "C:\\Python314\\python.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\Substrate",
+      "status": "running",
+      "uptime_seconds": 3629,
+      "memory_mb": 19.8,
+      "identity": {
+        "id": "comfyui",
+        "name": "ComfyUI (Image Generation)",
+        "category": "creative.image-generation",
+        "importance": "high",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    },
+    {
+      "pid": 4188,
+      "ppid": 10152,
+      "name": "python.exe",
+      "exe": "C:\\Python314\\python.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\Substrate",
+      "status": "running",
+      "uptime_seconds": 1,
+      "memory_mb": 19.9,
+      "identity": {
+        "id": "comfyui",
+        "name": "ComfyUI (Image Generation)",
+        "category": "creative.image-generation",
+        "importance": "high",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    },
+    {
+      "pid": 4936,
+      "ppid": 6832,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3921,
+      "memory_mb": 668.2,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 5992,
+      "ppid": 10676,
+      "name": "esbuild.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED\\node_modules\\@esbuild\\win32-x64\\esbuild.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4712,
+      "memory_mb": 19.0,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 6832,
+      "ppid": 24128,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3923,
+      "memory_mb": 1168.9,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 7172,
+      "ppid": 6832,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3922,
+      "memory_mb": 182.7,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 7520,
+      "ppid": 17900,
+      "name": "docker.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4828,
+      "memory_mb": 19.7,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 8384,
+      "ppid": 4148,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1770,
+      "memory_mb": 56.6,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 8496,
+      "ppid": 1512,
+      "name": "cowork-svc.exe",
+      "exe": "C:\\Program Files\\WindowsApps\\Claude_1.1.5368.0_x64__pzs8sxrjxfjjc\\app\\resources\\cowork-svc.exe",
+      "cwd": null,
+      "status": "running",
+      "uptime_seconds": 4852,
+      "memory_mb": 13.5,
+      "identity": {
+        "id": "claude-code",
+        "name": "Claude Code (AI Agent)",
+        "category": "ai.agent",
+        "importance": "medium",
+        "description": "AI coding agent \u00e2\u20ac\u201d may be mid-task with pending changes"
+      }
+    },
+    {
+      "pid": 8680,
+      "ppid": 23100,
+      "name": "ffmpeg.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\ffmpeg-static\\ffmpeg.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 4,
+      "memory_mb": 12.3,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 9072,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1567,
+      "memory_mb": 82.5,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 9080,
+      "ppid": 17784,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 4796,
+      "memory_mb": 43.3,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 9304,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2713,
+      "memory_mb": 56.8,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 9596,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1570,
+      "memory_mb": 520.3,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 10216,
+      "ppid": 6832,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3923,
+      "memory_mb": 48.9,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 10676,
+      "ppid": 5832,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4713,
+      "memory_mb": 57.6,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 10748,
+      "ppid": 9060,
+      "name": "ollama.exe",
+      "exe": "C:\\Users\\baenb\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+      "cwd": null,
+      "status": "running",
+      "uptime_seconds": 4850,
+      "memory_mb": 7.0,
+      "identity": {
+        "id": "ollama-server",
+        "name": "Ollama (Local LLM Server)",
+        "category": "ai.inference",
+        "importance": "medium",
+        "description": "Local large language model server \u00e2\u20ac\u201d may be serving active requests"
+      }
+    },
+    {
+      "pid": 11064,
+      "ppid": 16736,
+      "name": "claude.exe",
+      "exe": "C:\\Users\\baenb\\.local\\bin\\claude.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4796,
+      "memory_mb": 495.8,
+      "identity": {
+        "id": "claude-code",
+        "name": "Claude Code (AI Agent)",
+        "category": "ai.agent",
+        "importance": "medium",
+        "description": "AI coding agent \u00e2\u20ac\u201d may be mid-task with pending changes"
+      }
+    },
+    {
+      "pid": 11472,
+      "ppid": 11604,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4714,
+      "memory_mb": 41.5,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 12872,
+      "ppid": 11064,
+      "name": "python.exe",
+      "exe": "C:\\Python314\\python.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4795,
+      "memory_mb": 16.2,
+      "identity": {
+        "id": "comfyui",
+        "name": "ComfyUI (Image Generation)",
+        "category": "creative.image-generation",
+        "importance": "high",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    },
+    {
+      "pid": 12876,
+      "ppid": 26244,
+      "name": "esbuild.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\@esbuild\\win32-x64\\esbuild.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1772,
+      "memory_mb": 17.6,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 13020,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2694,
+      "memory_mb": 112.7,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 13052,
+      "ppid": 15140,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4714,
+      "memory_mb": 42.4,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 15912,
+      "ppid": 24916,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1774,
+      "memory_mb": 64.5,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 16424,
+      "ppid": 10144,
+      "name": "ollama app.exe",
+      "exe": "C:\\Users\\baenb\\AppData\\Local\\Programs\\Ollama\\ollama app.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Programs\\Ollama",
+      "status": "running",
+      "uptime_seconds": 4839,
+      "memory_mb": 27.6,
+      "identity": {
+        "id": "ollama-server",
+        "name": "Ollama (Local LLM Server)",
+        "category": "ai.inference",
+        "importance": "medium",
+        "description": "Local large language model server \u00e2\u20ac\u201d may be serving active requests"
+      }
+    },
+    {
+      "pid": 16576,
+      "ppid": 17352,
+      "name": "com.docker.build.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.build.exe",
+      "cwd": "C:\\WINDOWS\\system32",
+      "status": "running",
+      "uptime_seconds": 4839,
+      "memory_mb": 33.9,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17040,
+      "ppid": 2136,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\Substrate",
+      "status": "running",
+      "uptime_seconds": 3632,
+      "memory_mb": 47.6,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 17256,
+      "ppid": 17220,
+      "name": "com.docker.backend.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "cwd": "C:\\WINDOWS\\system32",
+      "status": "running",
+      "uptime_seconds": 4840,
+      "memory_mb": 56.4,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17352,
+      "ppid": 17256,
+      "name": "com.docker.backend.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "cwd": "C:\\WINDOWS\\system32",
+      "status": "running",
+      "uptime_seconds": 4840,
+      "memory_mb": 158.5,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17536,
+      "ppid": 17352,
+      "name": "docker-sandbox.exe",
+      "exe": "C:\\Program Files\\Docker\\cli-plugins\\docker-sandbox.exe",
+      "cwd": "C:\\WINDOWS\\system32",
+      "status": "running",
+      "uptime_seconds": 4839,
+      "memory_mb": 13.8,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17740,
+      "ppid": 17900,
+      "name": "Docker Desktop.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4838,
+      "memory_mb": 109.8,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17768,
+      "ppid": 17900,
+      "name": "Docker Desktop.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4838,
+      "memory_mb": 46.3,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17900,
+      "ppid": 17352,
+      "name": "Docker Desktop.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4839,
+      "memory_mb": 113.4,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 17968,
+      "ppid": 17900,
+      "name": "cagent.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\cagent.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker\\cagent",
+      "status": "running",
+      "uptime_seconds": 4838,
+      "memory_mb": 38.5,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 18132,
+      "ppid": 17900,
+      "name": "Docker Desktop.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4838,
+      "memory_mb": 115.2,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 18436,
+      "ppid": 20156,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4796,
+      "memory_mb": 42.4,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 18760,
+      "ppid": 17028,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3926,
+      "memory_mb": 46.3,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 19012,
+      "ppid": 19044,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 4795,
+      "memory_mb": 42.6,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 19700,
+      "ppid": 8384,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1773,
+      "memory_mb": 198.1,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 19780,
+      "ppid": 11920,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 4796,
+      "memory_mb": 42.4,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 20084,
+      "ppid": 1184,
+      "name": "python.exe",
+      "exe": "C:\\Python314\\python.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 4798,
+      "memory_mb": 15.2,
+      "identity": {
+        "id": "comfyui",
+        "name": "ComfyUI (Image Generation)",
+        "category": "creative.image-generation",
+        "importance": "high",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    },
+    {
+      "pid": 20196,
+      "ppid": 17900,
+      "name": "docker.exe",
+      "exe": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Local\\Docker",
+      "status": "running",
+      "uptime_seconds": 4831,
+      "memory_mb": 19.9,
+      "identity": {
+        "id": "docker",
+        "name": "Docker Engine",
+        "category": "infrastructure.containers",
+        "importance": "high",
+        "description": "Container engine \u00e2\u20ac\u201d stopping affects all running containers"
+      }
+    },
+    {
+      "pid": 20768,
+      "ppid": 10144,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2716,
+      "memory_mb": 225.5,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 21076,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2716,
+      "memory_mb": 19.3,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 21540,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2715,
+      "memory_mb": 98.1,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 21812,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2716,
+      "memory_mb": 49.8,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 22756,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2716,
+      "memory_mb": 43.1,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 22824,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1569,
+      "memory_mb": 22.5,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 23100,
+      "ppid": 19700,
+      "name": "python.exe",
+      "exe": "C:\\Python314\\python.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1620,
+      "memory_mb": 21740.8,
+      "identity": {
+        "id": "comfyui",
+        "name": "ComfyUI (Image Generation)",
+        "category": "creative.image-generation",
+        "importance": "high",
+        "description": "AI image generation pipeline \u00e2\u20ac\u201d likely has unsaved generations in progress"
+      }
+    },
+    {
+      "pid": 23864,
+      "ppid": 23004,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3926,
+      "memory_mb": 48.3,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 24040,
+      "ppid": 19700,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1772,
+      "memory_mb": 198.7,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 24128,
+      "ppid": 24952,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE UNIFIED",
+      "status": "running",
+      "uptime_seconds": 3926,
+      "memory_mb": 44.7,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 24444,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2703,
+      "memory_mb": 253.2,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 24828,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1566,
+      "memory_mb": 49.8,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 25096,
+      "ppid": 25880,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\Substrate",
+      "status": "running",
+      "uptime_seconds": 3633,
+      "memory_mb": 49.4,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 25588,
+      "ppid": 12908,
+      "name": "claude.exe",
+      "exe": "C:\\Users\\baenb\\.local\\bin\\claude.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\Substrate",
+      "status": "running",
+      "uptime_seconds": 3635,
+      "memory_mb": 789.7,
+      "identity": {
+        "id": "claude-code",
+        "name": "Claude Code (AI Agent)",
+        "category": "ai.agent",
+        "importance": "medium",
+        "description": "AI coding agent \u00e2\u20ac\u201d may be mid-task with pending changes"
+      }
+    },
+    {
+      "pid": 26064,
+      "ppid": 19700,
+      "name": "electron.exe",
+      "exe": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP\\node_modules\\electron\\dist\\electron.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1773,
+      "memory_mb": 136.8,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 26244,
+      "ppid": 23232,
+      "name": "node.exe",
+      "exe": "C:\\Program Files\\nodejs\\node.exe",
+      "cwd": "C:\\Users\\baenb\\projects\\WARDENCLYFFE_DESKTOP",
+      "status": "running",
+      "uptime_seconds": 1775,
+      "memory_mb": 123.4,
+      "identity": {
+        "id": "node-dev-server",
+        "name": "Node.js Development Server",
+        "category": "development.server",
+        "importance": "medium",
+        "description": "Development server \u00e2\u20ac\u201d killing disrupts active development workflow"
+      }
+    },
+    {
+      "pid": 27124,
+      "ppid": 27064,
+      "name": "chrome-native-host.exe",
+      "exe": "C:\\Users\\baenb\\AppData\\Roaming\\Claude\\ChromeNativeHost\\chrome-native-host.exe",
+      "cwd": "C:\\Users\\baenb\\AppData\\Roaming\\Claude\\ChromeNativeHost",
+      "status": "running",
+      "uptime_seconds": 2716,
+      "memory_mb": 4.8,
+      "identity": {
+        "id": "claude-code",
+        "name": "Claude Code (AI Agent)",
+        "category": "ai.agent",
+        "importance": "medium",
+        "description": "AI coding agent \u00e2\u20ac\u201d may be mid-task with pending changes"
+      }
+    },
+    {
+      "pid": 27284,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application",
+      "status": "running",
+      "uptime_seconds": 2717,
+      "memory_mb": 8.9,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 27592,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 2696,
+      "memory_mb": 93.6,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    },
+    {
+      "pid": 28128,
+      "ppid": 20768,
+      "name": "chrome.exe",
+      "exe": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "cwd": "C:\\Program Files\\Google\\Chrome\\Application\\145.0.7632.160",
+      "status": "running",
+      "uptime_seconds": 1360,
+      "memory_mb": 30.6,
+      "identity": {
+        "id": "chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "importance": "medium",
+        "description": "Web browser \u00e2\u20ac\u201d may have unsaved form data or active sessions"
+      }
+    }
+  ]
+}

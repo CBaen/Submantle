@@ -130,7 +130,7 @@ Responsive breakpoint at 1024px: stack to single column, right column moves belo
 Height: 56px. Sticky. Slightly blurred backdrop: `backdrop-filter: blur(20px)`.
 
 Contents (left to right):
-- Submantle wordmark (left): `SUBSTRATE` in weight 700, 15px, tracking 0.15em — with a 6px dot before it in `#2ECC8A` that breathes (the global pulse indicator)
+- Submantle wordmark (left): `SUBMANTLE` in weight 700, 15px, tracking 0.15em — with a 6px dot before it in `#2ECC8A` that breathes (the global pulse indicator)
 - Tagline (left, after wordmark): "the ground beneath everything" — weight 300, 12px, `#4A4F62`
 - Spacer
 - Last scan timestamp: "scanned 3s ago" — weight 400, 12px, `#8B90A0`
@@ -258,7 +258,7 @@ If Submantle loses connection to the backend: rings stop, dot dims to gray, labe
 
 The pulse ring animation:
 ```css
-@keyframes substrate-pulse {
+@keyframes submantle-pulse {
   0% { transform: scale(1); opacity: var(--ring-opacity); }
   50% { transform: scale(1.15); opacity: calc(var(--ring-opacity) * 0.5); }
   100% { transform: scale(1); opacity: var(--ring-opacity); }
@@ -304,9 +304,9 @@ The pulse ring animation:
 ### File Structure
 ```
 prototype/
-  substrate.py          (existing daemon logic)
+  submantle.py          (existing daemon logic)
   signatures.json       (existing)
-  api.py                (NEW — FastAPI server wrapping substrate.py)
+  api.py                (NEW — FastAPI server wrapping submantle.py)
   dashboard.html        (NEW — single-file frontend)
 ```
 
@@ -443,9 +443,9 @@ Used in the Pulse component center. A simple radial pattern: a 6px center dot su
 | Category Prefix | Accent Color |
 |-----------------|-------------|
 | `creative.*` | `#B07EFF` (soft purple) |
-| `development.*` | `#4F8EF7` (substrate blue) |
-| `infrastructure.*` | `#F5A623` (substrate amber) |
-| `ai.*` | `#2ECC8A` (substrate green) |
+| `development.*` | `#4F8EF7` (submantle blue) |
+| `infrastructure.*` | `#F5A623` (submantle amber) |
+| `ai.*` | `#2ECC8A` (submantle green) |
 | `browser` | `#8B90A0` (neutral) |
 | unknown | `#4A4F62` (inert) |
 
