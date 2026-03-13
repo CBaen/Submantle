@@ -34,9 +34,9 @@
       What: 17 expedition files + 6 follow-ups + protocol architecture expedition (5 teams + 9 validators). All committed and pushed.
       Context: 4 expeditions complete. 40 commits on origin/main.
 
-- [ ] **MCP server** (added: 2026-03-10)
-      What: Ambient awareness stream + deep query tools via Model Context Protocol. This is the bridge to real agent users.
-      Context: Fresh-eyes audit: "let agents be the first users." MCP server makes Submantle queryable by Claude Code and any MCP-compatible agent. First real validation.
+- [x] **MCP server** (completed: 2026-03-12)
+      What: Read-only MCP at /mcp via fastapi-mcp. 7 endpoints exposed (health, status, query, agents_list, verify_directory, verify_agent, privacy_status). Write ops REST-only. Bearer token auth passthrough.
+      Context: Research council recommended fastapi-mcp over custom build. 3-line integration, HTTP transport (not stdio). 220 tests passing.
 
 - [ ] **Demo / landing page** (added: 2026-03-11)
       What: Something to show when someone asks "what is Submantle?" — a 30-second story with a visual. Localhost dashboard is not a pitch.
