@@ -421,6 +421,7 @@ class AgentRegistry:
             "trust_score": round(score, 4),
             "total_queries": q,
             "incidents": i,
+            "accepted_incidents": i,
             "registration_time": record["registration_time"],
             "last_seen": record["last_seen"],
             "version": record["version"],
@@ -445,7 +446,7 @@ class AgentRegistry:
         Credit bureau model: third parties report. Pipeline:
         1. Self-ping check: reporter == agent_name → auto-REJECTED
         2. Dedup check: same reporter + agent + type within 24h → DUPLICATE
-        3. Standard incidents → auto-ACCEPTED (V1), counter incremented
+        3. Standard incidents → auto-ACCEPTED (V1)
 
         Returns:
             dict with incident details including status, or False if agent not found
@@ -558,8 +559,6 @@ class AgentRegistry:
                 status="accepted",
                 severity=severity,
             )
-            # Increment counter for backward compatibility (Wave 4 removes this dependency)
-            self._db.increment_agent_incidents(agent_id)
         except Exception as exc:
             logger.error("Failed to record incident for agent '%s': %s", agent_name, exc)
             return False
@@ -581,7 +580,6 @@ class AgentRegistry:
     def review_incident(self, incident_id: int, new_status: str) -> bool:
         """
         Manually review a pending incident. Changes status to accepted or rejected.
-        If accepting, also increments the agent's incident counter.
 
         Returns True if the incident was found and updated.
         """
@@ -598,8 +596,6 @@ class AgentRegistry:
 
         try:
             self._db.update_incident_status(incident_id, new_status)
-            if new_status == "accepted":
-                self._db.increment_agent_incidents(target["agent_id"])
         except Exception as exc:
             logger.error("Failed to review incident %s: %s", incident_id, exc)
             return False

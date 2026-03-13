@@ -157,8 +157,8 @@ class TestComputeTrust(unittest.TestCase):
 class TestRecordIncident(unittest.TestCase):
     """record_incident() — counter, trust effect, persistence, events."""
 
-    def test_record_incident_increments_counter(self):
-        """Reporting an incident increments the agent's incident counter to 1."""
+    def test_record_incident_adds_accepted_count(self):
+        """Reporting an incident adds to the accepted incident count."""
         registry, db = _make_registry()
         _register(registry, "counter-agent")
         registry.record_incident(
@@ -166,8 +166,8 @@ class TestRecordIncident(unittest.TestCase):
             reporter="brand-x",
             incident_type="unauthorized_access",
         )
-        record = db.get_agent_by_name("counter-agent")
-        self.assertEqual(record["incidents"], 1)
+        agent = db.get_agent_by_name("counter-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 1)
 
     def test_record_incident_lowers_trust_score(self):
         """After 5 queries, an incident lowers the score compared to pre-incident."""
@@ -602,8 +602,8 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         self.assertIsInstance(result, dict)
         self.assertEqual(result["status"], "rejected")
         self.assertEqual(result["reason"], "self-ping")
-        record = db.get_agent_by_name("self-ping-agent")
-        self.assertEqual(record["incidents"], 0)
+        agent = db.get_agent_by_name("self-ping-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 0)
 
     def test_self_ping_case_insensitive(self):
         """Self-ping detection is case-insensitive."""
@@ -637,14 +637,14 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         self.assertEqual(result2["status"], "duplicate")
         self.assertIn("duplicate_of", result2)
 
-    def test_duplicate_does_not_increment_counter(self):
-        """Duplicate incidents don't affect the incident counter."""
+    def test_duplicate_does_not_add_to_accepted_count(self):
+        """Duplicate incidents don't add to the accepted incident count."""
         registry, db = _make_registry()
         _register(registry, "dup-count-agent")
         registry.record_incident("dup-count-agent", "brand-x", "type-a")
         registry.record_incident("dup-count-agent", "brand-x", "type-a")  # duplicate
-        record = db.get_agent_by_name("dup-count-agent")
-        self.assertEqual(record["incidents"], 1)
+        agent = db.get_agent_by_name("dup-count-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 1)
 
     def test_different_type_not_duplicate(self):
         """Same reporter + agent but different type → NOT duplicate."""
@@ -654,8 +654,8 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         result2 = registry.record_incident("diff-type-agent", "brand-x", "type-b")
         self.assertEqual(result1["status"], "accepted")
         self.assertEqual(result2["status"], "accepted")
-        record = db.get_agent_by_name("diff-type-agent")
-        self.assertEqual(record["incidents"], 2)
+        agent = db.get_agent_by_name("diff-type-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 2)
 
     def test_different_reporter_not_duplicate(self):
         """Same agent + type but different reporter → NOT duplicate."""
@@ -666,13 +666,13 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         self.assertEqual(result1["status"], "accepted")
         self.assertEqual(result2["status"], "accepted")
 
-    def test_accepted_incident_increments_counter(self):
-        """Standard accepted incidents still increment the counter."""
+    def test_accepted_incident_adds_to_accepted_count(self):
+        """Standard accepted incidents add to the accepted incident count."""
         registry, db = _make_registry()
         _register(registry, "accept-agent")
         registry.record_incident("accept-agent", "brand-x", "type-a")
-        record = db.get_agent_by_name("accept-agent")
-        self.assertEqual(record["incidents"], 1)
+        agent = db.get_agent_by_name("accept-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 1)
 
     def test_incident_status_in_report(self):
         """Saved incident report includes status field."""
@@ -722,8 +722,7 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         )
         result = registry.review_incident(incident_id, "accepted")
         self.assertTrue(result)
-        record = db.get_agent_by_name("review-agent")
-        self.assertEqual(record["incidents"], 1)
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 1)
         reports = db.get_incident_reports(agent_id=agent["id"])
         accepted = [r for r in reports if r["id"] == incident_id]
         self.assertEqual(accepted[0]["status"], "accepted")
