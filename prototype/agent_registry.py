@@ -407,7 +407,7 @@ class AgentRegistry:
             return None
 
         q = record["total_queries"]
-        i = record["incidents"]
+        i = self._db.get_accepted_incident_count(record["id"])
         score = (q + 1) / (q + i + 2)
 
         reporter_diversity = 0
