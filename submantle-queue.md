@@ -46,27 +46,23 @@
       What: Clickable device rows, nested process categories, expandable counts, full dependency chains in query results.
       Context: Guiding Light's direct request — "none of these fields have nested data. That's necessary." Also makes the demo compelling.
 
-## MEDIUM — Trust Layer Wiring (MVTL — 5 sessions)
+## MEDIUM — Trust Layer Wiring — ALL DONE (Waves 1-5)
 
-- [ ] **Trust layer wiring — auth middleware** (added: 2026-03-11)
-      What: Token-based auth on /api/query, wired to agent registry.
-      Context: Expedition synthesis "MVTL step 1". Blocking gap identified by 3 independent research passes.
+All trust layer wiring tasks completed across Waves 1-5 (2026-03-12):
+- [x] Auth middleware, record_query(), agent name uniqueness, compute_trust(), anti-gaming stubs
+- [x] Incident reporting with pending state, severity classification, dedup
+- [x] Formula decoupled from counter (reads accepted incidents from table)
+- [x] MCP server (read-only, fastapi-mcp)
 
-- [ ] **Trust layer wiring — incident reporting format** (updated: 2026-03-11)
-      What: Design the reporting format for third-party incident reports. Credit bureau model — Submantle records, doesn't detect.
-      Context: RESOLVED by protocol architecture expedition. Not a product decision. Third parties report incidents; Submantle stores and scores.
+## HIGH — Revenue & Hardening (council-recommended next)
 
-- [ ] **Trust layer wiring — record_query()** (added: 2026-03-11)
-      What: Wire record_query() to API endpoints so every agent interaction becomes trust data.
-      Context: Expedition synthesis "MVTL step 3". Without this, Beta formula returns undefined forever.
+- [ ] **Rate limiting on open endpoints** (added: 2026-03-12)
+      What: Add rate limiting to /api/verify/* and other open endpoints before MCP drives traffic.
+      Context: Multi-protocol council: "add rate limiting before publishing MCP." Prevents abuse multiplication across REST + MCP.
 
-- [ ] **Trust layer wiring — agent name uniqueness** (added: 2026-03-11)
-      What: Enforce unique agent names in registry. Prevents trivial identity confusion.
-      Context: Expedition synthesis "MVTL step 4". Reviewer finding from V1 build.
-
-- [ ] **Trust layer wiring — compute_trust() + anti-gaming rules** (added: 2026-03-11)
-      What: Pure Beta formula (total_queries / (total_queries + incidents)), initialize at (1,1) = 0.5. Add deterministic velocity caps + query diversity rules.
-      Context: Expedition synthesis "MVTL steps 5-6". Anti-gaming rules are deterministic (not ML) to stay outside EU AI Act scope.
+- [ ] **Business API keys + Stripe Payment Links** (added: 2026-03-12)
+      What: Separate credential type for businesses querying scores at scale. Stripe Payment Links for first ~10 customers.
+      Context: Council: "ship billing close to MCP, not months later." Open multi-protocol before billing trains market that data is free.
 
 ## LOWER — Hardening & Compliance
 

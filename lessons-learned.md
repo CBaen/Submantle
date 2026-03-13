@@ -50,6 +50,16 @@
 - **Rule**: HANDOFF.md is the single source of truth for current state. Research files are historical records — they inform, they don't override. New instances should read HANDOFF.md, check the build priority table, and start building. Don't re-research what's settled. Don't ask GL to re-explain context. GL is one person with ADHD — every re-explanation costs focus they can't afford.
 - **Why**: GL said "I am the bottleneck." Every minute GL spends re-teaching context is a minute not spent on design decisions only GL can make. The documentation must carry the full context so new instances can be productive immediately.
 
+### Verify Auto-Generated Operation IDs Before Using Them
+- **Pattern**: fastapi-mcp whitelist used function names (`health`, `query`) but FastAPI auto-generates operation IDs with the full path appended (`health_api_health_get`, `query_api_query_get`). The whitelist silently matched nothing.
+- **Rule**: When referencing FastAPI operation IDs, always check `/openapi.json` for the actual generated values. Don't assume they match function names.
+- **Why**: Silent failures in whitelists are the worst kind — no error, just zero endpoints exposed. A 30-second check prevents a debugging rabbit hole.
+
+### Research Councils Produce Actionable Intel When the Question is Right
+- **Pattern**: GL asked "what would a research council think about multi-protocol access?" The council produced a concrete recommendation (fastapi-mcp, read-only scope, rate limiting first) that was implemented in the same session.
+- **Rule**: Research councils work best when the question is a real decision point with multiple valid approaches. "Should we do X?" produces better output than "tell me about X."
+- **Why**: The council format forces structured disagreement. The Devil's Advocate caught the billing timing risk and prompt injection surface that neither the Codebase Analyst nor External Researcher identified.
+
 ### Rebrand Early, Rebrand Completely
 - **Pattern**: "Substrate" conflicted with Parity Technologies' blockchain framework. Caught before public launch but after 91 files existed.
 - **Rule**: Resolve naming conflicts before writing significant code. When rebranding, dispatch parallel agents by file zone (docs, code, research) and verify with grep afterward. Rename files AND folders, not just content.
