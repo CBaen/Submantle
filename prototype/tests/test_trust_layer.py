@@ -135,6 +135,7 @@ class TestComputeTrust(unittest.TestCase):
         self.assertIsNotNone(result)
         required_keys = {
             "agent_name", "trust_score", "total_queries", "incidents",
+            "accepted_incidents",
             "registration_time", "last_seen", "version", "author",
             "score_version", "has_history", "reporter_diversity", "is_active",
         }
@@ -144,6 +145,7 @@ class TestComputeTrust(unittest.TestCase):
         self.assertEqual(result["author"], "Meta Corp")
         self.assertEqual(result["total_queries"], 0)
         self.assertEqual(result["incidents"], 0)
+        self.assertEqual(result["accepted_incidents"], 0)
 
     def test_compute_trust_no_db_returns_none(self):
         """Registry without a DB cannot compute trust — returns None."""
@@ -500,6 +502,7 @@ class TestWave1TrustMetadata(unittest.TestCase):
         self.assertIsNotNone(result)
         required_keys = {
             "agent_name", "trust_score", "total_queries", "incidents",
+            "accepted_incidents",
             "registration_time", "last_seen", "version", "author",
             "score_version", "has_history", "reporter_diversity", "is_active",
         }
@@ -742,8 +745,117 @@ class TestWave3IncidentPipeline(unittest.TestCase):
         )
         result = registry.review_incident(incident_id, "rejected")
         self.assertTrue(result)
-        record = db.get_agent_by_name("reject-review-agent")
+        self.assertEqual(db.get_accepted_incident_count(agent["id"]), 0)
+
+
+# ── TestWave4FormulaDecoupling ────────────────────────────────────────────────
+
+class TestWave4FormulaDecoupling(unittest.TestCase):
+    """Wave 4: Formula reads accepted incidents from table, not counter column."""
+
+    def test_formula_reads_from_table_not_counter(self):
+        """Score is derived from accepted incidents in table, ignoring counter column."""
+        registry, db = _make_registry()
+        token = _register(registry, "table-agent")
+        for _ in range(10):
+            registry.record_query(token)
+        # File incidents through normal pipeline (writes to table)
+        registry.record_incident("table-agent", "brand-a", "type-a")
+        registry.record_incident("table-agent", "brand-b", "type-a")
+        result = registry.compute_trust(agent_name="table-agent")
+        # Formula: (10+1)/(10+2+2) = 11/14
+        expected = round(11 / 14, 4)
+        self.assertAlmostEqual(result["trust_score"], expected, places=4)
+        self.assertEqual(result["accepted_incidents"], 2)
+
+    def test_rejected_incidents_do_not_affect_score(self):
+        """Self-ping (rejected) incidents are excluded from the formula."""
+        registry, db = _make_registry()
+        token = _register(registry, "clean-score-agent")
+        for _ in range(5):
+            registry.record_query(token)
+        # File a legitimate incident
+        registry.record_incident("clean-score-agent", "brand-a", "type-a")
+        score_before = registry.compute_trust(agent_name="clean-score-agent")["trust_score"]
+        # Self-ping — rejected, should NOT change score
+        registry.record_incident("clean-score-agent", "clean-score-agent", "type-b")
+        score_after = registry.compute_trust(agent_name="clean-score-agent")["trust_score"]
+        self.assertEqual(score_before, score_after)
+
+    def test_duplicate_incidents_do_not_affect_score(self):
+        """Duplicate incidents are excluded from the formula."""
+        registry, db = _make_registry()
+        token = _register(registry, "dup-score-agent")
+        for _ in range(5):
+            registry.record_query(token)
+        registry.record_incident("dup-score-agent", "brand-a", "type-a")
+        score_before = registry.compute_trust(agent_name="dup-score-agent")["trust_score"]
+        # Duplicate — same reporter + agent + type within 24h
+        registry.record_incident("dup-score-agent", "brand-a", "type-a")
+        score_after = registry.compute_trust(agent_name="dup-score-agent")["trust_score"]
+        self.assertEqual(score_before, score_after)
+
+    def test_counter_column_not_incremented(self):
+        """After Wave 4, the legacy counter column is not incremented by new incidents."""
+        registry, db = _make_registry()
+        _register(registry, "legacy-agent")
+        registry.record_incident("legacy-agent", "brand-x", "type-a")
+        record = db.get_agent_by_name("legacy-agent")
+        # Counter column should remain 0 — formula reads from table now
         self.assertEqual(record["incidents"], 0)
+
+    def test_accepted_incidents_field_in_response(self):
+        """compute_trust response includes accepted_incidents field."""
+        registry, db = _make_registry()
+        _register(registry, "field-agent")
+        result = registry.compute_trust(agent_name="field-agent")
+        self.assertIn("accepted_incidents", result)
+        self.assertEqual(result["accepted_incidents"], 0)
+        # Both incidents and accepted_incidents should agree
+        self.assertEqual(result["incidents"], result["accepted_incidents"])
+
+    def test_manually_accepted_pending_affects_score(self):
+        """An incident manually accepted via review_incident() affects the score."""
+        registry, db = _make_registry()
+        token = _register(registry, "pending-agent")
+        for _ in range(5):
+            registry.record_query(token)
+        score_before = registry.compute_trust(agent_name="pending-agent")["trust_score"]
+        # Create a pending incident directly in the DB
+        agent = db.get_agent_by_name("pending-agent")
+        incident_id = db.save_incident_report(
+            agent_id=agent["id"],
+            agent_name="pending-agent",
+            reporter="brand-x",
+            incident_type="type-a",
+            status="pending",
+        )
+        # Pending — should NOT affect score yet
+        score_pending = registry.compute_trust(agent_name="pending-agent")["trust_score"]
+        self.assertEqual(score_before, score_pending)
+        # Accept — NOW it should affect score
+        registry.review_incident(incident_id, "accepted")
+        score_after = registry.compute_trust(agent_name="pending-agent")["trust_score"]
+        self.assertLess(score_after, score_before)
+
+    def test_review_reject_does_not_affect_score(self):
+        """An incident rejected via review_incident() does NOT affect the score."""
+        registry, db = _make_registry()
+        token = _register(registry, "reject-pending-agent")
+        for _ in range(5):
+            registry.record_query(token)
+        agent = db.get_agent_by_name("reject-pending-agent")
+        incident_id = db.save_incident_report(
+            agent_id=agent["id"],
+            agent_name="reject-pending-agent",
+            reporter="brand-x",
+            incident_type="type-a",
+            status="pending",
+        )
+        score_before = registry.compute_trust(agent_name="reject-pending-agent")["trust_score"]
+        registry.review_incident(incident_id, "rejected")
+        score_after = registry.compute_trust(agent_name="reject-pending-agent")["trust_score"]
+        self.assertEqual(score_before, score_after)
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────
