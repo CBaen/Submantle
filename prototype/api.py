@@ -58,6 +58,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── MCP server ────────────────────────────────────────────────────────────────
+# Read-only MCP surface for AI agents to query trust scores.
+# Write operations (register, deregister, incident report) are REST-only.
+
+_mcp = FastApiMCP(
+    app,
+    name="Submantle",
+    description="Trust bureau for AI agents. Query trust scores and process awareness.",
+    include_operations=[
+        "health_api_health_get",
+        "status_api_status_get",
+        "query_api_query_get",
+        "agents_list_api_agents_get",
+        "verify_directory_api_verify_get",
+        "verify_agent_api_verify__agent_name__get",
+        "privacy_status_api_privacy_status_get",
+    ],
+    headers=["authorization"],
+)
+_mcp.mount_http()
+
 # ── Cache ──────────────────────────────────────────────────────────────────────
 # Re-scan at most every 5 seconds to avoid hammering psutil on every poll.
 # Previous process list is tracked for event diffing.
