@@ -13,7 +13,7 @@ The credit bureau for AI agents. Agents register, earn trust scores through inte
 ## FOR NEW INSTANCES — READ THIS FIRST
 1. Research phase is DONE. Do not start new expeditions or councils unless GL explicitly requests one.
 2. All design decisions are settled (see below). Do not re-litigate.
-3. Waves 1-3 of the 5-wave implementation are DONE. Start at Wave 4.
+3. Waves 1-5 are DONE. MCP server live via fastapi-mcp (read-only, 7 endpoints). Next: business API keys + rate limiting.
 4. GL is the bottleneck. Do not ask GL technical questions — research internally first.
 5. Remote is in sync. Push after committing new work.
 
@@ -81,7 +81,7 @@ The council said "build reporter auth" as one task. Research found it's actually
 4. **Pending state** on incidents (buffer before formula impact)
 5. **Velocity caps** on queries (prevents self-inflation)
 
-MCP server can be built IN PARALLEL — it's a thin Python wrapper over existing modules. Stdio transport, no OAuth for V1.
+MCP server DONE — 3-line fastapi-mcp mount on existing app. HTTP transport (not stdio). Read-only: 7 endpoints exposed, write operations (register, deregister, incident report) REST-only per council recommendation.
 
 Billing can be nearly zero code — Stripe Payment Links for first ~10 customers.
 

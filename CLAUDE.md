@@ -96,9 +96,9 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 | 6 | Wave 1: trust_metadata + score_version + has_history | DONE | score_version, has_history, reporter_diversity in API |
 | 7 | Wave 2: Soft-delete deregistration | DONE | Permanent names, token invalidation, is_active field |
 | 8 | Wave 3: Pending state + severity classification + dedup | DONE | 3-step pipeline: self-ping, dedup, severity classification |
-| 9 | Wave 4: Formula reads accepted incidents + API update | NEXT | Decouples from counter. Core scoring evolution. |
-| 10 | Wave 5: MCP server (Python, stdio) | NEXT (parallel) | The product — agents query Submantle |
-| 11 | Business API keys + Stripe Payment Links | NEXT | First revenue — near-zero code |
+| 9 | Wave 4: Formula reads accepted incidents + API update | DONE | Decouples from counter. Core scoring evolution. |
+| 10 | Wave 5: MCP server (fastapi-mcp, HTTP) | DONE | Read-only MCP at /mcp — 7 endpoints, write ops REST-only |
+| 11 | Rate limiting + Business API keys + Stripe | NEXT | Council: ship billing close to MCP, not months later |
 | 12 | Go production rewrite | FUTURE | Reporter credibility, severity weights, recency |
 | 13 | W3C VC attestation issuance | FUTURE | Portable trust credentials |
 
