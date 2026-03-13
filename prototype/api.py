@@ -35,6 +35,7 @@ from database import SubmantleDB
 from events import EventBus, EventType
 from privacy import PrivacyManager
 from agent_registry import AgentRegistry
+from fastapi_mcp import FastApiMCP
 
 VERSION = "0.1.0"
 
