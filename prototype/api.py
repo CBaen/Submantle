@@ -824,3 +824,15 @@ def trust_dashboard():
         status_code=404,
         content={"error": "trust-dashboard.html not found"},
     )
+
+
+@app.get("/landing")
+def landing_page():
+    """Public landing page — what is Submantle in 30 seconds."""
+    html_path = Path(__file__).parent / "landing.html"
+    if html_path.exists():
+        return FileResponse(str(html_path), media_type="text/html")
+    return JSONResponse(
+        status_code=404,
+        content={"error": "landing.html not found"},
+    )
