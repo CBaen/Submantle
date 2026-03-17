@@ -56,13 +56,13 @@ All trust layer wiring tasks completed across Waves 1-5 (2026-03-12):
 
 ## HIGH — Revenue & Hardening (council-recommended next)
 
-- [ ] **Rate limiting on open endpoints** (added: 2026-03-12)
-      What: Add rate limiting to /api/verify/* and other open endpoints before MCP drives traffic.
-      Context: Multi-protocol council: "add rate limiting before publishing MCP." Prevents abuse multiplication across REST + MCP.
+- [x] **Rate limiting on open endpoints** (completed: 2026-03-17)
+      What: Tiered rate limiting on verify endpoints. Anonymous 10/hr, free key 100/hr, paid 1000/hr. Standard X-RateLimit headers. In-memory + SQLite persistence.
+      Context: 12 new rate limiter tests. Integrated via FastAPI dependency injection.
 
-- [ ] **Business API keys + Stripe Payment Links** (added: 2026-03-12)
-      What: Separate credential type for businesses querying scores at scale. Stripe Payment Links for first ~10 customers.
-      Context: Council: "ship billing close to MCP, not months later." Open multi-protocol before billing trains market that data is free.
+- [x] **Business API keys + Stripe Payment Links** (completed: 2026-03-17)
+      What: sk_live_ prefixed keys, SHA-256 hash storage, Stripe webhook for auto-upgrade. 3 new endpoints. 264 total tests.
+      Context: Wave 6 complete. First HTTP-layer integration tests added. Lazy Stripe import — server runs without it.
 
 ## LOWER — Hardening & Compliance
 
