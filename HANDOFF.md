@@ -4,18 +4,57 @@
 The credit bureau for AI agents. Agents register, earn trust scores through interactions, and businesses pay to check those scores. Neutral infrastructure — Submantle never acts, never enforces. It labels. Brands decide their own thresholds.
 
 ## Current State
-- **Phase**: BUILDING — Waves 1-4 complete, Wave 5 (MCP) DONE via fastapi-mcp.
-- **Git**: github.com/CBaen/SUBMANTLE (main branch, ahead of origin)
+- **Phase**: BUILDING — Waves 1-5 complete, Wave 6 (Business API Keys + Rate Limiting + Stripe) DONE.
+- **Git**: github.com/CBaen/SUBMANTLE (main branch)
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421, MCP at localhost:8421/mcp
-- **Tests**: 220 passing across 4 test files
+- **Tests**: 264 passing across 7 test files
+- **Env vars**: `STRIPE_WEBHOOK_SECRET` (optional — server runs without it, webhook returns 503)
 - **Research**: ALL COMPLETE. 5 expeditions + 6 follow-ups + 4 research councils. Files in `research/`. DO NOT re-research settled topics — read this file and build.
 
 ## FOR NEW INSTANCES — READ THIS FIRST
 1. Research phase is DONE. Do not start new expeditions or councils unless GL explicitly requests one.
 2. All design decisions are settled (see below). Do not re-litigate.
-3. Waves 1-5 are DONE. MCP server live via fastapi-mcp (read-only, 7 endpoints). Next: business API keys + rate limiting.
+3. Waves 1-5 + Wave 6 (billing) are DONE. Business API keys, rate limiting, and Stripe webhook all live. Next: interaction logging + reporter auth (V1.1).
 4. GL is the bottleneck. Do not ask GL technical questions — research internally first.
 5. Remote is in sync. Push after committing new work.
+
+## What Just Happened (2026-03-17)
+
+### WAVE 6: Business API Keys + Rate Limiting + Stripe — DONE
+
+Built the billing layer. Submantle now has a front door.
+
+**New files:**
+- `prototype/business_registry.py` — API key generation/validation (`sk_live_` prefix, SHA-256 hash storage)
+- `prototype/rate_limiter.py` — Hourly sliding window, in-memory + SQLite persistence
+- `prototype/requirements.txt` — Pinned dependencies
+- `prototype/tests/test_business_registry.py` — 16 tests
+- `prototype/tests/test_rate_limiter.py` — 12 tests
+- `prototype/tests/test_api_billing.py` — 16 integration tests (first HTTP-layer tests)
+
+**Modified files:**
+- `prototype/database.py` — 2 new tables (`business_api_keys`, `business_api_usage`), 10 new DB methods
+- `prototype/api.py` — 3 new endpoints, rate-limited verify endpoints, MCP header fix
+
+**New endpoints:**
+- `POST /api/business/register` — returns `sk_live_...` API key (once, like agent tokens)
+- `GET /api/business/tiers` — public tier info
+- `POST /api/stripe/webhook` — handles `checkout.session.completed`, upgrades tier
+
+**Rate limiting tiers:**
+- Anonymous (no key): 10 verify requests/hour
+- Free (registered key): 100/hour
+- Paid (Stripe payment): 1000/hour
+
+**Headers on verify responses:** `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+
+**Stripe integration:** Lazy-imported. Server starts without Stripe installed. Webhook verifies signatures. On successful checkout, matches business by email, upgrades to paid tier.
+
+**MCP:** `x-api-key` header now forwarded through MCP surface alongside `authorization`.
+
+**264 tests passing. Zero regressions on existing 220 tests.**
+
+---
 
 ## What Just Happened (2026-03-12)
 

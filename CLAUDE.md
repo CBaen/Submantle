@@ -98,7 +98,7 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 | 8 | Wave 3: Pending state + severity classification + dedup | DONE | 3-step pipeline: self-ping, dedup, severity classification |
 | 9 | Wave 4: Formula reads accepted incidents + API update | DONE | Decouples from counter. Core scoring evolution. |
 | 10 | Wave 5: MCP server (fastapi-mcp, HTTP) | DONE | Read-only MCP at /mcp — 7 endpoints, write ops REST-only |
-| 11 | Rate limiting + Business API keys + Stripe | NEXT | Council: ship billing close to MCP, not months later |
+| 11 | Wave 6: Business API keys + Rate limiting + Stripe | DONE | Tiered access (anon/free/paid), sk_live_ keys, Stripe webhook |
 | 12 | Go production rewrite | FUTURE | Reporter credibility, severity weights, recency |
 | 13 | W3C VC attestation issuance | FUTURE | Portable trust credentials |
 
@@ -108,7 +108,7 @@ The goal is ONE working customer loop: an agent carries a Submantle score, a bra
 - **Production code** (future): Go, in `cmd/` and `internal/`
 - **Research**: `research/expedition-{topic}/`
 - **Identity signatures**: `prototype/signatures.json` — community-curated, lightweight pattern matching
-- **Tests**: `prototype/tests/` — 213 passing across 4 test files. Don't break them.
+- **Tests**: `prototype/tests/` — 264 passing across 7 test files. Don't break them.
 - **Server**: `python -m uvicorn api:app --port 8421` from `prototype/` — dashboard at localhost:8421
 
 ## Document Parity
