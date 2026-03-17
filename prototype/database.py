@@ -618,6 +618,147 @@ class SubmantleDB:
             rows = conn.execute("SELECT key, value FROM settings").fetchall()
             return {r["key"]: r["value"] for r in rows}
 
+    # ── business_api_keys ──────────────────────────────────────────────────────
+
+    def register_business_key(
+        self,
+        key_hash: str,
+        business_name: str,
+        email: str,
+        tier: str = "free",
+        rate_limit: int = 100,
+    ) -> int:
+        """
+        Register a new business API key.
+
+        Args:
+            key_hash: SHA-256 hex of the raw API key. Never store the raw key.
+            business_name: Human-readable business name.
+            email: Contact email — also used for Stripe webhook matching.
+            tier: 'free' or 'paid'. Determines rate limit.
+            rate_limit: Requests per hour for this key.
+
+        Returns:
+            Row ID of the new business key record.
+        """
+        with self._conn() as conn:
+            cursor = conn.execute(
+                """
+                INSERT INTO business_api_keys
+                    (key_hash, business_name, email, tier, rate_limit, created_at, is_active)
+                VALUES (?, ?, ?, ?, ?, ?, 1)
+                """,
+                (key_hash, business_name, email, tier, rate_limit, time.time()),
+            )
+            return cursor.lastrowid
+
+    def get_business_by_key_hash(self, key_hash: str) -> dict | None:
+        """Look up a business by API key hash. Returns None if not found."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM business_api_keys WHERE key_hash = ?",
+                (key_hash,),
+            ).fetchone()
+            return _row_to_business_key(row) if row else None
+
+    def get_business_by_email(self, email: str) -> dict | None:
+        """Look up a business by email. Used by Stripe webhook to match payments."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM business_api_keys WHERE email = ? AND is_active = 1 ORDER BY created_at DESC LIMIT 1",
+                (email,),
+            ).fetchone()
+            return _row_to_business_key(row) if row else None
+
+    def get_business_by_id(self, business_id: int) -> dict | None:
+        """Look up a business by primary key."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM business_api_keys WHERE id = ?",
+                (business_id,),
+            ).fetchone()
+            return _row_to_business_key(row) if row else None
+
+    def update_business_tier(
+        self,
+        business_id: int,
+        tier: str,
+        rate_limit: int | None = None,
+        stripe_customer_id: str | None = None,
+    ) -> bool:
+        """
+        Update a business key's tier and optionally its rate limit and Stripe ID.
+        Returns True if the record was found and updated.
+        """
+        updates = ["tier = ?"]
+        params: list = [tier]
+        if rate_limit is not None:
+            updates.append("rate_limit = ?")
+            params.append(rate_limit)
+        if stripe_customer_id is not None:
+            updates.append("stripe_customer_id = ?")
+            params.append(stripe_customer_id)
+        params.append(business_id)
+        with self._conn() as conn:
+            result = conn.execute(
+                f"UPDATE business_api_keys SET {', '.join(updates)} WHERE id = ?",
+                params,
+            )
+            return result.rowcount > 0
+
+    def deactivate_business_key(self, business_id: int) -> bool:
+        """Deactivate a business API key. Returns True if found."""
+        with self._conn() as conn:
+            result = conn.execute(
+                "UPDATE business_api_keys SET is_active = 0 WHERE id = ? AND is_active = 1",
+                (business_id,),
+            )
+            return result.rowcount > 0
+
+    # ── business_api_usage ─────────────────────────────────────────────────────
+
+    def get_usage_window(self, key_hash: str, window_start: float) -> int:
+        """Return request count for a given key in a given hour window. Returns 0 if no record."""
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT request_count FROM business_api_usage WHERE key_hash = ? AND window_start = ?",
+                (key_hash, window_start),
+            ).fetchone()
+            return row["request_count"] if row else 0
+
+    def increment_usage(self, key_hash: str, window_start: float) -> int:
+        """
+        Increment usage count for a key in the given hour window. Upserts.
+        Returns the new count.
+        """
+        now = time.time()
+        with self._conn() as conn:
+            conn.execute(
+                """
+                INSERT INTO business_api_usage (key_hash, window_start, request_count, updated_at)
+                VALUES (?, ?, 1, ?)
+                ON CONFLICT(key_hash, window_start) DO UPDATE SET
+                    request_count = request_count + 1,
+                    updated_at = ?
+                """,
+                (key_hash, window_start, now, now),
+            )
+            row = conn.execute(
+                "SELECT request_count FROM business_api_usage WHERE key_hash = ? AND window_start = ?",
+                (key_hash, window_start),
+            ).fetchone()
+            return row["request_count"] if row else 1
+
+    def prune_usage(self, max_age_hours: int = 48) -> int:
+        """Delete usage records older than max_age_hours. Prevents unbounded growth."""
+        cutoff = time.time() - (max_age_hours * 3600)
+        with self._conn() as conn:
+            result = conn.execute(
+                "DELETE FROM business_api_usage WHERE window_start < ?",
+                (cutoff,),
+            )
+            return result.rowcount
+
 
 # ── Schema ─────────────────────────────────────────────────────────────────────
 
@@ -793,6 +934,20 @@ def _row_to_incident_report(row: sqlite3.Row) -> dict:
         except (IndexError, KeyError):
             result[field] = default
     return result
+
+
+def _row_to_business_key(row: sqlite3.Row) -> dict:
+    return {
+        "id": row["id"],
+        "key_hash": row["key_hash"],
+        "business_name": row["business_name"],
+        "email": row["email"],
+        "tier": row["tier"],
+        "rate_limit": row["rate_limit"],
+        "stripe_customer_id": row["stripe_customer_id"],
+        "created_at": row["created_at"],
+        "is_active": bool(row["is_active"]),
+    }
 
 
 def _row_to_event(row: sqlite3.Row) -> dict:
