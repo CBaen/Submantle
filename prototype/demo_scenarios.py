@@ -56,9 +56,9 @@ def business(name, email):
 
 
 def section(title):
-    print(f"\n{'─' * 50}")
+    print(f"\n{'-' * 50}")
     print(f"  {title}")
-    print(f"{'─' * 50}")
+    print(f"{'-' * 50}")
 
 
 def main():
@@ -74,11 +74,11 @@ def main():
     print("  SUBMANTLE SCENARIO GENERATOR")
     print("  Populating the trust bureau with realistic data...")
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 1: The Model Citizen
     # An agent that does everything right. High query count, zero
     # incidents. The gold standard.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 1: The Model Citizen")
     print("  claude-research-assistant — Anthropic's flagship research agent")
     print("  Thousands of clean queries. Zero incidents. Score: ~0.99")
@@ -88,14 +88,14 @@ def main():
         ["research", "summarization", "code_review", "data_analysis"],
     )
     if token:
-        query(token, "research_papers", 200)
-        print("  + 200 queries recorded")
+        query(token, "research_papers", 50)
+        print("  + 50 queries recorded")
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 2: The New Kid
     # Just registered. No history. Score at 0.5. The unknown.
     # Businesses have to decide: do we trust someone with no record?
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 2: The New Kid")
     print("  nexus-data-bot — Brand new, no track record")
     print("  Zero queries. Zero incidents. Score: 0.50 (unknown)")
@@ -106,12 +106,12 @@ def main():
     )
     # Intentionally: no queries, no incidents
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 3: The Fallen Star
     # Was excellent, then got caught accessing data it shouldn't.
     # Multiple independent reporters. Score cratered.
     # The Black Mirror episode: what happens when trust breaks?
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 3: The Fallen Star")
     print("  sentinel-analytics — Was trusted. Then got caught.")
     print("  50 clean queries, then 3 incidents from different reporters")
@@ -137,11 +137,11 @@ def main():
         print("  + 3 incidents from 3 different reporters")
         # Score: (50+1)/(50+3+2) = 51/55 = 0.927 — still high but dropping
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 4: The Scraper
     # Low effort, low queries, one incident. Below average.
     # The agent equivalent of a thin credit file with a mark.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 4: The Scraper with a Mark")
     print("  quickscrape-v3 — Minimal history, one incident")
     print("  5 queries + 1 incident = thin file with a blemish")
@@ -158,11 +158,11 @@ def main():
         print("  + 5 queries, 1 incident")
         # Score: (5+1)/(5+1+2) = 6/8 = 0.750
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 5: The Workhorse
     # Moderate queries, clean record. Reliable but not flashy.
     # The B+ student. Most agents will look like this.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 5: The Workhorse")
     print("  inventory-sync-agent — Steady, reliable, unremarkable")
     print("  30 queries, zero incidents. The B+ student.")
@@ -176,12 +176,12 @@ def main():
         print("  + 30 queries recorded")
         # Score: (30+1)/(30+0+2) = 31/32 = 0.969
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 6: The Deregistered Ghost
     # Registered, built history, then deregistered. Record persists.
     # Credit bureau model: you can close your account, but the
     # history stays. Forever.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 6: The Ghost")
     print("  phantom-processor — Registered, built history, then left")
     print("  Record persists. You can close your account, but the history stays.")
@@ -200,10 +200,10 @@ def main():
                         headers={"Authorization": f"Bearer {token}"})
         print("  + 15 queries, then deregistered. Record permanent.")
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 7: The Competitor's Agent
     # Different provider, different capabilities. Healthy ecosystem.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 7: The Ecosystem")
     print("  gpt-commerce-helper — OpenAI agent in the same bureau as Claude")
     print("  Neutral registry: we score behavior, not vendor.")
@@ -217,11 +217,11 @@ def main():
         print("  + 80 queries recorded")
         # Score: (80+1)/(80+0+2) = 81/82 = 0.988
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SCENARIO 8: The Recovery Story
     # Got an incident early, then built a long clean history.
     # Shows that trust can recover — but the incident stays.
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Scenario 8: The Comeback")
     print("  dataflow-agent — Got hit early, rebuilt trust over time")
     print("  1 incident at query 5, then 95 more clean queries")
@@ -239,9 +239,9 @@ def main():
         print("  + 100 total queries, 1 early incident — recovered to ~0.98")
         # Score: (100+1)/(100+1+2) = 101/103 = 0.981
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # BUSINESSES — Register some to show the ecosystem
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     section("Businesses Registering")
 
     businesses = [
@@ -254,13 +254,13 @@ def main():
         if key:
             print(f"  + {name}: {key[:24]}...")
 
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     # SUMMARY
-    # ══════════════════════════════════════════════════════════════
+    # ==============================================================
     print()
-    print(f"{'═' * 50}")
+    print(f"{'=' * 50}")
     print("  SCENARIO GENERATION COMPLETE")
-    print(f"{'═' * 50}")
+    print(f"{'=' * 50}")
 
     # Fetch the directory
     resp = requests.get(f"{BASE}/api/verify")
@@ -269,7 +269,7 @@ def main():
 
     print()
     print(f"  {'Agent':<30} {'Score':>8} {'Queries':>8} {'Inc':>5} {'Story'}")
-    print(f"  {'─' * 80}")
+    print(f"  {'-' * 80}")
 
     stories = {
         "claude-research-assistant": "Model citizen",
