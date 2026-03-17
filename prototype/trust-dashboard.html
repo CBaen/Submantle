@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#141413">
-  <title>Submantle — Trust Bureau</title>
+  <title>Submantle SubScore — Trust Bureau</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -140,6 +140,24 @@
     .formula-text { font-family: var(--font-mono); font-size: 20px; font-weight: 600; color: var(--clay); margin-bottom: var(--sp-3); }
     .formula-desc { font-size: 13px; color: var(--text-2); max-width: 500px; margin: 0 auto; }
 
+    .register-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); }
+    @media (max-width: 768px) { .register-grid { grid-template-columns: 1fr; } }
+    .register-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--sp-6); }
+    .register-card h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-4); }
+    .form-group { margin-bottom: var(--sp-4); }
+    .form-label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin-bottom: var(--sp-1); }
+    .form-input { width: 100%; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-1); font-family: var(--font-sans); font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--clay); }
+    .form-input::placeholder { color: var(--text-3); }
+    .form-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; background: var(--clay); color: #fff; }
+    .form-btn:hover { background: #c46849; }
+    .form-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-result { margin-top: var(--sp-4); padding: var(--sp-4); border-radius: var(--radius-sm); font-size: 13px; display: none; }
+    .form-result.success { display: block; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--text-1); }
+    .form-result.error { display: block; background: rgba(191, 77, 67, 0.1); border: 1px solid rgba(191, 77, 67, 0.2); color: var(--text-1); }
+    .token-display { font-family: var(--font-mono); font-size: 12px; word-break: break-all; background: var(--bg-elevated); padding: 8px; border-radius: 4px; margin-top: 8px; user-select: all; }
+    .token-warning { font-size: 11px; color: var(--clay); font-weight: 600; margin-top: 4px; }
+
     .footer { text-align: center; padding: var(--sp-12) var(--sp-6) var(--sp-8); font-size: 12px; color: var(--text-3); }
     .footer a { color: var(--text-2); text-decoration: none; }
     .footer a:hover { color: var(--clay); }
@@ -203,8 +221,8 @@
       <div class="section-header"><div class="section-title">How Trust Scoring Works</div></div>
       <div class="info-grid">
         <div class="info-card"><div class="info-icon">&#x1f4dd;</div><div class="info-title">Agents Register</div><div class="info-desc">Software agents register and receive a cryptographic token. Every agent starts at 0.50 — the score for "unknown."</div></div>
-        <div class="info-card"><div class="info-icon">&#x1f4c8;</div><div class="info-title">Behavior Builds Trust</div><div class="info-desc">Each verified interaction increases the trust score. More queries, more history, more data for businesses to evaluate.</div></div>
-        <div class="info-card"><div class="info-icon">&#x26a0;&#xfe0f;</div><div class="info-title">Incidents Lower Scores</div><div class="info-desc">Third parties report problems. Submantle records them — it never detects. Like a credit bureau: banks report missed payments.</div></div>
+        <div class="info-card"><div class="info-icon">&#x1f4c8;</div><div class="info-title">Behavior Builds Trust</div><div class="info-desc">Each verified interaction increases the SubScore. More queries, more history, more data for businesses to evaluate.</div></div>
+        <div class="info-card"><div class="info-icon">&#x26a0;&#xfe0f;</div><div class="info-title">Incidents Lower SubScores</div><div class="info-desc">Third parties report problems. Submantle records them — it never detects. Like a credit bureau: banks report missed payments.</div></div>
         <div class="info-card"><div class="info-icon">&#x2705;</div><div class="info-title">Businesses Decide</div><div class="info-desc">Submantle never blocks or enforces. It provides the score. Each business sets their own threshold — just like Visa.</div></div>
       </div>
     </div>
@@ -212,7 +230,7 @@
     <div class="section">
       <div class="section-header"><div class="section-title">The Formula</div></div>
       <div class="formula-box">
-        <div class="formula-text">trust = (queries + 1) / (queries + incidents + 2)</div>
+        <div class="formula-text">SubScore = (queries + 1) / (queries + incidents + 2)</div>
         <div class="formula-desc">Beta Reputation with Laplace smoothing. Pure math — no ML, no inference. Deterministic, auditable, outside EU AI Act scope.</div>
       </div>
     </div>
@@ -230,7 +248,7 @@
   </div>
 
   <footer class="footer">
-    <p>Submantle — The credit bureau for AI agents</p>
+    <p>Submantle SubScore — The behavioral trust registry</p>
     <p style="margin-top: var(--sp-2);"><a href="/api/health">API Health</a> &middot; <a href="/api/verify">Raw API</a> &middot; <span style="cursor: help;" title="MCP is a machine protocol for AI agents — not viewable in a browser">MCP: /mcp</span></p>
   </footer>
 
@@ -408,7 +426,7 @@
         ['Registered', agent.registration_time || '-'],
       ]);
       buildRows('modal-trust-data', [
-        ['Trust Score', fmtScore(agent.trust_score), 'trust-' + tc],
+        ['SubScore', fmtScore(agent.trust_score), 'trust-' + tc],
         ['Total Queries', agent.total_queries.toLocaleString()],
         ['Accepted Incidents', String(agent.accepted_incidents || 0)],
         ['Reporter Diversity', String(agent.reporter_diversity || 0)],
