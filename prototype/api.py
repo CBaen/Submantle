@@ -624,24 +624,58 @@ def agents_deregister(agent_id: int, authorization: Optional[str] = Header(None)
 
 # ── Trust Bureau — Verification (Door 2: for businesses) ──────────────────────
 
+# Soft pull: basic info — SubScore, status, history flag.
+# Hard pull: full detail — incidents, reporters, capabilities, timeline.
+# Like credit bureaus: soft pulls are cheap, hard pulls cost more and are tracked.
+
+SOFT_PULL_FIELDS = {"agent_name", "trust_score", "is_active", "has_history", "score_version"}
+HARD_PULL_COST = 5  # A hard pull costs 5x a soft pull against the rate limit
+
+
+def _soft_pull(result: dict) -> dict:
+    """Return only the soft-pull fields from a full trust result."""
+    return {k: v for k, v in result.items() if k in SOFT_PULL_FIELDS}
+
+
 @app.get("/api/verify")
 def verify_directory(
     request: Request,
+    pull: str = "soft",
     ctx: BusinessContext = Depends(get_business_context),
 ):
     """
-    Public directory of all registered agents with trust scores.
+    Public directory of all registered agents with SubScores.
 
-    This is the trust bureau's public face. Businesses browse this to see
-    which agents exist and what their scores are. Rate-limited by tier.
+    ?pull=soft (default): SubScore, status, history flag. Costs 1 lookup.
+    ?pull=hard: Full detail — incidents, reporters, capabilities, timeline. Costs 5 lookups.
     """
+    is_hard = pull.lower() == "hard"
+
+    # Hard pulls cost extra against rate limit (4 additional after the 1 already consumed)
+    if is_hard:
+        for _ in range(HARD_PULL_COST - 1):
+            extra = _rate_limiter.check_and_increment(ctx.identifier, ctx.limit)
+            if not extra.allowed:
+                raise HTTPException(
+                    status_code=429,
+                    detail="Rate limit exceeded (hard pull costs 5 lookups)",
+                    headers={
+                        "X-RateLimit-Limit": str(extra.limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": str(int(extra.reset_at)),
+                    },
+                )
+            ctx.remaining = extra.remaining
+
     agents = _registry.list_agents(active_only=False)
     scored = []
     for agent in agents:
         trust = _registry.compute_trust(agent_id=agent["id"])
         if trust:
-            scored.append(trust)
-    response = JSONResponse(content={"agents": scored, "total": len(scored)})
+            scored.append(trust if is_hard else _soft_pull(trust))
+
+    content = {"agents": scored, "total": len(scored), "pull": "hard" if is_hard else "soft"}
+    response = JSONResponse(content=content)
     _add_ratelimit_headers(response, ctx)
     return response
 
@@ -650,21 +684,42 @@ def verify_directory(
 def verify_agent(
     agent_name: str,
     request: Request,
+    pull: str = "soft",
     ctx: BusinessContext = Depends(get_business_context),
 ):
     """
-    Check a specific agent's trust score.
+    Check a specific agent's SubScore.
 
-    This is the core product: a business asks "how trustworthy is this agent?"
-    and gets back a score with full metadata. Rate-limited by tier.
+    ?pull=soft (default): SubScore, status, history flag. Costs 1 lookup.
+    ?pull=hard: Full detail — incidents, reporters, capabilities, timeline. Costs 5 lookups.
     """
+    is_hard = pull.lower() == "hard"
+
+    if is_hard:
+        for _ in range(HARD_PULL_COST - 1):
+            extra = _rate_limiter.check_and_increment(ctx.identifier, ctx.limit)
+            if not extra.allowed:
+                raise HTTPException(
+                    status_code=429,
+                    detail="Rate limit exceeded (hard pull costs 5 lookups)",
+                    headers={
+                        "X-RateLimit-Limit": str(extra.limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": str(int(extra.reset_at)),
+                    },
+                )
+            ctx.remaining = extra.remaining
+
     result = _registry.compute_trust(agent_name=agent_name)
     if result is None:
         raise HTTPException(
             status_code=404,
             detail=f"Agent '{agent_name}' not found",
         )
-    response = JSONResponse(content=result)
+
+    content = (result if is_hard else _soft_pull(result))
+    content["pull"] = "hard" if is_hard else "soft"
+    response = JSONResponse(content=content)
     _add_ratelimit_headers(response, ctx)
     return response
 
