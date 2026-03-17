@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submantle — The Credit Bureau for AI Agents</title>
+  <meta name="description" content="Behavioral trust scores for AI agents. Register. Record. Score. Neutral infrastructure that never acts — just labels.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+    :root {
+      --bg: #0f0f0e; --bg-card: #1a1918; --bg-elevated: #262624;
+      --text: #faf9f5; --text-2: #87867f; --text-3: #4d4c48;
+      --border: #30302e; --clay: #d97757; --clay-glow: rgba(217, 119, 87, 0.15);
+      --olive: #788c5d; --sky: #6a9bcc;
+      --font: "Inter", system-ui, sans-serif;
+      --mono: "JetBrains Mono", monospace;
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ───────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 50; padding: 16px 0;
+      background: rgba(15, 15, 14, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--clay); }
+    .nav-name { font-weight: 700; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { font-size: 13px; color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--clay); color: #fff; }
+    .btn-primary:hover { background: #c46849; transform: translateY(-1px); }
+    .btn-outline { border: 1px solid var(--border); color: var(--text-2); background: transparent; }
+    .btn-outline:hover { border-color: var(--text-2); color: var(--text); }
+
+    /* ── Hero ──────────────────────────────────────────────────── */
+    .hero { padding: 120px 0 80px; text-align: center; }
+    .hero-badge {
+      display: inline-block; font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+      color: var(--clay); background: var(--clay-glow); border: 1px solid rgba(217, 119, 87, 0.2);
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px); font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--clay); }
+    .hero p { font-size: 18px; color: var(--text-2); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Formula Banner ────────────────────────────────────────── */
+    .formula-banner {
+      text-align: center; padding: 40px 24px;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .formula {
+      font-family: var(--mono); font-size: clamp(16px, 2.5vw, 22px); font-weight: 500;
+      color: var(--clay); margin-bottom: 8px;
+    }
+    .formula-sub { font-size: 13px; color: var(--text-3); }
+
+    /* ── How It Works ──────────────────────────────────────────── */
+    .section { padding: 80px 0; }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--clay); margin-bottom: 12px;
+    }
+    .section h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 48px; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    @media (max-width: 768px) { .steps { grid-template-columns: 1fr; } }
+    .step-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 32px; position: relative;
+    }
+    .step-num {
+      font-size: 48px; font-weight: 800; color: var(--bg-elevated); font-family: var(--mono);
+      position: absolute; top: 16px; right: 20px;
+    }
+    .step-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+
+    /* ── The Analogy ───────────────────────────────────────────── */
+    .analogy {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    @media (max-width: 768px) { .analogy { grid-template-columns: 1fr; padding: 32px; } }
+    .analogy h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+    .analogy p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin-bottom: 12px; }
+    .analogy-list { list-style: none; }
+    .analogy-list li {
+      font-size: 14px; color: var(--text-2); padding: 8px 0;
+      border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 12px;
+    }
+    .analogy-list li:last-child { border-bottom: none; }
+    .analogy-check { color: var(--olive); font-weight: 600; }
+
+    /* ── API Preview ───────────────────────────────────────────── */
+    .code-block {
+      background: #111110; border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px; overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--text-2);
+    }
+    .code-block .comment { color: var(--text-3); }
+    .code-block .key { color: var(--sky); }
+    .code-block .string { color: var(--olive); }
+    .code-block .number { color: var(--clay); }
+
+    /* ── Why Neutral ───────────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .reason-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px;
+    }
+    .reason-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .reason-card p { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+
+    /* ── CTA ────────────────────────────────────────────────────── */
+    .cta {
+      text-align: center; padding: 80px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .cta h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .cta p { color: var(--text-2); margin-bottom: 32px; font-size: 16px; }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 32px 24px; font-size: 12px; color: var(--text-3);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--text-2); text-decoration: none; }
+    footer a:hover { color: var(--clay); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-brand"><div class="nav-dot"></div><span class="nav-name">Submantle</span></a>
+      <div class="nav-links">
+        <a href="#how">How It Works</a>
+        <a href="#api">API</a>
+        <a href="#why">Why Neutral</a>
+        <a href="/trust" class="btn btn-outline">Trust Bureau</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Behavioral Trust Registry</div>
+      <h1>The credit bureau<br>for <span>AI agents</span></h1>
+      <p>
+        Every agent earns a trust score through observed behavior.
+        Carries it everywhere as a portable credential.
+        Brands decide their own thresholds. We never act — just label.
+      </p>
+      <div class="hero-actions">
+        <a href="/trust" class="btn btn-primary">View Trust Bureau</a>
+        <a href="#api" class="btn btn-outline">See the API</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="formula-banner">
+    <div class="formula">trust = (queries + 1) / (queries + incidents + 2)</div>
+    <div class="formula-sub">Beta Reputation with Laplace smoothing. Pure math. No ML. No inference. Outside EU AI Act scope.</div>
+  </div>
+
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-label">How It Works</div>
+      <h2>Three verbs. That's the whole product.</h2>
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-title">Register</div>
+          <div class="step-desc">
+            An agent registers with Submantle and receives a cryptographic token.
+            Starts at 0.50 — the score for "unknown." Like a new credit card holder
+            with no history.
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-title">Record</div>
+          <div class="step-desc">
+            Every interaction builds history. Third parties report incidents.
+            Submantle records them — it never detects. Banks report missed payments
+            to the bureau. Same model.
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-title">Score</div>
+          <div class="step-desc">
+            A deterministic formula turns records into a trust score.
+            Businesses check it before trusting an agent with their data.
+            They set their own thresholds. Submantle never decides.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="analogy">
+        <div>
+          <h3>Think of it like a credit score — but for software</h3>
+          <p>
+            When you apply for a mortgage, the bank doesn't trust your word.
+            They check your credit score — a number built from years of financial behavior,
+            reported by third parties, computed by a neutral bureau.
+          </p>
+          <p>
+            AI agents need the same thing. When an agent asks to access your data,
+            you need to know: has this agent behaved well before? Who says so?
+            How much evidence exists?
+          </p>
+          <p>
+            Submantle is that bureau. Neutral, deterministic, portable.
+          </p>
+        </div>
+        <div>
+          <ul class="analogy-list">
+            <li><span class="analogy-check">&#10003;</span> Agents register like consumers open credit files</li>
+            <li><span class="analogy-check">&#10003;</span> Interactions build history like payments build credit</li>
+            <li><span class="analogy-check">&#10003;</span> Third parties report incidents like banks report defaults</li>
+            <li><span class="analogy-check">&#10003;</span> Businesses check scores before granting access</li>
+            <li><span class="analogy-check">&#10003;</span> Submantle never enforces — brands set their own policy</li>
+            <li><span class="analogy-check">&#10003;</span> Scores are portable — not locked to one platform</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="api">
+    <div class="container">
+      <div class="section-label">For Developers</div>
+      <h2>A real API, running now</h2>
+      <div class="grid-2">
+        <div>
+          <div class="code-block">
+            <pre><span class="comment"># Register an agent</span>
+curl -X POST /api/agents/register \
+  -d '{
+    <span class="key">"agent_name"</span>: <span class="string">"my-agent"</span>,
+    <span class="key">"version"</span>: <span class="string">"1.0.0"</span>,
+    <span class="key">"author"</span>: <span class="string">"Acme AI"</span>
+  }'
+
+<span class="comment"># Response: bearer token (shown once)</span>
+{<span class="key">"token"</span>: <span class="string">"a4f2c8..."</span>}
+
+<span class="comment"># Check an agent's trust score</span>
+curl /api/verify/my-agent \
+  -H <span class="string">"X-API-Key: sk_live_..."</span>
+
+{
+  <span class="key">"agent_name"</span>: <span class="string">"my-agent"</span>,
+  <span class="key">"trust_score"</span>: <span class="number">0.9167</span>,
+  <span class="key">"total_queries"</span>: <span class="number">10</span>,
+  <span class="key">"accepted_incidents"</span>: <span class="number">0</span>,
+  <span class="key">"has_history"</span>: <span class="number">true</span>,
+  <span class="key">"score_version"</span>: <span class="string">"v1.0"</span>
+}</pre>
+          </div>
+        </div>
+        <div>
+          <div class="step-card" style="margin-bottom: 16px;">
+            <div class="step-title">REST + MCP</div>
+            <div class="step-desc">Full REST API for registration and scoring. Read-only MCP server at <code style="font-family: var(--mono); color: var(--clay);">/mcp</code> so AI agents can query trust scores directly.</div>
+          </div>
+          <div class="step-card" style="margin-bottom: 16px;">
+            <div class="step-title">Business API Keys</div>
+            <div class="step-desc">Register for a <code style="font-family: var(--mono); color: var(--clay);">sk_live_</code> key. Free tier: 100 lookups/hour. Paid: 1,000. Anonymous: 10.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-title">Anti-Gaming Built In</div>
+            <div class="step-desc">Self-reports auto-rejected. Duplicate detection. Velocity caps. All deterministic — no ML, no inference, no black boxes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-label">Why Neutral Matters</div>
+      <h2>Platform vendors can't build this</h2>
+      <div class="grid-2">
+        <div class="reason-card">
+          <h4>Microsoft can't be neutral</h4>
+          <p>Entra Agent ID favors Azure/Windows agents. Trust that only works inside one ecosystem isn't portable — it's a lock-in tool.</p>
+        </div>
+        <div class="reason-card">
+          <h4>Anthropic can't be neutral</h4>
+          <p>Any trust system built by an AI company inherently favors their own models. The referee can't also be a player.</p>
+        </div>
+        <div class="reason-card">
+          <h4>Security companies enforce</h4>
+          <p>Products like HUMAN Security and Gen Digital build walls. Submantle builds credentials. We never block — brands decide.</p>
+        </div>
+        <div class="reason-card">
+          <h4>Visa didn't choose sides</h4>
+          <p>Banks couldn't trust each other's payment systems. Visa became the neutral intermediary. Submantle is the same pattern for AI trust.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>The window is 12-18 months</h2>
+      <p>NIST, WEF, Singapore, and the IETF are all organizing around agent trust.<br>The standard doesn't exist yet. We're building it.</p>
+      <div class="hero-actions">
+        <a href="/trust" class="btn btn-primary">Explore the Trust Bureau</a>
+        <a href="https://github.com/CBaen/SUBMANTLE" class="btn btn-outline">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Submantle — The behavioral trust registry</p>
+      <p style="margin-top: 8px;">
+        <a href="/api/health">API</a> &middot;
+        <a href="/trust">Trust Bureau</a> &middot;
+        <a href="/mcp">MCP Server</a> &middot;
+        <a href="/">Awareness Dashboard</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
