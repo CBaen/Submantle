@@ -7,6 +7,7 @@ They test the full stack: HTTP request → business auth → rate limiting → r
 
 import json
 import os
+import sys
 import unittest
 from unittest.mock import patch, MagicMock
 
@@ -256,12 +257,13 @@ class TestStripeWebhook(unittest.TestCase):
             self.assertEqual(resp.status_code, 503)
 
     def test_webhook_missing_signature_returns_400(self):
-        with patch.dict(os.environ, {"STRIPE_WEBHOOK_SECRET": "whsec_test123"}):
+        mock_stripe = MagicMock()
+        with patch.dict(os.environ, {"STRIPE_WEBHOOK_SECRET": "whsec_test123"}), \
+             patch.dict("sys.modules", {"stripe": mock_stripe}):
             resp = self.client.post("/api/stripe/webhook", content=b"test")
             self.assertEqual(resp.status_code, 400)
 
-    @patch("api.stripe")
-    def test_webhook_checkout_upgrades_business(self, mock_stripe_module):
+    def test_webhook_checkout_upgrades_business(self):
         """Simulate a Stripe checkout.session.completed event."""
         import api as api_module
 
@@ -270,7 +272,8 @@ class TestStripeWebhook(unittest.TestCase):
         biz_before = api_module._db.get_business_by_email("api@acme.com")
         self.assertEqual(biz_before["tier"], "free")
 
-        # Mock Stripe webhook verification
+        # Mock Stripe module with working webhook verification
+        mock_stripe = MagicMock()
         mock_event = {
             "type": "checkout.session.completed",
             "data": {
@@ -280,9 +283,11 @@ class TestStripeWebhook(unittest.TestCase):
                 }
             }
         }
-        mock_stripe_module.Webhook.construct_event.return_value = mock_event
+        mock_stripe.Webhook.construct_event.return_value = mock_event
 
-        with patch.dict(os.environ, {"STRIPE_WEBHOOK_SECRET": "whsec_test123"}):
+        import sys
+        with patch.dict(os.environ, {"STRIPE_WEBHOOK_SECRET": "whsec_test123"}), \
+             patch.dict(sys.modules, {"stripe": mock_stripe}):
             resp = self.client.post(
                 "/api/stripe/webhook",
                 content=b'{"test": true}',

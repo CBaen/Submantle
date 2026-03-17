@@ -1,0 +1,13 @@
+# Submantle prototype dependencies
+fastapi>=0.128.0
+uvicorn>=0.30.0
+psutil>=5.9.0
+pydantic>=2.0.0
+fastapi-mcp>=0.4.0
+
+# Billing (optional — server starts without it, Stripe webhook returns 503)
+stripe>=8.0.0
+
+# Testing
+pytest>=7.0.0
+httpx>=0.27.0  # Required by FastAPI TestClient
