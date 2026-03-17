@@ -714,6 +714,93 @@ def report_incident(body: IncidentReportRequest):
     return {"reported": True, "agent_name": body.agent_name}
 
 
+# ── Business endpoints ─────────────────────────────────────────────────────────
+
+@app.post("/api/business/register")
+def business_register(body: BusinessRegisterRequest):
+    """
+    Register a new business and get an API key.
+
+    The key is returned exactly once. The business must save it —
+    Submantle stores only the hash and cannot recover the raw key.
+    """
+    try:
+        raw_key = _business_registry.register(
+            business_name=body.business_name,
+            email=body.email,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+    return {
+        "api_key": raw_key,
+        "business_name": body.business_name,
+        "tier": "free",
+        "rate_limit": TIER_LIMITS["free"],
+        "note": "Save this key — it cannot be recovered.",
+    }
+
+
+@app.get("/api/business/tiers")
+def business_tiers():
+    """Public tier information. No auth required."""
+    return {
+        "tiers": [
+            {"name": "anonymous", "rate_limit": TIER_LIMITS["anonymous"], "requires_key": False, "price": "free"},
+            {"name": "free", "rate_limit": TIER_LIMITS["free"], "requires_key": True, "price": "free"},
+            {"name": "paid", "rate_limit": TIER_LIMITS["paid"], "requires_key": True, "price": "contact"},
+        ],
+    }
+
+
+# ── Stripe webhook ─────────────────────────────────────────────────────────────
+
+@app.post("/api/stripe/webhook")
+async def stripe_webhook(request: Request):
+    """
+    Handle Stripe webhook events. Verifies signature, then processes.
+
+    Currently handles: checkout.session.completed (upgrades business tier).
+    Stripe package is lazy-imported so the server runs without it installed.
+    """
+    import os
+    webhook_secret = os.environ.get("STRIPE_WEBHOOK_SECRET")
+    if not webhook_secret:
+        raise HTTPException(status_code=503, detail="Stripe webhook not configured")
+
+    try:
+        import stripe
+    except ImportError:
+        raise HTTPException(status_code=503, detail="Stripe package not installed")
+
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature")
+    if not sig_header:
+        raise HTTPException(status_code=400, detail="Missing stripe-signature header")
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid signature")
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        customer_email = session.get("customer_details", {}).get("email")
+        stripe_customer_id = session.get("customer")
+
+        if customer_email:
+            biz = _db.get_business_by_email(customer_email)
+            if biz:
+                _db.update_business_tier(
+                    business_id=biz["id"],
+                    tier="paid",
+                    rate_limit=TIER_LIMITS["paid"],
+                    stripe_customer_id=stripe_customer_id,
+                )
+
+    return {"received": True}
+
+
 # ── Dashboard ──────────────────────────────────────────────────────────────────
 
 @app.get("/")
