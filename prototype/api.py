@@ -11,14 +11,16 @@ Module initialization order (critical — do not reorder):
   4. AgentRegistry    — loads HMAC secret from DB, emits events on bus
 """
 
+import hashlib
 import socket
 import subprocess
 import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
 import psutil
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -35,6 +37,8 @@ from database import SubmantleDB
 from events import EventBus, EventType
 from privacy import PrivacyManager
 from agent_registry import AgentRegistry
+from business_registry import BusinessRegistry, TIER_LIMITS
+from rate_limiter import RateLimiter, RateLimitResult, hash_ip
 from fastapi_mcp import FastApiMCP
 
 VERSION = "0.1.0"
@@ -46,6 +50,8 @@ _db = SubmantleDB()
 _bus = EventBus(db=_db)
 _privacy = PrivacyManager(db=_db, event_bus=_bus)
 _registry = AgentRegistry(db=_db, event_bus=_bus)
+_business_registry = BusinessRegistry(db=_db, event_bus=_bus)
+_rate_limiter = RateLimiter(db=_db)
 
 # ── FastAPI setup ────────────────────────────────────────────────────────────
 
@@ -75,7 +81,7 @@ _mcp = FastApiMCP(
         "verify_agent_api_verify__agent_name__get",
         "privacy_status_api_privacy_status_get",
     ],
-    headers=["authorization"],
+    headers=["authorization", "x-api-key"],
 )
 _mcp.mount_http()
 
@@ -351,6 +357,11 @@ class AgentRegisterRequest(BaseModel):
     capabilities: list[str] = []
 
 
+class BusinessRegisterRequest(BaseModel):
+    business_name: str
+    email: str
+
+
 class IncidentReportRequest(BaseModel):
     agent_name: str
     reporter: str
@@ -363,6 +374,71 @@ def _extract_token(authorization: str | None) -> str | None:
     if not authorization or not authorization.startswith("Bearer "):
         return None
     return authorization.removeprefix("Bearer ").strip() or None
+
+
+# ── Business API Key Auth + Rate Limiting ──────────────────────────────────────
+
+@dataclass
+class BusinessContext:
+    """Resolved identity and rate limit state for a business caller."""
+    tier: str            # 'anonymous', 'free', 'paid'
+    identifier: str      # key_hash for keyed callers, hashed IP for anonymous
+    limit: int           # requests/hour for this tier
+    remaining: int       # requests left in current window
+    reset_at: float      # Unix epoch when window expires
+    business_name: str | None
+
+
+def get_business_context(
+    request: Request,
+    x_api_key: str | None = Header(None),
+) -> BusinessContext:
+    """
+    FastAPI dependency: resolve business identity and enforce rate limit.
+
+    Reads X-API-Key header. Anonymous access is allowed with lower limits.
+    Raises 401 for invalid keys, 403 for deactivated keys, 429 for rate exceeded.
+    """
+    if x_api_key:
+        biz = _business_registry.verify(x_api_key)
+        if biz is None:
+            raise HTTPException(status_code=401, detail="Invalid API key")
+        if not biz["is_active"]:
+            raise HTTPException(status_code=403, detail="API key deactivated")
+        identifier = biz["key_hash"]
+        tier = biz["tier"]
+        limit = biz["rate_limit"]
+        business_name = biz["business_name"]
+    else:
+        # Anonymous caller — rate limit by hashed IP
+        client_ip = request.client.host if request.client else "unknown"
+        identifier = hash_ip(client_ip)
+        tier = "anonymous"
+        limit = TIER_LIMITS["anonymous"]
+        business_name = None
+
+    # Check rate limit
+    rl = _rate_limiter.check_and_increment(identifier, limit)
+    if not rl.allowed:
+        raise HTTPException(
+            status_code=429,
+            detail="Rate limit exceeded",
+            headers={
+                "X-RateLimit-Limit": str(rl.limit),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": str(int(rl.reset_at)),
+                "Retry-After": str(int(rl.reset_at - time.time())),
+            },
+        )
+
+    return BusinessContext(
+        tier=tier,
+        identifier=identifier,
+        limit=rl.limit,
+        remaining=rl.remaining,
+        reset_at=rl.reset_at,
+        business_name=business_name,
+    )
 
 
 # ── Routes ─────────────────────────────────────────────────────────────────────
@@ -549,12 +625,15 @@ def agents_deregister(agent_id: int, authorization: Optional[str] = Header(None)
 # ── Trust Bureau — Verification (Door 2: for businesses) ──────────────────────
 
 @app.get("/api/verify")
-def verify_directory():
+def verify_directory(
+    request: Request,
+    ctx: BusinessContext = Depends(get_business_context),
+):
     """
     Public directory of all registered agents with trust scores.
 
     This is the trust bureau's public face. Businesses browse this to see
-    which agents exist and what their scores are.
+    which agents exist and what their scores are. Rate-limited by tier.
     """
     agents = _registry.list_agents(active_only=False)
     scored = []
@@ -562,17 +641,22 @@ def verify_directory():
         trust = _registry.compute_trust(agent_id=agent["id"])
         if trust:
             scored.append(trust)
-    return {"agents": scored, "total": len(scored)}
+    response = JSONResponse(content={"agents": scored, "total": len(scored)})
+    _add_ratelimit_headers(response, ctx)
+    return response
 
 
 @app.get("/api/verify/{agent_name}")
-def verify_agent(agent_name: str):
+def verify_agent(
+    agent_name: str,
+    request: Request,
+    ctx: BusinessContext = Depends(get_business_context),
+):
     """
     Check a specific agent's trust score.
 
     This is the core product: a business asks "how trustworthy is this agent?"
-    and gets back a score with full metadata. No auth required for V1 —
-    billing comes later.
+    and gets back a score with full metadata. Rate-limited by tier.
     """
     result = _registry.compute_trust(agent_name=agent_name)
     if result is None:
@@ -580,7 +664,16 @@ def verify_agent(agent_name: str):
             status_code=404,
             detail=f"Agent '{agent_name}' not found",
         )
-    return result
+    response = JSONResponse(content=result)
+    _add_ratelimit_headers(response, ctx)
+    return response
+
+
+def _add_ratelimit_headers(response: JSONResponse, ctx: BusinessContext) -> None:
+    """Add standard rate limit headers to a response."""
+    response.headers["X-RateLimit-Limit"] = str(ctx.limit)
+    response.headers["X-RateLimit-Remaining"] = str(ctx.remaining)
+    response.headers["X-RateLimit-Reset"] = str(int(ctx.reset_at))
 
 
 # ── Trust Bureau — Incident Reporting (credit bureau intake) ──────────────────
