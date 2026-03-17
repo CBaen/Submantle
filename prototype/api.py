@@ -812,3 +812,15 @@ def dashboard():
         status_code=404,
         content={"error": "dashboard.html not found — run from prototype/ directory"},
     )
+
+
+@app.get("/trust")
+def trust_dashboard():
+    """Trust bureau dashboard — agent directory, scores, business tiers."""
+    html_path = Path(__file__).parent / "trust-dashboard.html"
+    if html_path.exists():
+        return FileResponse(str(html_path), media_type="text/html")
+    return JSONResponse(
+        status_code=404,
+        content={"error": "trust-dashboard.html not found"},
+    )
