@@ -218,9 +218,12 @@
 
         <div class="register-card">
           <h3>Register an Agent</h3>
+          <div style="font-size: 12px; color: var(--text-2); margin-bottom: var(--sp-4); padding: var(--sp-3); background: var(--bg-elevated); border-radius: var(--radius-sm);">
+            Registration is an application, not a verification. All fields below are <strong style="color: var(--text-1);">self-reported</strong>. The SubScore is built from observed behavior — not from what you write here.
+          </div>
           <form id="agent-form">
             <div class="form-group">
-              <label class="form-label" for="agent-name">Agent Name</label>
+              <label class="form-label" for="agent-name">Agent Name <span style="color: var(--text-3); text-transform: none; letter-spacing: 0;">— permanent, cannot be changed</span></label>
               <input class="form-input" id="agent-name" type="text" placeholder="my-research-agent" required>
             </div>
             <div class="form-group">
@@ -228,11 +231,11 @@
               <input class="form-input" id="agent-version" type="text" placeholder="1.0.0" value="1.0.0">
             </div>
             <div class="form-group">
-              <label class="form-label" for="agent-author">Author</label>
+              <label class="form-label" for="agent-author">Author <span style="color: var(--text-3); text-transform: none; letter-spacing: 0;">— self-reported</span></label>
               <input class="form-input" id="agent-author" type="text" placeholder="Your name or company" required>
             </div>
             <div class="form-group">
-              <label class="form-label" for="agent-capabilities">Capabilities</label>
+              <label class="form-label" for="agent-capabilities">Declared Capabilities <span style="color: var(--text-3); text-transform: none; letter-spacing: 0;">— self-reported, unverified</span></label>
               <input class="form-input" id="agent-capabilities" type="text" placeholder="research, summarization, analysis">
             </div>
             <button class="form-btn" type="submit">Register Agent</button>
