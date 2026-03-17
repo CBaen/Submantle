@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submantle — The Credit Bureau for AI Agents</title>
-  <meta name="description" content="Behavioral trust scores for AI agents. Register. Record. Score. Neutral infrastructure that never acts — just labels.">
+  <meta name="description" content="Submantle SubScore — a behavioral trust score for AI agents. Pure math, no ML. We record. We score. We never decide.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -182,7 +182,7 @@
   </section>
 
   <div class="formula-banner">
-    <div class="formula">trust = (queries + 1) / (queries + incidents + 2)</div>
+    <div class="formula">SubScore = (queries + 1) / (queries + incidents + 2)</div>
     <div class="formula-sub">Beta Reputation with Laplace smoothing. Pure math. No ML. No inference. Outside EU AI Act scope.</div>
   </div>
 
@@ -194,7 +194,7 @@
           <div style="font-size: 13px; color: var(--text-2); margin-top: 8px;">Every agent starts here</div>
         </div>
         <div>
-          <h3>Why does every agent start at 0.50?</h3>
+          <h3>Why does every SubScore start at 0.50?</h3>
           <p>
             Think of it like meeting a stranger. You don't assume they're dangerous — that would be unfair.
             You don't assume they're your best friend — that would be naive. You're neutral. Watchful, but not hostile.
@@ -241,7 +241,7 @@
           <div class="step-num">03</div>
           <div class="step-title">Score</div>
           <div class="step-desc">
-            A deterministic formula turns records into a trust score.
+            A deterministic formula turns records into a SubScore.
             Businesses check it before trusting an agent with their data.
             They set their own thresholds. Submantle never decides.
           </div>
@@ -255,6 +255,7 @@
       <div class="analogy">
         <div>
           <h3>Think of it like a credit score — but for software</h3>
+          <p style="font-size: 13px; color: var(--clay); font-weight: 600; margin-bottom: 12px;">That's a SubScore.</p>
           <p>
             When you apply for a mortgage, the bank doesn't trust your word.
             They check your credit score — a number built from years of financial behavior,
@@ -301,13 +302,13 @@ curl -X POST /api/agents/register \
 <span class="comment"># Response: bearer token (shown once)</span>
 {<span class="key">"token"</span>: <span class="string">"a4f2c8..."</span>}
 
-<span class="comment"># Check an agent's trust score</span>
+<span class="comment"># Check an agent's SubScore</span>
 curl /api/verify/my-agent \
   -H <span class="string">"X-API-Key: sk_live_..."</span>
 
 {
   <span class="key">"agent_name"</span>: <span class="string">"my-agent"</span>,
-  <span class="key">"trust_score"</span>: <span class="number">0.9167</span>,
+  <span class="key">"subscore"</span>: <span class="number">0.9167</span>,
   <span class="key">"total_queries"</span>: <span class="number">10</span>,
   <span class="key">"accepted_incidents"</span>: <span class="number">0</span>,
   <span class="key">"has_history"</span>: <span class="number">true</span>,
@@ -318,7 +319,7 @@ curl /api/verify/my-agent \
         <div>
           <div class="step-card" style="margin-bottom: 16px;">
             <div class="step-title">REST + MCP</div>
-            <div class="step-desc">Full REST API for registration and scoring. Read-only MCP server at <code style="font-family: var(--mono); color: var(--clay);">/mcp</code> so AI agents can query trust scores directly.</div>
+            <div class="step-desc">Full REST API for registration and SubScore lookups. Read-only MCP server at <code style="font-family: var(--mono); color: var(--clay);">/mcp</code> so AI agents can query SubScores directly.</div>
           </div>
           <div class="step-card" style="margin-bottom: 16px;">
             <div class="step-title">Business API Keys</div>
@@ -371,7 +372,7 @@ curl /api/verify/my-agent \
 
   <footer>
     <div class="container">
-      <p>Submantle — The behavioral trust registry</p>
+      <p>Submantle SubScore — The behavioral trust registry</p>
       <p style="margin-top: 8px;">
         <a href="/api/health">API</a> &middot;
         <a href="/trust">Trust Bureau</a> &middot;
