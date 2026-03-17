@@ -265,6 +265,30 @@
     </div>
 
     <div class="section">
+      <div class="section-header"><div class="section-title">Soft Pulls vs Hard Pulls</div></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4);">
+        <div class="info-card">
+          <div style="display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-3);">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--clay);"></div>
+            <div class="info-title" style="margin: 0;">Soft Pull</div>
+          </div>
+          <div class="info-desc" style="margin-bottom: var(--sp-3);">SubScore, active status, history flag. The quick glance — "should I even talk to this agent?"</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-3);">GET /api/verify/agent-name</div>
+          <div style="font-size: 12px; color: var(--text-2); margin-top: var(--sp-2);">Costs 1 lookup</div>
+        </div>
+        <div class="info-card" style="border-color: var(--clay);">
+          <div style="display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-3);">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--clay);"></div>
+            <div class="info-title" style="margin: 0;">Hard Pull</div>
+          </div>
+          <div class="info-desc" style="margin-bottom: var(--sp-3);">Full history: incidents, reporter diversity, capabilities, registration timeline. The deep check before granting access.</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-3);">GET /api/verify/agent-name?pull=hard</div>
+          <div style="font-size: 12px; color: var(--clay); font-weight: 600; margin-top: var(--sp-2);">Costs 5 lookups</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <div class="section-header"><div class="section-title">How Trust Scoring Works</div></div>
       <div class="info-grid">
         <div class="info-card"><div class="info-icon">&#x1f4dd;</div><div class="info-title">Agents Register</div><div class="info-desc">Software agents register and receive a cryptographic token. Every agent starts at 0.50 — the score for "unknown."</div></div>
@@ -522,7 +546,7 @@
     async function refresh() {
       try {
         const [verifyRes, tiersRes] = await Promise.all([
-          fetch(API + '/api/verify'),
+          fetch(API + '/api/verify?pull=hard'),
           fetch(API + '/api/business/tiers'),
         ]);
         const verifyData = await verifyRes.json();
