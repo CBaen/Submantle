@@ -19,8 +19,8 @@
       --slate-500: #87867f; --slate-400: #b0aea5; --slate-300: #d1cfc5;
       --slate-250: #dedcd1; --slate-200: #e8e6dc; --slate-150: #f0eee6;
       --slate-100: #f5f4ed; --slate-050: #faf9f5; --slate-000: #ffffff;
-      --clay: #d97757; --clay-dark: #c46849;
-      --clay-muted: rgba(217, 119, 87, 0.12); --clay-bg: rgba(217, 119, 87, 0.06);
+      --clay: #5b9e6e; --clay-dark: #4a8a5d;
+      --clay-muted: rgba(91, 158, 110, 0.12); --clay-bg: rgba(91, 158, 110, 0.06);
       --olive: #788c5d; --olive-muted: rgba(120, 140, 93, 0.12);
       --sky: #6a9bcc; --sky-muted: rgba(106, 155, 204, 0.12);
       --fig: #c46686; --fig-muted: rgba(196, 102, 134, 0.12);
@@ -209,6 +209,53 @@
           <div class="empty-title">No agents registered yet</div>
           <div class="empty-desc">When agents register with Submantle, their trust profiles appear here.</div>
         </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="section-title">Register</div></div>
+      <div class="register-grid">
+
+        <div class="register-card">
+          <h3>Register an Agent</h3>
+          <form id="agent-form">
+            <div class="form-group">
+              <label class="form-label" for="agent-name">Agent Name</label>
+              <input class="form-input" id="agent-name" type="text" placeholder="my-research-agent" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="agent-version">Version</label>
+              <input class="form-input" id="agent-version" type="text" placeholder="1.0.0" value="1.0.0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="agent-author">Author</label>
+              <input class="form-input" id="agent-author" type="text" placeholder="Your name or company" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="agent-capabilities">Capabilities</label>
+              <input class="form-input" id="agent-capabilities" type="text" placeholder="research, summarization, analysis">
+            </div>
+            <button class="form-btn" type="submit">Register Agent</button>
+            <div class="form-result" id="agent-result"></div>
+          </form>
+        </div>
+
+        <div class="register-card">
+          <h3>Register a Business</h3>
+          <form id="business-form">
+            <div class="form-group">
+              <label class="form-label" for="biz-name">Business Name</label>
+              <input class="form-input" id="biz-name" type="text" placeholder="Acme Analytics" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="biz-email">Email</label>
+              <input class="form-input" id="biz-email" type="email" placeholder="api@example.com" required>
+            </div>
+            <button class="form-btn" type="submit">Get API Key</button>
+            <div class="form-result" id="business-result"></div>
+          </form>
+        </div>
+
       </div>
     </div>
 
@@ -507,6 +554,99 @@
 
     refresh();
     setInterval(refresh, 10000);
+
+    // ── Agent Registration Form ───────────────────────────────────────
+    document.getElementById('agent-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const result = document.getElementById('agent-result');
+      const btn = e.target.querySelector('.form-btn');
+      btn.disabled = true;
+
+      const name = document.getElementById('agent-name').value.trim();
+      const version = document.getElementById('agent-version').value.trim() || '1.0.0';
+      const author = document.getElementById('agent-author').value.trim();
+      const caps = document.getElementById('agent-capabilities').value.trim();
+      const capabilities = caps ? caps.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      try {
+        const resp = await fetch(API + '/api/agents/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({agent_name: name, version, author, capabilities}),
+        });
+        const data = await resp.json();
+
+        if (resp.ok) {
+          result.className = 'form-result success';
+          result.replaceChildren();
+          const msg = document.createElement('div');
+          msg.textContent = 'Agent registered! Save this token — it cannot be recovered:';
+          const tokenEl = document.createElement('div');
+          tokenEl.className = 'token-display';
+          tokenEl.textContent = data.token;
+          const warn = document.createElement('div');
+          warn.className = 'token-warning';
+          warn.textContent = 'This is the only time this token will be shown.';
+          result.appendChild(msg);
+          result.appendChild(tokenEl);
+          result.appendChild(warn);
+          e.target.reset();
+          document.getElementById('agent-version').value = '1.0.0';
+          refresh();
+        } else {
+          result.className = 'form-result error';
+          result.textContent = data.detail || 'Registration failed';
+        }
+      } catch (err) {
+        result.className = 'form-result error';
+        result.textContent = 'Connection failed';
+      }
+      btn.disabled = false;
+    });
+
+    // ── Business Registration Form ────────────────────────────────────
+    document.getElementById('business-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const result = document.getElementById('business-result');
+      const btn = e.target.querySelector('.form-btn');
+      btn.disabled = true;
+
+      const bizName = document.getElementById('biz-name').value.trim();
+      const email = document.getElementById('biz-email').value.trim();
+
+      try {
+        const resp = await fetch(API + '/api/business/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({business_name: bizName, email}),
+        });
+        const data = await resp.json();
+
+        if (resp.ok) {
+          result.className = 'form-result success';
+          result.replaceChildren();
+          const msg = document.createElement('div');
+          msg.textContent = 'API key issued! Tier: ' + data.tier + ' (' + data.rate_limit + ' lookups/hour)';
+          const tokenEl = document.createElement('div');
+          tokenEl.className = 'token-display';
+          tokenEl.textContent = data.api_key;
+          const warn = document.createElement('div');
+          warn.className = 'token-warning';
+          warn.textContent = 'Save this key — it cannot be recovered.';
+          result.appendChild(msg);
+          result.appendChild(tokenEl);
+          result.appendChild(warn);
+          e.target.reset();
+        } else {
+          result.className = 'form-result error';
+          result.textContent = data.detail || 'Registration failed';
+        }
+      } catch (err) {
+        result.className = 'form-result error';
+        result.textContent = 'Connection failed';
+      }
+      btn.disabled = false;
+    });
   </script>
 </body>
 </html>
