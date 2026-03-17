@@ -89,8 +89,8 @@ def main():
         ["research", "summarization", "code_review", "data_analysis"],
     )
     if token:
-        query(token, "research_papers", 50)
-        print("  + 50 queries recorded")
+        query(token, "research_papers", 20)
+        print("  + 20 queries recorded")
 
     # ==============================================================
     # SCENARIO 2: The New Kid
@@ -173,8 +173,8 @@ def main():
         ["inventory_management", "data_sync", "reporting"],
     )
     if token:
-        query(token, "inventory_data", 30)
-        print("  + 30 queries recorded")
+        query(token, "inventory_data", 12)
+        print("  + 12 queries recorded")
         # Score: (30+1)/(30+0+2) = 31/32 = 0.969
 
     # ==============================================================
@@ -236,8 +236,8 @@ def main():
         incident("dataflow-agent", "ComplianceBot",
                  "logging_failure",
                  "Agent failed to log data access events as required by audit policy during initial deployment.")
-        query(token, "pipeline_data", 30)
-        print("  + 35 total queries, 1 early incident -- recovered to ~0.95")
+        query(token, "pipeline_data", 15)
+        print("  + 18 total queries, 1 early incident -- recovered to ~0.90")
         # Score: (35+1)/(35+1+2) = 36/38 = 0.947
 
     # ==============================================================

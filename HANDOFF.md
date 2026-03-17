@@ -21,6 +21,23 @@ The credit bureau for AI agents. Agents register, earn trust scores through inte
 ## What Just Happened (2026-03-17)
 
 ### WAVE 6: Business API Keys + Rate Limiting + Stripe — DONE
+### Trust Bureau Dashboard + Landing Page + Demo — DONE
+### Scenario Generator for Video Demos — DONE
+
+**Built this session (2026-03-17):**
+- Wave 6: billing layer (API keys, rate limiting, Stripe webhook)
+- Trust bureau dashboard at `/trust` — agent directory with scores, tiers, detail modals
+- Landing page at `/landing` — explains Submantle in 30 seconds
+- Live agent demo: `demo_agent_interaction.py` — 8-step narrated walkthrough
+- Scenario generator: `demo_scenarios.py` — populates bureau with 8 diverse agent stories
+- 264 tests across 7 files. All pushed to GitHub.
+
+**Strategic insight:** Submantle is a behavioral trust registry. "Credit bureau for AI agents" is the external wedge. Architecture is entity-agnostic. Saved to memory.
+
+**New pages:**
+- `/` — Awareness dashboard (process monitoring, unchanged)
+- `/trust` — Trust bureau dashboard (agent directory, scores, tiers)
+- `/landing` — Public landing page
 
 Built the billing layer. Submantle now has a front door.
 
