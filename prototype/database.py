@@ -704,6 +704,38 @@ CREATE TABLE IF NOT EXISTS settings (
     value       TEXT    NOT NULL,
     updated_at  REAL    NOT NULL
 );
+
+
+CREATE TABLE IF NOT EXISTS business_api_keys (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    key_hash            TEXT    NOT NULL UNIQUE,        -- SHA-256 hex, NOT the raw key
+    business_name       TEXT    NOT NULL,
+    email               TEXT    NOT NULL,
+    tier                TEXT    NOT NULL DEFAULT 'free', -- 'free' or 'paid'
+    rate_limit          INTEGER NOT NULL DEFAULT 100,    -- requests per hour
+    stripe_customer_id  TEXT    DEFAULT NULL,
+    created_at          REAL    NOT NULL,
+    is_active           INTEGER NOT NULL DEFAULT 1       -- BOOLEAN: 0=false, 1=true
+);
+
+CREATE INDEX IF NOT EXISTS idx_business_api_keys_hash
+    ON business_api_keys(key_hash);
+
+CREATE INDEX IF NOT EXISTS idx_business_api_keys_email
+    ON business_api_keys(email);
+
+
+CREATE TABLE IF NOT EXISTS business_api_usage (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    key_hash            TEXT    NOT NULL,
+    window_start        REAL    NOT NULL,               -- Unix epoch, aligned to hour
+    request_count       INTEGER NOT NULL DEFAULT 0,
+    updated_at          REAL    NOT NULL,
+    UNIQUE(key_hash, window_start)
+);
+
+CREATE INDEX IF NOT EXISTS idx_business_api_usage_lookup
+    ON business_api_usage(key_hash, window_start);
 """
 
 
