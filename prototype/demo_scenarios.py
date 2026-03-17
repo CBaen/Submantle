@@ -32,9 +32,10 @@ def register_agent(name, version, author, capabilities):
 
 def query(token, process="data", count=1):
     """Make authenticated queries to build trust history."""
+    session = requests.Session()
+    session.headers["Authorization"] = f"Bearer {token}"
     for _ in range(count):
-        requests.get(f"{BASE}/api/query?process={process}",
-                     headers={"Authorization": f"Bearer {token}"})
+        session.get(f"{BASE}/api/query?process={process}")
 
 
 def incident(agent_name, reporter, incident_type, description):
@@ -121,8 +122,8 @@ def main():
         ["analytics", "reporting", "customer_data_processing"],
     )
     if token:
-        query(token, "analytics_pipeline", 50)
-        print("  + 50 queries recorded")
+        query(token, "analytics_pipeline", 20)
+        print("  + 20 queries recorded")
 
         # Multiple reporters — this shows reporter diversity
         incident("sentinel-analytics", "DataVault Corp",
@@ -213,8 +214,8 @@ def main():
         ["product_search", "recommendation", "cart_management"],
     )
     if token:
-        query(token, "product_catalog", 80)
-        print("  + 80 queries recorded")
+        query(token, "product_catalog", 25)
+        print("  + 25 queries recorded")
         # Score: (80+1)/(80+0+2) = 81/82 = 0.988
 
     # ==============================================================
@@ -235,9 +236,9 @@ def main():
         incident("dataflow-agent", "ComplianceBot",
                  "logging_failure",
                  "Agent failed to log data access events as required by audit policy during initial deployment.")
-        query(token, "pipeline_data", 95)
-        print("  + 100 total queries, 1 early incident — recovered to ~0.98")
-        # Score: (100+1)/(100+1+2) = 101/103 = 0.981
+        query(token, "pipeline_data", 30)
+        print("  + 35 total queries, 1 early incident -- recovered to ~0.95")
+        # Score: (35+1)/(35+1+2) = 36/38 = 0.947
 
     # ==============================================================
     # BUSINESSES — Register some to show the ecosystem
