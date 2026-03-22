@@ -1,0 +1,88 @@
+{
+  "name": "Submantle",
+  "description": "The credit bureau for AI agents. Submantle records behavioral interactions between AI agents and businesses, computes trust scores (SubScore) using a Beta distribution formula, and provides a query API for businesses to check agent trust levels before interacting. Neutral infrastructure — Submantle never enforces, only labels. Agents register free; businesses pay to query at scale.",
+  "version": "1.0.0",
+  "url": "http://localhost:8421",
+  "documentationUrl": "http://localhost:8421/landing",
+  "provider": {
+    "organization": "Submantle",
+    "url": "http://localhost:8421"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": ["application/json"],
+  "defaultOutputModes": ["application/json", "text/html"],
+  "skills": [
+    {
+      "id": "trust-score-query",
+      "name": "Trust Score Query",
+      "description": "Query the SubScore for any registered AI agent by name or ID. Returns trust score (0.0–1.0), score version, history flag, reporter diversity count, and interaction statistics.",
+      "tags": ["trust", "score", "verify", "agent", "query"],
+      "examples": [
+        "What is the trust score for agent 'myagent'?",
+        "Has this agent been verified before?",
+        "How many incidents has this agent had?"
+      ]
+    },
+    {
+      "id": "agent-registration",
+      "name": "Agent Registration",
+      "description": "Register a new AI agent with Submantle to begin building a trust history. Registration is free and permanent — agent names are retained even after deregistration.",
+      "tags": ["register", "agent", "identity", "trust"],
+      "examples": [
+        "Register my agent with Submantle",
+        "How do I get a Submantle trust token for my agent?"
+      ]
+    },
+    {
+      "id": "business-api-access",
+      "name": "Business API Access",
+      "description": "Register a business to receive an API key for querying trust scores at scale. Tiers: Anonymous (10/hr), Free (100/hr), Paid (1000/hr). Stripe integration for paid tier.",
+      "tags": ["business", "api-key", "rate-limit", "billing"],
+      "examples": [
+        "How does a business access Submantle scores?",
+        "What are the rate limits for the Submantle API?",
+        "How do I get a paid API key?"
+      ]
+    },
+    {
+      "id": "incident-reporting",
+      "name": "Incident Reporting",
+      "description": "Report behavioral incidents against a registered agent. Incidents enter a pending state before affecting the score. Reporting requires authentication — only registered members can file reports.",
+      "tags": ["incident", "report", "trust", "behavior"],
+      "examples": [
+        "How do I report a problem with an agent?",
+        "What happens when an incident is reported?"
+      ]
+    },
+    {
+      "id": "mcp-trust-surface",
+      "name": "MCP Trust Surface",
+      "description": "Read-only MCP server at /mcp (HTTP transport). Exposes 7 trust query endpoints for AI agents to verify other agents inline during task execution.",
+      "tags": ["mcp", "model-context-protocol", "trust", "agent-to-agent"],
+      "examples": [
+        "How do I connect to the Submantle MCP server?",
+        "Can my agent verify other agents via MCP?"
+      ]
+    }
+  ],
+  "security": [
+    {"public": []},
+    {"apiKey": []}
+  ],
+  "securitySchemes": {
+    "public": {
+      "type": "public",
+      "description": "Public endpoints: /api/health, /api/status, /api/business/tiers, /api/verify (anonymous rate limit applies)"
+    },
+    "apiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-Key",
+      "description": "Business API key (sk_live_...) for paid-tier rate limits on /api/verify and /api/verify/{agent_name}"
+    }
+  }
+}

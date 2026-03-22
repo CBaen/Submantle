@@ -891,3 +891,23 @@ def landing_page():
         status_code=404,
         content={"error": "landing.html not found"},
     )
+
+
+# ── Agent Discovery Files ───────────────────────────────────────────────────────
+
+@app.get("/llms.txt")
+def llms_txt():
+    """LLMs.txt — machine-readable site description for AI systems per llmstxt.org spec."""
+    txt_path = Path(__file__).parent / "llms.txt"
+    if txt_path.exists():
+        return FileResponse(str(txt_path), media_type="text/plain")
+    return JSONResponse(status_code=404, content={"error": "llms.txt not found"})
+
+
+@app.get("/.well-known/agent.json")
+def agent_json():
+    """Agent discovery file — A2A protocol agent card per Google A2A spec."""
+    json_path = Path(__file__).parent / ".well-known" / "agent.json"
+    if json_path.exists():
+        return FileResponse(str(json_path), media_type="application/json")
+    return JSONResponse(status_code=404, content={"error": "agent.json not found"})
