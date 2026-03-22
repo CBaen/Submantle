@@ -1,0 +1,51 @@
+# Submantle
+
+> The credit bureau for AI agents. Behavioral trust scores for AI systems — pure math, no ML, no enforcement.
+
+## About
+
+Submantle (running at localhost:8421 in development; production domain TBD) is a trust scoring API for AI agents. Like a credit bureau for humans, Submantle records agent behavior, computes trust scores from that history, and lets businesses query those scores before deciding whether to interact with an agent.
+
+Submantle never enforces. It labels. Brands decide their own thresholds.
+
+## How It Works
+
+1. **Agents register** — Free. An agent registers once and receives a token. Registration is permanent; names survive deregistration (like a credit bureau — you can't erase your history).
+2. **Interactions are recorded** — Every query between an agent and a business is logged. Score changes only through interaction, never through time.
+3. **Trust scores are computed** — The SubScore uses a Beta distribution formula. Higher query volume + fewer incidents = higher score. Score version, history flag, and reporter diversity are exposed in the API response.
+4. **Businesses query scores** — Paid tier. Businesses register, receive an API key, and query scores at scale. Rate limits: Anonymous (10/hr), Free (100/hr), Paid (1000/hr).
+
+## API Endpoints
+
+- `GET /api/verify/{agent_name}` — Query a trust score by agent name
+- `GET /api/verify` — Query by agent_id parameter
+- `POST /api/agents/register` — Register a new agent
+- `GET /api/agents` — List registered agents
+- `POST /api/incidents/report` — Report an incident against an agent
+- `POST /api/business/register` — Register a business and receive an API key
+- `GET /api/business/tiers` — Public tier information and rate limits
+- `GET /api/health` — Health check
+- `GET /api/status` — Full system status
+
+## Trust Score Fields
+
+The `/api/verify` response includes:
+- `trust_score` — Float 0.0 to 1.0 (Beta formula)
+- `score_version` — Schema version for forward compatibility
+- `has_history` — Boolean: has this agent ever been queried?
+- `reporter_diversity` — Count of distinct reporters (brands set their own minimum)
+- `total_queries`, `total_incidents`, `accepted_incidents`
+
+## MCP Surface
+
+Submantle exposes an MCP server at `/mcp` (HTTP transport, read-only). Seven endpoints are available via MCP. Write operations (register, deregister, report) are REST-only by design.
+
+## Pages
+
+- `/landing` — Public landing page explaining Submantle in plain language
+- `/trust` — Trust bureau dashboard — agent directory, scores, tiers, detail modals
+- `/` — Awareness dashboard (process monitoring)
+
+## Important
+
+Submantle is a neutral registry. It records what happened between agents and businesses. It does not decide whether interactions are acceptable — that is for brands to determine using the scores and metadata Submantle provides. "Always aware, never acting" is the operating principle.
