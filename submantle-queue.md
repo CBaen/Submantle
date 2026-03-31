@@ -4,14 +4,6 @@
 
 ## URGENT — Business Foundation (before more code)
 
-- [x] **Legal entity exists** (completed: 2026-03-11)
-      What: Built by Cameron LLC — Wyoming, EIN 41-4309920, Mercury banking. Business purpose broad enough for Submantle.
-      Context: Located at C:\Users\baenb\projects\builtbycameron\business documents\
-
-- [x] **Product name decided — Submantle** (completed: 2026-03-11)
-      What: submantle.com purchased. Complete rebrand from "Substrate" to "Submantle" across all 91 files.
-      Context: "Substrate" conflicted with Parity Technologies' blockchain framework. "Submantle" = the layer beneath everything. Clean trademark space.
-
 - [ ] **License decision — BSL recommended** (added: 2026-03-11)
       What: Choose Business Source License (BSL). Code visible, readable, forkable — but companies above a threshold can't use commercially without paying. Converts to open source after 3-4 years.
       Context: Used by MariaDB, CockroachDB, Sentry, HashiCorp. Prevents Google/Microsoft from taking the code while allowing community adoption. Required before any public release.
